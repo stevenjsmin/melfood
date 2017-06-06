@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Layout Define -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<definition name="tiles/shop/root" extends="layout/panel_500">
+		<put-attribute name="title" value="판매자 전문-Shop" />
+		<put-attribute name="navigation" value="판매자 전문-Shop" />	
+	</definition>
+	
+	<definition name="tiles/shop/no" extends="tiles/shop/root">
+		<put-attribute name="seller_notice_delivery" value="/WEB-INF/pages/seller/sellerNoticeDelivery.jsp" />
+		<put-attribute name="seller_product_mainpage" value="/WEB-INF/pages/seller/sellerProductMainpage.jsp" />
+	</definition>
+	
+	
+	<definition name="tiles/shop/notfoundshop" extends="layout/panel_200">
+		<put-attribute name="title" value="판매자 전문-Shop" />
+		<put-attribute name="navigation" value="판매자 전문-Shop" />	
+		<put-attribute name="body" value="/WEB-INF/pages/seller/notFoundShop.jsp" />		
+	</definition>
+		
+</tiles-definitions>

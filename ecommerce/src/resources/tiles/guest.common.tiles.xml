@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- LAYOUT DEFINE -->
+	<definition name="tiles/guest/login/openWin" extends="layout/panel_100">
+		<put-attribute name="title" value="로그인" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/login.jsp" />
+	</definition>
+</tiles-definitions>

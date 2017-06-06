@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Layout Define -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<definition name="tiles/seller/root" extends="layout/panel_300">
+		<put-attribute name="navigation" value="Coupang.com.au > Seller" />
+		<put-attribute name="left-side" value="/WEB-INF/pages/seller/seller_leftmain_menu.jsp" /> 
+	</definition>
+
+
+	<definition name="tiles/seller/welcome" extends="tiles/seller/root">
+		<put-attribute name="navigation" value="Seller > contents1" />
+		<put-attribute name="right-side" value="/WEB-INF/pages/seller/seller_welcome.jsp" />
+	</definition>	
+</tiles-definitions>

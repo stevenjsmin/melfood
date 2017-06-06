@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- LAYOUT DEFINE -->
+	<definition name="tiles/guest/root" extends="layout/panel_200">
+		<put-attribute name="navigation" value="쿠빵 > 손님" />
+	</definition>
+	
+	<definition name="tiles/guest/joinmember/join" extends="tiles/guest/root">
+		<put-attribute name="title" value="회원 가입" />
+		<put-attribute name="navigation" value="손님 > 회원가입" />
+		<put-attribute name="body" value="/WEB-INF/pages/guest/joinMemberForm.jsp" />
+	</definition>
+	<definition name="tiles/guest/joinmember/openMemberJoinAgreement" extends="layout/panel_100">
+		<put-attribute name="title" value="쇼핑몰 이용약관" />
+		<put-attribute name="body" value="/WEB-INF/pages/guest/popup/openMemberJoinAgreement.jsp" />
+	</definition>
+	<definition name="tiles/guest/joinmember/findPassword" extends="tiles/guest/root">
+		<put-attribute name="title" value="비밀번호 찾기" />
+		<put-attribute name="navigation" value="손님 > 비밀번호찾기" />
+		<put-attribute name="body" value="/WEB-INF/pages/guest/findPasswordForm.jsp" />
+	</definition>		
+</tiles-definitions>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Layout Define -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<definition name="tiles/customer/mypage/root" extends="layout/panel_300">
+	    <put-attribute name="leftMenuName" value="CUSTOMER :: MY 빵" />
+		<put-attribute name="navigation" value="Customer > My Page" />
+		<put-attribute name="left-menu" value="/WEB-INF/pages/customer/customer_leftmain_menu.jsp" /> 
+	</definition>
+	
+	<definition name="tiles/customer/mypage/customer/main" extends="tiles/customer/mypage/root">
+		<put-attribute name="body" value="/WEB-INF/pages/customer/customer_welcome.jsp" />
+	</definition>
+
+	<definition name="tiles/customer/mypage/customer/passwordChangeForm" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="비밀번호 변경" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/passwordChangeForm.jsp" />
+	</definition>	
+	
+	<definition name="tiles/customer/mypage/customer/myDetailInfo" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="개인정보" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myDetailInfo.jsp" />
+	</definition>
+	
+	<definition name="tiles/customer/mypage/customer/modifyMyDetailInfo" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="개인정보 변경" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/modifyMyDetailInfo.jsp" />
+	</definition>	
+	
+	<definition name="tiles/customer/mypage/customer/myOrderList" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="상품구매 목록" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myOrderList.jsp" />
+	</definition>	
+
+	<definition name="tiles/customer/mypage/customer/myQnAs" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="나의 QnA" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myQnAs.jsp" />
+	</definition>	
+
+		
+</tiles-definitions>

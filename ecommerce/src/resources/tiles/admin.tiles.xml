@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- LAYOUT DEFINE -->
+	<definition name="tiles/admin/root" extends="layout/panel_300">
+		<put-attribute name="leftMenuName" value="ADMIN" />
+		<put-attribute name="navigation" value="Coupang.com.au > Admin" />
+		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" /> 
+	</definition>
+
+	<definition name="tiles/admin/welcome" extends="tiles/admin/root">
+		<put-attribute name="title" value="Welcome" />
+		<put-attribute name="navigation" value="Admin > Welcome" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/admin_welcome.jsp" />
+	</definition>
+
+	
+	<!-- CONTRACT MANAGEMENT -->
+	<definition name="tiles/admin/contractmgt/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="Contract search" />
+		<put-attribute name="navigation" value="Admin > Contract Management > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractList.jsp" />
+	</definition>
+	<definition name="tiles/admin/contractmgt/regist" extends="tiles/admin/root">
+		<put-attribute name="title" value="Contract Register" />
+		<put-attribute name="navigation" value="Admin > Contract Management > register" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractRegister.jsp" />
+	</definition>
+	<definition name="tiles/admin/contractmgt/modify" extends="tiles/admin/root">
+		<put-attribute name="title" value="Contract Modify" />
+		<put-attribute name="navigation" value="Admin > Contract Management > modify" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractModify.jsp" />
+	</definition>
+	<definition name="tiles/admin/contractmgt/detailInfo" extends="tiles/admin/root">
+		<put-attribute name="title" value="Contract Detail" />
+		<put-attribute name="navigation" value="Admin > Contract Management > Detail" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractDetailInfo.jsp" />
+	</definition>
+		
+		
+	<!-- CATEGORY MANAGEMENT -->
+	<definition name="tiles/admin/product/categorymgt/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="Category search" />
+		<put-attribute name="navigation" value="Admin > Product > Category Management > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryList.jsp" />
+	</definition>
+	<definition name="tiles/admin/product/categorymgt/regist" extends="tiles/admin/root">
+		<put-attribute name="title" value="Category Register" />
+		<put-attribute name="navigation" value="Admin > Product > Category Management > register" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryRegister.jsp" />
+	</definition>
+	<definition name="tiles/admin/product/categorymgt/modify" extends="tiles/admin/root">
+		<put-attribute name="title" value="Category Modify" />
+		<put-attribute name="navigation" value="Admin > Product > Category Management > modify" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryModify.jsp" />
+	</definition>
+	<definition name="tiles/admin/product/categorymgt/detailInfo" extends="tiles/admin/root">
+		<put-attribute name="title" value="Category Detail" />
+		<put-attribute name="navigation" value="Admin > Product > Category Management > Detail" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryDetailInfo.jsp" />
+	</definition>
+
+
+	<!-- PRODUCT MANAGEMENT -->
+	<definition name="layout/panel_310" extends="root" template="/WEB-INF/pages/_layout/panel_310.jsp">
+		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/empty.jsp" />
+	</definition>
+	<definition name="tiles/admin/prod/root" extends="layout/panel_310">
+		<put-attribute name="navigation" value="Coupang.com.au > Admin" />
+		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" /> 
+	</definition>
+	
+	<!-- Product > List -->	
+	<definition name="tiles/admin/product/productmgt/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="Product search" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productList.jsp" />
+	</definition>
+	
+	
+	<!-- Product > MasterInfo > Overview -->	
+	<definition name="tiles/admin/product/productmgt/overviewProductInfo" extends="tiles/admin/prod/root">
+		<put-attribute name="title" value="Product overview" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > Product overview" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOverview.jsp" />
+	</definition>
+	<!-- Product > MasterInfo > Regist -->	
+	<definition name="tiles/admin/product/productmgt/registProductMasterInfo" extends="tiles/admin/root">
+		<put-attribute name="navigation" value="Admin > Product > Product Management > register" />
+		<put-attribute name="title" value="Product Master Info Register" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productMasterInfoRegister.jsp" />
+	</definition>
+	<!-- Product > MasterInfo > Modify -->
+	<definition name="tiles/admin/product/productmgt/modifyProductMasterInfo" extends="tiles/admin/prod/root">
+		<put-attribute name="title" value="Product Modify" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > modify" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productMasterInfoModify.jsp" />
+	</definition>	
+
+	<!-- Product > Option > Item > List -->	
+	<definition name="tiles/admin/product/productmgt/option/main" extends="tiles/admin/prod/root">
+		<put-attribute name="title" value="Product Item search" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > Option Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOptionList.jsp" />
+	</definition>	
+	<!-- Product > Option > Item > Regist -->	
+	<definition name="tiles/admin/product/productmgt/option/registForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Option Register" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productOptionRegister.jsp" />
+	</definition>	
+	<!-- Product > Option > Item > Modify -->	
+	<definition name="tiles/admin/product/productmgt/option/modifyForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Option Modify" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productOptionModify.jsp" />
+	</definition>
+		
+	<!-- Product > Option > Value > List -->	
+	<definition name="tiles/admin/product/productmgt/option/optionValue/main" extends="tiles/admin/prod/root">
+		<put-attribute name="title" value="Product Item value Register/Modify" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > Option Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOptionValuesList.jsp" />
+	</definition>	
+	<!-- Product > Option > Value > Regist -->	
+	<definition name="tiles/admin/product/productmgt/option/optionValue/registForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Option-Values Register" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productOptionValuesRegister.jsp" />
+	</definition>	
+
+	<!-- Product > Image > List -->	
+	<definition name="tiles/admin/product/productmgt/image/main" extends="tiles/admin/prod/root">
+		<put-attribute name="title" value="Product Image search" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > Image Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productImageList.jsp" />
+	</definition>	
+	<!-- Product > Image > Modify -->	
+	<definition name="tiles/admin/product/productmgt/image/modifyForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Image Modify" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productImageModify.jsp" />
+	</definition>
+	<!-- Product > Image > Image Viewer -->	
+	<definition name="tiles/admin/product/productmgt/image/imageViewer" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Image Viewer" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productImageViewer.jsp" />
+	</definition>
+	
+	<!-- Product > Delete all product information -->	
+	<definition name="tiles/admin/product/productmgt/alertDeleteAllProductInfo" extends="tiles/admin/prod/root">
+		<put-attribute name="title" value="Delete Product all information" />
+		<put-attribute name="navigation" value="Admin > Product > Product Management > Delete Product information" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/alertDeleteAllProductInfo.jsp" />
+	</definition>	
+	
+	
+	<!-- Seller Delivery Calendar > List -->	
+	<definition name="tiles/admin/deliverycalendarmgt/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="Deliverable schedule search" />
+		<put-attribute name="navigation" value="Admin > Deliverable schedule Management > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/deliveryCalendar/deliveryCalendarList.jsp" />
+	</definition>	
+	<definition name="tiles/admin/deliverycalendarmgt/addCalendarForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Add Delivery Area" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/deliveryCalendar/popup/addCalendarForm.jsp" />
+	</definition>	
+	
+    <!-- Payment Method > List -->	
+	<definition name="tiles/admin/paymentmgt/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="Seller's Payment method search" />
+		<put-attribute name="navigation" value="Admin > Seller Payment > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/payment/paymentMethodList.jsp" />
+	</definition>
+	<definition name="tiles/admin/paymentmgt/registPaymentMethodForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Add Payment Method" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/payment/popup/registPaymentMethodForm.jsp" />
+	</definition>			
+</tiles-definitions>

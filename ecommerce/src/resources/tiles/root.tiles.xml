@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- ROOT Tiles -->
+	<!-- NOTE : This tiles definitions should be core layout -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Root tiles properties -->
+	<definition name="root">
+		<put-attribute name="title" value="::: 호주가 즐거운 이유 :::" />
+		<put-attribute name="navigation" value="::: 호주가 즐거운 이유 :::" />
+		<put-attribute name="resource" value="/WEB-INF/pages/common/resource.jsp" />
+		<put-attribute name="commonhtml" value="/WEB-INF/pages/common/commonhtml.jsp" />
+		<put-attribute name="help" value="/rpc/help/empty_help.jsp" />
+		<put-attribute name="header" value="/WEB-INF/pages/common/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/pages/common/footer.jsp" />
+		<put-attribute name="main" value="/WEB-INF/pages/common/empty.jsp" />
+	</definition>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Layout Define -->
+	<!-- 
+	     - layout/admin/root/panel_200 : Header + Contents + Footer 
+	     - layout/admin/root/panel_300 : Header + Contents(left menu, navigation, page title) + Footer
+	-->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<definition name="layout/panel_100" extends="root" template="/WEB-INF/pages/_layout/panel_100.jsp">
+		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
+	</definition>	
+	<definition name="layout/panel_200" extends="root" template="/WEB-INF/pages/_layout/panel_200.jsp">
+		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
+	</definition>
+	<definition name="layout/panel_300" extends="root" template="/WEB-INF/pages/_layout/panel_300.jsp">
+		<put-attribute name="left-menu" value="/WEB-INF/pages/common/empty.jsp" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/empty.jsp" />
+	</definition>
+	<definition name="layout/panel_500" extends="root" template="/WEB-INF/pages/_layout/panel_500.jsp">
+	</definition>
+	<definition name="layout/panel_600" extends="root" template="/WEB-INF/pages/_layout/panel_600.jsp">
+	</definition>
+	<definition name="layout/panel_700" extends="root" template="/WEB-INF/pages/_layout/panel_700.jsp">
+	</definition>
+	<definition name="layout/panel_710" extends="root" template="/WEB-INF/pages/_layout/panel_710.jsp">
+	</definition>
+	
+	
+		
+	
+	
+	<!-- No permission -->
+	<definition name="tiles/common/auth/accessRestrict" extends="layout/panel_200">
+		<put-attribute name="navigation" value="ERROR - No permission" />
+		<put-attribute name="title" value="No permission" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/noPermission.jsp" />
+	</definition>
+
+	<!-- Session Expired -->
+	<definition name="tiles/common/auth/sessionExpired" extends="layout/panel_200">
+		<put-attribute name="navigation" value="ERROR - Session Expired" />
+		<put-attribute name="title" value="Session Expired" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/sessionExpired.jsp" />
+	</definition>
+
+	<!-- Session User Manager -->
+	<definition name="tiles/common/sessionusermanager/main" extends="layout/panel_200">
+		<put-attribute name="navigation" value="Administration > Session user management" />
+		<put-attribute name="title" value="Session user list" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/sessionUserList.jsp" />
+	</definition>
+
+	<!-- Batch execute result -->
+	<definition name="tiles/common/batchExcuteResult/main" extends="layout/panel_200">
+		<put-attribute name="navigation" value="Batch > Result" />
+		<put-attribute name="title" value="Batch execute result" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/batchExecuteResult.jsp" />
+	</definition>
+
+	<!-- Admin main entry -->
+	<definition name="tiles/framework/admin/main" extends="layout/panel_200">
+		<put-attribute name="navigation" value="Administration > Main" />
+		<put-attribute name="title" value="Admin Main" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/admin/admin.jsp" />
+	</definition>
+
+	<!-- ERROR PAGE -->
+	<definition name="tiles/error" extends="layout/panel_200">
+		<put-attribute name="title" value="ERROR" />
+		<put-attribute name="navigation" value="ERROR" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/error.jsp" />
+	</definition>
+	<definition name="tiles/error/400" extends="tiles/error" />
+	<definition name="tiles/error/403" extends="tiles/error" />
+	<definition name="tiles/error/404" extends="tiles/error" />
+	<definition name="tiles/error/500" extends="tiles/error" />
+	<definition name="tiles/error/501" extends="tiles/error" />
+	<definition name="tiles/error/502" extends="tiles/error" />
+	<definition name="tiles/error/503" extends="tiles/error" />
+	<definition name="tiles/error/504" extends="tiles/error" />
+	<definition name="tiles/error/505" extends="tiles/error" />
+</tiles-definitions>

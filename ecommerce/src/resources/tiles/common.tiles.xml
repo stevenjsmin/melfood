@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- COMMON Tiles -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Layout Definition -->
+	<!-- Top contents screen -->
+
+
+
+
+	<!-- Login -->
+	<definition name="tiles/auth/login" extends="layout/panel_200">
+		<put-attribute name="body" value="/WEB-INF/pages/common/login.jsp" />
+	</definition>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- Welcome screen -->
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<definition name="tiles/welcome" extends="layout/panel_200">
+		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
+	</definition>
+
+
+</tiles-definitions>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>SYSTEM ERROR REPORT</title>
+<meta charset='utf-8'>
+</head>
+<body>
+
+
+<font color="#D50000"><b>SYSTEM ERROR REPORT</b></font>
+<br>
+<br>
+<font size="2px">
+<ul>
+    <li>ERROR CODE : #{errorCode}# </li>
+    <li>URL : #{errorUrl}# </li>
+    <li>TIME : #{errorTime}# </li>
+    <li>MESSAGE : #{errorMessage}# </li>
+    <li>REPORT BY : #{reportedBy}# </li>
+</ul>
+
+<br>
+<b>ERROR DETAIL MESSAGE</b>
+<br>
+<table>
+    <tr>
+        <td style="background-color: #E5E5E5">#{errorDetailMessage}# </td>
+    </tr>
+</table>
+</font>
+
+</body>
+</html>

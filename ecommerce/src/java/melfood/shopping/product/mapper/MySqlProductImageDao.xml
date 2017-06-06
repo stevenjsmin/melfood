@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlProductImageDao">
+
+
+	<select id="getProductImages" parameterType="ProductImage" resultType="ProductImage">
+	 /* QUERY ID : getProductImages */
+		SELECT a.prod_id 'prodId'
+		       ,a.image_seq 'imageSeq'
+		       ,a.image_file_id 'imageFileId'
+		       ,a.image_description 'imageDescription'
+		       ,a.width 'width'
+		       ,a.height 'height'
+		       ,a.display_order 'displayOrder'
+		       ,b.file_id 'attachFile.fileId'
+               ,b.file_name 'attachFile.fileName'
+               ,b.saved_file_name 'attachFile.savedFileName' 
+               ,b.sub_directory 'attachFile.subDirectory' 
+               ,b.file_type 'attachFile.fileType' 
+               ,b.file_size 'attachFile.fileSize' 
+               ,b.file_description 'attachFile.fileDescription'
+		  FROM product_image a LEFT OUTER JOIN cmm_attachment_file b ON b.file_id = a.image_file_id
+         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="imageSeq != null and imageSeq != 0"> AND a.image_seq = #{imageSeq} </if>
+				<if test="imageFileId != null and imageFileId != 0"> AND a.image_file_id = #{imageFileId} </if>
+				<if test="imageDescription != null"> AND UPPER(a.image_description) LIKE CONCAT('%', UPPER(#{imageDescription}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.prod_id ASC, a.image_seq ASC
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForProductImages" parameterType="ProductImage" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForProductImages */
+		SELECT COUNT(*)
+		  FROM product_image a LEFT OUTER JOIN cmm_attachment_file b ON b.file_id = a.image_file_id
+         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="imageSeq != null and imageSeq != 0"> AND a.image_seq = #{imageSeq} </if>
+				<if test="imageFileId != null and imageFileId != 0"> AND a.image_file_id = #{imageFileId} </if>
+				<if test="imageDescription != null"> AND UPPER(a.image_description) LIKE CONCAT('%', UPPER(#{imageDescription}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<select id="getNextProductImageSeq" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		/* QUERY ID : getNextProductImageSeq */
+			SELECT CASE WHEN max(image_seq) IS NULL THEN 1 ELSE (max(image_seq) + 1) END FROM product_image WHERE prod_id = #{prodId}
+	</select>	
+		
+	<insert id="insertProductImage" parameterType="ProductImage">
+		/* QUERY ID : insertProductImage */
+		INSERT INTO product_image(prod_id
+	                     ,image_seq
+	                     ,image_file_id
+	                     ,image_description,
+	                     ,width
+	                     ,height
+	                     ,display_order
+	                     ,creator)
+		   VALUES ( #{prodId}
+		             ,#{imageSeq}
+		             ,#{imageFileId}
+		             ,#{imageDescription}
+		             ,#{width}
+		             ,#{height}
+		             ,#{displayOrder}
+		             ,#{creator})		
+	</insert>	
+	
+    <insert id="insertProductImages" parameterType="java.util.List">
+    /* QUERY ID : insertProductImage */
+        INSERT INTO product_image (prod_id, image_seq, image_file_id, image_description, width, height, display_order, creator) VALUES
+	         <foreach collection="list" index="index" item="item" separator=",">       
+	             ( #{item.prodId}, #{item.imageSeq}, #{item.imageFileId}, #{item.imageDescription}, #{item.width}, #{item.height}, #{item.displayOrder}, #{item.creator} )
+	         </foreach>        
+    </insert> 	
+	
+	<update id="modifyProductImage" parameterType="ProductImage">
+		/* QUERY ID : modifyProductImage */
+		UPDATE product_image
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,image_file_id = #{imageFileId}
+		       ,image_description = TRIM(#{imageDescription})
+		       ,width = #{width}
+		       ,height = #{height}
+		       ,display_order = #{displayOrder}
+		 WHERE prod_id = #{prodId} AND image_seq = #{imageSeq}
+	</update>
+
+	<update id="modifyProductImageForNotNull" parameterType="ProductImage">
+		/* QUERY ID : modifyProductImageForNotNull */
+		UPDATE product_image
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="imageFileId != null and imageFileId != 0">, image_file_id = #{imageFileId} </if>
+		       <if test="imageDescription != null">, image_description = TRIM(#{imageDescription}) </if>
+		       <if test="width != null">, width = #{width} </if>
+		       <if test="height != null">, height = #{height} </if>
+		       <if test="displayOrder != null and displayOrder != 0">, display_order = #{displayOrder} </if>
+		 WHERE prod_id = #{prodId} AND image_seq = #{imageSeq}
+	</update>
+
+	<delete id="deleteProductImage" parameterType="ProductImage">
+		/* QUERY ID : deleteProductImage */
+		DELETE FROM product_image WHERE prod_id = #{prodId} <if test="imageSeq != null and imageSeq != 0"> AND image_seq = #{imageSeq}; </if>		
+	</delete>	
+	
+</mapper>

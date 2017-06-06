@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="defaultStatementTimeout" value="25000" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="melfood.framework.code.Code" alias="Code" />
+		<typeAlias type="melfood.framework.system.configuration.SystemConfig" alias="SystemConfig" />
+		<typeAlias type="melfood.framework.postcode.Postcode" alias="Postcode" />
+		<typeAlias type="melfood.framework.user.User" alias="User" />
+		<typeAlias type="melfood.framework.role.Role" alias="Role" />
+		<typeAlias type="melfood.framework.attachement.AttachmentFile" alias="AttachmentFile" />
+		
+		<typeAlias type="melfood.shopping.payment.PaymentMethod" alias="PaymentMethod" />
+		<typeAlias type="melfood.shopping.credit.CreditInfo" alias="CreditInfo" />
+		<typeAlias type="melfood.shopping.contract.ContractInfo" alias="ContractInfo" />
+		<typeAlias type="melfood.shopping.contract.ContractFile" alias="ContractFile" />
+		
+		<typeAlias type="melfood.shopping.product.Category" alias="Category" />
+		<typeAlias type="melfood.shopping.product.Product" alias="Product" />
+		<typeAlias type="melfood.shopping.product.ProductImage" alias="ProductImage" />
+		<typeAlias type="melfood.shopping.product.ProductOption" alias="ProductOption" />
+		<typeAlias type="melfood.shopping.product.ProductOptionValue" alias="ProductOptionValue" />
+
+		<typeAlias type="melfood.shopping.order.OrderProductOption" alias="OrderProductOption" />
+		<typeAlias type="melfood.shopping.order.ShoppingCart" alias="ShoppingCart" />
+
+		<typeAlias type="melfood.shopping.delivery.DeliveryCalendar" alias="DeliveryCalendar" />
+		
+		
+		<!-- Should be deleted -->
+		<typeAlias type="melfood.shopping.product.DeliveryMethod" alias="DeliveryMethod" />
+		<typeAlias type="melfood.shopping.product.DeliveryArea" alias="DeliveryArea"/>
+		
+		<typeAlias type="melfood.framework.user.UserRole" alias="UserRole" />
+		<typeAlias type="melfood.framework.user.SystemUseProfile" alias="SystemUseProfile" />
+		<typeAlias type="melfood.framework.document.DocumentDTO" alias="DocumentDTO" />
+		<typeAlias type="melfood.framework.document.DocumentTemplate" alias="DocumentTemplate" />
+		<typeAlias type="melfood.framework.email.EmailDTO" alias="EmailDTO" />
+		<typeAlias type="melfood.framework.email.EmailAttachedFileDTO" alias="EmailAttachedFileDTO" />
+		<typeAlias type="melfood.framework.menu.Menu" alias="Menu" />
+		<typeAlias type="melfood.framework.notice.NoticeDiscuss" alias="NoticeDiscuss" />
+		<typeAlias type="melfood.framework.workdays.WorkDays" alias="WorkDays" />
+		
+	</typeAliases>
+
+</configuration> 

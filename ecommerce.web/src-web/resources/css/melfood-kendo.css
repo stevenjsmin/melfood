@@ -1,0 +1,63 @@
+/* *************************************************
+ * Customized style for KendoUI */
+ 
+.k-picker-wrap {
+	height: 23px;
+}
+
+.k-grid .k-state-selected {
+	background: #808080;
+}
+
+.k-grid tbody tr {
+	height: 10px;
+	font-size: 13px;
+	white-space: nowrap;
+}
+
+.k-header {
+	background-color: #8b6758;
+	color: #D6D6AB;
+	font-size: 13px;
+}
+
+.k-header .k-link {
+	color: #E7E7E7;
+	font-weight: bold;
+}
+
+.btn {
+	height: 30px;
+	vertical-align: text-top;
+}
+
+.glyphicon {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.k-button {
+	height: 23px;
+	vertical-align: middle;
+}
+
+.help-block {
+	font-size: 11px;
+}
+
+.k-picker-wrap .k-input {
+	height: 18px;
+}
+
+.k-grid-content>table>tbody>tr>td {
+	font-size: 12px;
+}
+
+.k-grid-pager {
+	padding: 0.2em 0px 0.2em 0px;
+	font-size: 11px;
+}
+
+.k-grid-header th.k-header, .k-filter-row th {
+	padding: .2em .6em .2em .6em;
+}

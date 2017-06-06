@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- Appender Logger Setting : FATAL, ERROR, WARN, INFO, DEBUG, OFF -->
+	<!-- Console -->
+	<appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] %C.%M(%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- File -->
+	<appender name="dailyfile" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/local/data/appdata/empower/logs/uss.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value=".yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss}] [%-5p] %C.%M(%L) - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- 3rd party Logger Setting : FATAL, ERROR, WARN, INFO, DEBUG, OFF -->
+	<!-- 3rd party Logger - Cosmos Framework -->
+	<!-- <logger name="com.cosmos.framework"> <level value="DEBUG" /> </logger> -->
+	<!-- <logger name="uss"><level value="ERROR" /></logger> -->
+
+	<!-- 3rd party Logger - Mybatis -->
+	<!-- Read : https://code.google.com/p/log4jdbc-remix/ document -->
+	<!-- (pre-execution) : Log SQL -->
+	<logger name="jdbc.sqlonly" additivity="false">
+		<level value="info" /> 			
+		<appender-ref ref="stdout" />
+	</logger>
+	<!-- (post-execution) : Timing information -->
+	<logger name="jdbc.sqltiming" additivity="false">
+		<level value="error" />
+		<appender-ref ref="stdout" />
+	</logger>
+	<logger name="jdbc.audit" additivity="false">
+		<level value="error" />
+		<appender-ref ref="stdout" />
+	</logger>
+	<logger name="jdbc.resultsettable" additivity="false">
+		<level value="error" />			
+		<appender-ref ref="stdout" />
+	</logger>
+	<logger name="jdbc.resultset" additivity="false">
+		<level value="error" />
+		<appender-ref ref="stdout" />
+	</logger>
+	<logger name="jdbc.connection" additivity="false">
+		<level value="error" />
+		<appender-ref ref="connection-appender" />
+	</logger>  	  	
+
+
+	<!-- Hibernate -->
+	
+	<logger name="org.hibernate" additivity="false">
+		<level value="error" />
+		<appender-ref ref="stdout" />
+	</logger>
+
+
+
+	<!-- Root logger -->
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="stdout" />
+		<!-- <appender-ref ref="dailyfile" /> -->
+	</root>
+
+
+</log4j:configuration>
+

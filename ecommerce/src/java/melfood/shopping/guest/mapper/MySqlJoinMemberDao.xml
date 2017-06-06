@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlJoinMemberDao" >
+ 
+ 	<select id="getMaxSeq" resultType="java.lang.Integer">
+     /* QUERY ID : getMaxSeq */
+		 SELECT MAX(seq) FROM cmm_user_default_username
+ 	</select>
+ 	
+ 	<select id="getCurrentSeq" resultType="java.lang.Integer">
+     /* QUERY ID : getCurrentSeq */
+		 SELECT seq FROM cmm_user_default_username WHERE current_position = 'Y';
+ 	</select>
+ 	
+ 	
+    <update id="initializeSequenceToY" parameterType="java.lang.Integer">
+     /* QUERY ID : initializeSequence */
+		 UPDATE cmm_user_default_username
+		   SET  current_position = 'Y'
+		 WHERE seq = #{seq}
+    </update>
+    <update id="initializeSequenceToN" parameterType="java.lang.Integer">
+     /* QUERY ID : initializeSequence */
+		 UPDATE cmm_user_default_username
+		   SET  current_position = 'N'
+		 WHERE seq != #{seq}			 
+    </update>
+    
+	<select id="getDefaultName" parameterType="java.lang.Integer" resultType="java.lang.String">
+     /* QUERY ID : getDefaultName */
+        SELECT name
+          FROM cmm_user_default_username
+         WHERE seq = #{seq};
+    </select>
+ 	
+ 	
+  	      
+</mapper>

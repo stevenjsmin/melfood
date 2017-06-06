@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Account Information</title>
+<meta charset='utf-8'>
+</head>
+<body>
+
+	Dear #{dearWhom}#,
+	<br>
+	<br>
+	<b>Check following your account information</b>
+	<br>
+	<ul>
+		<li><b>User id/password:</b> #{userId}# / #{userPassword}# <br></li>
+		<li><b>Name:</b> #{firstName}# #{lastName}# <br></li>
+		<li><b>Role:</b> #{role}# <br></li>
+		<li><b>Latest login date:</b> #{latestLoginDt}# <br></li>
+		<li><b>Latest password change date:</b> #{passwordChangeDt}# <br></li>
+	</ul>
+
+	Please check your account information and also we strongly recommand to change your password at your earliest convenience.
+	<br> You can login RPC system at
+	<a href="#{loginUrl}#">#{loginUrl}#</a>
+	<br>
+	<br> If you have any further questions or queries, please do not hesitate to contact us on #{personInCharge}#
+	<br>
+	<br> Sincerely,
+	<br>
+	<br>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlProductOptionDao">
+
+
+	<select id="getProductOptions" parameterType="ProductOptionValue" resultType="ProductOptionValue">
+	 /* QUERY ID : getProductOptions */
+		SELECT a.prod_id 'prodId'
+		       ,a.option_seq 'optionSeq'
+		       ,a.option_item 'optionItem'
+		       ,a.is_mandatory 'isMandatory'
+		       ,a.create_datetime 'createDatetime'
+		       ,a.modify_datetime 'modifyDatetime'
+		       ,a.creator 'creator'
+		  FROM product_option a
+         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="optionSeq != null and optionSeq != 0"> AND a.option_seq = #{optionSeq} </if>
+				<if test="optionItem != null"> AND UPPER(a.option_item) LIKE CONCAT('%', UPPER(#{optionItem}), '%') </if>
+				<if test="isMandatory != null"> AND UPPER(a.is_mandatory) = UPPER(#{isMandatory} </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.prod_id ASC, a.option_seq ASC,  a.option_item ASC
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForProductOptions" parameterType="ProductOptionValue" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForProductOptions */
+		SELECT COUNT(*)
+		  FROM product_option a
+  	         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="optionSeq != null and optionSeq != 0"> AND a.option_seq = #{optionSeq} </if>
+				<if test="optionItem != null"> AND UPPER(a.option_item) LIKE CONCAT('%', UPPER(#{optionItem}), '%') </if>
+				<if test="isMandatory != null"> AND UPPER(a.is_mandatory) = UPPER(#{isMandatory} </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<select id="getNextProductOptionSeq" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		/* QUERY ID : getNextProductOptionSeq */
+			SELECT CASE WHEN max(option_seq) IS NULL THEN 1 ELSE (max(option_seq) + 1) END FROM product_option WHERE prod_id = #{prodId}
+	</select>	
+		
+	<insert id="insertProductOption" parameterType="ProductOptionValue">
+		/* QUERY ID : insertProductOption */
+		INSERT INTO product_option(prod_id
+	                     ,option_seq
+	                     ,option_item
+	                     ,is_mandatory
+	                     ,creator)
+		   VALUES ( #{prodId}
+		             ,#{optionSeq}
+		             ,#{optionItem}
+		             ,#{isMandatory}
+		             ,#{creator})		
+	</insert>	
+	
+	<update id="modifyProductOption" parameterType="ProductOptionValue">
+		/* QUERY ID : modifyProductOption */
+		UPDATE product_option
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,option_item = TRIM(#{optionItem})
+		       ,is_mandatory = TRIM(#{isMandatory})
+		 WHERE prod_id = #{prodId} AND option_seq = #{optionSeq}
+	</update>
+
+	<update id="modifyProductOptionForNotNull" parameterType="ProductOptionValue">
+		/* QUERY ID : modifyProductOptionForNotNull */
+		UPDATE product_option
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="optionItem != null">, option_item = TRIM(#{optionItem}) </if>
+		       <if test="isMandatory != null">, is_mandatory = TRIM(UPPER(#{isMandatory})) </if>
+		 WHERE prod_id = #{prodId} AND option_seq = #{optionSeq}
+	</update>
+
+	<delete id="deleteProductOption" parameterType="ProductOptionValue">
+		/* QUERY ID : deleteProductOption */
+		DELETE FROM product_option WHERE prod_id = #{prodId} <if test="optionSeq != null and optionSeq != 0"> AND option_seq = #{optionSeq}; </if>		
+	</delete>	
+	
+	
+	<select id="getProductOptionValues" parameterType="ProductOptionValue" resultType="ProductOptionValue">
+	 /* QUERY ID : getProductOptionValues */
+		SELECT b.prod_id 'prodId'
+               ,b.option_Item 'optionItem'
+               ,b.is_mandatory 'isMandatory' 
+               ,a.option_seq 'optionSeq'
+		       ,a.value_seq 'valueSeq'
+		       ,a.value_label 'valueLabel'
+		       ,a.in_stock_cnt 'inStockCnt'
+		       ,a.unit_price 'unitPrice'
+		       ,a.extra_charge 'extraCharge'
+		       ,a.use_yn 'useYn'
+		       ,a.create_datetime 'createDatetime'
+		       ,a.modify_datetime 'modifyDatetime'
+		       ,a.creator 'creator'	 
+		  FROM product_option_value a LEFT OUTER JOIN  product_option b ON b.prod_id = a.prod_id AND a.option_seq = b.option_seq
+         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="optionSeq != null and optionSeq != 0"> AND a.option_seq = #{optionSeq} </if>
+				<if test="valueSeq != null and valueSeq != 0"> AND a.value_seq = #{valueSeq} </if>
+				<if test="valueLabel != null"> AND UPPER(a.value_label) LIKE CONCAT('%', UPPER(#{valueLabel}), '%') </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.prod_id ASC, b.option_seq ASC, a.option_seq ASC
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForProductOptionValues" parameterType="ProductOptionValue" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForProductOptionValues */
+		SELECT COUNT(*)
+		  FROM product_option_value a LEFT OUTER JOIN  product_option b ON b.prod_id = a.prod_id AND a.option_seq = b.option_seq
+  	         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="optionSeq != null and optionSeq != 0"> AND a.option_seq = #{optionSeq} </if>
+				<if test="valueSeq != null and valueSeq != 0"> AND a.value_seq = #{valueSeq} </if>
+				<if test="valueLabel != null"> AND UPPER(a.value_label) LIKE CONCAT('%', UPPER(#{valueLabel}), '%') </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<select id="getNextProductOptionValueSeq" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		/* QUERY ID : getNextProductOptionValueSeq */
+			SELECT CASE WHEN max(value_seq) IS NULL THEN 1 ELSE (max(value_seq) + 1) END FROM product_option_value WHERE prod_id = #{prodId} AND option_seq = #{optionSeq}
+	</select>		
+	<insert id="insertProductOptionValue" parameterType="ProductOptionValue">
+		/* QUERY ID : insertProductOptionValue */
+		INSERT INTO product_option_value(prod_id
+	                     ,option_seq
+	                     ,value_seq
+	                     ,value_label
+	                     ,in_stock_cnt
+	                     ,unit_price
+	                     ,extra_charge
+	                     ,use_yn
+	                     ,creator)
+		   VALUES ( #{prodId}
+		             ,#{optionSeq}
+		             ,#{valueSeq}
+		             ,#{valueLabel}
+		             ,#{inStockCnt}
+		             ,#{unitPrice}
+		             ,#{extraCharge}
+		             ,#{useYn}
+		             ,#{creator})		
+	</insert>
+
+	<update id="modifyProductOptionValue" parameterType="ProductOptionValue">
+		/* QUERY ID : modifyProductOptionValue */
+		UPDATE product_option_value
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,in_stock_cnt = #{inStockCnt}
+		       ,value_label = #{valueLabel}
+		       ,unit_price = #{unitPrice}
+		       ,extra_charge = #{extraCharge}
+		       ,use_yn = #{useYn}
+		 WHERE prod_id = #{prodId} AND option_seq = #{optionSeq} AND value_seq = #{valueSeq}
+	</update>
+
+	<update id="modifyProductOptionValueForNotNull" parameterType="ProductOptionValue">
+		/* QUERY ID : modifyProductOptionValueForNotNull */
+		UPDATE product_option_value
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="valueLabel != null">, value_label = TRIM(#{valueLabel}) </if>
+		       <if test="inStockCnt != null">, in_stock_cnt = TRIM(#{inStockCnt}) </if>
+		       <if test="unitPrice != null">, unit_price = TRIM(#{unitPrice}) </if>
+		       <if test="extraCharge != null">, extra_charge = TRIM(#{extraCharge}) </if>
+		       <if test="useYn != null">, use_yn = TRIM(#{useYn}) </if>
+		 WHERE prod_id = #{prodId} AND option_seq = #{optionSeq} AND option_value = #{optionValue}
+	</update>
+
+	<delete id="deleteProductOptionValue" parameterType="ProductOptionValue">
+		/* QUERY ID : deleteProductOptionValue */
+		DELETE FROM product_option_value WHERE prod_id = #{prodId} 
+			<if test="optionSeq != null and optionSeq != 0"> AND option_seq = #{optionSeq} </if>		
+			<if test="valueSeq != null and valueSeq != 0"> AND value_seq = #{valueSeq} </if>		
+	</delete>
+
+</mapper>

@@ -1,0 +1,137 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- task:annotation-driven / -->
+	<tx:annotation-driven />
+	<context:annotation-config />
+	<context:component-scan base-package="melfood" />
+
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+					<!-- <property name="viewClass" value="org.springframework.web.servlet.view.tiles2.TilesView" /> -->
+					<property name="viewClass" value="melfood.framework.system.MelfoodTilesView" />
+					<property name="order" value="1" />
+				</bean>
+				<bean id="jstlViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+					<property name="prefix" value="/WEB-INF/pages/" />
+					<property name="suffix" value=".jsp" />
+					<property name="order" value="2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!--
+		When viewer, if the viewer is defined in tiles-def.xml it will be rendered by "tilesViewResolver", or it will be rendered to normal viewer.
+		By Steven Min
+	-->
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>classpath:tiles/**/*.tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<bean id="propertyConfigurer" class="melfood.framework.core.DefaultPropertyConfigurer">
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="startingProperties">
+			<map>
+				<entry key="ENV_TYPE" value="LOCAL" />
+			</map>
+		</property>
+		<property name="location" value="classpath:configuration/jdbc.properties" />
+	</bean>
+
+	<bean id="dataSource" class="melfood.framework.system.MelfoodDataSource" destroy-method="close" p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.databaseurl}"
+		p:username="${jdbc.username}" p:password="${jdbc.password}" />
+
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation">
+			<value>classpath:configuration/hibernate.cfg.xml</value>
+		</property>
+		<!-- property name="configurationClass"> <value>org.hibernate.cfg.AnnotationConfiguration</value> </property -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- SQL statements logging -->
+	<bean id="logDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSource" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL:::" />
+			</bean>
+		</property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="logDataSource" />
+		<property name="configLocation" value="classpath:configuration/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:melfood/**/mapper/*.xml" />
+	</bean>
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Because "MappingJacksonHttpMessageConverter" converter was deprecated for Jackson 2.x., we should migrate to "MappingJackson2HttpMessageConverter"
+		* Steven Min -->
+	<!-- <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean> -->
+	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jacksonMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="1024000000"></property>
+	</bean>
+
+	<bean id="documentService" class="melfood.framework.document.DocumentServiceImpl" />
+	<bean id="userService" class="melfood.framework.user.UserServiceImpl" />
+	<bean id="attachmentFileService" class="melfood.framework.attachement.AttachmentFileServiceImpl" />
+	<bean class="melfood.framework.system.BeanHelper" />
+</beans>

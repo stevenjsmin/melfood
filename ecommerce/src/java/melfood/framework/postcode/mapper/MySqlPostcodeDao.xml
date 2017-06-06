@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlPostcodeDao">
+
+    <select id="getPostcodes" parameterType="Postcode" resultType="Postcode">
+     /* QUERY ID : getList */
+		SELECT a.postcode_id AS 'postcodeId',
+		       a.postcode AS 'postcode',
+		       a.suburb AS 'suburb',
+		       a.state AS 'state',
+		       (SELECT label FROM cmm_code WHERE category = 'COMM' AND type = 'ADDR_STATE' AND value = a.state ) 'stateLabel',
+		       a.type AS 'type',
+		       a.longitude AS 'longitude',
+		       a.latitude AS 'latitude',
+		       a.create_datetime AS 'createDatetime',
+		       a.modify_datetime AS 'modifyDatetime',
+		       a.creator AS 'creator'
+		  FROM cmm_postcode a
+	          WHERE 1 = 1
+	            <if test="postcodeId != null and postcodeId != 0"> AND a.postcode_id = #{postcodeId} </if>
+		        <if test="postcode != null"> AND a.postcode = #{postcode} </if>            
+		        <if test="suburb != null"> AND UPPER(a.suburb) LIKE CONCAT('%', UPPER(#{suburb}), '%') </if>            
+		        <if test="state != null"> AND a.state = #{state} </if>            
+	   ORDER BY a.postcode ASC, a.suburb ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}		        
+	</select>
+	
+    <select id="getTotalCntForPostcodes" parameterType="Postcode" resultType="Integer">
+     /* QUERY ID : getTotalCntForPostcodes */
+        SELECT COUNT(*)
+		  FROM cmm_postcode a
+	          WHERE 1 = 1
+	            <if test="postcodeId != null and postcodeId != 0"> AND a.postcode_id = #{postcodeId} </if>
+		        <if test="postcode != null"> AND a.postcode = #{postcode} </if>            
+		        <if test="suburb != null"> AND UPPER(a.suburb) LIKE CONCAT('%', UPPER(#{suburb}), '%') </if>            
+		        <if test="state != null"> AND a.state = #{state} </if> 
+    </select>   
+
+    <delete id="deletePostcode" parameterType="Postcode">
+        /* QUERY ID : deletePostcode */
+        DELETE FROM cmm_postcode WHERE postcode_id = #{postcodeId}
+    </delete> 
+    
+    <insert id="insertPostcode" parameterType="Postcode">
+     /* QUERY ID : insertPostcode */
+		INSERT INTO cmm_postcode(postcode,
+		                     suburb,
+		                     state,
+		                     type,
+		                     longitude,
+		                     latitude,
+		                     creator)
+		VALUES (#{postcode},
+		        TRIM(#{suburb}),
+		        UPPER(TRIM(#{state})),
+		        TRIM(#{type}),
+		        #{longitude},
+		        #{latitude},
+		        #{creator} )
+    </insert>      
+    
+    <update id="updatePostcode" parameterType="Postcode">
+     /* QUERY ID : updatePostcode */    
+		UPDATE cmm_postcode
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		   	    ,postcode = #{postcode}
+		   	    ,suburb = #{suburb}
+		   	    ,state = UPPER(#{state})
+		   	    ,longitude = #{longitude}
+		   	    ,latitude = #{latitude}
+		   	    ,creator = TRIM(#{creator})
+        WHERE postcode_id = #{postcodeId}	       
+    </update>
+     
+    <update id="updatePostcodeForNotNull" parameterType="Postcode">
+     /* QUERY ID : updatePostcodeForNotNull */    
+		UPDATE cmm_postcode
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		   	   <if test="postcode != null">, postcode = #{postcode}</if>
+		   	   <if test="suburb != null">, suburb = #{suburb}</if>
+		   	   <if test="state != null">, state = UPPER(#{state})</if>
+		   	   <if test="longitude != null">, longitude = #{longitude}</if>
+		   	   <if test="latitude != null">, latitude = #{latitude}</if>
+		   	   <if test="creator != null">, creator = TRIM(#{creator})</if>
+        WHERE postcode_id = #{postcodeId} 	       
+    </update> 
+	
+</mapper>
