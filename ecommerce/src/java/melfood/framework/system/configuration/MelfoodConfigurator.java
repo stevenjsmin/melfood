@@ -1,9 +1,9 @@
-/** 
+/**
  * 2015 RpcConfigurator.java
  * Created by Steven J.S Min(steven.min@utilitiessoftwareservices.com)
- *  
- * Licensed to the Utilities Software Services(USS). 
- * For use this source code, you must obtain proper permission. 
+ * <p>
+ * Licensed to the Utilities Software Services(USS).
+ * For use this source code, you must obtain proper permission.
  * Or enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.
  */
 
@@ -37,109 +37,109 @@ import melfood.framework.uitl.FileUtils;
  * <li>PROD</li>
  * </ul>
  * If EVN_TYPE parameter value is nothing, it will be run as a Local server. However if can't identified what kind of server with given parameter value, it will be make exception.
- * 
+ *
  * @author Steven Min
  *
  */
 public final class MelfoodConfigurator {
-	// public static XMLConfiguration SYS_CONFIG = null;
-	public static MelfoodConfig SYS_CONFIG = null;
+    // public static XMLConfiguration SYS_CONFIG = null;
+    public static MelfoodConfig SYS_CONFIG = null;
 
-	private static final Logger logger = LoggerFactory.getLogger(MelfoodConfigurator.class);
+    private static final Logger logger = LoggerFactory.getLogger(MelfoodConfigurator.class);
 
-	private static MelfoodConfigurator singleton;
+    private static MelfoodConfigurator singleton;
 
-	private MelfoodConfigurator() throws Exception {
-		
-		Configuration melfood = new PropertiesConfiguration(System.getProperty("MELFOOD_CONFIG"));
-		String env = melfood.getString("SYS.ENV_TYPE");
-		
-		String client = melfood.getString("SYS.CLIENT");
-		String clientConfigurationFile = "";
-		String commonConfigurationFile = "";
+    private MelfoodConfigurator() throws Exception {
 
-		try {
-			if (StringUtils.isEmpty(client)) {
-				// throw new Exception("Cannot understand what should choose for configuration file because there no information for which client");
-				client = "melfood";
-			}
+        Configuration melfood = new PropertiesConfiguration(System.getProperty("MELFOOD_CONFIG"));
+        String env = melfood.getString("SYS.ENV_TYPE");
 
-			if (StringUtils.isBlank(env)) {
-				env = "LOCAL";
-			} else {
-				if (!StringUtils.equalsIgnoreCase(env, "LOCAL") && !StringUtils.equalsIgnoreCase(env, "DEV") && !StringUtils.equalsIgnoreCase(env, "TEST")
-						&& !StringUtils.equalsIgnoreCase(env, "TRAINING") && !StringUtils.equalsIgnoreCase(env, "PROD")) {
-					throw new Exception("Melfood eCommerce Engin can't decide what kind of server type. Please make sure server type by indicate ENV_TYPE as JVM option");
-				} else {
-					env = StringUtils.upperCase(env);
-				}
-			}
+        String client = melfood.getString("SYS.CLIENT");
+        String clientConfigurationFile = "";
+        String commonConfigurationFile = "";
 
-			commonConfigurationFile = "/configuration/configuration.xml";
-			clientConfigurationFile = "/configuration/configuration_" + client.toLowerCase() + ".xml";
+        try {
+            if (StringUtils.isEmpty(client)) {
+                // throw new Exception("Cannot understand what should choose for configuration file because there no information for which client");
+                client = "melfood";
+            }
 
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
-		}
+            if (StringUtils.isBlank(env)) {
+                env = "LOCAL";
+            } else {
+                if (!StringUtils.equalsIgnoreCase(env, "LOCAL") && !StringUtils.equalsIgnoreCase(env, "DEV") && !StringUtils.equalsIgnoreCase(env, "TEST")
+                        && !StringUtils.equalsIgnoreCase(env, "TRAINING") && !StringUtils.equalsIgnoreCase(env, "PROD")) {
+                    throw new Exception("Melfood eCommerce Engin can't decide what kind of server type. Please make sure server type by indicate ENV_TYPE as JVM option");
+                } else {
+                    env = StringUtils.upperCase(env);
+                }
+            }
 
-		// final File commonConfigURL = new File(getClass().getClassLoader().getResource(commonConfigurationFile).getFile());
-		// final File clientConfigURL = new File(getClass().getClassLoader().getResource(clientConfigurationFile).getFile());
-		final File commonConfigURL = FileUtils.convertInputStreamToFile(MelfoodConfigurator.class.getResourceAsStream(commonConfigurationFile));
-		final File clientConfigURL = FileUtils.convertInputStreamToFile(MelfoodConfigurator.class.getResourceAsStream(clientConfigurationFile));
+            commonConfigurationFile = "/configuration/configuration.xml";
+            clientConfigurationFile = "/configuration/configuration_" + client.toLowerCase() + ".xml";
 
-		try {
-			MelfoodConfig commonConfig = new MelfoodConfig(commonConfigURL);
-			MelfoodConfig clientConfig = new MelfoodConfig(clientConfigURL);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            e.printStackTrace();
+        }
 
-			NodeCombiner combiner = new UnionCombiner();
-			CombinedConfiguration cc = new CombinedConfiguration(combiner);
-			cc.addConfiguration(commonConfig);
-			cc.addConfiguration(clientConfig);
+        // final File commonConfigURL = new File(getClass().getClassLoader().getResource(commonConfigurationFile).getFile());
+        // final File clientConfigURL = new File(getClass().getClassLoader().getResource(clientConfigurationFile).getFile());
+        final File commonConfigURL = FileUtils.convertInputStreamToFile(MelfoodConfigurator.class.getResourceAsStream(commonConfigurationFile));
+        final File clientConfigURL = FileUtils.convertInputStreamToFile(MelfoodConfigurator.class.getResourceAsStream(clientConfigurationFile));
 
-			SYS_CONFIG = new MelfoodConfig(cc);
-			SYS_CONFIG.setExpressionEngine(new XPathExpressionEngine());
+        try {
+            MelfoodConfig commonConfig = new MelfoodConfig(commonConfigURL);
+            MelfoodConfig clientConfig = new MelfoodConfig(clientConfigURL);
 
-			// Setting system configuration to UssContext static object
-			Ctx.xmlConfig = SYS_CONFIG;
-			Ctx.env = StringUtils.lowerCase(env);
-			Ctx.client = client;
-			Ctx.releaseVersion = SYS_CONFIG.getString("system-config/release-version");
-		    // Ctx.APP_DATA_DIR =  SYS_CONFIG.getVar("data-directory/dir");
-		    Ctx.APP_DATA_DIR =  melfood.getString("FILE_ROOT_DIR");
+            NodeCombiner combiner = new UnionCombiner();
+            CombinedConfiguration cc = new CombinedConfiguration(combiner);
+            cc.addConfiguration(commonConfig);
+            cc.addConfiguration(clientConfig);
 
-			logger.info("Configuring by " + env + " mode");
-			logger.info("  > Client code  : " + client);
-			logger.info("  > Configurator : configuration.xml, " + clientConfigURL.getName());
-			logger.info("  > Release version : " + Ctx.releaseVersion);
-			logger.info("  > Rood data dir : " + Ctx.APP_DATA_DIR);
+            SYS_CONFIG = new MelfoodConfig(cc);
+            SYS_CONFIG.setExpressionEngine(new XPathExpressionEngine());
 
-			System.setProperty("ENV_TYPE", StringUtils.upperCase(env));
-			System.setProperty("CLIENT_CODE", StringUtils.upperCase(client));
+            // Setting system configuration to UssContext static object
+            Ctx.xmlConfig = SYS_CONFIG;
+            Ctx.env = StringUtils.lowerCase(env);
+            Ctx.client = client;
+            Ctx.releaseVersion = SYS_CONFIG.getString("system-config/release-version");
+            // Ctx.APP_DATA_DIR =  SYS_CONFIG.getVar("data-directory/dir");
+            Ctx.APP_DATA_DIR = melfood.getString("FILE_ROOT_DIR");
 
-			try {
-				ApplicationProperties.appInit(melfood);
-			} catch (Exception e) {
-				throw new Exception("시스템 환경변수 값을 초기화 하는도중에 문제가 발생하였습니다. : " + e.getMessage());
-			}
+            logger.info("Configuring by " + env + " mode");
+            logger.info("  > Client code  : " + client);
+            logger.info("  > Configurator : configuration.xml, " + clientConfigURL.getName());
+            logger.info("  > Release version : " + Ctx.releaseVersion);
+            logger.info("  > Rood data dir : " + Ctx.APP_DATA_DIR);
 
-		} catch (Exception e) {
-			logger.info(e.getMessage());
-			// e.printStackTrace();
-			throw e;
-		}
+            System.setProperty("ENV_TYPE", StringUtils.upperCase(env));
+            System.setProperty("CLIENT_CODE", StringUtils.upperCase(client));
 
-	}
+            try {
+                ApplicationProperties.appInit(melfood);
+            } catch (Exception e) {
+                throw new Exception("시스템 환경변수 값을 초기화 하는도중에 문제가 발생하였습니다. : " + e.getMessage());
+            }
 
-	public static MelfoodConfigurator getInstance() throws Exception {
-		if (singleton == null) {
-			singleton = new MelfoodConfigurator();
-		}
-		return singleton;
-	}
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            // e.printStackTrace();
+            throw e;
+        }
 
-	public XMLConfiguration getConfiguration() {
-		return SYS_CONFIG;
-	}
+    }
+
+    public static MelfoodConfigurator getInstance() throws Exception {
+        if (singleton == null) {
+            singleton = new MelfoodConfigurator();
+        }
+        return singleton;
+    }
+
+    public XMLConfiguration getConfiguration() {
+        return SYS_CONFIG;
+    }
 
 }
