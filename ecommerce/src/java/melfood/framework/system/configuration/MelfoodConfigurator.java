@@ -105,12 +105,14 @@ public final class MelfoodConfigurator {
 			Ctx.env = StringUtils.lowerCase(env);
 			Ctx.client = client;
 			Ctx.releaseVersion = SYS_CONFIG.getString("system-config/release-version");
-		    Ctx.APP_DATA_DIR =  SYS_CONFIG.getVar("data-directory/dir");
+		    // Ctx.APP_DATA_DIR =  SYS_CONFIG.getVar("data-directory/dir");
+		    Ctx.APP_DATA_DIR =  melfood.getString("FILE_ROOT_DIR");
 
 			logger.info("Configuring by " + env + " mode");
 			logger.info("  > Client code  : " + client);
 			logger.info("  > Configurator : configuration.xml, " + clientConfigURL.getName());
 			logger.info("  > Release version : " + Ctx.releaseVersion);
+			logger.info("  > Rood data dir : " + Ctx.APP_DATA_DIR);
 
 			System.setProperty("ENV_TYPE", StringUtils.upperCase(env));
 			System.setProperty("CLIENT_CODE", StringUtils.upperCase(client));
