@@ -21,7 +21,7 @@
 			   ,a.modify_datetime 'modifyDatetime'
 			   ,a.create_datetime 'createDatetime'
 			   ,a.creator 'creator'
-		  FROM notice_discuss a
+		  FROM cmm_notice_discuss a
 	          WHERE 1 = 1
 		        <if test="id != null and id != 0"> AND a.id = #{id} </if>
 		        <if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
@@ -41,7 +41,7 @@
     <select id="getTotalCntForNoticeDiscussList" parameterType="NoticeDiscuss" resultType="Integer">
      /* QUERY ID : getTotalCntForNoticeDiscussList */
         SELECT COUNT(*)
-          FROM notice_discuss a
+          FROM cmm_notice_discuss a
 	          WHERE 1 = 1
 		        <if test="id != null and id != 0"> AND a.id = #{id} </if>
 		        <if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
@@ -58,13 +58,13 @@
 	
     <delete id="deleteNoticeDiscuss" parameterType="java.lang.Integer">
         /* QUERY ID : deleteNoticeDiscuss */
-        DELETE FROM notice_discuss WHERE id = #{id}
+        DELETE FROM cmm_notice_discuss WHERE id = #{id}
     </delete>   
 
     
     <insert id="registNoticeDiscuss" parameterType="NoticeDiscuss">
      /* QUERY ID : registNoticeDiscuss */
-		INSERT INTO notice_discuss(id
+		INSERT INTO cmm_notice_discuss(id
 							,category
 							,subject
 							,contents
@@ -92,7 +92,7 @@
     
     <update id="modifyNoticeDiscuss" parameterType="NoticeDiscuss">
      /* QUERY ID : modifyNoticeDiscuss */    
-		UPDATE notice_discuss
+		UPDATE cmm_notice_discuss
 		   SET create_datetime = CURRENT_TIMESTAMP
 		   	   , category = #{category}
 		   	   , subject = TRIM(#{subject})
@@ -110,7 +110,7 @@
     
     <update id="modifyNoticeDiscussForNotNull" parameterType="NoticeDiscuss">
      /* QUERY ID : modifyNoticeDiscussForNotNull */    
-		UPDATE notice_discuss
+		UPDATE cmm_notice_discuss
 		   SET create_datetime = CURRENT_TIMESTAMP
 		   	   <if test="category != null">, category = #{category}</if>
 		   	   <if test="subject != null">, subject = TRIM(#{subject})</if>

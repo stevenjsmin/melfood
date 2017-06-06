@@ -97,9 +97,17 @@ public class NoticeDiscussController extends BaseController {
 		return model;
 	}
 
+	/**
+	 * 대화내용 상세정보
+	 *
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/noticeDiscuss")
 	public ModelAndView noticeDiscuss(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/noticeDiscuss");
+		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/detailInfo");
 
 		String id = request.getParameter("id");
 		if (StringUtils.isBlank(id)) throw new Exception("Can not be null : id");
@@ -110,17 +118,31 @@ public class NoticeDiscussController extends BaseController {
 		return mav;
 	}
 
+	/**
+	 * 대화내용 등록 폼구성
+	 *
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/noticeDiscussRegistForm")
 	public ModelAndView noticeDiscussRegistForm(HttpServletRequest request) throws Exception {
-		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/noticeDiscussRegistForm");
+		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/regist");
 		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 		mav.addObject("creator", sessionUser.getUser().getUserName());
 		return mav;
 	}
 
+	/**
+	 * 대화내용 수정 폼구성
+	 *
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/noticeDiscussModifyForm")
 	public ModelAndView noticeDiscussModifyForm(HttpServletRequest request) throws Exception {
-		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/noticeDiscussModifyForm");
+		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/modify");
 
 		String id = request.getParameter("id");
 		mav.addObject("noticeDiscuss", noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id)));
@@ -128,6 +150,13 @@ public class NoticeDiscussController extends BaseController {
 		return mav;
 	}
 
+	/**
+	 * 대화내용을 수정하거나 등록할때 내용을 등록한다
+	 *
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/saveModify", produces = "application/json")
 	@ResponseBody
 	public Map<String, Object> saveModify(HttpServletRequest request) throws Exception {
@@ -199,6 +228,13 @@ public class NoticeDiscussController extends BaseController {
 		return model;
 	}
 
+	/**
+	 * 대화내용 삭제
+	 *
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/deleteNoticeDiscuss", produces = "application/json")
 	@ResponseBody
 	public Map<String, Object> deleteNoticeDiscuss(HttpServletRequest request) throws Exception {
