@@ -10,10 +10,6 @@
     <packaging>war</packaging>
     <name>melfood.ecommerce.web</name>
 
-    <!--    <modules>
-            <module>../melfood.ecommerce</module>
-        </modules>-->
-
     <properties>
         <project.build.encoding>UTF-8</project.build.encoding>
         <java-version>1.8</java-version>
@@ -326,9 +322,6 @@
             </extension>
         </extensions>
 
-        <sourceDirectory>${project.basedir}/src/java</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test</testSourceDirectory>
-        <testOutputDirectory>${project.basedir}/target/test-classes</testOutputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -366,26 +359,7 @@
                 </configuration>
             </plugin>
 
-
         </plugins>
-        <resources>
-            <!-- For packaging all of XML files under java sources -->
-            <resource>
-                <directory>src/java</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/resources</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </resource>
-        </resources>
 
     </build>
 
