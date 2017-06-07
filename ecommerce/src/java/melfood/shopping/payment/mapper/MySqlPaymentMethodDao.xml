@@ -10,7 +10,7 @@
 		SELECT a.user_id AS 'userId',
 		       b.user_name AS 'seller.userName',
 		       a.method_seq AS 'methodSeq',
-		       (SELECT label FROM CODE WHERE category = 'COMM' AND type = 'PAYMENT_METHOD' AND value = a.payment_method) AS 'paymentMethodCodeName',
+		       (SELECT label FROM common_code WHERE category = 'COMM' AND type = 'PAYMENT_METHOD' AND value = a.payment_method) AS 'paymentMethodCodeName',
 		       (SELECT label FROM CODE WHERE category = 'COMM' AND type = 'BANK' AND value = a.bank_name) AS 'bankNameCodeName',
 		       a.payment_method AS 'paymentMethod',
 		       a.bank_name AS 'bankName',
