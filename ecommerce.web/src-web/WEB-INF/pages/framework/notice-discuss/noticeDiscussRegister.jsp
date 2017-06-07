@@ -20,60 +20,6 @@ $(document).ready(function() {
 </head>
 
 <body>
-     <table>
-          <tr>
-               <td valign="top">
-                    <table class="detail_table">
-                         <colgroup>
-                              <col width="250px" />
-                              <col width="250px" />
-                              <col width="250px" />
-                              <col width="250px" />
-                         </colgroup>       
-                         <tr>
-                              <td class="label"><span class="required">* </span>Category / Type / Value :</td>
-                              <td class="value"><input class="form-control" type="text" id="category" name="category" value='' placeholder="Category"/></td>
-                              <td class="value"><input class="form-control" type="text" id="type" name="type" value='' placeholder="Type"/></td>
-                              <td class="value"><input class="form-control" type="text" id="value" name="value" value='' placeholder="Value"/></td>
-                         </tr>                         
-                         <tr>
-                              <td class="label"><span class="required">* </span>Label</td>
-                              <td class="value"><input class="form-control" type="text" id="label" name="label" value=''/></td>
-                              <td></td>
-                              <td></td>
-                         </tr>
-                         <tr><td colspan="4">&nbsp;</td></tr>
-                         <tr>
-                              <td class="label">Display order :</td>
-                              <td class="value"><input type="text" id="displayOrder" name="displayOrder" value='1'/></td>
-                              <td class="label">Use Y/N :</td>
-                              <td class="value"><c:out value="${cbxUseYn}" escapeXml="false"/></td>
-                         </tr>
-                         <tr>
-                              <td class="label">Description :</td>                             
-                              <td class="value" colspan="3"><input class="form-control" type="text" id="description" name="description" value=''/></td>
-                         </tr>
-                    </table>
-               </td>
-          </tr>
-          <tr><td colspan="4">&nbsp;</td></tr>
-          <tr>
-               <td>
-                    <table class="action_button_table" width="100%">
-                         <tr>
-                              <td>
-                                   <a href="javascript:goList();" class="btn btn-info">&nbsp;&nbsp; List &nbsp;&nbsp;</a>
-                                   <a href="javascript:save();" class="btn btn-primary">Save</a>
-                              </td>
-                         </tr>
-                    </table>
-               </td>
-          </tr>
-          
-     </table>
-     
-     <script type="text/javascript">
-          var ACTION_MODE = "ADD";
-     </script>     
+    ddd
 </body>
 </html>

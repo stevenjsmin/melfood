@@ -2,10 +2,14 @@
 # IntelliJ
 **/target/
 *.iml
-.idea
+.idea/
+**/.idea/
 
 # Compiled class file
 *.class
 
 # Log file
 *.log
+
+# For Mac
+.DS_Store
