@@ -5,6 +5,7 @@
 
 <mapper namespace="mySqlPaymentMethodDao">
 
+	<!-- This is for Payment Method quieries -->
 	<select id="getPaymentMethods" parameterType="PaymentMethod" resultType="PaymentMethod">
 	 /* QUERY ID : getPaymentMethods */
 		SELECT a.user_id AS 'userId',
