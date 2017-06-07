@@ -25,11 +25,12 @@
     </properties>
 
     <dependencies>
-        <!--        <dependency>
-                    <groupId>au.com.melfood</groupId>
-                    <artifactId>melfood.ecommerce</artifactId>
-                    <version>${melfood.ecommerce-version}</version>
-                </dependency>-->
+        <dependency>
+            <groupId>au.com.melfood</groupId>
+            <artifactId>melfood.ecommerce</artifactId>
+            <version>${melfood.ecommerce-version}</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
