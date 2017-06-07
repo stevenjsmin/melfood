@@ -8,6 +8,7 @@
     <artifactId>melfood.ecommerce</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <name>melfood.ecommerce</name>
 
     <properties>
         <project.ver>1.0.0</project.ver>

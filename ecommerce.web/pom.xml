@@ -29,6 +29,7 @@
             <groupId>au.com.melfood</groupId>
             <artifactId>melfood.ecommerce</artifactId>
             <version>${melfood.ecommerce-version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>

@@ -11,20 +11,20 @@ $(document).ready(function() {
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
 
-function goDetailInfo(category, type, value){
-	document.location.href = "/framework/codemanager/detailCodeForm.yum?category=" + category + "&type=" + type + "&value=" + value;
+function goDetailInfo(id){
+	document.location.href = "/framework/noticedisscussmanager/noticeDiscuss.yum?id=" + id;
 }
     
 function goList() {
-	document.location.href = "/framework/codemanager/Main.yum";
+	document.location.href = "/framework/noticedisscussmanager/Main.yum";
 } 
 
-function goModify(){
-	document.location.href = "/framework/codemanager/modifyCodeForm.yum?category=" + CATEGORY + "&type=" + TYPE + "&value=" + VALUE;
+function goModify(id){
+	document.location.href = "/framework/noticedisscussmanager/noticeDiscussModifyForm.yum?id=" + id;
 } 
 
 function add(){
-	document.location.href = "/framework/codemanager/registCodeForm.yum";
+	document.location.href = "/framework/noticedisscussmanager/noticeDiscussRegistForm.yum";
 }
 
 function search(){
