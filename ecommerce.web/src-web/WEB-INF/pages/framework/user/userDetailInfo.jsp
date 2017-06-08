@@ -35,10 +35,16 @@
                               <td class="value">${user.sexLabel}</td>
                          </tr>                         
                          <tr>
-                              <td class="label">Name </td>
+                              <td class="label">Nickname </td>
                               <td class="value">${user.userName}</td>
+                              <td class="label">Real Name </td>
+                              <td class="value">${user.userNameReal}</td>
+                         </tr>
+                         <tr>
                               <td class="label">DOB </td>
                               <td class="value">${user.dob}</td>
+                              <td></td>
+                              <td></td>
                          </tr>
                          <tr>
                               <td class="label">Password </td>
@@ -149,6 +155,10 @@
                          	</c:when>
                          </c:choose>
                          
+                         <tr>
+                              <td class="label">배송/픽업 일자선택 필수여부</td>
+                              <td class="value" colspan="3">${user.sellerIsMandatoryChooseDeliveryPickupDateLabel}</td>
+                         </tr>
                          <tr>
                               <td class="label">배송지 주소</td>
                               <td class="value" colspan="3">${user.sellerDeliveryAddressStreet} ${user.sellerDeliveryAddressSuburb} ${user.sellerDeliveryAddressState} ${user.sellerDeliveryAddressPostcode}</td>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlSystemConfigDao">
+
+	<select id="getSystemConfigs" parameterType="SystemConfig" resultType="SystemConfig">
+		/* QUERY ID : getSystemConfigs */
+			SELECT a.stage 'stage'
+				,a.key 'key'
+				,a.value 'value'
+				,a.description 'description'
+				,a.use_yn 'useYn'
+				,(SELECT label FROM cmm_code WHERE category = 'COMM' AND type = 'USE_YN' AND value = a.use_yn ) 'useYnLabel'
+				,a.modify_datetime 'modifyDatetime'
+				,a.create_datetime 'createDatetime'
+				,a.creator 'creator'
+             FROM system_configuration a
+	         WHERE 1 = 1
+				<if test="stages != null">
+				      AND a.stage IN 
+				         <foreach collection="stages" index="index" item="item" separator="," open="(" close=")">       
+				             #{item}
+				         </foreach>
+				</if>				
+				<if test="stage != null"> AND UPPER(a.stage) = UPPER(#{stage}) </if>
+				<if test="key != null"> AND UPPER(a.key) LIKE CONCAT('%', UPPER(#{key}), '%') </if>
+				<if test="value != null"> AND UPPER(a.value) LIKE CONCAT('%', UPPER(#{value}), '%') </if>
+				<if test="description != null"> AND UPPER(a.description) LIKE CONCAT('%', UPPER(#{description}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+	    	ORDER BY a.key ASC, a.value ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForSystemConfigs" parameterType="SystemConfig" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForSystemConfigs */
+			SELECT COUNT(*)
+             FROM system_configuration a
+	         WHERE 1 = 1
+				<if test="stages != null">
+				      AND a.stage IN 
+				         <foreach collection="stages" index="index" item="item" separator="," open="(" close=")">       
+				             #{item}
+				         </foreach>
+				</if>
+				<if test="stage != null"> AND UPPER(a.stage) = UPPER(#{stage}) </if>				
+				<if test="key != null"> AND UPPER(a.key) LIKE CONCAT('%', UPPER(#{key}), '%') </if>
+				<if test="value != null"> AND UPPER(a.value) LIKE CONCAT('%', UPPER(#{value}), '%') </if>
+				<if test="description != null"> AND UPPER(a.description) LIKE CONCAT('%', UPPER(#{description}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+	</select>
+
+	<insert id="insertSystemConfig" parameterType="SystemConfig">
+		/* QUERY ID : insertSystemConfig */
+		INSERT INTO system_configuration (
+		    `stage`,
+		    `key`,
+			`value`,
+			`description`,
+			`use_yn`,
+			`creator`) VALUES (	
+					TRIM(UPPER(#{stage})),
+					TRIM(UPPER(#{key})),
+					TRIM(#{value}),
+					TRIM(#{description}),
+					TRIM(UPPER(#{useYn})),
+					#{creator})
+	</insert>
+
+	<select id="existSysConfig" parameterType="SystemConfig" resultType="java.lang.Boolean">
+		/* QUERY ID : existSysConfig */
+		SELECT 
+		    CASE 
+		      WHEN count(*) > 0 THEN TRUE 
+		      ELSE FALSE 
+		    END
+		  FROM system_configuration
+		 WHERE UPPER(`stage`) = UPPER(#{stage}) AND UPPER(`key`) = UPPER(#{key})
+	</select>
+
+	<update id="modifySystemConfig" parameterType="SystemConfig">
+		/* QUERY ID : modifySystemConfig */
+		UPDATE system_configuration SET
+		    modify_datetime = CURRENT_TIMESTAMP
+		    , value = TRIM(#{value})
+		    , description = TRIM(#{description}) 
+		    , use_yn = UPPER(TRIM(#{useYn}))
+		    , creator = #{creator}  
+		WHERE  UPPER(`stage`) = UPPER(#{stage}) AND UPPER(`key`) = UPPER(#{key})
+	</update>
+
+	<update id="modifySystemConfigForNotNull" parameterType="SystemConfig">
+		/* QUERY ID : modifySystemConfigForNotNull */
+		UPDATE system_configuration SET
+		    modify_datetime = CURRENT_TIMESTAMP
+		    <if test="value != null">, value = TRIM(#{value}) </if>
+		    <if test="description != null">, description = TRIM(#{description}) </if>
+		    <if test="useYn != null">, use_yn = UPPER(TRIM(#{useYn})) </if>
+		    <if test="creator != null">, creator = #{creator} </if>
+		WHERE  UPPER(`stage`) = UPPER(#{stage}) AND UPPER(`key`) = UPPER(#{key})
+	</update>
+
+	<delete id="deleteSystemConfig" parameterType="SystemConfig">
+		/* QUERY ID : deleteSystemConfig */
+		DELETE FROM system_configuration
+		WHERE  UPPER(`stage`) = UPPER(#{stage}) AND UPPER(`key`) = UPPER(#{key})
+	</delete>
+
+</mapper>

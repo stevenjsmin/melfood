@@ -134,6 +134,8 @@ function validateForm(){
 
 function save(){
       var userName = $('#userName').val();
+      var userNameReal = $('#userNameReal').val();
+      if(userNameReal == '') userNameReal = userName;      
       var sex = $('#sex').val();
       var dob = $('#dob').val();
       var email = $('#email').val();
@@ -153,6 +155,7 @@ function save(){
            url  : "/customer/mypage/saveUser.yum",
            data      : {
              userName : userName,
+             userNameReal : userNameReal,
              sex : sex,
              dob : dob,
              email : email,

@@ -12,7 +12,7 @@
         <tr>
             <td style="vertical-align: middle;">
                 <div class="alert alert-info" style="width: 100%;">
-                    <font style="color: #004080; font-size: medium;"><b>Sorry ! Your request page can't be serviced</b></font><br><br>
+                    <font style="color: #004080; font-size: small;"><b>죄송합니다. 요청하신 서비스를 수행하는 도중 문제가 발생하였습니다.</b></font><br><br>
                     <font style="font-size: x-small; color: #004080;">
                     <%
                         boolean handled = false; // Set to true after handling the error
@@ -34,7 +34,7 @@
                             if (ed != null) {
 	                                // Output details about the HTTP error
 	                                // (this should show error code 404, and the name of the missing page)
-	                                out.println("<br/>ErrorCode: <span id='errorCode'>" + ed.getStatusCode() + "</span>"); %>
+	                                out.println("<br/>오류코드: <span id='errorCode'>" + ed.getStatusCode() + "</span>"); %>
 	                                
 	                                <br/>URL: <span id='errorUrl'><% out.print(ed.getRequestURI() + "?"); %><c:out value="${queryString}" /></span>
 	                                <%
@@ -58,17 +58,17 @@
 		                                out.println("</div>");
 		                                out.println("<br>");
 		                           } else {
-		                               out.println("<br/>Error Message: <div id='errorMessage'>Unknown</div>");
-		                               out.println("<br/>Error Detail Message: <div id='errorDetailMessage'>Unknown</div>");
+		                               out.println("<br/>오류 메시지: <span id='errorMessage'>Unknown</span>");
+		                               out.println("<br/>상세 메시지: <span id='errorDetailMessage'>Unknown</span>");
 		                           }
                                 // Error handled successfully, set a flag
                                 handled = true;
                             }
                         } else {
-                            out.println("<br/>ErrorCode: <div id='errorCode'>Unknown</div>");
-                            out.println("<br/>URL: <div id='errorMessage'>Unknown</div>");
-                            out.println("<br/>Error Message: <div id='errorMessage'>Unknown</div>");
-                            out.println("<br/>Error Detail Message: <div id='errorDetailMessage'>Unknown</div>");
+                            out.println("<br/>오류코드: <span id='errorCode'>Unknown</span>");
+                            out.println("<br/>URL: <span id='errorMessage'>Unknown</span>");
+                            out.println("<br/>오류 메시지: <span id='errorMessage'>Unknown</span>");
+                            out.println("<br/>상세 메시지: <span id='errorDetailMessage'>Unknown</span>");
                             out.println("<br>");
                             out.println("<br>");
                         }
@@ -76,7 +76,7 @@
                         // Check if the error was handled
                         if (!handled) {
                             out.println("<p>");
-                            out.println("No information about this error was available.");
+                            out.println("발생한 오류에대해서 더이상 제공할 오류 메시지가 존재하지 않습니다.");
                         }
                     %>
                     </font>
@@ -85,8 +85,8 @@
             </td>
         </tr>
         <tr>
-            <td><font color="#004080" style="font-size: 12px;"><b>Enquiry to </b> <c:out value="${in_charge_of_person}" /></font> <div style="font-size: small;text-align: right;color: #8D8D8D"> Please report by <span class="glyphicon glyphicon-envelope" onclick="reportError()" style="cursor: pointer;"></span></div>&nbsp;&nbsp;<br>
-            <br><font style="font-size: 13px;"><a href="/" class="alert-link">Home</a> | <a href="javascript:history.back()">Back</a> | <a href="javascript:window.close()">Close</a></font></td>
+            <td><font color="#004080" style="font-size: 12px;"><b>문의 </b> <c:out value="${in_charge_of_person}" /></font> <div style="font-size: small;text-align: right;color: #8D8D8D"> 다음 이메일 아이콘을 선택하여 오류내용을 보고해주세요. <span class="glyphicon glyphicon-envelope" onclick="reportError()" style="cursor: pointer;"></span></div>&nbsp;&nbsp;<br>
+            <br><font style="font-size: 13px;"><a href="/" class="alert-link">홈</a> | <a href="javascript:history.back()">뒤로가기</a> | <a href="javascript:window.close()">닫기</a></font></td>
         </tr>
     </table>
     <br> <br>

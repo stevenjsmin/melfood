@@ -18,7 +18,6 @@
 		<typeAlias type="melfood.framework.role.Role" alias="Role" />
 		<typeAlias type="melfood.framework.attachement.AttachmentFile" alias="AttachmentFile" />
 		
-		<typeAlias type="melfood.shopping.payment.PaymentMethod" alias="PaymentMethod" />
 		<typeAlias type="melfood.shopping.credit.CreditInfo" alias="CreditInfo" />
 		<typeAlias type="melfood.shopping.contract.ContractInfo" alias="ContractInfo" />
 		<typeAlias type="melfood.shopping.contract.ContractFile" alias="ContractFile" />
@@ -28,20 +27,20 @@
 		<typeAlias type="melfood.shopping.product.ProductImage" alias="ProductImage" />
 		<typeAlias type="melfood.shopping.product.ProductOption" alias="ProductOption" />
 		<typeAlias type="melfood.shopping.product.ProductOptionValue" alias="ProductOptionValue" />
-
-		<typeAlias type="melfood.shopping.order.OrderProductOption" alias="OrderProductOption" />
-		<typeAlias type="melfood.shopping.order.ShoppingCart" alias="ShoppingCart" />
-
+		
+		<typeAlias type="melfood.shopping.checkbeforebuy.CheckBeforeBuy" alias="CheckBeforeBuy" />
+		
 		<typeAlias type="melfood.shopping.delivery.DeliveryCalendar" alias="DeliveryCalendar" />
+		<typeAlias type="melfood.shopping.payment.PaymentMethod" alias="PaymentMethod" />
 		
+		<typeAlias type="melfood.shopping.order.ShoppingCart" alias="ShoppingCart" />
+		<typeAlias type="melfood.shopping.order.OrderProductOption" alias="OrderProductOption" />
 		
-		<!-- Should be deleted -->
-		<typeAlias type="melfood.shopping.product.DeliveryMethod" alias="DeliveryMethod" />
-		<typeAlias type="melfood.shopping.product.DeliveryArea" alias="DeliveryArea"/>
+		<typeAlias type="melfood.shopping.shop.ShopTemplate" alias="ShopTemplate" />
+		<typeAlias type="melfood.shopping.shop.ShopTemplateSection" alias="ShopTemplateSection" />
 		
 		<typeAlias type="melfood.framework.user.UserRole" alias="UserRole" />
 		<typeAlias type="melfood.framework.user.SystemUseProfile" alias="SystemUseProfile" />
-		<typeAlias type="melfood.framework.document.DocumentDTO" alias="DocumentDTO" />
 		<typeAlias type="melfood.framework.document.DocumentTemplate" alias="DocumentTemplate" />
 		<typeAlias type="melfood.framework.email.EmailDTO" alias="EmailDTO" />
 		<typeAlias type="melfood.framework.email.EmailAttachedFileDTO" alias="EmailAttachedFileDTO" />

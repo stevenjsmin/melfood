@@ -24,6 +24,45 @@ $(document).ready(function () {
 	     datepicker1.open();
 	})
 	
+	
+	//	Time Reage setting : Start
+	function startChange() {
+	    var startTime = btwnFromHhmm.value();
+	
+	    if (startTime) {
+	        startTime = new Date(startTime);
+	
+	        btwnToHhmm.max(startTime);
+	
+	        startTime.setMinutes(startTime.getMinutes() + this.options.interval);
+	
+	        btwnToHhmm.min(startTime);
+	        btwnToHhmm.value(startTime);
+	    }
+	} 
+	
+    //init start timepicker
+    var btwnFromHhmm = $("#btwnFromHhmm").kendoTimePicker({
+        change: startChange,
+        format: "HH:mm tt"
+    }).data("kendoTimePicker");
+
+    //init end timepicker
+    var btwnToHhmm = $("#btwnToHhmm").kendoTimePicker({
+        format: "HH:mm tt"
+    }).data("kendoTimePicker");    
+
+    //define min/max range
+    btwnFromHhmm.min("6:00 AM");
+    btwnFromHhmm.max("6:00 AM");
+
+    //define min/max range
+    btwnToHhmm.min("8:00 PM");
+    btwnToHhmm.max("8:00 PM");
+	//	Time Reage setting : End
+	
+	
+	
     // DEFINE DATASOURCE
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
     var dataSource = new kendo.data.DataSource({
@@ -106,7 +145,7 @@ $(document).ready(function () {
 		          { title : 'State', field: 'stateLabel', width: 150, attributes: {style: "color: 606000; font-weight: bolder;" }, filterable: false},
 		          { title : 'Postcode', field: 'postcode', width: 100, attributes: {style: "color: 939300; font-weight: bolder;" }},
 		          { title : 'Suburb', field: 'suburb', width: 200, attributes: {style: "color: e37200;font-weight: bolder;" }},
-		          { command: [ {text : "Add", name: "destory", click: addDeliveryCalendar1}]}
+		          { command: [ {text : "Add", name: "destory", click: addDeliveryCalendarFromRow}]}
 
 		 ] // End of Columns
     }); // End of GRID
@@ -123,11 +162,16 @@ $(document).ready(function () {
     }
     
     search();
+    
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
 
 <script type="text/javascript">
-	function addDeliveryCalendar1(e) {
+
+</script>
+
+<script type="text/javascript">
+	function addDeliveryCalendarFromRow(e) {
 	 	var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 	 	
 	 	if(validateForm() == false) return;
@@ -135,7 +179,8 @@ $(document).ready(function () {
 	    var sellerId = $('#sellerId').val();
 	    var isPickup = $('#isPickup').val();
 	    var yyyyMmDd = $('#yyyyMmDd').val();
-	    var amPm = $('#amPm').val();
+	    var btwnFromHhmm = $('#btwnFromHhmm').val();
+	    var btwnToHhmm = $('#btwnToHhmm').val();	    
 	    
 	    var postcode = '';
 	    var suburb = '';
@@ -155,7 +200,8 @@ $(document).ready(function () {
 	           sellerId : sellerId,
 	           isPickup : isPickup,
 	           yyyyMmDd : yyyyMmDd,
-	           amPm : amPm,
+	           btwnFromHhmm : btwnFromHhmm,
+	           btwnToHhmm : btwnToHhmm,
 	           addressPostcode : postcode,
 	           addressState : state,
 	           addressSuburb : suburb,
@@ -166,14 +212,15 @@ $(document).ready(function () {
 	 	
 	}
 	
-	function addDeliveryCalendar2() {
+	function addDeliveryCalendarFromScreen() {
 	 	
 	 	if(validateForm() == false) return;
 	 	
 	    var sellerId = $('#sellerId').val();
 	    var isPickup = $('#isPickup').val();
 	    var yyyyMmDd = $('#yyyyMmDd').val();
-	    var amPm = $('#amPm').val();
+	    var btwnFromHhmm = $('#btwnFromHhmm').val();
+	    var btwnToHhmm = $('#btwnToHhmm').val();	    
 	    
 	    var postcode = '';
 	    var suburb = '';
@@ -197,7 +244,8 @@ $(document).ready(function () {
 	           sellerId : sellerId,
 	           isPickup : isPickup,
 	           yyyyMmDd : yyyyMmDd,
-	           amPm : amPm,
+	           btwnFromHhmm : btwnFromHhmm,
+	           btwnToHhmm : btwnToHhmm,
 	           addressPostcode : postcode,
 	           addressState : state,
 	           addressSuburb : suburb,
@@ -240,8 +288,9 @@ $(document).ready(function () {
 	    var sellerId = $('#sellerId').val();
 	    var isPickup = $('#isPickup').val();
 	    var yyyyMmDd = $('#yyyyMmDd').val();
-	    var amPm = $('#amPm').val();
-
+	    var btwnFromHhmm = $('#btwnFromHhmm').val();
+	    var btwnToHhmm = $('#btwnToHhmm').val();
+	    
 	    var postcode = '';
 	    var suburb = '';
 	    var state = '';
@@ -301,12 +350,33 @@ $(document).ready(function () {
 	            validation = false;
 	        }
 	 	}
-	 	if(amPm == "") {
-	 		message = message + prefix + "배송 가능한 시간대가 오전/오후 또는 오전.오후 상관없음 중에 하나를 선택해주세요.<br>";
-	 		checkObject[checkObject.length] = "amPm";
-	        validation = false;
-	 	}
-	
+	 	if(btwnFromHhmm == "") {
+	 		message = message + prefix + "시작시간 지정은 필수입니다.<br>";
+	 		checkObject[checkObject.length] = "btwnFromHhmm";
+	 		validation = false;
+	 	} else {
+	        var parsedTime = kendo.parseDate(btwnFromHhmm, "HH:mm tt");
+	        if (!parsedTime) {
+	            message = message + prefix + "올바른 시작시간 형식이 아닙니다. [HH:MM AM/PM] 형식으로 입력해주세요<br>";
+	            checkObject[checkObject.length] = "btwnFromHhmm";
+	            validation = false;
+	        }
+	 	}	
+	 	if(btwnToHhmm == "") {
+	 		message = message + prefix + "종료시간 지정은 필수입니다.<br>";
+	 		checkObject[checkObject.length] = "btwnToHhmm";
+	 		validation = false;
+	 	} else {
+	        var parsedTime = kendo.parseDate(btwnToHhmm, "HH:mm tt");
+	        if (!parsedTime) {
+	            message = message + prefix + "올바른 종료시간 형식이 아닙니다. [HH:MM AM/PM] 형식으로 입력해주세요<br>";
+	            checkObject[checkObject.length] = "btwnToHhmm";
+	            validation = false;
+	        }
+	 	}	
+	 	
+	 	
+	 	
 	 	// 검증된 필드들을 마킹한다.
 		for(count=0; count < checkObject.length; count++ ){
 			elementObj = "#" + checkObject[count];
@@ -355,8 +425,15 @@ $(document).ready(function () {
                          <tr>
                               <td class="label"><span class="required">* </span>Date</td>
                               <td class="value"><input id="yyyyMmDd" name="yyyyMmDd" value="" /></td>
-                              <td class="label"><span class="required">* </span>AM/PM</td>
-                              <td class="value"><c:out value="${cbxAmPm}" escapeXml="false"/></td>
+                              <td class="value" colspan="2">
+                              	<table style="width: 100%;">
+                              		<tr>
+                              			<td><input id="btwnFromHhmm" value="6:00 AM"/></td>
+                              			<td> ~ </td>
+                              			<td><input id="btwnToHhmm" value="8:00 PM"/></td>
+                              		</tr>
+                              	</table>
+                              </td>
                          </tr>
                     </table>
                </td>
@@ -401,13 +478,13 @@ $(document).ready(function () {
                  </tr>  
                  <tr>
                       <td class="label">Comment</td>
-                      <td class="value" colspan="3"><input class="form-control" type="text" id="addressNote" name="addressNote" value=''/></td>
+                      <td class="value" colspan="3"><input class="form-control" type="text" id="addressNote" name="addressNote" value='' maxlength="230"/></td>
                  </tr>
                  <tr><td colspan="4" style="height: 20px;">&nbsp;</td></tr>  
                  <tr>
                       <td colspan="4" style="text-align: right;">
                       	<button type="button" class="btn btn-default btn-sm" onclick="parent.closeOptionWindow();">Close</button>&nbsp;&nbsp;&nbsp;
-                      	<button type="button" class="btn btn-primary btn-sm" onclick="addDeliveryCalendar2();">Add</button> &nbsp;&nbsp;
+                      	<button type="button" class="btn btn-primary btn-sm" onclick="addDeliveryCalendarFromScreen();">Add</button> &nbsp;&nbsp;
                       </td>
                  </tr>  
 			</table>                           

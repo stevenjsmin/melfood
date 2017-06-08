@@ -15,8 +15,6 @@
 	<definition name="tiles/shop/order/product" extends="tiles/shop/order/root">
 		<put-attribute name="seller_products" value="/WEB-INF/pages/seller/sellerProducts.jsp" />
 		<put-attribute name="order_product" value="/WEB-INF/pages/order/orderProduct.jsp" />
-		<put-attribute name="seller_delivery_schedule" value="/WEB-INF/pages/seller/sellerDeliverySchedule.jsp" />
-		<put-attribute name="seller_info" value="/WEB-INF/pages/seller/sellerInfo.jsp" />
 	</definition>
 
 	<definition name="tiles/shop/order/notfoundproduct" extends="layout/panel_200">

@@ -14,11 +14,26 @@
 	</definition>
 	
 	<definition name="tiles/shop/no" extends="tiles/shop/root">
-		<put-attribute name="seller_notice_delivery" value="/WEB-INF/pages/seller/sellerNoticeDelivery.jsp" />
+		<put-attribute name="seller_notice_delivery" value="/WEB-INF/pages/seller/sellerGreetingAndNotice.jsp" />
 		<put-attribute name="seller_product_mainpage" value="/WEB-INF/pages/seller/sellerProductMainpage.jsp" />
 	</definition>
 	
+	<definition name="tiles/shop/sellerDeliverySchedule" extends="layout/panel_100">
+		<put-attribute name="title" value="배송/픽업 일정조회" />
+		<put-attribute name="body" value="/WEB-INF/pages/seller/sellerDeliverySchedule.jsp" />
+	</definition>
+			
+	<definition name="tiles/shop/sellerDeliveryAddressMap" extends="layout/panel_100">
+		<put-attribute name="title" value="배송/픽업 지도" />
+		<put-attribute name="body" value="/WEB-INF/pages/common/showAddressOnGoogleMap.jsp" />
+	</definition>		
 	
+	<definition name="tiles/shop/addcart" extends="layout/panel_100">
+		<put-attribute name="title" value="장바구니 담기" />
+		<put-attribute name="body" value="/WEB-INF/pages/seller/sellerAddProductInCart.jsp" />
+	</definition>
+	
+		
 	<definition name="tiles/shop/notfoundshop" extends="layout/panel_200">
 		<put-attribute name="title" value="판매자 전문-Shop" />
 		<put-attribute name="navigation" value="판매자 전문-Shop" />	

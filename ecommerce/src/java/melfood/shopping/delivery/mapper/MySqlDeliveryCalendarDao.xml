@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlDeliveryCalendarDao">
+
+	<select id="getDeliveryCalendars" parameterType="DeliveryCalendar" resultType="DeliveryCalendar">
+	 /* QUERY ID : getDeliveryCalendars */
+		SELECT a.delivery_seq 'deliverySeq',
+			   a.seller_id 'sellerId',
+		       a.yyyy_mm_dd 'yyyyMmDd',
+		       a.delivery_seq 'deliverySeq',
+		       a.address_postcode 'addressPostcode',
+		       a.address_state 'addressState',
+		       a.address_suburb 'addressSuburb',
+		       a.address_street 'addressStreet',
+		       a.address_note 'addressNote',
+		       a.is_pickup 'isPickup',
+		       b.user_name 'seller.userName',
+		       a.btwn_from_hhmm 'btwnFromHhmm',
+		       a.btwn_to_hhmm 'btwnToHhmm',
+		       a.use_yn 'useYn',
+		       a.create_datetime 'createDatetime',
+		       a.modify_datetime 'modifyDatetime',
+		       a.creator 'creator'
+		  FROM shop_delivery_calendar a
+		  		LEFT OUTER JOIN cmm_user b ON b.user_id = a.seller_id
+  	     WHERE 1 = 1
+	  	     <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>	 
+	  	     <if test="yyyyMmDd != null"> AND a.yyyy_mm_dd = #{yyyyMmDd} </if>	 
+	  	     <if test="deliverySeq != null and deliverySeq != 0"> AND a.delivery_seq = #{deliverySeq}</if>
+	  	     <if test="isPickup != null"> AND UPPER(a.is_pickup) = UPPER(#{isPickup}) </if>	 
+	  	     <if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>	 
+	  	     <if test="addressState != null"> AND UPPER(a.address_state) = UPPER(#{addressState}) </if>	 
+			 <if test="addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%') </if>	  	     
+			 <if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>	  	     
+	  	     <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+			 <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+			 <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
+			 <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
+	    	ORDER BY b.user_name ASC, a.yyyy_mm_dd ASC, a.btwn_from_hhmm ASC  
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForDeliveryCalendars" parameterType="DeliveryCalendar" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForProducts */
+		SELECT COUNT(*)
+	  FROM shop_delivery_calendar a
+		  		LEFT OUTER JOIN cmm_user b ON b.user_id = a.seller_id
+  	     WHERE 1 = 1
+	  	     <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>	 
+	  	     <if test="yyyyMmDd != null"> AND a.yyyy_mm_dd = #{yyyyMmDd} </if>	 
+	  	     <if test="deliverySeq != null and deliverySeq != 0"> AND a.delivery_seq = #{deliverySeq}</if>
+	  	     <if test="isPickup != null"> AND UPPER(a.is_pickup) = UPPER(#{isPickup}) </if>	 
+	  	     <if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>	 
+	  	     <if test="addressState != null"> AND UPPER(a.address_state) = UPPER(#{addressState}) </if>	 
+			 <if test="addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%') </if>	  	     
+			 <if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>	  	     
+	  	     <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+			 <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+			 <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
+			 <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
+	</select>
+
+
+	<!-- 다음쿼리는 고객이 주문페이지에서 판매자의 배송일정 조회시 사용되는 쿼리이다. -->
+	<!-- 주소를 입력하게되면 고객이 픽업해야하는 일정은 무조건 가저오도록 해야하기 때문이다. -->
+	<select id="getDeliveryCalendarsForGuestOrder" parameterType="DeliveryCalendar" resultType="DeliveryCalendar">
+	 /* QUERY ID : getDeliveryCalendarsForGuestOrder */
+		SELECT a.delivery_seq 'deliverySeq',
+			   a.seller_id 'sellerId',
+		       a.yyyy_mm_dd 'yyyyMmDd',
+		       a.delivery_seq 'deliverySeq',
+		       a.address_postcode 'addressPostcode',
+		       a.address_state 'addressState',
+		       a.address_suburb 'addressSuburb',
+		       a.address_street 'addressStreet',
+		       a.address_note 'addressNote',
+		       a.is_pickup 'isPickup',
+		       b.user_name 'seller.userName',
+		       a.btwn_from_hhmm 'btwnFromHhmm',
+		       a.btwn_to_hhmm 'btwnToHhmm',		       
+		       a.use_yn 'useYn',
+		       a.create_datetime 'createDatetime',
+		       a.modify_datetime 'modifyDatetime',
+		       a.creator 'creator'
+		  FROM shop_delivery_calendar a
+		  		LEFT OUTER JOIN cmm_user b ON b.user_id = a.seller_id
+  	     WHERE UPPER(a.use_yn) = 'Y'
+	  	     <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>	 
+			 <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
+	  	     <choose>
+	  	     	<when test="addressPostcode != null or addressSuburb != null">
+ 	     	 			AND (
+ 	     	 			a.is_pickup = 'Y' OR (
+		  	     		<if test="addressPostcode != null"> a.address_postcode = #{addressPostcode} </if>	 
+		  	     		<if test="addressPostcode != null and addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%')  </if>	 
+		  	     		<if test="addressPostcode == null and addressSuburb != null"> UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%')  </if>
+		  	     		)	 
+	  	     		)
+	  	     	</when>
+	  	     </choose>
+	    	ORDER BY a.is_pickup DESC, a.yyyy_mm_dd ASC, a.btwn_from_hhmm ASC, a.address_suburb ASC  
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForDeliveryCalendarsForGuestOrder" parameterType="DeliveryCalendar" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForDeliveryCalendarsForGuestOrder */
+		SELECT COUNT(*)
+	  FROM shop_delivery_calendar a
+		  		LEFT OUTER JOIN cmm_user b ON b.user_id = a.seller_id
+  	     WHERE UPPER(a.use_yn) = 'Y'
+	  	     <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>	 
+			 <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
+	  	     <choose>
+	  	     	<when test="addressPostcode != null or addressSuburb != null">
+ 	     	 			AND (
+ 	     	 			a.is_pickup = 'Y' OR (
+		  	     		<if test="addressPostcode != null"> a.address_postcode = #{addressPostcode} </if>	 
+		  	     		<if test="addressPostcode != null and addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%')  </if>	 
+		  	     		<if test="addressPostcode == null and addressSuburb != null"> UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%')  </if>
+		  	     		)	 
+	  	     		)
+	  	     	</when>
+	  	     </choose>
+	</select>
+
+
+
+	<select id="nextDeliverySeq" parameterType="DeliveryCalendar" resultType="java.lang.Integer">
+		/* QUERY ID : nextDeliverySeq */
+			SELECT CASE WHEN max(delivery_seq) IS NULL THEN 1 ELSE (max(delivery_seq) + 1) END FROM shop_delivery_calendar WHERE seller_id = #{sellerId} AND yyyy_mm_dd = #{yyyyMmDd}
+	</select>
+	
+		
+	<insert id="insertDeliveryCalendar" parameterType="DeliveryCalendar">
+	 /* QUERY ID : insertDeliveryCalendar */
+		INSERT INTO shop_delivery_calendar (seller_id,
+		                    yyyy_mm_dd,
+		                    delivery_seq,
+		                    btwn_from_hhmm,
+		                    btwn_to_hhmm,
+		                    is_pickup,
+		                    address_postcode,
+		                    address_state,
+		                    address_suburb,
+		                    address_street,
+		                    address_note,
+		                    use_yn,
+		                    creator)
+		VALUES (#{sellerId}
+	        ,#{yyyyMmDd}
+	        ,#{deliverySeq}
+	        ,TRIM(#{btwnFromHhmm})
+	        ,TRIM(#{btwnToHhmm})
+	        ,UPPER(#{isPickup})
+	        ,#{addressPostcode}
+	        ,#{addressState}
+	        ,#{addressSuburb}
+	        ,#{addressStreet}
+	        ,#{addressNote}
+	        ,UPPER(#{useYn})
+	        ,#{creator})
+	</insert>
+
+	<update id="modifyDeliveryCalendar" parameterType="DeliveryCalendar">
+	 /* QUERY ID : modifyDeliveryCalendar */
+		UPDATE shop_delivery_calendar
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,btwn_from_hhmm = TRIM(TRIM(#{btwnFromHhmm}))
+		       ,btwn_to_hhmm = TRIM(TRIM(#{btwnToHhmm}))
+		       ,is_pickup = UPPER(TRIM(#{isPickup}))
+		       ,address_postcode = UPPER(TRIM(#{addressPostcode}))
+		       ,address_state = UPPER(TRIM(#{addressState}))
+		       ,address_suburb = UPPER(TRIM(#{addressSuburb}))
+		       ,address_street = UPPER(TRIM(#{addressStreet}))
+		       ,address_note = UPPER(TRIM(#{addressNote}))
+		       ,use_yn = UPPER(TRIM(#{useYn}))
+		 WHERE seller_id = #{sellerId} AND yyyy_mm_dd = #{yyyyMmDd} AND delivery_seq = #{deliverySeq}
+	</update>
+
+	<update id="modifyDeliveryCalendarForNotNull" parameterType="DeliveryCalendar">
+		/* QUERY ID : modifyDeliveryCalendarForNotNull */
+		UPDATE shop_delivery_calendar
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="btwnFromHhmm != null"> ,btwn_from_hhmm = UPPER(TRIM(#{btwnFromHhmm})) </if>
+		       <if test="btwnToHhmm != null"> ,btwn_to_hhmm = UPPER(TRIM(#{btwnToHhmm})) </if>
+		       <if test="isPickup != null"> ,is_pickup = UPPER(TRIM(#{isPickup})) </if>
+		       <if test="addressPostcode != null"> ,address_postcode = UPPER(TRIM(#{addressPostcode})) </if>
+		       <if test="addressState != null"> ,address_state = UPPER(TRIM(#{addressState})) </if>
+		       <if test="addressSuburb != null"> ,address_suburb = UPPER(TRIM(#{addressSuburb})) </if>
+		       <if test="addressStreet != null"> ,address_street = UPPER(TRIM(#{addressStreet})) </if>
+		       <if test="addressNote != null"> ,address_street = UPPER(TRIM(#{addressNote})) </if>
+		       <if test="useYn != null"> ,use_yn = UPPER(TRIM(#{useYn})) </if>
+		 WHERE seller_id = #{sellerId} AND yyyy_mm_dd = #{yyyyMmDd} AND delivery_seq = #{deliverySeq}
+	</update>
+
+	<delete id="deleteDeliveryCalendar" parameterType="DeliveryCalendar">
+		/* QUERY ID : deleteDeliveryCalendar */
+		DELETE FROM shop_delivery_calendar WHERE seller_id = #{sellerId} AND yyyy_mm_dd = #{yyyyMmDd} AND delivery_seq = #{deliverySeq}
+	</delete>
+
+</mapper>

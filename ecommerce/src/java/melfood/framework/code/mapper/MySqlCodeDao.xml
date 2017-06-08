@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlCodeDao">
+
+	<select id="getCodes" parameterType="Code" resultType="Code">
+		/* QUERY ID : getCodes */
+			SELECT 
+				 a.category 'category'
+				,a.type 'type'
+				,a.value 'value'
+				,a.label 'label'
+				,a.description 'description'
+				,a.display_order 'displayOrder'
+				,a.use_yn 'useYn'
+				,a.modify_datetime 'modifyDatetime'
+				,a.create_datetime 'createDatetime'
+				,a.creator 'creator'
+             FROM cmm_code a
+	         WHERE 1 = 1
+				<if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
+				<if test="type != null"> AND UPPER(a.type) = UPPER(#{type}) </if>
+				<if test="value != null"> AND UPPER(a.value) LIKE CONCAT('%', UPPER(#{value}), '%') </if>
+				<if test="label != null"> AND UPPER(a.label) LIKE CONCAT('%', UPPER(#{label}), '%') </if>
+				<if test="description != null"> AND UPPER(a.description) LIKE CONCAT('%', UPPER(#{description}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+	    	ORDER BY a.category ASC, a.type ASC, a.display_order ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForCodes" parameterType="Code" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForCodes */
+			SELECT COUNT(*)
+             FROM cmm_code a
+	         WHERE 1 = 1
+				<if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
+				<if test="type != null"> AND UPPER(a.type) = UPPER(#{type}) </if>
+				<if test="value != null"> AND UPPER(a.value) LIKE CONCAT('%', UPPER(#{value}), '%') </if>
+				<if test="label != null"> AND UPPER(a.label) LIKE CONCAT('%', UPPER(#{label}), '%') </if>
+				<if test="description != null"> AND UPPER(a.description) LIKE CONCAT('%', UPPER(#{description}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+	</select>
+
+
+	<select id="getCategories" resultType="Code">
+		/* QUERY ID : getCategories */
+		SELECT DISTINCT(category) 'category' FROM cmm_code ORDER BY category ASC			
+	</select>
+
+	<select id="getTypes" parameterType="java.lang.String" resultType="Code">
+		/* QUERY ID : getTypes */
+		SELECT DISTINCT UPPER(type) AS type
+		 FROM cmm_code
+	    WHERE UPPER(category) = UPPER(#{category}) ORDER BY type ASC		    	    
+	</select>
+
+	<select id="insertCode" parameterType="Code" resultType="java.lang.Integer">
+		/* QUERY ID : insertCode */
+		INSERT INTO cmm_code (category,
+			type,
+			value,
+			label,
+			description,
+			display_order,
+			use_yn,
+			creator)
+		VALUES (UPPER(#{category}),
+			UPPER(#{type}),
+			TRIM(#{value}),
+			TRIM(#{label}),
+			#{description},
+			#{displayOrder},
+			UPPER(#{useYn}),
+			#{creator})
+	</select>
+
+	<update id="modifyCode" parameterType="Code">
+		/* QUERY ID : modifyCode */
+		UPDATE cmm_code SET
+		    modify_datetime = CURRENT_TIMESTAMP
+		    , label = TRIM(#{label})
+		    , description = UPPER(#{description}) 
+		    , display_order = #{displayOrder} 
+		    , use_yn = UPPER(#{useYn})
+		    , creator = #{creator}  
+		WHERE UPPER(category) = UPPER(#{category}) AND UPPER(type) = UPPER(#{type}) AND UPPER(value) = UPPER(#{value})
+	</update>
+
+	<update id="modifyCodeForNotNull" parameterType="Code">
+		/* QUERY ID : modifyCodeForNotNull */
+		UPDATE cmm_code SET
+		    modify_datetime = CURRENT_TIMESTAMP
+		    <if test="label != null">, label = TRIM(#{label}) </if>
+		    <if test="description != null">, description = #{description} </if>
+		    <if test="displayOrder != null and != 0">, display_order = #{displayOrder} </if>
+		    <if test="useYn != null">, use_yn = #{useYn} </if>
+		    <if test="creator != null">, creator = #{creator} </if>
+		WHERE UPPER(category) = UPPER(#{category}) AND UPPER(type) = UPPER(#{type}) AND UPPER(value) = UPPER(#{value})
+	</update>
+
+	<delete id="deleteCode" parameterType="Code">
+		/* QUERY ID : deleteCode */
+		DELETE FROM cmm_code
+		WHERE UPPER(category) = UPPER(#{category}) AND UPPER(type) = UPPER(#{type}) AND UPPER(value) = UPPER(#{value})
+	</delete>
+
+</mapper>

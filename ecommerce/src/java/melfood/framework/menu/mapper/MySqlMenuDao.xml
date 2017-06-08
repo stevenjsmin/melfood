@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlMenuDao">
+
+    <select id="getMenuList" parameterType="Menu" resultType="Menu">
+     /* QUERY ID : getMenuList */
+		SELECT a.menu_id 'menuId',
+		       a.seq 'seq',
+		       a.type 'type',
+		       a.name 'name',
+		       a.parent_menu_id 'parentMenuId',
+		       a.allowed_roles 'allowedRoles',
+		       a.allowed_users 'allowedUsers',
+		       a.html_obj_id 'htmlObjId',
+		       a.html_href 'htmlHref',
+		       a.html_onclick 'htmlOnclick',
+		       a.html_class 'htmlClass',
+		       a.html_css 'htmlCss',
+		       a.use_yn 'useYn',
+		       a.comment 'comment',
+		       a.creator 'creator',
+		       a.create_datetime 'createDatetime',
+		       a.modify_datetime 'modifyDatetime'
+		  FROM rpc_cmm_menu a
+	          WHERE 1 = 1
+		        <if test="menuId != null and menuId != 0"> AND a.menu_id = #{menuId} </if>
+		        <if test="seq != null and seq != 0"> AND a.seq = #{seq} </if>
+		        <if test="type != null"> AND a.type = #{type} </if>
+		        <if test="name != null"> AND UPPER(a.name) LIKE CONCAT('%', UPPER(#{name}), '%') </if>            
+		        <if test="parentMenuId != null and parentMenuId != 0"> AND a.parent_menu_id = #{parentMenuId} </if>
+		        <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+		        <if test="comment != null"> AND UPPER(a.comment) LIKE CONCAT('%', UPPER(#{comment}), '%') </if>    
+		      ORDER BY a.seq ASC        
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}		        
+	</select>
+	
+    <select id="getTotalCntForMenuList" parameterType="Menu" resultType="Integer">
+     /* QUERY ID : getTotalCntForMenuList */
+        SELECT COUNT(*)
+          FROM rpc_cmm_menu a
+	          WHERE 1 = 1
+		        <if test="menuId != null and menuId != 0"> AND a.menu_id = #{menuId} </if>
+		        <if test="seq != null and seq != 0"> AND a.seq = #{seq} </if>
+		        <if test="type != null"> AND a.type = #{type} </if>
+		        <if test="name != null"> AND UPPER(a.name) LIKE CONCAT('%', UPPER(#{name}), '%') </if>            
+		        <if test="parentMenuId != null and parentMenuId != 0"> AND a.parent_menu_id = #{parentMenuId} </if>
+		        <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+		        <if test="comment != null"> AND UPPER(a.comment) LIKE CONCAT('%', UPPER(#{comment}), '%') </if>  
+    </select>    	
+	
+    <delete id="deleteMenu" parameterType="java.lang.Integer">
+        /* QUERY ID : deleteMenu */
+        DELETE FROM rpc_cmm_menu WHERE menu_id = #{menuId}
+    </delete>   
+
+    
+    <insert id="registMenu" parameterType="Menu">
+     /* QUERY ID : registMenu */
+		INSERT INTO rpc_cmm_menu(seq,
+		                         type,
+		                         name,
+		                         parent_menu_id,
+		                         allowed_roles,
+		                         allowed_users,
+		                         html_obj_id,
+		                         html_href,
+		                         html_onclick,
+		                         html_class,
+		                         html_css,
+		                         use_yn,
+		                         comment,
+		                         creator)     
+		VALUES (#{seq},
+		        #{type},
+		        #{name},
+		        #{parentMenuId},
+		        #{allowedRoles},
+		        #{allowedUsers},
+		        #{htmlObjId},
+		        #{htmlHref},
+		        #{htmlOnclick},
+		        #{htmlClass},
+		        #{htmlCss},
+		        #{useYn},
+		        #{comment},
+		        #{creator} )
+    </insert>    
+    
+    <update id="modifyMenu" parameterType="Menu">
+     /* QUERY ID : modifyMenu */    
+		UPDATE rpc_cmm_menu
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		   	   <if test="seq != null">, seq = #{seq}</if><if test="seq == null">, seq = 0</if>
+		   	   <if test="type != null">, type = #{type}</if><if test="type == null">, type = 'ONCLICK'</if>
+		   	   <if test="name != null">, name = #{name}</if><if test="name == null">, name = null</if>
+		   	   <if test="parentMenuId != null">, parent_menu_id = #{parentMenuId}</if><if test="parentMenuId == null">, parent_menu_id = null</if>
+		   	   <if test="allowedRoles != null">, allowed_roles = #{allowedRoles}</if><if test="allowedRoles == null">, allowed_roles = null</if>
+		   	   <if test="allowedUsers != null">, allowed_users = #{allowedUsers}</if><if test="allowedUsers == null">, allowed_users = null</if>
+		   	   <if test="htmlObjId != null">, html_obj_id = #{htmlObjId}</if><if test="htmlObjId == null">, html_obj_id = null</if>
+		   	   <if test="htmlHref != null">, html_href = #{htmlHref}</if><if test="htmlHref == null">, html_href = null</if>
+		   	   <if test="htmlOnclick != null">, html_onclick = #{htmlOnclick}</if><if test="htmlOnclick == null">, html_onclick = null</if>
+		   	   <if test="htmlClass != null">, html_class = #{htmlClass}</if><if test="htmlClass == null">, html_class = null</if>
+		   	   <if test="htmlCss != null">, html_css = #{htmlCss}</if><if test="htmlCss == null">, html_css = null</if>
+		   	   <if test="useYn != null">, use_yn = #{useYn}</if><if test="useYn == null">, use_yn = 'Y'</if>
+		   	   <if test="comment != null">, comment = #{comment}</if><if test="comment == null">, comment = null</if>
+        WHERE menu_id =  #{menuId} 	       
+    </update>       
+           
+</mapper>

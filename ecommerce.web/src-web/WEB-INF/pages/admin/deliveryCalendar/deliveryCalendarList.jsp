@@ -101,9 +101,9 @@ $(document).ready(function () {
 				  { hidden : true, field: 'deliverySeq'},
 		          { title : 'Seller', field: 'seller.userName',width: 120},
 		          { title : 'Date', field: 'yyyyMmDd', attributes: {style: "color: 606000; font-weight: bolder;" },width: 120},
-		          { title : 'AM/PM', template: kendo.template($("#amPm-template").html()), width: 150},
+		          { title : 'Time', template: kendo.template($("#time-template").html()), width: 150},
 		          { title : 'Pickup/Deliver', template: kendo.template($("#deliverMethod-template").html()), width: 200},
-		          { title : 'Postcode', field: 'addressPostcode', width: 100},
+		          { title : 'Postcode', template: kendo.template($("#addressPostcode-template").html()), width: 100},
 		          { title : 'Suburb', template: kendo.template($("#suburb-address-template").html())},
 		          { title : 'Street', template: kendo.template($("#street-address-template").html())},
 		          { title : 'Enabled', field: 'useYn', template: kendo.template($("#useYn-template").html()), width: 100, attributes: {style: "text-align: center;" }},
@@ -204,14 +204,25 @@ $(document).ready(function () {
 <script id="useYn-template" type="text/x-kendo-template">
     #= (useYn == 'Y') ? '<font color="262626">예</font>':'<font color="dfdfdf">아니오</font>' #
 </script>
-<script id="amPm-template" type="text/x-kendo-template">
-    # if (amPm == 'AM') { #
-          <span style="color: 72BA22;">오전 </span>
-    # } else if (amPm == 'PM') { # 
-          <span style="color: 7768E5;">오후 </span>
+<script id="time-template" type="text/x-kendo-template">
+    # if (isPickup == 'Y') { #
+          <span style="color: E57014;">
+    # } else if (isPickup == 'N') { # 
+          <span style="color: 7768E5;">
     # } else { #
-          <span style="color: 0080c0;">오전/오후 상관없음</span>
+          <span>
     # } #
+
+    # if (btwnFromHhmm != '' && btwnFromHhmm != null) { #
+          #= btwnFromHhmm #
+    # } else { #
+    # } #
+    ~
+    # if (btwnToHhmm != '' && btwnToHhmm != null) { #
+          #= btwnToHhmm #
+    # } else { #
+    # } #
+    </span> 
 </script>
 <script id="deliverMethod-template" type="text/x-kendo-template">
     # if (isPickup == 'Y') { #
@@ -221,8 +232,26 @@ $(document).ready(function () {
     # } else { #
     # } #
 </script>
+<script id="addressPostcode-template" type="text/x-kendo-template">
+    # if (isPickup == 'Y') { #
+          #= '<span style="color: E57014;">' + addressPostcode + '</span>' #
+    # } else if (isPickup == 'N') { # 
+          #= '<span style="color: 7768E5;">' + addressPostcode + '</span>' #
+    # } else { #
+          #= addressPostcode #
+    # } #
+</script>
 <script id="suburb-address-template" type="text/x-kendo-template">
-    #= '<font color="dfdfdf">' + addressState + ' / </font>' + '<font color="262626"> ' + addressSuburb + '</font>' #
+    #= '<font color="dfdfdf">' + addressState + ' / </font>' #
+
+    # if (isPickup == 'Y') { #
+          #= '<span style="color: E57014;">' + addressSuburb + '</span>' #
+    # } else if (isPickup == 'N') { # 
+          #= '<span style="color: 7768E5;">' + addressSuburb + '</span>' #
+    # } else { #
+          #= addressSuburb #
+    # } #
+
 </script>
 <script id="street-address-template" type="text/x-kendo-template">
     # if (isPickup == 'Y') { #

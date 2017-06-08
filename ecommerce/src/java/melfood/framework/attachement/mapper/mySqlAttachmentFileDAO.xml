@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlAttachmentFileDao">
+
+	<select id="getAttachmentFiles" parameterType="AttachmentFile" resultType="AttachmentFile">
+		/* QUERY ID : getAttachmentFiles */
+			SELECT file_id 'fileId'
+				,file_name 'fileName'
+				,file_type 'fileType'
+				,file_size 'fileSize'
+				,file_description 'fileDescription'
+				,sub_directory 'subDirectory'
+				,saved_file_name 'savedFileName' 
+				,create_datetime 'createDatetime'
+				,modify_datetime 'modifyDatetime'
+				,creator 'creator'
+             FROM cmm_attachment_file a
+	        WHERE 1 = 1
+				<if test="fileId != null and fileId != 0"> AND a.file_id = #{fileId} </if>
+				<if test="fileName != null"> AND UPPER(a.file_type) LIKE CONCAT('%', UPPER(#{fileName}), '%') </if>
+				<if test="fileType != null"> AND UPPER(a.file_type) = UPPER(#{fileType}) </if>
+				<if test="fileDescription != null"> AND UPPER(a.file_description) LIKE CONCAT('%', UPPER(#{fileDescription}), '%') </if>				
+				<if test="savedFileName != null"> AND UPPER(a.saved_file_name) LIKE CONCAT('%', UPPER(#{savedFileName}), '%') </if>
+				<if test="createDatetimeFrom != null"> AND (a.create_datetime <![CDATA[ >=]]> str_to_date(#{createDatetimeFrom}, '%Y-%m-%d') </if>
+				<if test="createDatetimeTo != null"> AND (a.create_datetime <![CDATA[ <=]]> str_to_date(#{createDatetimeTo}, '%Y-%m-%d') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.file_name ASC
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForAttachmentFiles" parameterType="AttachmentFile" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForAttachmentFiles */
+			SELECT COUNT(*)
+             FROM cmm_attachment_file a
+	        WHERE 1 = 1
+				<if test="fileId != null and fileId != 0"> AND a.file_id = #{fileId} </if>
+				<if test="fileName != null"> AND UPPER(a.file_type) LIKE CONCAT('%', UPPER(#{fileName}), '%') </if>
+				<if test="fileType != null"> AND UPPER(a.file_type) = UPPER(#{fileType}) </if>
+				<if test="fileDescription != null"> AND UPPER(a.file_description) LIKE CONCAT('%', UPPER(#{fileDescription}), '%') </if>				
+				<if test="savedFileName != null"> AND UPPER(a.saved_file_name) LIKE CONCAT('%', UPPER(#{savedFileName}), '%') </if>
+				<if test="createDatetimeFrom != null"> AND (a.create_datetime <![CDATA[ >=]]> str_to_date(#{createDatetimeFrom}, '%Y-%m-%d') </if>
+				<if test="createDatetimeTo != null"> AND (a.create_datetime <![CDATA[ <=]]> str_to_date(#{createDatetimeTo}, '%Y-%m-%d') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+
+	<select id="nextFileId" resultType="java.lang.Integer">
+		/* QUERY ID : nextFileId */
+			SELECT CASE WHEN max(file_id) IS NULL THEN 1 ELSE (max(file_id) + 1) END FROM cmm_attachment_file
+	</select>
+	
+	<insert id="insertAttachmentFile" parameterType="AttachmentFile">
+		/* QUERY ID : insertAttachmentFile */
+		INSERT INTO cmm_attachment_file( file_id
+					,file_name
+					,file_type
+					,file_size
+					,file_description
+					,sub_directory
+					,saved_file_name
+					,creator)
+		   VALUES (  #{fileId}
+		             ,TRIM(#{fileName})
+		             ,UPPER(#{fileType})
+		             ,#{fileSize}
+		             ,TRIM(#{fileDescription})
+		             ,TRIM(#{subDirectory})
+		             ,TRIM(#{savedFileName})
+		             ,#{creator})		
+	</insert>
+
+	<update id="modifyAttachmentFile" parameterType="AttachmentFile">
+		/* QUERY ID : modifyAttachmentFile */
+		UPDATE cmm_attachment_file
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,file_name = TRIM(#{fileName})
+		       ,file_type = UPPER(#{fileType})
+		       ,file_size = #{fileSize}
+		       ,file_description = TRIM(#{fileDescription})
+		       ,sub_directory = #{subDirectory}
+		       ,saved_file_name = #{savedFileName}
+		       ,creator = TRIM(#{creator})
+		 WHERE file_id = #{fileId}
+	</update>
+
+	<update id="modifyAttachmentFileForNotNull" parameterType="AttachmentFile">
+		/* QUERY ID : modifyAttachmentFileForNotNull */
+		UPDATE cmm_attachment_file
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="fileName != null">, file_name = TRIM(#{fileName}) </if>
+		       <if test="fileType != null">, file_type = TRIM(UPPER(#{file_type})) </if>
+		       <if test="fileSize != null fileSize seq != 0">, file_size = #{fileSize} </if>
+		       <if test="fileDescription != null">, file_description = TRIM(#{fileDescription}) </if>
+		       <if test="subDirectory != null">, sub_directory = TRIM(#{subDirectory}) </if>
+		       <if test="savedFileName != null">, saved_file_name = TRIM(#{savedFileName}) </if>
+		       <if test="creator != null">, creator = TRIM(#{creator}) </if>
+		 WHERE file_id = #{fileId}
+	</update>
+
+	<delete id="deleteAttachmentFile" parameterType="AttachmentFile">
+		/* QUERY ID : deleteAttachmentFile */
+		DELETE FROM cmm_attachment_file WHERE file_id = #{fileId}
+	</delete>
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlCreditInfoDao">
+
+	<select id="getCreditInfos" parameterType="CreditInfo" resultType="CreditInfo">
+		/* QUERY ID : getCreditInfos */
+			SELECT 
+				a.user_id 'userId'
+				,a.seq 'seq'
+				,a.credit_value 'creditValue'
+				,a.use_yn 'useYn'
+				,a.credit_reason 'creditReason'
+				,a.modify_datetime 'modifyDatetime'
+				,a.create_datetime 'createDatetime'
+				,a.creator 'creator'			
+             FROM cmm_credit_info a
+	         WHERE 1 = 1
+				<if test="userId != null"> AND UPPER(a.user_id) = UPPER(#{userId}) </if>
+				<if test="seq != null and seq != 0"> AND a.seq = #{seq} </if>
+				<if test="creditValue != null and creditValue != 0"> AND a.credit_value = #{creditValue} </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+				<if test="creditReason != null"> AND UPPER(a.credit_reason) LIKE CONCAT('%', UPPER(#{creditReason}), '%') </if>				
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.user_id ASC, a.seq ASC, a.use_yn ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForCreditInfos" parameterType="CreditInfo" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForCreditInfos */
+			SELECT COUNT(*)
+             FROM cmm_credit_info a
+	         WHERE 1 = 1
+				<if test="userId != null"> AND UPPER(a.user_id) = UPPER(#{userId}) </if>
+				<if test="seq != null and seq != 0"> AND a.seq = #{seq} </if>
+				<if test="creditValue != null and creditValue != 0"> AND a.credit_value = #{creditValue} </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+				<if test="creditReason != null"> AND UPPER(a.credit_reason) LIKE CONCAT('%', UPPER(#{creditReason}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+
+	<select id="getTotalCreditAmount" parameterType="CreditInfo" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCreditAmount */
+			SELECT SUM(*)
+             FROM cmm_credit_info a
+	         WHERE 1 = 1
+				<if test="userId != null"> AND UPPER(a.user_id) = UPPER(#{userId}) </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+	</select>
+
+	<insert id="insertCreditInfo" parameterType="CreditInfo">
+		/* QUERY ID : insertCreditInfo */
+		INSERT INTO cmm_credit_info(user_id
+	                     ,seq
+	                     ,credit_value
+	                     ,use_yn
+	                     ,credit_reason
+	                     ,creator)
+		   VALUES (
+		             ,TRIM(#{userId})
+		             ,(SELECT CASE WHEN max(seq) IS NULL THEN 1 ELSE (max(seq) + 1) END FROM credit_info a WHERE UPPER(a.user_id) = UPPER(#{userId}))
+		             ,#{creditValue}
+		             ,UPPER(#{useYn})
+		             ,TRIM(#{creditReason})
+		             ,#{creator})		
+	</insert>
+
+	<update id="modifyCreditInfo" parameterType="CreditInfo">
+		/* QUERY ID : modifyCreditInfo */
+		UPDATE cmm_credit_info
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,credit_value = #{creditValue}
+		       ,use_yn = UPPER(#{useYn})
+		       ,credit_reason = TRIM(#{creditReason})
+		 WHERE UPPER(user_id) = UPPER(#{userId}) AND seq = #{seq}
+	</update>
+
+	<update id="modifyCreditInfoForNotNull" parameterType="CreditInfo">
+		/* QUERY ID : modifyCreditInfoForNotNull */
+		UPDATE cmm_credit_info
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="creditValue != null creditValue seq != 0">, credit_value = TRIM(#{creditValue}) </if>
+		       <if test="useYn != null">, use_yn = TRIM(UPPER(#{useYn})) </if>
+		       <if test="creditReason != null">, credit_reason = TRIM(#{creditReason}) </if>
+		 WHERE UPPER(user_id) = UPPER(#{userId}) AND seq = #{seq}
+	</update>
+
+	<delete id="deleteCreditInfo" parameterType="CreditInfo">
+		/* QUERY ID : deleteCreditInfo */
+		DELETE FROM cmm_credit_info WHERE UPPER(user_id) = UPPER(#{userId}) AND seq = #{seq}
+	</delete>
+
+</mapper>

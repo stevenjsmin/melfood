@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlOrderProductOptionDao">
+
+	<select id="getOrderProductOptions" parameterType="OrderProductOption" resultType="OrderProductOption">
+		/* QUERY ID : getOrderProductOptions */
+			SELECT a.order_item_id 'orderItemId' 
+				 ,a.seq 'seq'
+				 ,a.cart_or_order 'cartOrOrder' 
+				 ,a.prod_id 'prodId'
+				 ,a.option_name 'optionName'
+				 ,a.option_value 'optionValue'
+				 ,a.customer_id 'customerId'
+				 ,a.seller_id 'sellerId'
+				 ,a.addtional_price 'addtionalPrice'
+				 ,a.create_datetime 'createDatetime'
+				 ,a.modify_datetime 'modifyDatetime'
+				 ,a.creator 'creator'
+             FROM order_product_option a
+	         WHERE 1 = 1
+				<if test="orderItemId != null and orderItemId != 0"> AND a.order_item_id = #{orderItemId} </if>
+				<if test="seq != null and seq != 0"> AND a.seq = #{seq} </if>
+				<if test="cartOrOrder != null"> AND UPPER(a.cart_or_order) = UPPER(#{cartOrOrder}) </if>
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="optionName != null"> AND UPPER(a.option_name) = TRIM(UPPER(#{optionName})) </if>
+				<if test="optionValue != null"> AND UPPER(a.option_value) = TRIM(UPPER(#{optionValue})) </if>
+				<if test="customerId != null"> AND UPPER(a.customer_id) = UPPER(#{customerId}) </if>
+				<if test="sellerId != null"> AND UPPER(a.seller_id) = UPPER(#{sellerId}) </if>
+				<if test="addtionalPrice != null"> AND a.addtional_price = TRIM(#{addtionalPrice}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.seq ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntOrderProductOptions" parameterType="OrderProductOption" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntOrderProductOptions */
+			SELECT COUNT(*)
+             FROM order_product_option a
+	         WHERE 1 = 1
+				<if test="orderItemId != null and orderItemId != 0"> AND a.order_item_id = #{orderItemId} </if>
+				<if test="seq != null and seq != 0"> AND a.seq = #{seq} </if>
+				<if test="cartOrOrder != null"> AND UPPER(a.cart_or_order) = UPPER(#{cartOrOrder}) </if>
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="optionName != null"> AND UPPER(a.option_name) = TRIM(UPPER(#{optionName})) </if>
+				<if test="optionValue != null"> AND UPPER(a.option_value) = TRIM(UPPER(#{optionValue})) </if>
+				<if test="customerId != null"> AND UPPER(a.customer_id) = UPPER(#{customerId}) </if>
+				<if test="sellerId != null"> AND UPPER(a.seller_id) = UPPER(#{sellerId}) </if>
+				<if test="addtionalPrice != null"> AND a.addtional_price = TRIM(#{addtionalPrice}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+
+	<select id="nextSeq" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		/* QUERY ID : nextSeq */
+			SELECT CASE WHEN max(seq) IS NULL THEN 1 ELSE (max(seq) + 1) END FROM order_product_option WHERE order_item_id = #{orderItemId}
+	</select>
+	            
+    <insert id="insertOrderProductOptions" parameterType="java.util.List">
+       /* QUERY ID : insertOrderProductOptions */
+        INSERT INTO order_product_option (order_item_id, seq, cart_or_order, prod_id, option_name, option_value, customer_id, seller_id, addtional_price) VALUES
+         <foreach collection="list" index="index" item="item">       
+            <if test="index != 0"> , </if> 
+             ( #{item.orderItemId}
+               , #{item.seq}
+               , #{item.cartOrOrder}
+               , #{item.prodId}
+               , #{item.optionName}
+               , #{item.optionValue}
+               , #{item.customerId}
+               , #{item.sellerId}
+               , #{item.addtionalPrice} )
+         </foreach>
+    </insert> 
+
+	<update id="modifyOrderProductOption" parameterType="OrderProductOption">
+		/* QUERY ID : modifyOrderProductOption */
+		UPDATE order_product_option
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,customer_id = #{customerId}
+		       ,seller_id = #{sellerId}
+		       ,prod_id = #{prodId}
+		       ,amount = #{amount}
+		 WHERE order_item_id = #{orderItemId}  AND seq = #{seq}
+	</update>
+
+	<update id="modifyOrderProductOptionForNotNull" parameterType="OrderProductOption">
+		/* QUERY ID : modifyOrderProductOptionForNotNull */
+		UPDATE order_product_option
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="cartOrOrder != null">, cart_or_order = TRIM(UPPER(#{cartOrOrder})) </if>
+		       <if test="prodId != null and prodId != 0">,prod_id = #{prodId} </if>
+		       <if test="optionName != null">, option_name = TRIM(#{optionName}) </if>
+		       <if test="optionValue != null">, option_value = TRIM(#{optionValue}) </if>
+		       <if test="customerId != null">, customer_id = TRIM(#{customerId}) </if>
+		       <if test="sellerId != null">, seller_id = TRIM(#{sellerId}) </if>
+		       <if test="addtionalPrice != null">, addtional_price = TRIM(#{addtionalPrice}) </if>
+		 WHERE  order_item_id = #{orderItemId}  AND seq = #{seq}
+	</update>
+
+	<delete id="deleteOrderProductOption" parameterType="OrderProductOption">
+		/* QUERY ID : deleteOrderProductOption */
+		DELETE FROM order_product_option 
+		 WHERE 1 = 1
+		       <if test="orderItemId != null">AND order_item_id = TRIM(#{orderItemId}) </if>
+		       <if test="cartOrOrder != null">AND UPPER(cart_or_order) = TRIM(UPPER(#{cartOrOrder})) </if>
+		       <if test="prodId != null and prodId != 0">AND prod_id = #{prodId} </if>
+		       <if test="optionName != null">AND option_name = TRIM(#{optionName}) </if>
+		       <if test="optionValue != null">AND option_value = TRIM(#{optionValue}) </if>
+		       <if test="customerId != null">AND customer_id = TRIM(#{customerId}) </if>
+		       <if test="sellerId != null">AND seller_id = TRIM(#{sellerId}) </if>
+	</delete>
+
+</mapper>

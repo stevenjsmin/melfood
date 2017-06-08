@@ -15,8 +15,8 @@
 $(document).ready(function () {
     $("#fileUpload").kendoUpload({
         async: {
-            saveUrl: "//framework/usermanager/profileImageUpload.yum?userId=${user.userId}",
-            removeUrl: "//framework/usermanager/removeFile.yum",
+            saveUrl: "/framework/usermanager/profileImageUpload.yum?userId=${user.userId}",
+            removeUrl: "/framework/usermanager/removeFile.yum",
             removeField: "removeFile",
             autoUpload: true,
             batch: true,

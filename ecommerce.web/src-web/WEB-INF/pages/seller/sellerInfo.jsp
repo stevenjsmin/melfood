@@ -54,10 +54,9 @@
 										<c:otherwise><img id="profilePhotoId" src="/resources/image/profile_photo.png" style="width: 40px;"></c:otherwise>
 									</c:choose>
 								</td>
-								<td class="value" colspan="2"><br/>
+								<td class="value" colspan="3"><br/>
 									${seller.sellerIntroduction}
 								</td>
-								<td></td>
 							</tr>
 		  				</c:when>
 						<c:otherwise>
@@ -74,8 +73,16 @@
     </div> 
     <br/>
     <br/>
-    <br/>
 
+	 <c:if test="${isPopup == 'y' }">
+		 <table class="action_button_table" width="100%" style="margin-top: 10px;" >
+      			<tr>
+          		 	<td style="padding-right: 10px;">
+                			<a href="javascript:parent.closeShowSellerInfoPopup();" class="btn btn-info">&nbsp;&nbsp; 닫기 &nbsp;&nbsp;</a>
+           			</td>
+      			</tr>
+  			</table>				    
+	 </c:if>
 
     
 </body>

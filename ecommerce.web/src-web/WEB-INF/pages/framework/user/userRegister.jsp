@@ -57,10 +57,16 @@ $(document).ready(function() {
                               <td class="value"><c:out value="${cbxSex}" escapeXml="false"/></td>
                          </tr>                         
                          <tr>
-                              <td class="label"><span class="required">* </span>Name </td>
+                              <td class="label"><span class="required">* </span>Nickname </td>
                               <td class="value"><input class="form-control" type="text" id="userName" name="userName" value=''/></td>
+                              <td class="label">Real Name </td>
+                              <td class="value"><input class="form-control" type="text" id="userNameReal" name="userNameReal" value=''/></td>
+                         </tr>
+                         <tr>
                               <td class="label">DOB </td>
                               <td class="value"><input type="text" id="dob" name="dob" value=''/></td>
+                              <td></td>
+                              <td></td>
                          </tr>
                          
                          <tr style="height: 10px;"><td colspan="4"></td></tr>

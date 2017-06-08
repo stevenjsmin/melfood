@@ -22,6 +22,22 @@
      // User user = sessionUser.getUser();
      pageContext.setAttribute("sessionUser", sessionUser);
 %>
+<script type="text/javascript">
+$(document).ready(function() {
+	$.ajax({
+		url : "/common/getNumberOfCartItems.yum",
+		success : callbackSetNumberOfCartItems
+	});
+	
+    function callbackSetNumberOfCartItems(data) {
+    	var cnt = data.numberOfCartItems;
+    	if(cnt != null && cnt != '' && cnt > 0){
+	    	$("#markNumberOfProductOnCartForHeader").html('<span style="font-size: 9px;color: #B7141C;font-weight: bold;">(+)</span>');
+	    	$("#markNumberOfProductOnCartFor").html('<span style="font-size: 9px;color: #B7141C;font-weight: bold;">( ' + cnt + ' )</span>');
+    	}
+   }	
+}); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+</script>
 
 <script type="text/javascript">
      function pressEnter() {
@@ -79,23 +95,26 @@
 		} else if(div == 'CUSTOMER') {
 			document.location.href = "/customer/mypage/Main.yum";
 		}
-	}    
+	}
+	function goPayment(){
+		document.location.href = "/cart/mycart.yum";
+	}	
 </script>
 
-<div class="row">
+<div class="row" id="home">
   <div class="col-md-2"></div>
   <div class="col-md-4"><a href="javascript:goHome();"><img src="/resources/image/logo_melfood.png" style="height: 40px;"></a></div>
   <div class="col-md-6" style="vertical-align: middle;">
-     <div style="height: 50px;">
+     <div style="height: 50px;padding-right: 20px;">
        <% if(sessionUser != null) {  %>
                <table align="right" style="height: 100%;">
                     <tr>
                          <td><span style="color: #007900;font-weight: bold;"><%=sessionUser.getUser().getUserName() %> </span><span style="color: #bfbfbf;">/ <%=sessionUser.getSessionRole().getRoleName() %></span> 님 안녕하세요? &nbsp;&nbsp;&nbsp;</td>
                          <td>
-                              <a><img src="/resources/css/images/gic/ic_shopping_cart_black_18dp_1x.png"></a>  &nbsp;&nbsp;&nbsp;&nbsp;
-                              <a href="javascript:logout();">로그아웃</a> |
-                              <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');">MY 빵</a> |
-                                          고객문의
+                              <a href="javascript:logout();">로그아웃</a>  &nbsp;|&nbsp;
+                              <a href="javascript:goPayment();">장바구니 <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp;|&nbsp;
+                              <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');">MY 빵</a> &nbsp; |&nbsp;
+                              <a href="#"> QnA</a>
                          </td>
                     </tr>
                </table>
@@ -106,7 +125,7 @@
                          <td style="padding-left: 5px;"><input type="password" class="form-control" id="password" name="password" placeholder="Password" onkeydown="pressEnter();"></td>
                          <td>&nbsp;<a href="javascript:login();"><img src="/resources/image/login.jpg" style="height: 45px;"></a></td>
                          <td style="width: 15px;">&nbsp;</td>
-                         <td><a href="javascript:joinMember();">회원가입</a> | <a href="javascript:findPassword();">비밀번호찾기</a> | 고객문의</td>
+                         <td><a href="javascript:joinMember();">회원가입</a> | <a href="javascript:findPassword();">비밀번호찾기</a> | 입점문의</td>
                     </tr>
                </table>
        <%  } %>

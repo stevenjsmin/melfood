@@ -133,5 +133,6 @@
 	<bean id="documentService" class="melfood.framework.document.DocumentServiceImpl" />
 	<bean id="userService" class="melfood.framework.user.UserServiceImpl" />
 	<bean id="attachmentFileService" class="melfood.framework.attachement.AttachmentFileServiceImpl" />
+	<bean id="productService" class="melfood.shopping.product.ProductServiceImpl" />
 	<bean class="melfood.framework.system.BeanHelper" />
 </beans>

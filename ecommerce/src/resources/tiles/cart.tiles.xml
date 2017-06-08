@@ -20,7 +20,7 @@
 	<definition name="tiles/cart/showMultipleMyCart" extends="tiles/cart/multipleCart">
 		<put-attribute name="customer_carts" value="/WEB-INF/pages/cart/customerCarts.jsp" />
 		<put-attribute name="selected_cart" value="/WEB-INF/pages/cart/selectedCart.jsp" />
-		<put-attribute name="seller_info" value="/WEB-INF/pages/seller/sellerInfo.jsp" />		
+		<put-attribute name="check_before_buy" value="/WEB-INF/pages/cart/checkBeforeBuy.jsp" />		
 	</definition>
 	<!-- 현재 사용하지 않기로함.  
 	<definition name="tiles/cart/showMyCart" extends="tiles/cart/singleCart">
@@ -29,13 +29,22 @@
 	</definition>
 	-->
 	<definition name="tiles/cart/modifyDeliveryAddressForm" extends="layout/panel_100">
-		<put-attribute name="title" value=" 상품수령 주소변경" />
+		<put-attribute name="title" value="상품수령 주소변경" />
 		<put-attribute name="body" value="/WEB-INF/pages/cart/modifyDeliveryAddressForm.jsp" />
 	</definition>	
 	<definition name="tiles/cart/chooseDeliveryDateForm" extends="layout/panel_100">
-		<put-attribute name="title" value=" 상품수령 일짜 및 방법 선택" />
+		<put-attribute name="title" value="상품수령 일짜 및 방법 선택" />
 		<put-attribute name="body" value="/WEB-INF/pages/cart/chooseDeliveryDateForm.jsp" />
 	</definition>
+	
+	<!-- 팝업: 판매자정보 -->
+	<definition name="tiles/cart/showSellerInfoPopup" extends="layout/panel_100">
+		<put-attribute name="title" value="판매자정보" />
+		<put-attribute name="body" value="/WEB-INF/pages/seller/sellerInfo.jsp" />
+	</definition>
+		
+		
+		
 		
 	<!-- 결재처리결과를 보기위한 임시 페이지 -->	
 	<definition name="tiles/cart/paymentresult" extends="tiles/cart/singleCart">
