@@ -22,6 +22,8 @@
 </head>
 
 <body>
+<div id="findUserPopup"></div>
+
 <table>
     <tr>
         <td valign="top">
@@ -38,9 +40,25 @@
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>From :</td>
-                    <td class="value"><input class="form-control" type="text" id="writeFrom" name="writeFrom" value=''/></td>
+                    <td class="value">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td><input class="form-control" type="text" id="writeFromLabel" name="writeFromLabel" value='' style="width: 200px;background-color: #F1F1F1;" maxlength="30" /></td>
+                                <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findUserPopup('writeFrom', 'writeFromLabel', 'yes')"></td>
+                            </tr>
+                        </table>
+                        <input type="hidden" id="writeFrom" name="writeFrom" value=''/>
+                    </td>
                     <td class="label"><span class="required">* </span>To :</td>
-                    <td class="value"><input class="form-control" type="text" id="writeTo" name="writeTo" value=''/></td>
+                    <td class="value">
+                        <table>
+                            <tr>
+                                <td><input class="form-control" type="text" id="writeToLabel" name="writeFromLabel" value='' style="width: 200px;background-color: #F1F1F1;" maxlength="30" readonly/></td>
+                                <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findUserPopup('writeTo', 'writeToLabel', 'yes')"></td>
+                            </tr>
+                        </table>
+                        <input type="hidden" id="writeTo" name="writeTo" value=''/>
+                    </td>
                 </tr>
                 <tr><td colspan="4">&nbsp;</td></tr>
                 <tr>

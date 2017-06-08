@@ -19,31 +19,6 @@
              });
          }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      </script>
-
-     <script type="text/javascript">
-         function findUserPopup(returnObjId, returnObjLabel, includeIdOnName) {
-             $("#findUserPopup").kendoWindow({
-                 content: "/common/userutil/findUserForm.yum?returnObjId=" + returnObjId + "&returnObjLabel=" + returnObjLabel + "&includeIdOnName=" + includeIdOnName,
-                 actions: [ "Minimize", "Maximize","Close" ],
-                 title: "Find User",
-                 modal: true,
-                 iframe: true
-             });
-
-             var popupwid_dialog = $("#findUserPopup").data("kendoWindow");
-             popupwid_dialog.setOptions({
-                 width: 700,
-                 height: 600
-             });
-             popupwid_dialog.center();
-
-             $("#findUserPopup").data("kendoWindow").open();
-         }
-         function closeFindUserWindow() {
-             var win_dialog = $("#findUserPopup").data("kendoWindow");
-             win_dialog.close();
-         }
-     </script>
 </head>
 
 <body>
@@ -66,9 +41,9 @@
                     <tr>
                          <td class="label"><span class="required">* </span>From :</td>
                          <td class="value">
-                              <table>
+                              <table style="width: 100%;">
                                    <tr>
-                                        <td><input class="form-control" type="text" id="writeFromLabel" name="writeFromLabel" value='${writeFromLabel}' style="width: 150px;background-color: #F1F1F1;" maxlength="30" /></td>
+                                        <td><input class="form-control" type="text" id="writeFromLabel" name="writeFromLabel" value='${writeFromLabel}' style="width: 200px;background-color: #F1F1F1;" maxlength="30" /></td>
                                         <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findUserPopup('writeFrom', 'writeFromLabel', 'yes')"></td>
                                    </tr>
                               </table>
@@ -78,7 +53,7 @@
                          <td class="value">
                               <table>
                                    <tr>
-                                        <td><input class="form-control" type="text" id="writeToLabel" name="writeFromLabel" value='${writeToLabel}' style="width: 150px;background-color: #F1F1F1;" maxlength="30" readonly/></td>
+                                        <td><input class="form-control" type="text" id="writeToLabel" name="writeFromLabel" value='${writeToLabel}' style="width: 200px;background-color: #F1F1F1;" maxlength="30" readonly/></td>
                                         <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findUserPopup('writeTo', 'writeToLabel', 'yes')"></td>
                                    </tr>
                               </table>

@@ -177,3 +177,26 @@ function callbackDeleteInfo(data) {
     	  goList();
       }
 }
+
+function findUserPopup(returnObjId, returnObjLabel, includeIdOnName) {
+    $("#findUserPopup").kendoWindow({
+        content: "/common/userutil/findUserForm.yum?returnObjId=" + returnObjId + "&returnObjLabel=" + returnObjLabel + "&includeIdOnName=" + includeIdOnName,
+        actions: [ "Minimize", "Maximize","Close" ],
+        title: "Find User",
+        modal: true,
+        iframe: true
+    });
+
+    var popupwid_dialog = $("#findUserPopup").data("kendoWindow");
+    popupwid_dialog.setOptions({
+        width: 700,
+        height: 600
+    });
+    popupwid_dialog.center();
+
+    $("#findUserPopup").data("kendoWindow").open();
+}
+function closeFindUserWindow() {
+    var win_dialog = $("#findUserPopup").data("kendoWindow");
+    win_dialog.close();
+}
