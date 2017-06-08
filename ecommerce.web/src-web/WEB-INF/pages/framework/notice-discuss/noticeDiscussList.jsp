@@ -36,15 +36,11 @@ $(document).ready(function () {
                     if (operation == "read") {
                         return {
                             page : options.page,
-                            pageSize : options.pageSize,                          	
-                        	category : $("#category").val(),
-                        	subject : $("#subject").val(),
-                        	writer : $("#writer").val(),
+                            pageSize : options.pageSize,
+                            subject : $("#subject").val(),
                         	writeFrom : $("#writeFrom").val(),
                         	writeTo : $("#writeTo").val(),
-                        	isForAllSeller : $("#isForAllSeller").val(),
-                        	isForAllSeller : $("#isForAllSeller").val(),
-                        	isForNotice : $("#isForNotice").val()
+                            isForNotice : $("#isForNotice").val()
                         };
                     } else if (operation == "destroy") {
                         console.log(options);
@@ -97,10 +93,9 @@ $(document).ready(function () {
         },         
 		columns: [
 				  { hidden : true, field: 'id'},
-		          { title : 'Subject', field: 'subject', width: 200, attributes: {style: "color: 939300; font-weight: bolder;" }},
-		          { title : 'Writer', field: 'writer', width: 200, attributes: {style: "color: e37200;font-weight: bolder;" }},
-		          { title : 'From', field: 'writer', width: 90, attributes: {style: "text-align: center;" }},
-		          { title : 'To', field: 'writeTo', width: 150},
+		          { title : 'Subject', field: 'subject', attributes: {style: "color: 939300; font-weight: bolder;" }},
+		          { title : 'From', field: 'writeFrom', attributes: {style: "text-align: center;" }},
+		          { title : 'To', field: 'writeTo'},
 		          { title : 'For Seller', field: 'isForAllSeller', template: kendo.template($("#forSeller-template").html())},
 		          { title : 'For Customer', field: 'isForAllCustomer',template: kendo.template($("#forCustomer-template").html())},
 		          { title : 'Is Notice', field: 'isForNotice', template: kendo.template($("#isNotice-template").html())},
@@ -181,19 +176,18 @@ $(document).ready(function () {
     	 <table class="search_table">
     	 	<tr>
     	 		<td class="label">Subject : </td>
-    	 		<td class="value"></td>
-    	 		<td class="label">Writer : </td>
-    	 		<td class="value"></td>
+    	 		<td class="value"><input class="form-control" id="subject" name="subject"></input></td>
     	 		<td class="label">From :  </td>
-    	 		<td class="value"></td>
+    	 		<td class="value"><input class="form-control" id="writeFrom" name="writeFrom"></input></td>
     	 		<td class="label">To :  </td>
-    	 		<td class="value"></td>
+    	 		<td class="value"><input class="form-control" id="writeTo" name="writeTo"></input></td>
     	 		<td class="label">Is Notice :  </td>
-    	 		<td class="value_end"></td>
+    	 		<td class="value_end"><c:out value="${cbxIsForNotice}" escapeXml="false"/></td>
                 <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
     	 	</tr>
     	 </table>
     </div>
+
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Table List -->

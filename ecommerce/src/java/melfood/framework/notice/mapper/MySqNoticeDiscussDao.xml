@@ -27,10 +27,10 @@
 		        <if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
 		        <if test="subject != null"> AND UPPER(a.subject) LIKE CONCAT('%', UPPER(#{subject}), '%') </if>   
 		        <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>   
-		        <if test="writer != null"> AND UPPER(a.writer) = UPPER(#{writer}) </if>
-		        <if test="writeFrom != null"> AND UPPER(a.write_from) = UPPER(#{writeFrom}) </if>
-		        <if test="writeTo != null"> AND UPPER(a.write_to) = UPPER(#{writeTo}) </if>
-		        <if test="isForAllSeller != null"> AND UPPER(a.is_for_all_seller) = UPPER(#{isForAllSeller}) </if>
+				<if test="writer != null"> AND UPPER(a.writer) LIKE CONCAT('%', UPPER(#{writer}), '%') </if>
+				<if test="writeFrom != null"> AND UPPER(a.writeFrom) LIKE CONCAT('%', UPPER(#{writeFrom}), '%') </if>
+				<if test="writeTo != null"> AND UPPER(a.writeTo) LIKE CONCAT('%', UPPER(#{writeTo}), '%') </if>
+				<if test="isForAllSeller != null"> AND UPPER(a.is_for_all_seller) = UPPER(#{isForAllSeller}) </if>
 		        <if test="isForAllCustomer != null"> AND UPPER(a.is_for_all_customer) = UPPER(#{isForAllCustomer}) </if>
 		        <if test="isForNotice != null"> AND UPPER(a.is_for_notice) = UPPER(#{isForNotice}) </if>
 		        <if test="creator != null"> AND a.creator = #{creator} </if>
@@ -46,10 +46,10 @@
 		        <if test="id != null and id != 0"> AND a.id = #{id} </if>
 		        <if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
 		        <if test="subject != null"> AND UPPER(a.subject) LIKE CONCAT('%', UPPER(#{subject}), '%') </if>   
-		        <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>   
-		        <if test="writer != null"> AND UPPER(a.writer) = UPPER(#{writer}) </if>
-		        <if test="writeFrom != null"> AND UPPER(a.write_from) = UPPER(#{writeFrom}) </if>
-		        <if test="writeTo != null"> AND UPPER(a.write_to) = UPPER(#{writeTo}) </if>
+		        <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>
+				<if test="writer != null"> AND UPPER(a.writer) LIKE CONCAT('%', UPPER(#{writer}), '%') </if>
+				<if test="writeFrom != null"> AND UPPER(a.writeFrom) LIKE CONCAT('%', UPPER(#{writeFrom}), '%') </if>
+				<if test="writeTo != null"> AND UPPER(a.writeTo) LIKE CONCAT('%', UPPER(#{writeTo}), '%') </if>
 		        <if test="isForAllSeller != null"> AND UPPER(a.is_for_all_seller) = UPPER(#{isForAllSeller}) </if>
 		        <if test="isForAllCustomer != null"> AND UPPER(a.is_for_all_customer) = UPPER(#{isForAllCustomer}) </if>
 		        <if test="isForNotice != null"> AND UPPER(a.is_for_notice) = UPPER(#{isForNotice}) </if>
@@ -68,7 +68,6 @@
 							,category
 							,subject
 							,contents
-							,attached_file
 							,writer
 							,write_from
 							,write_to
@@ -80,7 +79,6 @@
 		    ,#{category}
 		    ,#{subject}
 		    ,#{contents}
-		    ,#{attachedFile}
 		    ,#{writer}
 		    ,#{writeFrom}
 		    ,#{writeTo}
@@ -94,17 +92,16 @@
      /* QUERY ID : modifyNoticeDiscuss */    
 		UPDATE cmm_notice_discuss
 		   SET create_datetime = CURRENT_TIMESTAMP
-		   	   , category = #{category}
-		   	   , subject = TRIM(#{subject})
-		   	   , contents = TRIM(#{contents})
-		   	   , attached_file = #{attachedFile}
-		   	   , writer = #{writer}
-		   	   , write_from = #{writeFrom}
-		   	   , write_to = #{writeTo}
-		   	   , is_for_all_seller = UPPER(#{isForAllSeller})
-		   	   , is_for_all_customer = UPPER(#{isForAllCustomer})
-		   	   , is_for_notice = UPPER(#{isForNotice})
-		   	   , creator = #{creator}
+		   	    , category = #{category}
+		   	    , subject = TRIM(#{subject})
+		   	    , contents = TRIM(#{contents})
+		   	    , writer = #{writer}
+		   	    , write_from = #{writeFrom}
+		   	    , write_to = #{writeTo}
+		   	    , is_for_all_seller = UPPER(#{isForAllSeller})
+		   	    , is_for_all_customer = UPPER(#{isForAllCustomer})
+		   	    , is_for_notice = UPPER(#{isForNotice})
+		   	    , creator = #{creator}
         WHERE id =  #{id} 	       
     </update>       
     
@@ -115,7 +112,6 @@
 		   	   <if test="category != null">, category = #{category}</if>
 		   	   <if test="subject != null">, subject = TRIM(#{subject})</if>
 		   	   <if test="contents != null">, contents = TRIM(#{contents})</if>
-		   	   <if test="attachedFile != null">, attached_file = #{attachedFile}</if>
 		   	   <if test="writer != null">, writer = #{writer}</if>
 		   	   <if test="writeFrom != null">, write_from = #{writeFrom}</if>
 		   	   <if test="writeTo != null">, write_to = #{writeTo}</if>

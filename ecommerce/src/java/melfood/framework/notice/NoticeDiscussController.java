@@ -16,6 +16,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import melfood.framework.user.User;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +50,14 @@ public class NoticeDiscussController extends BaseController {
 	@RequestMapping("/Main")
 	public ModelAndView main() throws Exception {
 		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/main");
+
+		Properties htmlProperty = new Properties();
+
+		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "YES_NO");
+		htmlProperty = new Properties("isForNotice");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
+
 		return mav;
 	}
 
@@ -113,6 +124,12 @@ public class NoticeDiscussController extends BaseController {
 		if (StringUtils.isBlank(id)) throw new Exception("Can not be null : id");
 
 		NoticeDiscuss noticeDiscuss = noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id));
+		User userFrom = userService.getUserInfo(noticeDiscuss.getWriteFrom());
+		User userTo = userService.getUserInfo(noticeDiscuss.getWriteTo());
+
+		noticeDiscuss.setWriteFrom(userFrom.getUserName() + "(" + noticeDiscuss.getWriteFrom() + ")");
+		noticeDiscuss.setWriteTo(userTo.getUserName() + "(" + noticeDiscuss.getWriteTo() + ")");
+
 		mav.addObject("noticeDiscuss", noticeDiscuss);
 
 		return mav;
@@ -129,6 +146,24 @@ public class NoticeDiscussController extends BaseController {
 	public ModelAndView noticeDiscussRegistForm(HttpServletRequest request) throws Exception {
 		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/regist");
 		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+		Properties htmlProperty = new Properties();
+
+		List<Option> isForSellerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "N");
+		htmlProperty = new Properties("isForAllSeller");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllSeller", codeService.generateCmbx(isForSellerOptions, htmlProperty));
+
+		List<Option> isForCustomerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "N");
+		htmlProperty = new Properties("isForAllCustomer");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllCustomer", codeService.generateCmbx(isForCustomerOptions, htmlProperty));
+
+		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "Y");
+		htmlProperty = new Properties("isForNotice");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
+
 		mav.addObject("creator", sessionUser.getUser().getUserName());
 		return mav;
 	}
@@ -145,7 +180,31 @@ public class NoticeDiscussController extends BaseController {
 		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/modify");
 
 		String id = request.getParameter("id");
+		NoticeDiscuss noticeDiscuss = noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id));
 		mav.addObject("noticeDiscuss", noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id)));
+
+		User userFrom = userService.getUserInfo(noticeDiscuss.getWriteFrom());
+		User userTo = userService.getUserInfo(noticeDiscuss.getWriteTo());
+
+		mav.addObject("writeFromLabel", userFrom.getUserName() + "(" + noticeDiscuss.getWriteFrom() + ")");
+		mav.addObject("writeToLabel", userTo.getUserName() + "(" + noticeDiscuss.getWriteTo() + ")");
+
+		Properties htmlProperty = new Properties();
+
+		List<Option> isForSellerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForAllSeller());
+		htmlProperty = new Properties("isForAllSeller");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllSeller", codeService.generateCmbx(isForSellerOptions, htmlProperty));
+
+		List<Option> isForCustomerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForAllCustomer());
+		htmlProperty = new Properties("isForAllCustomer");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllCustomer", codeService.generateCmbx(isForCustomerOptions, htmlProperty));
+
+		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForNotice());
+		htmlProperty = new Properties("isForNotice");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
 
 		return mav;
 	}
@@ -178,7 +237,6 @@ public class NoticeDiscussController extends BaseController {
 		String isForAllSeller = request.getParameter("isForAllSeller");
 		String isForAllCustomer = request.getParameter("isForAllCustomer");
 		String isForNotice = request.getParameter("isForNotice");
-		String searchDateFrom = request.getParameter("searchDateFrom");
 		String searchDateTo = request.getParameter("searchDateTo");
 		String creator = sessionUser.getUser().getUserId();
 
@@ -186,10 +244,11 @@ public class NoticeDiscussController extends BaseController {
 
 		try {
 
-			if (StringUtils.isBlank(id)) throw new Exception("Can not be null : id");
+			if (StringUtils.isBlank(id) && StringUtils.equals(actionMode, MelfoodConstants.ACTION_MODE_MODIFY)) throw new Exception("Can not be null : id");
 
-			if (StringUtils.isBlank(id) || StringUtils.isBlank(category) || StringUtils.isBlank(subject)) {
-				throw new Exception("[ID | CATEGORY | SUBJECT]  이항목(들)은 빈 값이 될 수 없습니다.");
+			if (StringUtils.isBlank(subject) || StringUtils.isBlank(contents) || StringUtils.isBlank(writeFrom) || StringUtils.isBlank(writeTo)
+					|| StringUtils.isBlank(isForAllSeller) || StringUtils.isBlank(isForAllCustomer) || StringUtils.isBlank(isForNotice) || StringUtils.isBlank(contents)) {
+				throw new Exception("[subject | contents | writeFrom | writeTo | isForAllSeller | isForAllCustomer | isForNotice]  이항목(들)은 빈 값이 될 수 없습니다.");
 			}
 
 			if (StringUtils.equalsIgnoreCase(actionMode, MelfoodConstants.ACTION_MODE_MODIFY)) {
@@ -200,14 +259,17 @@ public class NoticeDiscussController extends BaseController {
 			if (StringUtils.isNotBlank(category)) noticeDiscuss.setCategory(category);
 			if (StringUtils.isNotBlank(subject)) noticeDiscuss.setSubject(subject);
 			if (StringUtils.isNotBlank(contents)) noticeDiscuss.setContents(contents);
-			if (StringUtils.isNotBlank(writer)) noticeDiscuss.setWriter(writer);
+
+			if (StringUtils.isNotBlank(writer)) {
+				noticeDiscuss.setWriter(writer);
+			} else {
+				noticeDiscuss.setWriter(creator);
+			}
 			if (StringUtils.isNotBlank(writeFrom)) noticeDiscuss.setWriteFrom(writeFrom);
 			if (StringUtils.isNotBlank(writeTo)) noticeDiscuss.setWriteTo(writeTo);
 			if (StringUtils.isNotBlank(isForAllSeller)) noticeDiscuss.setIsForAllSeller(isForAllSeller);
 			if (StringUtils.isNotBlank(isForAllCustomer)) noticeDiscuss.setIsForAllCustomer(isForAllCustomer);
 			if (StringUtils.isNotBlank(isForNotice)) noticeDiscuss.setIsForNotice(isForNotice);
-			if (StringUtils.isNotBlank(searchDateFrom)) noticeDiscuss.setSearchDateFrom(searchDateFrom);
-			if (StringUtils.isNotBlank(searchDateTo)) noticeDiscuss.setSearchDateTo(searchDateTo);
 
 			if (StringUtils.equalsIgnoreCase(actionMode, MelfoodConstants.ACTION_MODE_ADD)) {
 				noticeDiscuss.setCreator(creator);

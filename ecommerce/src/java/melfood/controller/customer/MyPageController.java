@@ -1,5 +1,5 @@
 /** 
- * 2015 UserController.java
+ * 2015 MyPageController.java
  * Created by Steven J.S Min(steven.min@utilitiessoftwareservices.com)
  *  
  * Licensed to the Utilities Software Services(USS). 
