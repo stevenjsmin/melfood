@@ -1,9 +1,9 @@
-/** 
+/**
  * 2016 SellerShopController.java
  * Created by steven.min
- *  
- * Licensed to the Utilities Software Services(USS). 
- * For use this source code, you must obtain proper permission. 
+ *
+ * Licensed to the Utilities Software Services(USS).
+ * For use this source code, you must obtain proper permission.
  * Or enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.
  */
 
