@@ -47,29 +47,41 @@ function validateForm(){
     var prefix = "- &nbsp;&nbsp;";
     var message = "";
 
-    var category = $('#category').val();
-    var type = $('#type').val();
-    var value = $('#value').val();
-    var label = $('#label').val();
-      
- 	if(category == "") {
- 		message = message + prefix + "카테고리 값은 필수값입니다.<br>";
- 		checkObject[checkObject.length] = "category";
+    var subject = $('#subject').val();
+    var writeTo = $('#writeTo').val();
+    var isForAllSeller = $('#isForAllSeller').val();
+    var isForAllCustomer = $('#isForAllCustomer').val();
+    var isForNotice = $('#isForNotice').val();
+    var contents = $('#contents').val();
+
+ 	if(subject == "") {
+ 		message = message + prefix + "제목은 필수 입력항목입니다.<br>";
+ 		checkObject[checkObject.length] = "subject";
         validation = false;
  	}
- 	if(type == "") {
- 		message = message + prefix + "타입 값은 필수값입니다.<br>";
- 		checkObject[checkObject.length] = "type";
+ 	if(writeTo == "") {
+ 		message = message + prefix + "대상자 지정은 필수 입력항목입니다.<br>";
+ 		checkObject[checkObject.length] = "writeTo";
  		validation = false;
  	}
- 	if(value == "") {
- 		message = message + prefix + "코드 값은 필수값입니다.<br>";
- 		checkObject[checkObject.length] = "value";
+ 	if(isForAllSeller == "") {
+ 		message = message + prefix + "Is For Seller 값은 필수값입니다.<br>";
+ 		checkObject[checkObject.length] = "isForAllSeller";
  		validation = false;
  	}
- 	if(label == "") {
- 		message = message + prefix + "코드 레이블값 필수값입니다.<br>";
- 		checkObject[checkObject.length] = "label";
+ 	if(isForAllCustomer == "") {
+ 		message = message + prefix + "Is For Customer 값은 필수값입니다.<br>";
+ 		checkObject[checkObject.length] = "isForAllCustomer";
+        validation = false;
+ 	}
+ 	if(isForNotice == "") {
+ 		message = message + prefix + "Is For Notice 값은 필수값입니다.<br>";
+ 		checkObject[checkObject.length] = "isForNotice";
+        validation = false;
+ 	}
+ 	if(contents == "") {
+ 		message = message + prefix + "대화내용은 입력항목입니다.<br>";
+ 		checkObject[checkObject.length] = "contents";
         validation = false;
  	}
 
@@ -87,26 +99,32 @@ function validateForm(){
  
 
 function save(){
+      var id = ID;
       var category = $('#category').val();
-      var type = $('#type').val();
-      var value = $('#value').val();
-      var label = $('#label').val();
-      var useYn = $('#useYn').val();
-      var displayOrder = $('#displayOrder').val();
-      var description = $('#description').val();
+      var subject = $('#subject').val();
+      var contents = $('#contents').val();
+      var writer = $('#writer').val();
+      var writeFrom = $('#writeFrom').val();
+      var writeTo = $('#writeTo').val();
+      var isForAllSeller = $('#isForAllSeller').val();
+      var isForAllCustomer = $('#isForAllCustomer').val();
+      var isForNotice = $('#isForNotice').val();
       
       if(validateForm() == false) return;
       
       $.ajax({
-           url  : "/framework/codemanager/saveCode.yum",
+           url  : "/framework/noticedisscussmanager/saveModify.yum",
            data      : {
-             category : category,
-             type : type,
-             value : value,
-             label : label,
-             useYn : useYn,
-             displayOrder : displayOrder,
-             description : description,
+               id : id,
+               category : category,
+               subject : subject,
+               contents : contents,
+               writer : writer,
+               writeFrom : writeFrom,
+               writeTo : writeTo,
+               isForAllSeller : isForAllSeller,
+               isForAllCustomer : isForAllCustomer,
+               isForNotice : isForNotice,
              actionMode : ACTION_MODE
            },
            success : callbackSave
@@ -121,19 +139,13 @@ function callbackSave(data) {
            warningPopup(data.message);
       } else {
     	  goList();
-    	  /* 
-    	  if(ACTION_MODE == "MODIFY") {
-    		   infoPopup("코드정보가 정상적으로 수정되었습니다.");
-    	  } else {
-    		   infoPopup("코드정보가 정상적으로 추가되었습니다.");
-    	  } */
       }
 }
 
 function deleteInfo(){
 	
 	BootstrapDialog.confirm({
-        title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
+        title: 'WARNING  :: 호주가 즐거운 이유, MelFood !!',
         message: '정말 삭제하시겠습니까?',
         type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
         closable: true, // <-- Default value is false
@@ -144,11 +156,9 @@ function deleteInfo(){
         callback: function(result) {
             if(result) {
 			      $.ajax({
-			           url  : "/framework/codemanager/codeDelete.yum",
+			           url  : "/framework/noticedisscussmanager/deleteNoticeDiscuss.yum",
 			           data      : {
-			             category : CATEGORY,
-			             type : TYPE,
-			             value : VALUE
+			             id : ID,
 			           },
 			           success : callbackDeleteInfo
 			      });            	

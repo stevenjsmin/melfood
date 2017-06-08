@@ -28,4 +28,9 @@
 	</definition>
 
 
+	<!-- Finduser-->
+	<definition name="tiles/common/userutil/findUserUtilForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Find user" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/user/popup/findUserUtilForm.jsp" />
+	</definition>
 </tiles-definitions>
