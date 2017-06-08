@@ -20,21 +20,36 @@ function alertAurrentCart() {
 	infoPopup("현재 메인 화면에서 보고계신 장바구니입니다.");
 }
 </script>
-<style type="text/css">
-	.subCarts tr:nth-child(odd){ 
-		background: #F6F6F6;
-	}
-	.subCarts tr:nth-child(even){
-		background: #FFFFFF;
-	}
-</style>
+	<style type="text/css">
+		.subCarts tr:nth-child(odd){ 
+			background: #F6F6F6;
+		}
+		.subCarts tr:nth-child(even){
+			background: #FFFFFF;
+		}
+	</style>
+
+	<style>
+		.rouned-table1 {
+		    margin: 0px;
+		    border-collapse: separate;
+		    border-spacing: 0px;
+		    
+		}
+		.rouned-td1 {
+		    border-radius: 5px;
+		    background-color: #F69D33;
+		    color: white;
+		    border: 5px solid #C8C8C8;
+		}​	
+	</style>
 </head>
 
 <body>
     <div class="row">
         <div class="col-md-12" style="padding: 0px;">
-		   	<table style="width: 100%;background-color: #F17517;">
-		   		<tr><td colspan="2" style="padding: 5px;text-align: center;color: #F7F7F7;"><b>고객님의 장바구니 : ${numberOfCart} 개</b></td></tr>
+		   	<table style="width: 100%;" class="rouned-table1">
+		   		<tr><td colspan="2" style="padding: 5px;text-align: center;color: #F7F7F7;"  class="rouned-td1"><b>고객님의 장바구니 : ${numberOfCart} 개</b></td></tr>
 		   	</table>
 		   	<br/>
         </div>
@@ -50,8 +65,10 @@ function alertAurrentCart() {
 								    	<tr>
 								    		<td style="width: 50px;text-align: right;"> 판매자 : </td>
 								    		<td colspan="2">
-								    			<span style="font-size: 15px;font-weight: bold;">&nbsp; ${customerCart.seller.sellerBusinessName }</span>
-								    			<span style="font-size: 12px;">&nbsp;(${customerCart.seller.userName })</span>
+								    			<a href="javascript:goSellerShop('${customerCart.seller.userId}');">
+									    			<span style="font-size: 15px;font-weight: bold;">&nbsp; ${customerCart.seller.sellerBusinessName }</span>
+									    			<span style="font-size: 12px;">&nbsp;(${customerCart.seller.userName })</span>
+								    			</a>
 								    		</td>
 								    		<td style="width: 20px; text-align: center;background-color: #71B921;">${customerCart.cartNumber}</td>
 								    	</tr>

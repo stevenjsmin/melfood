@@ -181,6 +181,8 @@
 	function registerMember() {
 		var userId = $('#_userId').val();
 		var userName = $('#_userName').val();
+		var userNameReal = $('#_userNameReal').val();
+		if(userNameReal == '') userNameReal = userName;
 		var password = $('#_password').val();
 		var password2 = $('#_password2').val();
 		var email = $('#_email').val();
@@ -197,6 +199,7 @@
 			data : {
 				userId : userId,
 				userName : userName,
+				userNameReal : userNameReal,
 				password : password,
 				password2 : password2,
 				email : email,
@@ -235,7 +238,8 @@
 	function setSuburbCbx(postcodeObjId, objName) {
 		var postcode = $('#' + postcodeObjId).val();
 		$.ajax({
-			url : "/common/postcode/suburbCmbx.yum?postcode=" + postcode + "&objName=" + objName,
+			url : "/common/postcode/suburbCmbx.yum?postcode=" + postcode
+					+ "&objName=" + objName,
 			success : callbackSetSuburbCbx
 		});
 	}
@@ -245,7 +249,9 @@
 		if (data.objValue != "" && data.objValue != null) {
 			$('#cbx_' + objName).html(data.objValue);
 		} else {
-			$('#cbx_' + objName).html('<input class="form-control" type="text" id="' + objName + '" name="' + objName + '" value=""/>');
+			$('#cbx_' + objName)
+					.html(
+							'<input class="form-control" type="text" id="' + objName + '" name="' + objName + '" value=""/>');
 		}
 	}
 </script>
@@ -301,20 +307,19 @@
 					<td colspan="4" style="height: 10px;"></td>
 				</tr>
 				<tr>
-					<td class="label"><span class="required">* </span>이름/닉네임</td>
-					<td class="value"><input class="form-control" type="text"
-						id="_userName" name="_userName" placeholder="이름/닉네임"
-						value='${userDefaultName}' maxlength="30" /></td>
-					<td colspan="2"><span style="color: #BFBEC5;">입력하시지 않는
-							경우 새이름 또는 만화캐릭터이름이 자동 부여됩니다.</span></td>
+					<td class="label"><span class="required">* </span>닉네임</td>
+					<td class="value"><input class="form-control" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30" /></td>
+					<td colspan="2"><span style="color: #BFBEC5;">몰에서 사용되어지는 이름입니다. 입력하시지 않는 경우 새이름 또는 만화캐릭터이름이 자동 부여됩니다.</span></td>
+				</tr>
+				<tr>
+					<td class="label"><span class="required">* </span>실명</td>
+					<td class="value"><input class="form-control" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30" /></td>
+					<td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다. 입력하시지 않는 경우 닉네임으로 설정됩니다.</span></td>
 				</tr>
 				<tr>
 					<td class="label"><span class="required">* </span>이메일</td>
-					<td class="value"><input class="form-control" type="text"
-						id="_email" name="_email" placeholder="이메일 주소" value=''
-						maxlength="50" /></td>
-					<td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호
-							분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
+					<td class="value"><input class="form-control" type="text" id="_email" name="_email" placeholder="이메일 주소" value='' maxlength="50" /></td>
+					<td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
 				</tr>
 				<tr>
 					<td colspan="4" style="height: 20px;"></td>
@@ -335,7 +340,9 @@
 									id="addressPostcode" name="addressPostcode"
 									value='${user.addressPostcode}' style="width: 80px;"
 									maxlength="4" /></td>
-								<td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="setSuburbCbx('addressPostcode', 'addressSuburb')"></td>
+								<td><img src="/resources/image/lookup.png"
+									style="cursor: pointer;"
+									onclick="setSuburbCbx('addressPostcode', 'addressSuburb')"></td>
 							</tr>
 						</table>
 					</td>

@@ -4,16 +4,70 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<!doctype html>
+<html>
 <head>
-<!-- <META http-equiv="refresh" content="1;URL=redirect.html"> -->
-<!-- META http-equiv="refresh" content="1;URL=http://rpc.dev.utilitiessoftwareservices.com:8080/rpc/redirect.html"-->
-
+<style>
+	.rouned-table {
+	    margin: 0px;
+	    border-collapse: separate;
+	    border-spacing: 0px;
+	    
+	}
+	.rouned-td {
+	    border-radius: 5px;
+	    background-color: #FFFFFF;
+	    color: white;
+	    border: 5px solid #4DA8DD;
+	}​	
+	.rouned-table1 {
+	    margin: 0px;
+	    border-collapse: separate;
+	    border-spacing: 0px;
+	    
+	}
+	.rouned-td1 {
+	    border-radius: 5px;
+	    background-color: #F69D33;
+	    color: white;
+	    border: 5px solid #C8C8C8;
+	}​	
+</style>
+	
 <script type="text/javascript">
 $(document).ready(function () {
   
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
+
+<script type="text/javascript">
+	function showSellerInfoPopup(){
+			
+	    $("#showSellerInfoPopup").kendoWindow({
+	        content: "/cart/showSellerInfoPopup.yum?sellerId=${selectedSellerId}&isPopup=y",
+	        actions: [ "Minimize", "Maximize","Close" ],
+	        title: "판매자 정보",
+	        modal: true,
+	        iframe: true
+		});
+	  
+		var popup_dialog = $("#showSellerInfoPopup").data("kendoWindow");
+		popup_dialog.setOptions({
+   	  		pinned: true,
+   	  		width: 550,height: 450,
+   	  	    open: function (e) {
+               this.wrapper.css({ top: 100 });
+            }
+        });		
+		popup_dialog.center().open();
+		      
+	}
+	function closeShowSellerInfoPopup() {
+		var win_dialog = $("#showSellerInfoPopup").data("kendoWindow");
+		win_dialog.close();
+	} 
+</script>
+
+
 
 <script type="text/javascript">
 function removeItem(itemId){
@@ -43,9 +97,7 @@ function callbackRemoveItem(data) {
             btnOKLabel: 'OK', // <-- Default value is 'OK',
             btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
             callback: function(result) {
-                if(result) {
-			    	location.reload();
-                }
+			    location.reload();
             }
         });    	
     	
@@ -65,10 +117,13 @@ function openModifyDeliveryAddressPopup(){
 	var popup_dialog = $("#modifyDeliveryAddressPopup").data("kendoWindow");
 	popup_dialog.setOptions({
      	  	pinned: true,
-     	  	position: { top: "100", left: "20%" },
-           	width: 700,height: 300
+           	width: 700,height: 300,
+           	open: function (e) {
+                this.wrapper.css({ top: 50 });
+             }
           });
-	$("#modifyDeliveryAddressPopup").data("kendoWindow").open(); 
+	
+	popup_dialog.center().open();
 }
 
 function closeModifyDeliveryAddressPopup() {
@@ -77,6 +132,7 @@ function closeModifyDeliveryAddressPopup() {
 }
 
 function openChooseDeliveryDatePopup(){
+	document.location.href = "#home";
     $("#chooseDeliveryDatePopup").kendoWindow({
         content: "/cart/chooseDeliveryDateForm.yum?sellerId=" + '${selectedCart.seller.userId}',
         actions: [ "Minimize", "Maximize","Close" ],
@@ -88,10 +144,13 @@ function openChooseDeliveryDatePopup(){
 	var popup_dialog = $("#chooseDeliveryDatePopup").data("kendoWindow");
 	popup_dialog.setOptions({
      	  	pinned: true,
-     	  	position: { top: "100", left: "20%" },
-           	width: 950,height: 600
+           	width: "950",
+            height: "700",
+           	open: function (e) {
+                this.wrapper.css({ top: 100 });
+             }
           });
-	$("#chooseDeliveryDatePopup").data("kendoWindow").open(); 
+	popup_dialog.center().open(); 
 }
 
 function closeChooseDeliveryDatePopup() {
@@ -108,7 +167,11 @@ function cancelChooseDeliveryDate(){
 	$("#yyyyMmDd").val('');
 	$("#amPm").val('');
 	
-	$("#productReceiveAndPickupDate",top.document).html( '<span style="color: #AF0003;font-size: 15px;font-weight: bold;">상품수령일자 / 픽업일정이 선택되지 않았습니다.</span>' );
+	if('${selectedCart.seller.sellerIsMandatoryChooseDeliveryPickupDate}' == 'Y'){
+		$("#productReceiveAndPickupDate",top.document).html( '<span style="color: #AF0003;font-size: 11px;font-size: 15px;font-weight: bold;">상품수령일자 / 픽업일정이 선택되지 않았습니다.</span>' );
+	} else {
+		$("#productReceiveAndPickupDate",top.document).html( '<span style="color: #727272;font-size: 11px;">상품수령일자 / 픽업일정이 선택되지 않았습니다.</span>' );
+	}
 }
 </script>
 
@@ -204,6 +267,18 @@ function cancelChooseDeliveryDate(){
 	    var prefix = "- &nbsp;&nbsp;";
 	    var message = "";
 
+	    if('${selectedCart.seller.sellerIsMandatoryChooseDeliveryPickupDate}' == 'Y'){
+	    	var sellerId = $('#sellerId').val();
+	    	var yyyyMmDd = $('#yyyyMmDd').val();
+	    	var addressPostcode = $('#addressPostcode').val();
+	    	var addressSuburb = $('#addressSuburb').val();
+	    	
+	    	if(sellerId == '' || yyyyMmDd == '' || addressPostcode == '' || addressSuburb == '' ){
+		 		message = message + prefix + "상품수령 또는 픽업일자 선택은 필수 선택항목입니다.<br>";
+		        validation = false;
+	    	}
+	    }
+	    
 	    var sellerPaymentMethod = $("#sellerPaymentMethod").val();
 	 	if(sellerPaymentMethod == "") {
 	 		message = message + prefix + "결재방법을 선택해 주세요.<br>";
@@ -232,16 +307,19 @@ function cancelChooseDeliveryDate(){
 <body>
 	<div id="modifyDeliveryAddressPopup"></div>
 	<div id="chooseDeliveryDatePopup"></div>
-    <div class="row">
+	<div id="showSellerInfoPopup"></div>
+	
+	
+    <div class="row"  style="padding: 0px;">
       <div class="col-md-12">
-	   	<table style="width: 100%;">
+	   	<table style="width: 100%;" class="rouned-table1">
 	   		<tr>
-	   			<td style="padding: 5px;background-color: #CA0000;">
-	   				<span style="font-weight: bold;font-size: 15px;color: #C7C7C7;">상품 주문</span>
-	   				<span style="font-weight: bold;font-size: 20px;color: #C7C7C7;"> &nbsp; > &nbsp;</span>
-	   				<span style="font-weight: bold;font-size: 20px;color: #FFFFFF;">배송일지정/결재</span>
-	   				<span style="font-weight: bold;font-size: 20px;color: #FFFFFF;"> &nbsp;&nbsp; > &nbsp;</span>
-	   				<span style="font-weight: bold;font-size: 15px;color: #C7C7C7;">완료</span>
+	   			<td style="padding: 4px;background-color: #CA0000;" class="rouned-td1">
+	   				<span style="font-weight: bold;font-size: 12px;color: #ABA8AF;">장바구니 담기</span>
+	   				<span style="font-weight: bold;font-size: 12px;color: #ABA8AF;"> &nbsp; > &nbsp;</span>
+	   				<span style="font-weight: bold;font-size: 14px;color: #FFFFFF;">주문</span>
+	   				<span style="font-weight: bold;font-size: 12px;color: #FFFFFF;"> &nbsp;&nbsp; > &nbsp;</span>
+	   				<span style="font-weight: bold;font-size: 12px;color: #ABA8AF;">결재/완료</span>
 	   			</td>
 	   		</tr>
 	   	</table>
@@ -261,7 +339,7 @@ function cancelChooseDeliveryDate(){
 					   					<tr><td colspan="2" style="text-align: right;"><span style="font-size: 10px;color: #2A2A2A;">결재 전에 문의 사항있으시면 언제든지 연락 주세요</span></td></tr>
 					   					<tr>
 					   						<td style="width: 150px; text-align: right;"><span style="color: #2A2A2A;">Seller&nbsp;:</span></td>
-					   						<td style="width: 150px; text-align: left;">&nbsp;&nbsp;${selectedCart.seller.userName} &nbsp;&nbsp;<a href="#sellerInfo"><span style="color: #1B4E75;font-size: 11px;">판매자상세정보</span></a></td>
+					   						<td style="width: 150px; text-align: left;">&nbsp;&nbsp;${selectedCart.seller.userName} &nbsp;&nbsp;<a href="javascript:showSellerInfoPopup();"><span style="color: #1B4E75;font-size: 11px;">판매자정보 보기</span></a></td>
 					   					</tr>
 					   					<tr>
 					   						<td style="text-align: right;"><span style="color: #2A2A2A;"><img src="/resources/css/images/gic/ic_phone_black_18dp_1x.png"/>&nbsp;:</span></td>
@@ -288,71 +366,103 @@ function cancelChooseDeliveryDate(){
     <div class="row">
     	<div class="col-md-9">
 		    <div class="row">
-		    	<div class="col-md-10" style="padding-left: 0px;">
+		    	<div class="col-md-12" style="padding-left: 0px;">
 		    	
-					<table style="width: 100%;padding: 0px 0px 0px 0px;" class="detail_table_c" >
-	        				<colgroup>
-	                              <col width="200px" />
-	                              <col width="300px" />
-	                              <col width="150px" />
-	                              <col width="300px" />
-	                        </colgroup> 					
-					  		<tr>
-						  		<td style="text-align: right;vertical-align: middle;">결재금액 :</td>
-						  		<td class="value" style="vertical-align: middle;"><span style="font-size: 25px;font-weight: bold;">$ <fmt:formatNumber type="number" pattern="###.00" value="${selectedCart.totalPrice}" /></span></td>
-						  		<td></td>
-						  		<td></td>
-					  		</tr>
-					  		<tr style="height: 5px;"><td colspan="4" style="height: 5px;">&nbsp;</td></tr>
-					  		<tr>
-						  		<td style="text-align: right;vertical-align: top;">상품수령 또는 픽업일자 :</td>
-						  		<td class="value" colspan="3" style="vertical-align: top;">
-						  			<span id="productReceiveAndPickupDate"><span style="color: #AF0003;font-size: 15px;font-weight: bold;">상품수령일자 / 픽업일정이 선택되지 않았습니다.</span></span>
-						  			&nbsp;&nbsp;
-						  			[<a href="javascript:openChooseDeliveryDatePopup();"><span style="color: #3694DA;font-size: 11px;">상품수령 또는 픽업일자 선택</span></a>]
-						  			&nbsp;
-						  			[<a href="javascript:cancelChooseDeliveryDate();"><span style="color: #3694DA;font-size: 11px;">취소</span></a>]
-						  		</td>
-					  		</tr>
-					  		<tr style="height: 5px;"><td colspan="4" style="height: 5px;">&nbsp;</td></tr>
-					  		<tr>
-						  		<td style="text-align: right;"><span class="required">* </span>결재방법선택 :</td>
-						  		<td class="value" colspan="3"><c:out value="${cbxSellerPaymentMethod}" escapeXml="false"/></td>
-						  	</tr>
-						  	<tr>
-						  		<td style="text-align: right;">상품수령지 주소 :</td>
-						  		<td class="value" colspan="2">
-						  			<span style="color: #7A0002;">${deliveryAddresss}</span>
-						  			&nbsp;&nbsp;&nbsp;[<a href="javascript:openModifyDeliveryAddressPopup();"><span style="color: #3694DA;font-size: 11px;">상품수령지주소변경</span></a>]
-						  		</td>
-					  			<td></td>
-						  	</tr>
-						  	<tr>
-						  		<td style="text-align: right;">판매자에게 메모남기기 :</td>
-						  		<td class="value" colspan="2"><input class="form-control" type="text" id="name" name="name" value=''/></td>
-					  			<td><span style="color: #8B8B8B;font-size: 11px;">예] 물건을 문앞에 놓고 가주세요.</span></td>
-						  	</tr>
-						  	<tr>
-						  		<td></td>
-						  		<td></td>
-						  		<td style="text-align: right;" colspan="2"><button type="button" class="btn btn-danger" onclick="order()">주문완료</button></td>
-						  	</tr>
-						  	<c:choose>
-						  		<c:when test="${selectedCart.seller.sellerHaveMinimumPayment == 'Y'}">
-								  	<tr>
-								  		<td style="text-align: right;" colspan="4">
-								  			<div id="minimumPaymentMsgArea"> 현재 판매자의 최소 주문가능 주문액은 <span style="font-weight: bold;color: #BD0000;">$ <fmt:formatNumber type="number" pattern="###.00" value="${selectedCart.seller.sellerMinimumPaymentForPickup}" /></span> 입니다.</div>
-								  		</td>
-								  	</tr>
-								  	<tr>
-								  		<td style="text-align: right;" colspan="4">
-								  			<b>${selectedCart.seller.sellerBusinessName}(${selectedCart.seller.userName}) </b>매장에서 더 주문하러 가기 : <a href="javascript:goSellerShop('${selectedCart.seller.userId}');"><span style="color: #0B45D3;">${selectedCart.seller.sellerBusinessName}</span> </a>
-								  		</td>
-								  	</tr>
-						  		</c:when>
-						  	</c:choose>
-					  		<tr><td colspan="4" style="height: 20px;"></td></tr>
-					</table>
+		    	    <table style="width: 100%;margin-bottom: 50px;" class="rouned-table">
+		    	    	<tr>
+		    	    		<td  class="rouned-td">
+								<table style="width: 100%;padding: 0px 0px 0px 0px;" class="detail_table_c" >
+				        				<colgroup>
+				                              <col width="200px" />
+				                              <col width="300px" />
+				                              <col width="150px" />
+				                              <col width="300px" />
+				                        </colgroup> 					
+								  		<tr>
+									  		<td style="text-align: right;vertical-align: middle;">결재금액 :</td>
+									  		<td class="value" style="vertical-align: middle;"><span style="font-size: 25px;font-weight: bold;">$ <fmt:formatNumber type="number" pattern="###.00" value="${selectedCart.totalPrice}" /></span></td>
+									  		<td></td>
+									  		<td></td>
+								  		</tr>
+								  		<tr style="height: 5px;"><td colspan="4" style="height: 5px;">&nbsp;</td></tr>
+								  		<tr>
+									  		<td style="text-align: right;vertical-align: top;">
+									  			<c:choose>
+									  				<c:when test="${selectedCart.seller.sellerIsMandatoryChooseDeliveryPickupDate == 'Y'}"><span class="required">* </span></c:when>
+									  			</c:choose>
+									  			상품수령 또는 픽업일자 :
+									  		</td>
+									  		<td class="value" colspan="3" style="vertical-align: top;">
+									  			<span id="productReceiveAndPickupDate">
+										  			<c:choose>
+										  				<c:when test="${selectedCart.seller.sellerIsMandatoryChooseDeliveryPickupDate == 'Y'}">
+										  					<span style="color: #AF0003;font-size: 15px;font-weight: bold;">상품수령일자 / 픽업일정이 선택되지 않았습니다.</span>
+										  				</c:when>
+										  				<c:otherwise>
+										  					<span style="color: #727272;font-size: 12px;">상품수령일자 / 픽업일정이 선택되지 않았습니다.</span>
+										  				</c:otherwise>
+										  			</c:choose>
+									  			</span>
+									  			&nbsp;&nbsp;
+									  			[<a href="javascript:openChooseDeliveryDatePopup();"><span style="color: #3694DA;font-size: 11px;">상품수령 또는 픽업일자 선택</span></a>]
+									  			&nbsp;
+									  			[<a href="javascript:cancelChooseDeliveryDate();"><span style="color: #3694DA;font-size: 11px;">취소</span></a>]
+									  		</td>
+								  		</tr>
+								  		<tr style="height: 5px;"><td colspan="4" style="height: 5px;">&nbsp;</td></tr>
+								  		<tr>
+									  		<td style="text-align: right;"><span class="required">* </span>결재방법선택 :</td>
+									  		<td class="value" colspan="3"><c:out value="${cbxSellerPaymentMethod}" escapeXml="false"/></td>
+									  	</tr>
+									  	<tr>
+									  		<td style="text-align: right;">상품수령지 주소 :</td>
+									  		<td class="value" colspan="2">
+									  			<span style="color: #7A0002;">${deliveryAddresss}</span>
+									  			&nbsp;&nbsp;&nbsp;[<a href="javascript:openModifyDeliveryAddressPopup();"><span style="color: #3694DA;font-size: 11px;">상품수령지주소변경</span></a>]
+									  		</td>
+								  			<td></td>
+									  	</tr>
+									  	<tr>
+									  		<td style="text-align: right;">판매자에게 메모남기기 :</td>
+									  		<td class="value" colspan="2"><input class="form-control" type="text" id="name" name="name" value=''/></td>
+								  			<td><span style="color: #8B8B8B;font-size: 11px;">예] 물건을 문앞에 놓고 가주세요.</span></td>
+									  	</tr>
+									  	<tr>
+									  		<td></td>
+									  		<td></td>
+									  		<td style="text-align: right;" colspan="2"><button type="button" class="btn btn-danger" onclick="order()">결재하기</button></td>
+									  	</tr>
+									  	<c:choose>
+									  		<c:when test="${selectedCart.seller.sellerHaveMinimumPayment == 'Y'}">
+											  	<tr>
+											  		<td style="text-align: right;" colspan="4">
+											  			<div id="minimumPaymentMsgArea"> 현재 판매자의 최소 주문가능 주문액은 
+											  				<span style="font-weight: bold;color: #BD0000;">$ 
+											  					<c:choose>
+											  						<c:when test="${selectedCart.seller.sellerMinimumPaymentForPickup le selectedCart.seller.sellerMinimumPaymentForDeliver}">
+													  					<fmt:formatNumber type="number" pattern="###.00" value="${selectedCart.seller.sellerMinimumPaymentForPickup}" />
+											  						</c:when>
+											  						<c:otherwise>
+													  					<fmt:formatNumber type="number" pattern="###.00" value="${selectedCart.seller.sellerMinimumPaymentForDeliver}" />
+											  						</c:otherwise>
+											  					</c:choose>
+											  				</span> 입니다.
+											  			</div>
+											  		</td>
+											  	</tr>
+									  		</c:when>
+									  	</c:choose>
+									  	<tr>
+									  		<td style="text-align: right;" colspan="4">
+									  			<b>${selectedCart.seller.sellerBusinessName}(${selectedCart.seller.userName}) </b>매장에서 더 주문하러 가기 : <a href="javascript:goSellerShop('${selectedCart.seller.userId}');"><span style="color: #0B45D3;">${selectedCart.seller.sellerBusinessName}</span> </a>
+									  		</td>
+									  	</tr>
+								  		<tr><td colspan="4" style="height: 20px;"></td></tr>
+								</table>
+		    	    		</td>
+		    	    	</tr>	
+		    	    </table>
+					
 					<input type="hidden" id="addressStreet" name="addressStreet" value="">
 					<input type="hidden" id="addressSuburb" name="addressSuburb" value="">
 					<input type="hidden" id="addressState" name="addressState" value="">
@@ -364,8 +474,10 @@ function cancelChooseDeliveryDate(){
 		    </div>
 		</div>
 	</div>
+</div>	
 
 
+<!--  
 
 
     <div class="row">
@@ -375,7 +487,7 @@ function cancelChooseDeliveryDate(){
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="pk_test_9vypCb6MRqSERMISU4gxHt5W"
     data-amount="999"
-    data-name="Coupang.com.au"
+    data-name="Melfood.com.au"
     data-description="Hello"
     data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
     data-locale="auto"
@@ -385,12 +497,13 @@ function cancelChooseDeliveryDate(){
     	</div>
     </div>	
 
+-->
 
 
     
-    <div class="row">
+    <div class="row" style="margin-bottom: 50px;">
       <div class="col-md-9">
-      	<span class="subtitle"> 현재 내장바구니 상세정보</span>
+      	<span class="subtitle"> 현재선택된 장바구니 상세정보</span>
 		<hr class="subtitle"/>	
       		<c:forEach var="product" items="${selectedCart.products}" varStatus="count">
 	            <table style="width: 100%; border: 1px;border-color: #EBEBEB;" border="1"><tr><td>

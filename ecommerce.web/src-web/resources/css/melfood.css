@@ -80,7 +80,7 @@ hr.popup-subtitle {
 }
 
 .chat-tip-up {
-  top: -25px; /* Same as body margin top + border */
+  top: -20px; /* Same as body margin top + border */
   left: 10px;
   border-right-color: transparent;
   border-left-color: transparent;
@@ -88,7 +88,7 @@ hr.popup-subtitle {
 }
 
 .chat-tip-down {
-  bottom: -25px;
+  bottom: -20px;
   left: 10px;
   border-right-color: transparent;
   border-left-color: transparent;
@@ -97,7 +97,7 @@ hr.popup-subtitle {
 
 .chat-tip-left {
   top: 10px;
-  left: -25px;
+  left: -20px;
   border-top-color: transparent;
   border-left-color: transparent;
   border-bottom-color: transparent;  
@@ -105,7 +105,7 @@ hr.popup-subtitle {
 
 .chat-tip-right {
   top: 10px;
-  right: -25px;
+  right: -20px;
   border-top-color: transparent;
   border-right-color: transparent;
   border-bottom-color: transparent;  
@@ -115,18 +115,18 @@ hr.popup-subtitle {
   position: relative;
   max-width: 300px;
   height: auto;
-  margin: 20px 10px;
+  margin: 10px 10px;
   padding: 5px;
   background-color: #F8DD0A;
   border-radius: 3px;
-  border: 5px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .chat-body .chat-message {
-  min-height: 30px;
+  min-height: 0px;
   border-radius: 3px;
   font-family: Arial;
-  font-size: 14px;
+  font-size: 9px;
   line-height: 1.5;
   color: #797979;
 }

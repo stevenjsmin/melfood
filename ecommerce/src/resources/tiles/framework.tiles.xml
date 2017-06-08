@@ -104,8 +104,7 @@
 		<put-attribute name="navigation" value="Admin > Postcode Management > DetailInfo" />
 		<put-attribute name="title" value="Postcode DetailInfo" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/postcode/postcodeDetailInfo.jsp" />
-	</definition>
-	
+	</definition>	
 	
 	<!-- NOTICE MANAGEMENT -->
 	<definition name="tiles/framework/noticedisscussmanager/main" extends="tiles/framework/root">
@@ -127,6 +126,11 @@
 		<put-attribute name="navigation" value="Admin > Notice/Discuss Management > Detail" />
 		<put-attribute name="title" value="Notice/Discuss Detail" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/noticeDiscussDetailInfo.jsp" />
-	</definition>		
+	</definition>
+	<definition name="tiles/framework/noticedisscussmanager/findUserForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Find User" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/findUser.jsp" />
+	</definition>	
 	
+		
 </tiles-definitions>

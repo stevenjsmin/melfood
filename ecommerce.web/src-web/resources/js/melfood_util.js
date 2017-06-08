@@ -402,6 +402,8 @@ function doLoginPopup(){
 }
 
 function openLoginPopup() {
+	document.location.href = "#home";
+	
     $("#loginiWindowPopup").kendoWindow({
           content: "/guest/login/openWin.yum",
           actions: [ "Minimize", "Maximize","Close" ],
@@ -412,12 +414,13 @@ function openLoginPopup() {
     
     var popupwid_dialog = $("#loginiWindowPopup").data("kendoWindow");
     popupwid_dialog.setOptions({
-   	  pinned: true,
-   	  position: { top: "100", left: "20%" },
-         width: 400,height: 200
+   	  		pinned: true,
+   	  		width: 400,height: 200,
+   	  	    open: function (e) {
+               this.wrapper.css({ top: 50 });
+            }
         });
-    
-    $("#loginiWindowPopup").data("kendoWindow").open();
+    popupwid_dialog.center().open();      
 }
 function closeLoginPopup() {
 	var win_dialog = $("#loginiWindowPopup").data("kendoWindow");

@@ -26,6 +26,7 @@ public class User extends BaseDto {
 	private String userId;
 	private String password;
 	private String userName;
+	private String userNameReal;
 	private String sex;
 	private String photoFile;
 	private String passwordUpdateDate;
@@ -73,6 +74,9 @@ public class User extends BaseDto {
 	private List<Role> roles;
 	private boolean isPasswordChangePeriod;
 	private int passwordChangePeriodDays;
+
+	private String sellerIsMandatoryChooseDeliveryPickupDate;
+	private String sellerIsMandatoryChooseDeliveryPickupDateLabel;
 
 	public User() {
 	}
@@ -492,6 +496,30 @@ public class User extends BaseDto {
 
 	public void setSellerHaveMinimumPaymentLabel(String sellerHaveMinimumPaymentLabel) {
 		this.sellerHaveMinimumPaymentLabel = sellerHaveMinimumPaymentLabel;
+	}
+
+	public String getSellerIsMandatoryChooseDeliveryPickupDate() {
+		return sellerIsMandatoryChooseDeliveryPickupDate;
+	}
+
+	public void setSellerIsMandatoryChooseDeliveryPickupDate(String sellerIsMandatoryChooseDeliveryPickupDate) {
+		this.sellerIsMandatoryChooseDeliveryPickupDate = sellerIsMandatoryChooseDeliveryPickupDate;
+	}
+
+	public String getSellerIsMandatoryChooseDeliveryPickupDateLabel() {
+		return sellerIsMandatoryChooseDeliveryPickupDateLabel;
+	}
+
+	public void setSellerIsMandatoryChooseDeliveryPickupDateLabel(String sellerIsMandatoryChooseDeliveryPickupDateLabel) {
+		this.sellerIsMandatoryChooseDeliveryPickupDateLabel = sellerIsMandatoryChooseDeliveryPickupDateLabel;
+	}
+
+	public String getUserNameReal() {
+		return userNameReal;
+	}
+
+	public void setUserNameReal(String userNameReal) {
+		this.userNameReal = userNameReal;
 	}
 
 }

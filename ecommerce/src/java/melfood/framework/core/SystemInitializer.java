@@ -45,7 +45,7 @@ public class SystemInitializer {
 		System.out.println();
 		System.out.println();
 
-		logger.info("Melfood eCommerce Engin Initialize............................");
+		logger.info("Melfood eCommerce Engine Initialize............................");
 
 		ServletContext ctx = event.getServletContext();
 		WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(ctx);
@@ -65,10 +65,10 @@ public class SystemInitializer {
 			// ServiceDao serviceDao = (ServiceDao) springContext.getBean("serviceDao");
 			// CosmosContext.NO_LIMITED_SERVICE_MAP = serviceDao.getServiceListForNotAuthReq();\
 
-			logger.info("Melfood eCommerce Engin Initializing finished successfully......");
+			logger.info("Melfood eCommerce Engine Initializing finished successfully......");
 
 		} catch (Exception e) {
-			logger.info("Melfood eCommerce Engin Initializing failured ......");
+			logger.info("Melfood eCommerce Engine Initializing failured ......");
 			throw e;
 		}
 

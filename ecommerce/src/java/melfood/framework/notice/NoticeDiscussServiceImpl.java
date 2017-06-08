@@ -51,6 +51,11 @@ public class NoticeDiscussServiceImpl implements NoticeDiscussService {
 	}
 
 	@Override
+	public List<NoticeDiscuss> getConversationList(NoticeDiscuss noticeDiscuss) throws Exception {
+		return noticeDAO.getConversationList(noticeDiscuss);
+	}
+
+	@Override
 	public Integer modifyNoticeDiscuss(NoticeDiscuss noticeDiscuss) throws Exception {
 		return noticeDAO.modifyNoticeDiscuss(noticeDiscuss);
 	}

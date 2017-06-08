@@ -16,7 +16,7 @@
 <!-- HELP BODY -->
 <div class="panel panel-default">
   <div class="panel-body">
-	 Sorry. This page have no help page. Please contact  <font color="#005FBD"><%=melfood.framework.Ctx.config.getString("contact-info/level1")%></font> for more information.
+	 Sorry. This page have no help page. Please contact  <font color="#005FBD"><%=melfood.framework.Ctx.getVar("contact-info/level1")%></font> for more information.
   </div>
 </div>
 <!-- HELP BODY : END -->		

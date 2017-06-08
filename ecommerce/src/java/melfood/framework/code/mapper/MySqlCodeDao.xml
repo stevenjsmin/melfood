@@ -47,7 +47,7 @@
 
 	<select id="getCategories" resultType="Code">
 		/* QUERY ID : getCategories */
-		SELECT DISTINCT(category) 'category' FROM cmm_code ORDER BY category ASC
+		SELECT DISTINCT(category) 'category' FROM cmm_code ORDER BY category ASC			
 	</select>
 
 	<select id="getTypes" parameterType="java.lang.String" resultType="Code">

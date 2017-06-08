@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import melfood.controller.common.ProductUtilCtrl;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Option;
@@ -35,7 +36,6 @@ import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
 import melfood.shopping.delivery.DeliveryCalendar;
 import melfood.shopping.delivery.DeliveryCalendarService;
-import melfood.shopping.payment.PaymentMethodService;
 import melfood.shopping.product.Product;
 import melfood.shopping.product.ProductImage;
 import melfood.shopping.product.ProductImageService;
@@ -64,18 +64,17 @@ public class ProductOrderController extends BaseController {
 	@Autowired
 	private DeliveryCalendarService deliveryCalendarService;
 
-	@Autowired
-	private PaymentMethodService paymentMethodService;
-
 	@RequestMapping("/product")
 	public ModelAndView orderProduct(HttpServletRequest request) throws Exception {
 		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
 		ModelAndView mav = new ModelAndView("tiles/shop/order/product");
 		String prodId = request.getParameter("prodId");
+		Product product = null;
+		
+		if(!StringUtils.isBlank(prodId)) product = productService.getProduct(new Product(prodId));
 
 		// 주문할 상품정보를 얻어온다.
-		Product product = productService.getProduct(new Product(prodId));
 		if (product == null) {
 			mav = new ModelAndView("tiles/shop/order/notfoundproduct");
 			return mav;
@@ -108,11 +107,7 @@ public class ProductOrderController extends BaseController {
 		mav.addObject("sellerName", seller.getUserName());
 
 		// 판매자의 상품을 모두 가저온다.
-		Product sellerProduct = new Product();
-		sellerProduct.setSeller(sellerId);
-		sellerProduct.setPagenationPageSize(99999);
-		List<Product> sellerProducts = productService.getProducts(sellerProduct);
-		mav.addObject("sellerProducts", sellerProducts);
+		mav = new ProductUtilCtrl().getSellerProducts(mav, request, sellerId);
 
 		// 판매자의 상품배송 일정 검색을 위한 콤보박스 구성
 		List<Option> isPickupOptions = codeService.getValueCmbxOptions("DELIVER_MGT", "DELIVER_METHOD_ISPICKUP");

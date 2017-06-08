@@ -15,16 +15,17 @@ function goDetailInfo(id){
 	document.location.href = "/framework/noticedisscussmanager/noticeDiscuss.yum?id=" + id;
 }
     
+function goModify(id){
+	document.location.href = "/framework/noticedisscussmanager/modify.yum?id=" + id;
+}
+
 function goList() {
 	document.location.href = "/framework/noticedisscussmanager/Main.yum";
 } 
 
-function goModify(id){
-	document.location.href = "/framework/noticedisscussmanager/noticeDiscussModifyForm.yum?id=" + id;
-} 
 
 function add(){
-	document.location.href = "/framework/noticedisscussmanager/noticeDiscussRegistForm.yum";
+	document.location.href = "/framework/noticedisscussmanager/regist.yum";
 }
 
 function search(){
@@ -48,42 +49,44 @@ function validateForm(){
     var message = "";
 
     var subject = $('#subject').val();
-    var writeTo = $('#writeTo').val();
+    var writeFrom = $('#writeFrom').val();
     var isForAllSeller = $('#isForAllSeller').val();
     var isForAllCustomer = $('#isForAllCustomer').val();
     var isForNotice = $('#isForNotice').val();
     var contents = $('#contents').val();
-
+      
  	if(subject == "") {
- 		message = message + prefix + "제목은 필수 입력항목입니다.<br>";
+ 		message = message + prefix + "글 제목은 필수입력입니다.<br>";
  		checkObject[checkObject.length] = "subject";
         validation = false;
  	}
- 	if(writeTo == "") {
- 		message = message + prefix + "대상자 지정은 필수 입력항목입니다.<br>";
- 		checkObject[checkObject.length] = "writeTo";
- 		validation = false;
+ 	if(writeFrom == "") {
+ 		message = message + prefix + "공지자(From) 지정은 필수입니다.<br>";
+ 		checkObject[checkObject.length] = "writeFrom";
+        validation = false;
  	}
  	if(isForAllSeller == "") {
- 		message = message + prefix + "Is For Seller 값은 필수값입니다.<br>";
+ 		message = message + prefix + "For all seller 선택은 필수항목입니다.<br>";
  		checkObject[checkObject.length] = "isForAllSeller";
  		validation = false;
  	}
  	if(isForAllCustomer == "") {
- 		message = message + prefix + "Is For Customer 값은 필수값입니다.<br>";
+ 		message = message + prefix + "For all customer 선택은 필수항목입니다.<br>";
  		checkObject[checkObject.length] = "isForAllCustomer";
-        validation = false;
+ 		validation = false;
  	}
  	if(isForNotice == "") {
- 		message = message + prefix + "Is For Notice 값은 필수값입니다.<br>";
+ 		message = message + prefix + "For Notice 선택은 필수항목입니다.<br>";
  		checkObject[checkObject.length] = "isForNotice";
-        validation = false;
+ 		validation = false;
  	}
+ 	
  	if(contents == "") {
- 		message = message + prefix + "대화내용은 입력항목입니다.<br>";
+ 		message = message + prefix + "등록하려는 내용을 입력해주세요.<br>";
  		checkObject[checkObject.length] = "contents";
-        validation = false;
+ 		validation = false;
  	}
+
 
  	// 검증된 필드들을 마킹한다.
 	for(count=0; count < checkObject.length; count++ ){
@@ -99,33 +102,28 @@ function validateForm(){
  
 
 function save(){
-      var id = ID;
-      var category = $('#category').val();
       var subject = $('#subject').val();
-      var contents = $('#contents').val();
-      var writer = $('#writer').val();
       var writeFrom = $('#writeFrom').val();
       var writeTo = $('#writeTo').val();
       var isForAllSeller = $('#isForAllSeller').val();
       var isForAllCustomer = $('#isForAllCustomer').val();
       var isForNotice = $('#isForNotice').val();
+      var contents = $('#contents').val();
       
       if(validateForm() == false) return;
       
       $.ajax({
            url  : "/framework/noticedisscussmanager/saveModify.yum",
            data      : {
-               id : id,
-               category : category,
-               subject : subject,
-               contents : contents,
-               writer : writer,
-               writeFrom : writeFrom,
-               writeTo : writeTo,
-               isForAllSeller : isForAllSeller,
-               isForAllCustomer : isForAllCustomer,
-               isForNotice : isForNotice,
-             actionMode : ACTION_MODE
+        	   subject : subject,
+        	   writeFrom : writeFrom,
+        	   writeTo : writeTo,
+        	   isForAllSeller : isForAllSeller,
+        	   isForAllCustomer : isForAllCustomer,
+        	   isForNotice : isForNotice,
+        	   contents : contents,
+        	   id : ID,
+        	   actionMode : ACTION_MODE
            },
            success : callbackSave
       });  
@@ -145,7 +143,7 @@ function callbackSave(data) {
 function deleteInfo(){
 	
 	BootstrapDialog.confirm({
-        title: 'WARNING  :: 호주가 즐거운 이유, MelFood !!',
+        title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
         message: '정말 삭제하시겠습니까?',
         type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
         closable: true, // <-- Default value is false
@@ -156,9 +154,11 @@ function deleteInfo(){
         callback: function(result) {
             if(result) {
 			      $.ajax({
-			           url  : "/framework/noticedisscussmanager/deleteNoticeDiscuss.yum",
+			           url  : "/framework/codemanager/codeDelete.yum",
 			           data      : {
-			             id : ID,
+			             category : CATEGORY,
+			             type : TYPE,
+			             value : VALUE
 			           },
 			           success : callbackDeleteInfo
 			      });            	

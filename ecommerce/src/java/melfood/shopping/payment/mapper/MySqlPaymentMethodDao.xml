@@ -5,7 +5,6 @@
 
 <mapper namespace="mySqlPaymentMethodDao">
 
-	<!-- This is for Payment Method quieries -->
 	<select id="getPaymentMethods" parameterType="PaymentMethod" resultType="PaymentMethod">
 	 /* QUERY ID : getPaymentMethods */
 		SELECT a.user_id AS 'userId',
@@ -54,7 +53,7 @@
 	
 	<select id="getNextPaymentMethodSeq" parameterType="PaymentMethod" resultType="java.lang.Integer">
 		/* QUERY ID : getNextPaymentMethodSeq */
-			SELECT CASE WHEN max(method_seq) IS NULL THEN 1 ELSE (max(method_seq) + 1) END FROM shopping_payment_method WHERE user_id = #{userId}
+			SELECT CASE WHEN max(method_seq) IS NULL THEN 1 ELSE (max(method_seq) + 1) END FROM shopping_payment_method WHERE user_id = #{userId} 
 	</select>	
 
 	

@@ -59,7 +59,7 @@
 	                     ,creator)
 		   VALUES (
 		             ,TRIM(#{userId})
-		             ,(SELECT CASE WHEN max(seq) IS NULL THEN 1 ELSE (max(seq) + 1) END FROM cmm_credit_info a WHERE UPPER(a.user_id) = UPPER(#{userId}))
+		             ,(SELECT CASE WHEN max(seq) IS NULL THEN 1 ELSE (max(seq) + 1) END FROM credit_info a WHERE UPPER(a.user_id) = UPPER(#{userId}))
 		             ,#{creditValue}
 		             ,UPPER(#{useYn})
 		             ,TRIM(#{creditReason})

@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="/resources/js/melfood/framework/noticedisscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
+<script src="/resources/js/melfood/framework/noticediscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script type="text/javascript">
 var KENDO_SELECTED_RECORD = null;
 $(document).ready(function () {
@@ -36,11 +36,15 @@ $(document).ready(function () {
                     if (operation == "read") {
                         return {
                             page : options.page,
-                            pageSize : options.pageSize,
-                            subject : $("#subject").val(),
+                            pageSize : options.pageSize,                          	
+                        	category : $("#category").val(),
+                        	subject : $("#subject").val(),
+                        	writer : $("#writer").val(),
                         	writeFrom : $("#writeFrom").val(),
                         	writeTo : $("#writeTo").val(),
-                            isForNotice : $("#isForNotice").val()
+                        	isForAllSeller : $("#isForAllSeller").val(),
+                        	isForAllSeller : $("#isForAllSeller").val(),
+                        	isForNotice : $("#isForNotice").val()
                         };
                     } else if (operation == "destroy") {
                         console.log(options);
@@ -93,13 +97,14 @@ $(document).ready(function () {
         },         
 		columns: [
 				  { hidden : true, field: 'id'},
-		          { title : 'Subject', field: 'subject', attributes: {style: "color: 939300; font-weight: bolder;" }},
-		          { title : 'From', field: 'writeFrom', attributes: {style: "text-align: center;" }},
-		          { title : 'To', field: 'writeTo'},
-		          { title : 'For Seller', field: 'isForAllSeller', template: kendo.template($("#forSeller-template").html())},
-		          { title : 'For Customer', field: 'isForAllCustomer',template: kendo.template($("#forCustomer-template").html())},
-		          { title : 'Is Notice', field: 'isForNotice', template: kendo.template($("#isNotice-template").html())},
-		          { command: [ {text : "Delete", name: "destory", click: deleteItem}]}
+		          { title : 'Subject', field: 'subject',attributes: {style: "color: e37200; font-weight: bolder;" }},
+		          { title : 'Date', width: 130, template: "#= kendo.toString(kendo.parseDate(createDatetime), 'yyyy-dd-MM hh:mm') #"},
+		          { title : 'From', width: 200, template: kendo.template($("#writeFrom-template").html()), filterable: false},
+		          { title : 'To', width: 200, template: kendo.template($("#writeTo-template").html()), filterable: false},
+		          { title : 'For All Seller', template: kendo.template($("#forSeller-template").html()), width: 130},
+		          { title : 'For All Customer', template: kendo.template($("#forCustomer-template").html()), width: 130},
+		          { title : 'Is Notice', template: kendo.template($("#isNotice-template").html()), width: 100},
+		          { command: [ {text : "Delete", name: "destory", click: deleteItem}], width: 120}
 
 		 ] // End of Columns
     }); // End of GRID
@@ -156,6 +161,18 @@ $(document).ready(function () {
     }
 </script>
 
+<script id="writeFrom-template" type="text/x-kendo-template">
+    # if (writeFrom != null && writeFrom != '') { #
+		  #= '<span style="color: 323132;">' + writeFrom + '</span><span style="color: A8A8A8;"> / ' + writeFromName +'</span>' #
+    # } else { #
+    # } #
+</script>
+<script id="writeTo-template" type="text/x-kendo-template">
+    # if (writeTo != null && writeTo != '') { #
+		  #= '<span style="color: 323132;">' + writeTo + '</span><span style="color: A8A8A8;">/ ' + writeToName +'</span>' #
+    # } else { #
+    # } #
+</script>
 <script id="forSeller-template" type="text/x-kendo-template">
     #= (isForAllSeller == 'Y') ? '<font color="262626">Yes</font>':'<font color="dfdfdf">No</font>' #
 </script>
@@ -177,9 +194,9 @@ $(document).ready(function () {
     	 	<tr>
     	 		<td class="label">Subject : </td>
     	 		<td class="value"><input class="form-control" id="subject" name="subject"></input></td>
-    	 		<td class="label">From :  </td>
+    	 		<td class="label">From(ID) :  </td>
     	 		<td class="value"><input class="form-control" id="writeFrom" name="writeFrom"></input></td>
-    	 		<td class="label">To :  </td>
+    	 		<td class="label">To(ID) :  </td>
     	 		<td class="value"><input class="form-control" id="writeTo" name="writeTo"></input></td>
     	 		<td class="label">Is Notice :  </td>
     	 		<td class="value_end"><c:out value="${cbxIsForNotice}" escapeXml="false"/></td>
@@ -187,7 +204,6 @@ $(document).ready(function () {
     	 	</tr>
     	 </table>
     </div>
-
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Table List -->

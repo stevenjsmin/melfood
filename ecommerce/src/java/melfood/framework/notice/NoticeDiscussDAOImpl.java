@@ -34,6 +34,11 @@ public class NoticeDiscussDAOImpl extends BaseDAO implements NoticeDiscussDAO {
 	}
 
 	@Override
+	public List<NoticeDiscuss> getConversationList(NoticeDiscuss noticeDiscuss) throws Exception {
+		return sqlSession.selectList("mySqlNoticeDiscussDao.getConversationList", noticeDiscuss);
+	}
+	
+	@Override
 	public Integer modifyNoticeDiscuss(NoticeDiscuss noticeDiscuss) throws Exception {
 		return sqlSession.update("mySqlNoticeDiscussDao.modifyNoticeDiscuss", noticeDiscuss);
 	}

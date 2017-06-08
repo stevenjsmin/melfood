@@ -47,6 +47,8 @@ import melfood.framework.email.EmailServices;
 import melfood.framework.email.IEmailService;
 import melfood.framework.gmap.RpcGoogleMapService;
 import melfood.framework.system.BaseController;
+import melfood.shopping.order.ShoppingCart;
+import melfood.shopping.order.ShoppingCartService;
 
 /**
  * @author Steven J.S Min(steven.min@utilitiessoftwareservices.com)
@@ -63,6 +65,9 @@ public class CommonController extends BaseController {
 
 	@Autowired
 	RpcGoogleMapService rpcGoogleMapService;
+
+	@Autowired
+	private ShoppingCartService shoppingCartService;
 
 	@RequestMapping(value = "/ABNLookup", produces = "application/json")
 	@ResponseBody
@@ -561,6 +566,30 @@ public class CommonController extends BaseController {
 
 		return model;
 
+	}
+
+	@RequestMapping(value = "/getNumberOfCartItems", produces = "application/json")
+	@ResponseBody
+	public Map<String, Object> getNumberOfCartItems(HttpServletRequest request) throws Exception {
+		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		int numberOfCartItems = 0;
+
+		try {
+			if (sessionUser != null) {
+				ShoppingCart shoppingCart = new ShoppingCart();
+				shoppingCart.setCustomerId(sessionUser.getUser().getUserId());
+				numberOfCartItems = shoppingCartService.getTotalCntForShoppingCartProducts(shoppingCart);
+			}
+
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+		}
+
+		model.put("numberOfCartItems", numberOfCartItems);
+
+		return model;
 	}
 
 }

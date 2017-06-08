@@ -10,7 +10,7 @@
     <!-- Exception URLs for access checking -->
     <system-config>
     	<release-version>1.0.0</release-version>
-        <acess-check-except-url>/common/auth/welcome.yum, /common/auth/login.yum, /common/auth/loginForm.yum, /common/auth/logout.yum, /common/EmailSendFrom.yum, /common/auth/Welcome.yum, /common/postcode/suburbCmbx.yum </acess-check-except-url>
+        <acess-check-except-url>/common/auth/welcome.yum, /common/auth/login.yum, /common/auth/loginForm.yum, /common/auth/logout.yum, /common/EmailSendFrom.yum, /common/auth/Welcome.yum, /common/updateNmiGMapCoordinate.yum, /business/batchExecute.yum, /common/noticemanager/NoticeListForPublicTop5.yum, /common/postcode/suburbCmbx.yum, /common/getNumberOfCartItems.yum </acess-check-except-url>
 
         <login-fail-allow-cnt>5</login-fail-allow-cnt>
         <password-change-period-days>80</password-change-period-days>
@@ -18,5 +18,13 @@
         
     </system-config>
 
+	<!-- 시스템에서 데이터를 저장할 최상위 디렉토리를 지정한다. -->
+	<data-directory>
+		<dir type="local">/Users/Steven/Documents/Workspaces/app-data/</dir>
+		<dir type="dev">/local/app-data/</dir>
+		<dir type="test">/local/app-data/</dir>
+		<dir type="training">/local/app-data/</dir>
+		<dir type="prod">/local/app-data/</dir>
+	</data-directory>
 
 </config>

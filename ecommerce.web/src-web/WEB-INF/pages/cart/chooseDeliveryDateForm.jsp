@@ -103,16 +103,18 @@ $(document).ready(function () {
 				  { hidden : true, field: 'sellerId'},
 				  { hidden : true, field: 'deliverySeq'},
 				  { hidden : true, field: 'isPickup'},
-				  { hidden : true, field: 'amPm'},
+				  { hidden : true, field: 'btwnFromHhmm'},
+				  { hidden : true, field: 'btwnToHhmm'},
 				  { hidden : true, field: 'addressPostcode'},
 				  { hidden : true, field: 'addressState'},
 				  { hidden : true, field: 'addressSuburb'},
 				  { hidden : true, field: 'addressStreet'},
-		          { title : '일자', template: kendo.template($("#yyyyMmDd-template").html()), width: 100, sort: true},
-		          { title : '오전/오후', template: kendo.template($("#amPm-template").html()), width: 150},
-		          { title : '픽업/배송', template: kendo.template($("#deliverMethod-template").html()), width: 150},
+		          { title : '일자', template: kendo.template($("#yyyyMmDd-template").html()), width: 90, sort: true},
+		          { title : '시간', template: kendo.template($("#time-template").html()), width: 150},
+		          { title : '픽업/배송', template: kendo.template($("#deliverMethod-template").html()), width: 100},
 		          { title : '지역/배송가능지역', template: kendo.template($("#suburb-address-template").html()), width: 200},
-		          { title : '픽업오시는 주소', template: kendo.template($("#street-address-template").html()), width: 200},
+		          { title : '픽업오시는 주소', template: kendo.template($("#street-address-template").html()), width: 150},
+		          { title : '지도', template: kendo.template($("#address-map-template").html()),attributes: {style: "text-align: center;" }},
 		          { command: [ {text : "선택", name: "select", click: selectItem}]}
 		 ] // End of Columns
     }); // End of GRID
@@ -132,13 +134,12 @@ $(document).ready(function () {
      	var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
      	
      	var htmlStr = "";
-     	htmlStr = htmlStr + '<span style="color: C90000;">' + dataItem.yyyyMmDd + '</span>일 ';
-     	if(dataItem.amPm == 'AM') {
-     		htmlStr = htmlStr + '<span style="color: C90000;"> 오전</span>에 ';
-     	} else if(dataItem.amPm == 'PM') {
-     		htmlStr = htmlStr + '<span style="color: C90000;"> 오후</span>에 ';
+     	htmlStr = htmlStr + '<span style="color: C90000;">' + dataItem.yyyyMmDd + '</span> 일' ;
+     	
+     	if(dataItem.btwnFromHhmm != null && dataItem.btwnFromHhmm != '' && dataItem.btwnToHhmm != null && dataItem.btwnToHhmm != ''){
+	     	htmlStr = htmlStr + ' <span style="color: C90000;">' + dataItem.btwnFromHhmm + ' ~ ' + dataItem.btwnToHhmm + '</span> 에 ';
      	} else {
-     		htmlStr = htmlStr + ' <span style="color: C90000;">아침7시 ~ 저녁 6시</span> 사이에 ';     		
+	     	htmlStr = htmlStr + '에 ';
      	}
      	
      	if (dataItem.isPickup == 'Y') {
@@ -179,14 +180,49 @@ $(document).ready(function () {
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
 
-<script id="amPm-template" type="text/x-kendo-template">
-    # if (amPm == 'AM') { #
-          <span style="color: 72BA22;">오전 </span>
-    # } else if (amPm == 'PM') { # 
-          <span style="color: 7768E5;">오후 </span>
+
+<script type="text/javascript">
+	function displayGMapPopup(yyyyMmDd, sellerId, deliverySeq){
+			
+	    $("#displayGMapPopup").kendoWindow({
+	        content: "/shop/sellerDeliveryAddressMap.yum?yyyyMmDd=" + yyyyMmDd + "&sellerId=" + sellerId + "&deliverySeq=" + deliverySeq,
+	        actions: [ "Minimize", "Maximize","Close" ],
+	        title: "배송/픽업 주소맵",
+	        modal: true,
+	        iframe: true
+		});
+	  
+		var popup_dialog = $("#displayGMapPopup").data("kendoWindow");
+		popup_dialog.setOptions({width: "850",height: "650"});
+		popup_dialog.center();
+		      
+		$("#displayGMapPopup").data("kendoWindow").open(); 
+	}
+	function closeDisplayGMapPopup() {
+		var win_dialog = $("#displayGMapPopup").data("kendoWindow");
+		win_dialog.close();
+	} 
+</script>
+
+<script id="time-template" type="text/x-kendo-template">
+    # if (isPickup == 'Y') { #
+          <span style="color: E57014;">
+    # } else if (isPickup == 'N') { # 
+          <span style="color: 7768E5;">
     # } else { #
-          <span style="color: 0080c0;">아침7시 ~ 저녁 6시</span>
+          <span>
     # } #
+
+    # if (btwnFromHhmm != '' && btwnFromHhmm != null) { #
+          #= btwnFromHhmm #
+    # } else { #
+    # } #
+    ~
+    # if (btwnToHhmm != '' && btwnToHhmm != null) { #
+          #= btwnToHhmm #
+    # } else { #
+    # } #
+    </span> 
 </script>
 <script id="deliverMethod-template" type="text/x-kendo-template">
     # if (isPickup == 'Y') { #
@@ -215,12 +251,16 @@ $(document).ready(function () {
 		  #= '<font color="E57014"> ' + addressStreet + '</font>' #
     # } else { #
     # } #
-
 </script>
+<script id="address-map-template" type="text/x-kendo-template">
+    #= '<a href=javascript:displayGMapPopup("' + yyyyMmDd + '","' + sellerId + '","' + deliverySeq +'")><img src="/resources/image/gmap_icon.png" style="height: 17px;"></a>' #
+</script>
+
 
 </head>
 <body>
 
+	<div id="displayGMapPopup"></div>
 
     <div class="row">
         <div class="col-md-11">
@@ -229,10 +269,15 @@ $(document).ready(function () {
 		    <c:choose>
 		    	<c:when test="${totalCountForDelivery < 1 and totalCountForPickup > 0}">
 					<div class="alert alert-danger">
-					  <span style="color: #BD0000;"><strong>주의!</strong> 현재 고객님의 지역에 배송일정이 잡혀있지 않습니다. 대신 상품판매자의 매장(또는 지정된 장소)에 방문하여 상품을 찾아가실 수 있습니다.</span>
+					  <span style="color: #BD0000;">현재 고객님의 지역에 배송일정이 잡혀있지 않습니다. 대신 상품판매자의 매장(또는 지정된 장소)에 방문하여 상품을 찾아가실 수 있습니다.</span>
 					</div>		 
 					<div class="alert alert-info">
 					  <span style="color: #0E0E0E;">현재 고객님의 지역에 배송일정이 잡혀있지 않더라도 배송을 원하시는 경우,<br/> "상품수령 또는 픽업일자"를 지정하시마시고 그냥 주문하시고 상품판매자에게 연락주시기를 바랍니다.</span>
+					</div>		 
+		    	</c:when>
+		    	<c:when test="${totalCountForDelivery < 1 and totalCountForPickup < 1}">
+					<div class="alert alert-danger">
+					  <span style="color: #BD0000;">죄송합니다. 현재 픽업 일정 및 고객님의 계신곳에 배송일정이 잡혀있지 않습니다.</span>
 					</div>		 
 		    	</c:when>
 		    </c:choose>

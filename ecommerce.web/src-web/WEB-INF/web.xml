@@ -91,4 +91,8 @@
 		<!-- <error-code>404</error-code> -->
 		<location>/framework/errormanager/error.yum</location>
 	</error-page>
+	
+	<welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

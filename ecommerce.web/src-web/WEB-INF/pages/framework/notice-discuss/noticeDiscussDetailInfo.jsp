@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="/resources/js/melfood/framework/noticedisscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
+<script src="/resources/js/melfood/framework/noticediscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -19,7 +19,8 @@ $(document).ready(function() {
 </head>
 
 <body>
-<div id="errorWindow"></div>
+	<div id="findUserPopup"></div>
+		
      <table>
           <tr>
                <td valign="top">
@@ -29,38 +30,49 @@ $(document).ready(function() {
                               <col width="250px" />
                               <col width="250px" />
                               <col width="250px" />
-                         </colgroup>     
+                         </colgroup>       
                          <tr>
                               <td class="label">Subject :</td>
-                              <td class="value" colspan="3"><span style="color: #dc0a5e;font-weight: bold;">${noticeDiscuss.subject}</span></td>
+                              <td class="value" colspan="3"><span style="font-weight: bold;color: #e37200;">${noticeDiscuss.subject}</span></td>
                          </tr>                         
                          <tr>
-                              <td class="label">From :</td>
-                              <td class="value">${noticeDiscuss.writeFrom}</td>
-                              <td class="label">To :</td>
-                              <td class="value">${noticeDiscuss.writeTo}</td>
-                         </tr>
-                         <tr><td colspan="4">&nbsp;</td></tr>
-                         <tr>
-                              <td class="label">For Seller :</td>
-                              <td class="value">${noticeDiscuss.isForAllSeller}</td>
-                              <td class="label">For Customer :</td>
-                              <td class="value">${noticeDiscuss.isForAllCustomer}</td>
+                              <td class="label">From</td>
+                              <td class="value">${noticeDiscuss.writeFromName}</td>
+                              <td class="label">To</td>
+                              <td class="value">${noticeDiscuss.writeToName}</td>
                          </tr>
                          <tr>
-                              <td class="label">Is Notice :</td>
-                              <td class="value">${noticeDiscuss.isForNotice}</td>
+                              <td class="label">For all seller</td>
+                              <td class="value">
+                              	<c:choose>
+                              		<c:when test="${noticeDiscuss.isForAllSeller == 'Y'}">네</c:when>
+                              		<c:otherwise>아니오</c:otherwise>
+                              	</c:choose>
+                              </td>
+                              <td class="label">For all customer</td>
+                              <td class="value">
+                              	<c:choose>
+                              		<c:when test="${noticeDiscuss.isForAllCustomer == 'Y'}">네</c:when>
+                              		<c:otherwise>아니오</c:otherwise>
+                              	</c:choose>
+                              
+                         </tr>
+                         <tr>
+                              <td class="label">Is for notice</td>
+                              <td class="value">
+                              	<c:choose>
+                              		<c:when test="${noticeDiscuss.isForNotice == 'Y'}">네</c:when>
+                              		<c:otherwise>아니오</c:otherwise>
+                              	</c:choose>
                               <td></td>
                               <td></td>
                          </tr>
-                         <tr><td colspan="4">&nbsp;</td></tr>
+                         <tr><td colspan="4"><hr/></td></tr>
                          <tr>
                               <td class="label" style="vertical-align: top;padding-top: 5px;">Contents</td>
-                              <td class="value" colspan="3">${noticeDiscuss.contents}</td>
+                              <td class="value" colspan="3"><c:out value="${noticeDiscuss.contents}" escapeXml="false"/></td>
                               <td></td>
-                         </tr>
-
-                         <tr><td class="metavalue" colspan="4">Creator : ${noticeDiscuss.creator}, Create Time : ${noticeDiscuss.createDatetime}, Modify Time : ${noticeDiscuss.modifyDatetime}</td></tr>
+                         </tr>                         
                     </table>
                </td>
           </tr>
@@ -70,8 +82,6 @@ $(document).ready(function() {
                     <table class="action_button_table" width="100%">
                          <tr>
                               <td>
-                                   <a href="javascript:deleteInfo('${noticeDiscuss.id}');" class="btn btn-danger">Delete</a>
-                                   &nbsp;&nbsp;&nbsp;
                                    <a href="javascript:goList();" class="btn btn-info">&nbsp;&nbsp; List &nbsp;&nbsp;</a>
                                    <a href="javascript:goModify('${noticeDiscuss.id}');" class="btn btn-primary">Modify</a>
                               </td>
@@ -81,10 +91,9 @@ $(document).ready(function() {
           </tr>
           
      </table>
-
+     
      <script type="text/javascript">
-         var ID = "<c:out value="${noticeDiscuss.id}"/>";
-     </script>
-
+          var ACTION_MODE = "MODIFY";
+     </script>     
 </body>
 </html>

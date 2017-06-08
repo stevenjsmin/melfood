@@ -1,5 +1,5 @@
 /** 
- * 2015 MyPageController.java
+ * 2015 UserController.java
  * Created by Steven J.S Min(steven.min@utilitiessoftwareservices.com)
  *  
  * Licensed to the Utilities Software Services(USS). 
@@ -169,6 +169,7 @@ public class MyPageController extends BaseController {
 
 		String userId = sessionUser.getUser().getUserId();
 		String userName = request.getParameter("userName");
+		String userNameReal = request.getParameter("userNameReal");
 		String sex = request.getParameter("sex");
 		String dob = request.getParameter("dob");
 		String email = request.getParameter("email");
@@ -187,6 +188,7 @@ public class MyPageController extends BaseController {
 			User user = new User(userId);
 
 			if (!StringUtils.isBlank(userName)) user.setUserName(userName);
+			if (!StringUtils.isBlank(userNameReal)) user.setUserNameReal(userNameReal);
 			if (!StringUtils.isBlank(sex)) user.setSex(sex);
 			if (!StringUtils.isBlank(dob)) user.setDob(dob);
 			if (!StringUtils.isBlank(mobile)) user.setMobile(mobile);	

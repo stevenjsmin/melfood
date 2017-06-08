@@ -21,6 +21,8 @@ public interface NoticeDiscussDAO {
 	public List<NoticeDiscuss> getNoticeDiscussList(NoticeDiscuss noticeDiscuss) throws Exception;
 
 	public Integer getTotalCntForNoticeDiscussList(NoticeDiscuss noticeDiscuss) throws Exception;
+	
+	public List<NoticeDiscuss> getConversationList(NoticeDiscuss noticeDiscuss) throws Exception;
 
 	public Integer modifyNoticeDiscuss(NoticeDiscuss noticeDiscuss) throws Exception;
 

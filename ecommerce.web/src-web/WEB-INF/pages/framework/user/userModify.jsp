@@ -57,10 +57,16 @@ $(document).ready(function() {
                               <td class="value"><c:out value="${cbxSex}" escapeXml="false"/></td>
                          </tr>                         
                          <tr>
-                              <td class="label"><span class="required">* </span>Name </td>
+                              <td class="label"><span class="required">* </span>Nickname </td>
                               <td class="value"><input class="form-control" type="text" id="userName" name="userName" value='${user.userName}'/></td>
+                              <td class="label">Real Name </td>
+                              <td class="value"><input class="form-control" type="text" id="userNameReal" name="userNameReal" value='${user.userNameReal}'/></td>
+                         </tr>
+                         <tr>
                               <td class="label">DOB </td>
                               <td class="value"><input type="text" id="dob" name="dob" value='${user.dob}'/></td>
+                              <td></td>
+                              <td></td>
                          </tr>
                          <tr>
                               <td class="label">Password </td>
@@ -192,6 +198,19 @@ $(document).ready(function() {
                               <td class="value"><input type="text" id="sellerMinimumPaymentForPickup" name="sellerMinimumPaymentForPickup" value='${user.sellerMinimumPaymentForPickup}'/></td>
                          </tr>
                          
+                         <tr style="height: 10px;"><td colspan="4"></td></tr>
+                         <tr>
+                              <td>배송/픽업 일자선택 필수여부</td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                         </tr>
+                   		<tr>
+                              <td class="label">배송/픽업 일자선택 필수여부</td>
+                              <td class="value"><c:out value="${cbxSellerIsMandatoryChooseDeliveryPickupDate}" escapeXml="false"/></td>
+                              <td></td>
+                              <td></td>
+                         </tr>                         
                                                                                                     
                          <tr style="height: 10px;"><td colspan="4"></td></tr>
                          <tr>

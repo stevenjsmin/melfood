@@ -18,7 +18,8 @@
 		       a.address_note 'addressNote',
 		       a.is_pickup 'isPickup',
 		       b.user_name 'seller.userName',
-		       a.am_pm 'amPm',
+		       a.btwn_from_hhmm 'btwnFromHhmm',
+		       a.btwn_to_hhmm 'btwnToHhmm',
 		       a.use_yn 'useYn',
 		       a.create_datetime 'createDatetime',
 		       a.modify_datetime 'modifyDatetime',
@@ -29,7 +30,6 @@
 	  	     <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>	 
 	  	     <if test="yyyyMmDd != null"> AND a.yyyy_mm_dd = #{yyyyMmDd} </if>	 
 	  	     <if test="deliverySeq != null and deliverySeq != 0"> AND a.delivery_seq = #{deliverySeq}</if>
-	  	     <if test="amPm != null"> AND UPPER(a.am_pm) = UPPER(#{amPm}) </if>
 	  	     <if test="isPickup != null"> AND UPPER(a.is_pickup) = UPPER(#{isPickup}) </if>	 
 	  	     <if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>	 
 	  	     <if test="addressState != null"> AND UPPER(a.address_state) = UPPER(#{addressState}) </if>	 
@@ -39,7 +39,7 @@
 			 <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 			 <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
 			 <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
-	    	ORDER BY b.user_name ASC, a.yyyy_mm_dd ASC, a.am_pm ASC  
+	    	ORDER BY b.user_name ASC, a.yyyy_mm_dd ASC, a.btwn_from_hhmm ASC  
 		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
 	</select>
 	<select id="getTotalCntForDeliveryCalendars" parameterType="DeliveryCalendar" resultType="java.lang.Integer">
@@ -51,7 +51,6 @@
 	  	     <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>	 
 	  	     <if test="yyyyMmDd != null"> AND a.yyyy_mm_dd = #{yyyyMmDd} </if>	 
 	  	     <if test="deliverySeq != null and deliverySeq != 0"> AND a.delivery_seq = #{deliverySeq}</if>
-	  	     <if test="amPm != null"> AND UPPER(a.am_pm) = UPPER(#{amPm}) </if>
 	  	     <if test="isPickup != null"> AND UPPER(a.is_pickup) = UPPER(#{isPickup}) </if>	 
 	  	     <if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>	 
 	  	     <if test="addressState != null"> AND UPPER(a.address_state) = UPPER(#{addressState}) </if>	 
@@ -79,7 +78,8 @@
 		       a.address_note 'addressNote',
 		       a.is_pickup 'isPickup',
 		       b.user_name 'seller.userName',
-		       a.am_pm 'amPm',
+		       a.btwn_from_hhmm 'btwnFromHhmm',
+		       a.btwn_to_hhmm 'btwnToHhmm',		       
 		       a.use_yn 'useYn',
 		       a.create_datetime 'createDatetime',
 		       a.modify_datetime 'modifyDatetime',
@@ -100,7 +100,7 @@
 	  	     		)
 	  	     	</when>
 	  	     </choose>
-	    	ORDER BY a.is_pickup DESC, a.yyyy_mm_dd ASC, a.am_pm ASC, a.address_suburb ASC  
+	    	ORDER BY a.is_pickup DESC, a.yyyy_mm_dd ASC, a.btwn_from_hhmm ASC, a.address_suburb ASC  
 		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
 	</select>
 	<select id="getTotalCntForDeliveryCalendarsForGuestOrder" parameterType="DeliveryCalendar" resultType="java.lang.Integer">
@@ -137,7 +137,8 @@
 		INSERT INTO shop_delivery_calendar (seller_id,
 		                    yyyy_mm_dd,
 		                    delivery_seq,
-		                    am_pm,
+		                    btwn_from_hhmm,
+		                    btwn_to_hhmm,
 		                    is_pickup,
 		                    address_postcode,
 		                    address_state,
@@ -149,7 +150,8 @@
 		VALUES (#{sellerId}
 	        ,#{yyyyMmDd}
 	        ,#{deliverySeq}
-	        ,UPPER(#{amPm})
+	        ,TRIM(#{btwnFromHhmm})
+	        ,TRIM(#{btwnToHhmm})
 	        ,UPPER(#{isPickup})
 	        ,#{addressPostcode}
 	        ,#{addressState}
@@ -164,7 +166,8 @@
 	 /* QUERY ID : modifyDeliveryCalendar */
 		UPDATE shop_delivery_calendar
 		   SET modify_datetime = CURRENT_TIMESTAMP
-		       ,am_pm = UPPER(TRIM(#{amPm}))
+		       ,btwn_from_hhmm = TRIM(TRIM(#{btwnFromHhmm}))
+		       ,btwn_to_hhmm = TRIM(TRIM(#{btwnToHhmm}))
 		       ,is_pickup = UPPER(TRIM(#{isPickup}))
 		       ,address_postcode = UPPER(TRIM(#{addressPostcode}))
 		       ,address_state = UPPER(TRIM(#{addressState}))
@@ -179,7 +182,8 @@
 		/* QUERY ID : modifyDeliveryCalendarForNotNull */
 		UPDATE shop_delivery_calendar
 		   SET modify_datetime = CURRENT_TIMESTAMP
-		       <if test="amPm != null"> ,am_pm = UPPER(TRIM(#{amPm})) </if>
+		       <if test="btwnFromHhmm != null"> ,btwn_from_hhmm = UPPER(TRIM(#{btwnFromHhmm})) </if>
+		       <if test="btwnToHhmm != null"> ,btwn_to_hhmm = UPPER(TRIM(#{btwnToHhmm})) </if>
 		       <if test="isPickup != null"> ,is_pickup = UPPER(TRIM(#{isPickup})) </if>
 		       <if test="addressPostcode != null"> ,address_postcode = UPPER(TRIM(#{addressPostcode})) </if>
 		       <if test="addressState != null"> ,address_state = UPPER(TRIM(#{addressState})) </if>

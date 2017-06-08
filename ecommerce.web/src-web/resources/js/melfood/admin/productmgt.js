@@ -231,6 +231,7 @@ function save(){
       var sellingCommissionRate = $('#sellingCommissionRate').val();
       var sellingCommissionFee = $('#sellingCommissionFee').val();
       var tags = $('#tags').val();
+      var checkBeforeBuy = $('#checkBeforeBuy').val();
       
       $.ajax({
            url  : "/admin/productmgt/saveProductMasterInfo.yum",
@@ -249,6 +250,7 @@ function save(){
              sellingCommissionRate : sellingCommissionRate,
              sellingCommissionFee : sellingCommissionFee,
              tags : tags,
+             checkBeforeBuy : checkBeforeBuy,
              actionMode : ACTION_MODE
            },
            success : callbackSave

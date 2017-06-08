@@ -64,8 +64,8 @@
                          <tr>
                               <td class="label">판매상태</td>
                               <td class="value">${product.sellingStatusName}</td>
-                              <td></td>
-                              <td></td>
+                              <td class="value"></td>
+                              <td class="value"></td>
                          </tr>                         
                          
                          <tr><td colspan="4"><hr/></td></tr>

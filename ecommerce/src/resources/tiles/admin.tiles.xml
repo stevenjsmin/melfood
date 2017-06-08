@@ -90,6 +90,7 @@
 		<put-attribute name="navigation" value="Admin > Product > Product Management > Product overview" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOverview.jsp" />
 	</definition>
+
 	<!-- Product > MasterInfo > Regist -->	
 	<definition name="tiles/admin/product/productmgt/registProductMasterInfo" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Product > Product Management > register" />
@@ -157,6 +158,30 @@
 	</definition>	
 	
 	
+
+	<!-- CHECK BEFORE BUY -->
+	<definition name="tiles/admin/checkbeforebuy/main" extends="tiles/admin/root">
+		<put-attribute name="navigation" value="Admin > 구매전 확인사항 내용관리 > Search" />
+		<put-attribute name="title" value="구매전 확인사항 내용관리 검색" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/checkbeforebuy/checkBeforeBuyList.jsp" />
+	</definition>
+	<definition name="tiles/admin/checkbeforebuy/regist" extends="tiles/admin/root">
+		<put-attribute name="navigation" value="Admin > 구매전 확인사항 내용관리 > register" />
+		<put-attribute name="title" value="구매전 확인사항 내용관리 등록" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/checkbeforebuy/checkBeforeBuyRegister.jsp" />
+	</definition>
+	<definition name="tiles/admin/checkbeforebuy/modify" extends="tiles/admin/root">
+		<put-attribute name="navigation" value="Admin > 구매전 확인사항 내용관리 > modify" />
+		<put-attribute name="title" value="구매전 확인사항 내용관리 수정" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/checkbeforebuy/checkBeforeBuyModify.jsp" />
+	</definition>
+	<definition name="tiles/admin/checkbeforebuy/getCheckBeforeBuy" extends="tiles/admin/root">
+		<put-attribute name="navigation" value="Admin > 구매전 확인사항 내용관리 > Detail" />
+		<put-attribute name="title" value="구매전 확인사항 내용관리 상세정보" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/checkbeforebuy/checkBeforeBuyDetailInfo.jsp" />
+	</definition>
+
+	
 	<!-- Seller Delivery Calendar > List -->	
 	<definition name="tiles/admin/deliverycalendarmgt/main" extends="tiles/admin/root">
 		<put-attribute name="title" value="Deliverable schedule search" />
@@ -177,5 +202,7 @@
 	<definition name="tiles/admin/paymentmgt/registPaymentMethodForm" extends="layout/panel_100">
 		<put-attribute name="title" value="Add Payment Method" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/payment/popup/registPaymentMethodForm.jsp" />
-	</definition>			
+	</definition>	
+	
+			
 </tiles-definitions>

@@ -34,6 +34,8 @@ import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
+import melfood.shopping.checkbeforebuy.CheckBeforeBuy;
+import melfood.shopping.checkbeforebuy.CheckBeforeBuyService;
 import melfood.shopping.delivery.DeliveryCalendar;
 import melfood.shopping.delivery.DeliveryCalendarService;
 import melfood.shopping.order.OrderProductOption;
@@ -66,6 +68,9 @@ public class ShoppingCartController extends BaseController {
 
 	@Autowired
 	OrderProductOptionService orderProductOptionService;
+
+	@Autowired
+	CheckBeforeBuyService checkBeforeBuyService;
 
 	/**
 	 * 이 메소드에서는 선택된(선택된 상품판매자: 선택된 장바구니가 없는 경우 첫번째 장바구니) 장바구니 정보를 보여준다.<br>
@@ -185,14 +190,6 @@ public class ShoppingCartController extends BaseController {
 		mav.addObject("selectedCart", currentCart);
 		mav.addObject("numberOfCart", sellers.size());
 
-		// 판매자의 상품배송 일정 검색을 위한 콤보박스 구성
-		// DeliveryCalendar deliveryCalendar = new DeliveryCalendar();
-		// deliveryCalendar.setSellerId(selectedSellerId);
-		// List<Option> deliverableAreas = deliveryCalendarService.getDeliverableAreaList(deliveryCalendar);
-		// htmlProperty = new Properties("sellerDeliverySchedule");
-		// htmlProperty.setCssClass("form-control");
-		// mav.addObject("cbxSellerDeliverySchedule", deliveryCalendarService.generateCmbxForDeliverableArea(deliverableAreas, htmlProperty));
-
 		// 판매자의 결재방식지정 콤보박스 구성
 		List<Option> paymentMethods = paymentMethodService.getCmbxOptions(selectedSellerId);
 		htmlProperty = new Properties("sellerPaymentMethod");
@@ -204,6 +201,10 @@ public class ShoppingCartController extends BaseController {
 		if (sessionUser != null) {
 			mav.addObject("seller", currentCart.getSeller());
 		}
+
+		// 선택된 판매자(장바구니)의 구매전 확인사항을 가저온다.
+		CheckBeforeBuy checkBeforeBuy = checkBeforeBuyService.getDefaultCheckBeforeBuy(selectedSellerId);
+		mav.addObject("checkBeforeBuy", checkBeforeBuy);
 
 		return mav;
 	}
@@ -230,14 +231,17 @@ public class ShoppingCartController extends BaseController {
 
 		try {
 
+			// 상품기본정보와 판매자 정보를 가져온다.
 			Product product = productService.getProduct(new Product(prodId));
 			String sellerId = product.getSeller();
 
+			// 장바구니에 주문에 상품 마스터 정보를 등록한다.
 			ShoppingCart shoppingCart = new ShoppingCart(customerId, sellerId);
 			shoppingCart.setAmount(Integer.parseInt(amount));
 			shoppingCart.setProdId(Integer.parseInt(prodId));
 			int insertedCartId = shoppingCartService.addProductOnCart(shoppingCart);
 
+			// 만일 주문상품에 옵션 선택사항이 존재한다면, 옵션을 구성(목록형태로)하여 주문된 상품의 옵션 테이블(order_product_option)에 추가해준다.
 			if (!StringUtils.isBlank(productOptions)) {
 				prodOptions = StringUtils.split(productOptions, "^");
 				if (prodOptions.length > 0) {
@@ -258,6 +262,8 @@ public class ShoppingCartController extends BaseController {
 					for (int i = 0; i < optionList.size(); i++) {
 						optionList.get(i).setSeq((nextOptionSeq + i));
 					}
+					
+					// 구성된 주문상품의 옵션정보를 등록한다.
 					orderProductOptionService.insertOrderProductOption(optionList);
 				}
 			}
@@ -467,6 +473,24 @@ public class ShoppingCartController extends BaseController {
 		model.put("list", list);
 
 		return model;
+	}
+
+	@RequestMapping("/showSellerInfoPopup")
+	public ModelAndView showSellerInfoPopup(HttpServletRequest request) throws Exception {
+		ModelAndView mav = new ModelAndView("tiles/cart/showSellerInfoPopup");
+		String sellerId = request.getParameter("sellerId");
+		String isPopup = request.getParameter("isPopup");
+
+		User seller = userService.getUserInfo(sellerId);
+
+		if (StringUtils.equalsIgnoreCase(isPopup, "y") || StringUtils.equalsIgnoreCase(isPopup, "yes") || StringUtils.equalsIgnoreCase(isPopup, "true")) {
+			mav.addObject("isPopup", "y");
+		} else {
+			mav.addObject("isPopup", "n");
+		}
+		mav.addObject("seller", seller);
+
+		return mav;
 	}
 
 	/**

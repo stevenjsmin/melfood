@@ -35,7 +35,7 @@
 	
 	<select id="getNextCategoryId" resultType="java.lang.Integer">
 		/* QUERY ID : getNextCategoryId */
-			SELECT CASE WHEN max(category_id) IS NULL THEN 1 ELSE (max(category_id) + 1) END FROM product_category
+			SELECT CASE WHEN max(category_id) IS NULL THEN 1 ELSE (max(category_id) + 1) END FROM product_category 
 	</select>	
 	
 	<insert id="insertCategory" parameterType="Category">

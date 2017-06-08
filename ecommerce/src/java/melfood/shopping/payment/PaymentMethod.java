@@ -35,12 +35,7 @@ public class PaymentMethod extends BaseDto {
 
 	public PaymentMethod() {
 	}
-
-	/**
-	 * 생성자
-	 *
-	 * @param userId
-	 */
+	
 	public PaymentMethod(String userId) {
 		this.userId = userId;
 	}

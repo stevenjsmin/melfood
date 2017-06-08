@@ -9,6 +9,7 @@
      /* QUERY ID : getUsers */
 		SELECT a.user_id          'userId'
 		       ,a.user_name        'userName'
+		       ,a.user_name_real   'userNameReal'
 		       ,a.sex              'sex'
 		       ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'SEX' AND value = a.sex ) 'sexLabel'
 		       ,a.dob              'dob'
@@ -52,6 +53,8 @@
 			   ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'HAVE_MINIMUM_PAYMENT' AND value = a.seller_have_minimum_payment ) 'sellerHaveMinimumPaymentLabel'
 			   ,a.seller_minimum_payment_for_pickup  'sellerMinimumPaymentForPickup'
 			   ,a.seller_minimum_payment_for_deliver 'sellerMinimumPaymentForDeliver'
+			   ,a.seller_is_mandatory_choose_delivery_pickup_date 'sellerIsMandatoryChooseDeliveryPickupDate'
+			   ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'MANDATORY_DELIVERY_PICKUP_DATE' AND value = a.seller_is_mandatory_choose_delivery_pickup_date ) 'sellerIsMandatoryChooseDeliveryPickupDateLabel'
 			   ,a.profile_photo_id           'profilePhotoId'  		       
 		       ,a.create_datetime    'createDatetime'
 		       ,a.modify_datetime    'modifyDatetime'
@@ -80,6 +83,7 @@
 		 WHERE 1 = 1
          	<if test="userId != null">  AND a.user_id = #{userId} </if>
          	<if test="userName != null"> AND UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%') </if>
+         	<if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
          	<if test="sex != null">  AND UPPER(a.sex) = UPPER(#{sex}) </if>
          	<if test="dob != null">  AND a.dob = #{dob} </if>
          	<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
@@ -114,6 +118,7 @@
 	          WHERE 1 = 1
          	<if test="userId != null">  AND a.user_id = #{userId} </if>
          	<if test="userName != null"> AND UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%') </if>
+         	<if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
          	<if test="sex != null">  AND UPPER(a.sex) = UPPER(#{sex}) </if>
          	<if test="dob != null">  AND a.dob = #{dob} </if>
          	<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
@@ -138,6 +143,7 @@
      /* QUERY ID : insertUser */
 		INSERT INTO cmm_user(user_id,
 		                 user_name,
+		                 user_name_real,
 		                 sex,
 		                 dob,
 		                 address_street,
@@ -169,10 +175,12 @@
 						 seller_have_minimum_payment,   
 						 seller_minimum_payment_for_pickup,   
 						 seller_minimum_payment_for_deliver,   
+						 seller_is_mandatory_choose_delivery_pickup_date,   
 						 profile_photo_id,     		                 
 		                 creator)
 		VALUES (LOWER(#{userId}),
 		        #{userName},
+		        #{userNameReal},
 		        #{sex},
 		        #{dob},
 		        #{addressStreet},
@@ -204,6 +212,7 @@
 				#{sellerHaveMinimumPayment},
 				#{sellerMinimumPaymentForPickup},
 				#{sellerMinimumPaymentForDeliver},
+				#{sellerIsMandatoryChooseDeliveryPickupDate},
 				NULL,		        
 		        #{creator})     
     </insert>        
@@ -257,6 +266,7 @@
 			 UPDATE cmm_user
 			   SET  modify_datetime = CURRENT_TIMESTAMP
 			        ,user_name = #{userName}
+			        ,user_name_real = #{userNameReal}
 			        ,sex = #{sex}
 			        ,dob = #{dob} 
 			        ,mobile = #{mobile} 
@@ -294,6 +304,7 @@
 					,seller_have_minimum_payment       = #{sellerHaveMinimumPayment}
 					,seller_minimum_payment_for_pickup = #{sellerMinimumPaymentForPickup}
 					,seller_minimum_payment_for_deliver = #{sellerMinimumPaymentForDeliver}
+					,seller_is_mandatory_choose_delivery_pickup_date = #{sellerIsMandatoryChooseDeliveryPickupDate}
 			 WHERE user_id = #{userId}
     </update>
                 
@@ -302,6 +313,7 @@
 			 UPDATE cmm_user
 			   SET  modify_datetime = CURRENT_TIMESTAMP
 			        <if test="userName != null">,user_name = #{userName} </if>
+			        <if test="userNameReal != null">,user_name_real = #{userNameReal} </if>
 			        <if test="sex != null">,sex = #{sex} </if>
 			        <if test="dob != null">,dob = #{dob} </if>
 			        <if test="mobile != null">,mobile = #{mobile} </if>
@@ -339,6 +351,7 @@
 					<if test="sellerHaveMinimumPayment != null">,seller_have_minimum_payment       = #{sellerHaveMinimumPayment} </if>
 					<if test="sellerMinimumPaymentForPickup != null and sellerMinimumPaymentForPickup != 0">,seller_minimum_payment_for_pickup = #{sellerMinimumPaymentForPickup} </if>
 					<if test="sellerMinimumPaymentForDeliver != null and sellerMinimumPaymentForDeliver != 0">,seller_minimum_payment_for_deliver = #{sellerMinimumPaymentForDeliver} </if>
+					<if test="sellerIsMandatoryChooseDeliveryPickupDate != null">,seller_is_mandatory_choose_delivery_pickup_date       = #{sellerIsMandatoryChooseDeliveryPickupDate} </if>
 					<if test="profilePhotoId != null and profilePhotoId != 0">,profile_photo_id    = #{profilePhotoId} </if>
 			 WHERE user_id = #{userId}
     </update>            

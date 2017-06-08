@@ -45,7 +45,7 @@ import melfood.shopping.delivery.DeliveryCalendarService;
 @RequestMapping("/admin/deliverycalendarmgt")
 public class DeliveryCalendarMgtController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(DeliveryCalendarMgtController.class);
- 
+
 	@Autowired
 	private DeliveryCalendarService deliveryCalendarService;
 
@@ -105,6 +105,7 @@ public class DeliveryCalendarMgtController extends BaseController {
 		deliveryCalendar.setSearchDateFrom(searchDateFrom);
 
 		if (StringUtils.isNotBlank(isPickup)) deliveryCalendar.setIsPickup(isPickup);
+		if (StringUtils.isNotBlank(searchDateTo)) deliveryCalendar.setSearchDateTo(searchDateTo);
 		if (StringUtils.isNotBlank(searchDateTo)) deliveryCalendar.setSearchDateTo(searchDateTo);
 		if (StringUtils.isNotBlank(sellerId)) deliveryCalendar.setSellerId(sellerId);
 
@@ -189,7 +190,7 @@ public class DeliveryCalendarMgtController extends BaseController {
 		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 		ModelAndView mav = new ModelAndView("tiles/admin/deliverycalendarmgt/addCalendarForm");
 		Properties htmlProperty = new Properties();
-		
+
 		boolean isSessionSeller = StringUtils.equalsIgnoreCase(sessionUser.getSessionRole().getRoleId(), "SELLER");
 
 		User seller = new User();
@@ -198,11 +199,6 @@ public class DeliveryCalendarMgtController extends BaseController {
 		htmlProperty = new Properties("sellerId");
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
-
-		List<Option> amPmOptions = codeService.getValueCmbxOptions("DELIVER_MGT", "DELIVER_AMPM");
-		htmlProperty = new Properties("amPm");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxAmPm", codeService.generateCmbx(amPmOptions, htmlProperty));
 
 		List<Option> addressStateOptions1 = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", "VIC");
 		htmlProperty = new Properties("addressState");
@@ -213,7 +209,7 @@ public class DeliveryCalendarMgtController extends BaseController {
 		String defaultPickupPostcode = "";
 		String defaultPickupSurbub = "";
 		String defaultPickupStreet = "";
-		if(isSessionSeller){
+		if (isSessionSeller) {
 			defaultPickupPostcode = sessionUser.getUser().getSellerDeliveryAddressPostcode();
 			defaultPickupState = sessionUser.getUser().getSellerDeliveryAddressState();
 			defaultPickupSurbub = sessionUser.getUser().getSellerDeliveryAddressSuburb();
@@ -222,7 +218,7 @@ public class DeliveryCalendarMgtController extends BaseController {
 		mav.addObject("defaultPickupPostcode", defaultPickupPostcode);
 		mav.addObject("defaultPickupSurbub", defaultPickupSurbub);
 		mav.addObject("defaultPickupStreet", defaultPickupStreet);
-		
+
 		List<Option> defaultPickupStreetOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", defaultPickupState);
 		htmlProperty = new Properties("sellerPickupAddressState");
 		htmlProperty.setCssClass("form-control");
@@ -255,20 +251,20 @@ public class DeliveryCalendarMgtController extends BaseController {
 		String addressStreet = request.getParameter("addressStreet");
 		String addressNote = request.getParameter("addressNote");
 		String isPickup = request.getParameter("isPickup");
-		String amPm = request.getParameter("amPm");
+		// String amPm = request.getParameter("amPm");
+		String btwnFromHhmm = request.getParameter("btwnFromHhmm");
+		String btwnToHhmm = request.getParameter("btwnToHhmm");
 
 		try {
-			if (StringUtils.isBlank(sellerId) 
-					|| StringUtils.isBlank(yyyyMmDd)
-					|| StringUtils.isBlank(addressPostcode)
-					|| StringUtils.isBlank(addressSuburb)
-					|| StringUtils.isBlank(isPickup)) throw 
-			new Exception("[SELLER_ID | YYYY_MM_DD | AM_PM | IS_PICKUP | ADDRESS_POSTCODE | ADDRESS_SUBURB]  이항목(들)은 빈 값이 될 수 없습니다.");
-			
+			if (StringUtils.isBlank(sellerId) || StringUtils.isBlank(yyyyMmDd) || StringUtils.isBlank(addressPostcode) || StringUtils.isBlank(addressSuburb) || StringUtils.isBlank(isPickup))
+				throw new Exception("[SELLER_ID | YYYY_MM_DD | AM_PM | IS_PICKUP | ADDRESS_POSTCODE | ADDRESS_SUBURB]  이항목(들)은 빈 값이 될 수 없습니다.");
+
 			DeliveryCalendar deliveryCalendar = new DeliveryCalendar(sellerId, yyyyMmDd);
 
 			deliveryCalendar.setIsPickup(isPickup);
-			if (StringUtils.isNotBlank(amPm)) deliveryCalendar.setAmPm(amPm);
+			// if (StringUtils.isNotBlank(amPm)) deliveryCalendar.setAmPm(amPm);
+			if (StringUtils.isNotBlank(btwnFromHhmm)) deliveryCalendar.setBtwnFromHhmm(btwnFromHhmm);
+			if (StringUtils.isNotBlank(btwnToHhmm)) deliveryCalendar.setBtwnToHhmm(btwnToHhmm);
 
 			if (StringUtils.equalsIgnoreCase(isPickup, "Y")) {
 				if (StringUtils.isBlank(addressPostcode) || StringUtils.isBlank(addressState) || StringUtils.isBlank(addressSuburb) || StringUtils.isBlank(addressStreet)) {
@@ -293,6 +289,11 @@ public class DeliveryCalendarMgtController extends BaseController {
 				deliveryCalendar.setAddressState(null);
 				deliveryCalendar.setAddressSuburb(null);
 				deliveryCalendar.setAddressStreet(null);
+
+				if (!StringUtils.isBlank(btwnFromHhmm) && StringUtils.isBlank(btwnToHhmm)) {
+					btwnToHhmm = btwnFromHhmm;
+				}
+
 			}
 			deliveryCalendar.setUseYn("Y");
 			updateCnt = deliveryCalendarService.insertDeliveryCalendar(deliveryCalendar);

@@ -31,7 +31,8 @@ public class DeliveryCalendar extends BaseDto {
 	private String addressNote;
 
 	private String isPickup;
-	private String amPm;
+	private String btwnFromHhmm;
+	private String btwnToHhmm;
 
 	private Postcode postcode;
 	private User seller;
@@ -86,26 +87,6 @@ public class DeliveryCalendar extends BaseDto {
 	 */
 	public void setYyyyMmDd(String yyyyMmDd) {
 		this.yyyyMmDd = yyyyMmDd;
-	}
-
-	/**
-	 * 배달가능한 오전,오후 또는 종일을 값들중에 하나를 가저온다.<br>
-	 * [AM | PM | ALL]
-	 * 
-	 * @return
-	 */
-	public String getAmPm() {
-		return amPm;
-	}
-
-	/**
-	 * 배달가능한 오전,오후 또는 종일을 값들중에 하나를 설정한다.<br>
-	 * [AM | PM | ALL]
-	 * 
-	 * @param amPm
-	 */
-	public void setAmPm(String amPm) {
-		this.amPm = amPm;
 	}
 
 	public Postcode getPostcode() {
@@ -178,6 +159,22 @@ public class DeliveryCalendar extends BaseDto {
 
 	public void setAddressNote(String addressNote) {
 		this.addressNote = addressNote;
+	}
+
+	public String getBtwnFromHhmm() {
+		return btwnFromHhmm;
+	}
+
+	public void setBtwnFromHhmm(String btwnFromHhmm) {
+		this.btwnFromHhmm = btwnFromHhmm;
+	}
+
+	public String getBtwnToHhmm() {
+		return btwnToHhmm;
+	}
+
+	public void setBtwnToHhmm(String btwnToHhmm) {
+		this.btwnToHhmm = btwnToHhmm;
 	}
 
 }

@@ -98,20 +98,30 @@ $(document).ready(function () {
         },         
 		columns: [
 				  { hidden : true, field: 'yyyyMmDd'},
+				  { hidden : true, field: 'sellerId'},
 				  { hidden : true, field: 'deliverySeq'},
+				  { hidden : true, field: 'addressPostcode'},
+				  { hidden : true, field: 'addressState'},
+				  { hidden : true, field: 'addressSuburb'},
+				  { hidden : true, field: 'addressStreet'},
 		          { title : '픽업/배송 일짜', template: kendo.template($("#yyyyMmDd-template").html()), width: 120},
-		          { title : '오전/오후', template: kendo.template($("#amPm-template").html()), width: 150},
+		          { title : '시간', template: kendo.template($("#time-template").html()), width: 150},
 		          { title : '픽업/배송', template: kendo.template($("#deliverMethod-template").html()), width: 150},
 		          { title : '우편번호',  template: kendo.template($("#postcode-template").html()), width: 100},
-		          { title : '지역', template: kendo.template($("#suburb-address-template").html())},
-		          { title : '픽업주소(고객님이 픽업오시는 경우)', template: kendo.template($("#street-address-template").html())}
+		          { title : '지역', template: kendo.template($("#suburb-address-template").html()), width: 150},
+		          { title : '픽업주소(고객님이 픽업오시는 경우)', template: kendo.template($("#street-address-template").html())},
+		          { title : '지도', template: kendo.template($("#address-map-template").html()),attributes: {style: "text-align: center;" }, width: 80}
 		 ] // End of Columns
     }); // End of GRID
     
     $("#grid_panel_main").dblclick(function(e) {
     	var dataItem = KENDO_SELECTED_RECORD;
-        var prodId = dataItem.prodId;
-        // Nothing to do
+    	
+		var yyyyMmDd = dataItem.yyyyMmDd;
+		var sellerId = dataItem.sellerId;
+		var deliverySeq = dataItem.deliverySeq;
+		
+        displayGMapPopup(yyyyMmDd, sellerId, deliverySeq)
     });
     
     function onChange(e) {
@@ -123,14 +133,51 @@ $(document).ready(function () {
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
 
-<script id="amPm-template" type="text/x-kendo-template">
-    # if (amPm == 'AM') { #
-          <span style="color: 72BA22;">오전 </span>
-    # } else if (amPm == 'PM') { # 
-          <span style="color: 7768E5;">오후 </span>
+
+<script type="text/javascript">
+	function displayGMapPopup(yyyyMmDd, sellerId, deliverySeq){
+			
+	    $("#displayGMapPopup").kendoWindow({
+	        content: "/shop/sellerDeliveryAddressMap.yum?yyyyMmDd=" + yyyyMmDd + "&sellerId=" + sellerId + "&deliverySeq=" + deliverySeq,
+	        actions: [ "Minimize", "Maximize","Close" ],
+	        title: "배송/픽업 주소맵",
+	        modal: true,
+	        iframe: true
+		});
+	  
+		var popup_dialog = $("#displayGMapPopup").data("kendoWindow");
+		// popup_dialog.setOptions({width: "700",height: "700",position: { top: "100", left: "50" },});
+		popup_dialog.setOptions({width: "850",height: "650"});
+		popup_dialog.center();
+		      
+		$("#displayGMapPopup").data("kendoWindow").open(); 
+	}
+	function closeDisplayGMapPopup() {
+		var win_dialog = $("#displayGMapPopup").data("kendoWindow");
+		win_dialog.close();
+	} 
+</script>
+
+
+<script id="time-template" type="text/x-kendo-template">
+    # if (isPickup == 'Y') { #
+          <span style="color: E57014;">
+    # } else if (isPickup == 'N') { # 
+          <span style="color: 7768E5;">
     # } else { #
-          <span style="color: 0080c0;">아침7시 ~ 저녁 6시</span>
+          <span>
     # } #
+
+    # if (btwnFromHhmm != '' && btwnFromHhmm != null) { #
+          #= btwnFromHhmm #
+    # } else { #
+    # } #
+    ~
+    # if (btwnToHhmm != '' && btwnToHhmm != null) { #
+          #= btwnToHhmm #
+    # } else { #
+    # } #
+    </span> 
 </script>
 <script id="deliverMethod-template" type="text/x-kendo-template">
     # if (isPickup == 'Y') { #
@@ -166,29 +213,32 @@ $(document).ready(function () {
 		  #= '<font color="E57014"> ' + addressStreet + '</font>' #
     # } else { #
     # } #
-
+</script>
+<script id="address-map-template" type="text/x-kendo-template">
+    #= '<a href=javascript:displayGMapPopup("' + yyyyMmDd + '","' + sellerId + '","' + deliverySeq +'")><img src="/resources/image/gmap_icon.png" style="height: 17px;"></a>' #
 </script>
 
 </head>
 <body>
 
+	<div id="displayGMapPopup"></div>
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
 		    <span class="subtitle"> 상품판매자 배송일정 및 상품 픽업가능일짜</span>
 		    <hr class="subtitle"/>
 				 <c:choose>
 						<c:when test="${not empty seller}">
 						    <span style="font-size: 12px;color: #A8A8A8;">
-						    	** 고객님의 지역(Suburb)에 배송일정이 없으시더라도 [주문량]과 [배송예정지역과 입접한 경우]에 배송서비스가 가능할수 있으니 주문하여 주세요. 배송이 되지 않으면 미리 알려드리도록 하겠습니다.<br/> 
+						    	** 고객님의 지역(Suburb)에 배송일정이 없으신경우 [주문량]과 [배송예정지역과 입접한 경우]에 배송서비스가 가능할 수 있으니 전화 주세요.<br/> 
 						    	** [고객님께서 픽업] 하시는 경우 판매자가 지정한 [픽업주소]로 오셔서 픽업 하시면 됩니다.</span><br/> 
 				    	 	<table class="search_table">
 				    	 		<tr>
-				    	 			<td class="label">Postcode :  </td>
+				    	 			<td class="label">우편번호 :  </td>
 				    	 			<td class="value_end"><input class="form-control" id="addressPostcode" name="addressPostcode" maxlength="4" value="${defaultCustomerPostcode}"></input></td>
 				    	 			<td class="label">Suburb :  </td>
 				    	 			<td class="value_end"><input class="form-control" id="addressSuburb" name="addressSuburb" value="${defaultCustomerSuburb}"></td>    	 		
-				                	<td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
+				                	<td class="find"><button type="button" class="btn btn-primary" onclick="search();">검색</button></td>
 				    	 		</tr>
 				    	 	</table>
 						    
@@ -204,20 +254,27 @@ $(document).ready(function () {
 									    <div id="grid_panel_main"></div>
 						         	</td>
 						         </tr>
+						         <tr>
+        							<td  colspan="4" style="text-align: right;padding-right: 10px;font-size: 10px;">지도 아이콘을 클릭하거나, 라인을 더블클릭하면 상세지도를 확인하실 수 있습니다.</td>
+        						 </tr>
 						    </table>
 						</c:when>
 						<c:otherwise>
 							<span style="font-size: small;font-weight: bold;padding-left: 100px;padding-top: 50px;padding-bottom: 50px;"><a href="javascript:openLoginPopup();">로그인</a> 하셔야 확인하실 수 있는 정보입니다.</span>
 						</c:otherwise>
-				 </c:choose>				    
-		    
-		    
-		    
-		    
-		    
-		    
+				 </c:choose>
+				 
+				 <c:if test="${isPopup == 'true' }">
+					 <table class="action_button_table" width="100%" style="margin-top: 10px;" >
+	        			<tr>
+	            		 	<td style="padding-right: 10px;">
+	                  			<a href="javascript:parent.closedeliverySchedulePopup();" class="btn btn-info">&nbsp;&nbsp; 닫기 &nbsp;&nbsp;</a>
+	             			</td>
+	        			</tr>
+	    			</table>				    
+				 </c:if>
 		</div>
-	</div>	          
+	</div>	
 
 </body>
 </html>

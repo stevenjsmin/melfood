@@ -23,9 +23,11 @@ public class NoticeDiscuss extends BaseDto {
 	private String subject;
 	private String contents;
 	private int attachedFile;
-	private String writer;
+	private String writerName;
 	private String writeFrom;
+	private String writeFromName;
 	private String writeTo;
+	private String writeToName;
 	private String isForAllSeller;
 	private String isForAllCustomer;
 	private String isForNotice;
@@ -91,14 +93,6 @@ public class NoticeDiscuss extends BaseDto {
 		this.attachedFile = attachedFile;
 	}
 
-	public String getWriter() {
-		return writer;
-	}
-
-	public void setWriter(String writer) {
-		this.writer = writer;
-	}
-
 	public String getWriteFrom() {
 		return writeFrom;
 	}
@@ -137,6 +131,30 @@ public class NoticeDiscuss extends BaseDto {
 
 	public void setIsForNotice(String isForNotice) {
 		this.isForNotice = isForNotice;
+	}
+
+	public String getWriterName() {
+		return writerName;
+	}
+
+	public void setWriterName(String writerName) {
+		this.writerName = writerName;
+	}
+
+	public String getWriteFromName() {
+		return writeFromName;
+	}
+
+	public void setWriteFromName(String writeFromName) {
+		this.writeFromName = writeFromName;
+	}
+
+	public String getWriteToName() {
+		return writeToName;
+	}
+
+	public void setWriteToName(String writeToName) {
+		this.writeToName = writeToName;
 	}
 
 }

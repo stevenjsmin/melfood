@@ -92,6 +92,7 @@ public class UserController extends BaseController {
 		List<User> list = null;
 
 		String userName = request.getParameter("userName");
+		String userNameReal = request.getParameter("userNameReal");
 		String email = request.getParameter("email");
 		String dob = request.getParameter("dob");
 		String sex = request.getParameter("sex");
@@ -112,6 +113,7 @@ public class UserController extends BaseController {
 		user.setPagenationPageSize(getPageSize(request));
 
 		if (StringUtils.isNotBlank(userName)) user.setUserName(userName);
+		if (StringUtils.isNotBlank(userNameReal)) user.setUserNameReal(userNameReal);
 		if (StringUtils.isNotBlank(email)) user.setEmail(email);
 		if (StringUtils.isNotBlank(dob)) user.setDob(dob);
 		if (StringUtils.isNotBlank(sex)) user.setSex(sex);
@@ -199,6 +201,11 @@ public class UserController extends BaseController {
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxUseSocialMessenger", codeService.generateCmbx(useSocialMessengerOptions, htmlProperty));
 
+		List<Option> sellerIsMandatoryChooseDeliveryPickupDateOptions = codeService.getValueCmbxOptions("USER_MGT", "MANDATORY_DELIVERY_PICKUP_DATE");
+		htmlProperty = new Properties("sellerIsMandatoryChooseDeliveryPickupDate");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxSellerIsMandatoryChooseDeliveryPickupDate", codeService.generateCmbx(sellerIsMandatoryChooseDeliveryPickupDateOptions, htmlProperty));
+
 		return mav;
 	}
 
@@ -272,6 +279,11 @@ public class UserController extends BaseController {
 		htmlProperty = new Properties("useSocialMessenger");
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxUseSocialMessenger", codeService.generateCmbx(useSocialMessengerOptions, htmlProperty));
+
+		List<Option> sellerIsMandatoryChooseDeliveryPickupDateOptions = codeService.getValueCmbxOptions("USER_MGT", "MANDATORY_DELIVERY_PICKUP_DATE", user.getSellerIsMandatoryChooseDeliveryPickupDate());
+		htmlProperty = new Properties("sellerIsMandatoryChooseDeliveryPickupDate");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxSellerIsMandatoryChooseDeliveryPickupDate", codeService.generateCmbx(sellerIsMandatoryChooseDeliveryPickupDateOptions, htmlProperty));
 
 		mav.addObject("user", user);
 
@@ -389,6 +401,7 @@ public class UserController extends BaseController {
 
 		String userId = request.getParameter("userId");
 		String userName = request.getParameter("userName");
+		String userNameReal = request.getParameter("userNameReal");
 		String password = request.getParameter("password");
 		String sex = request.getParameter("sex");
 		String dob = request.getParameter("dob");
@@ -422,6 +435,7 @@ public class UserController extends BaseController {
 		String sellerHaveMinimumPayment = request.getParameter("sellerHaveMinimumPayment");
 		String sellerMinimumPaymentForPickup = request.getParameter("sellerMinimumPaymentForPickup");
 		String sellerMinimumPaymentForDeliver = request.getParameter("sellerMinimumPaymentForDeliver");
+		String sellerIsMandatoryChooseDeliveryPickupDate = request.getParameter("sellerIsMandatoryChooseDeliveryPickupDate");
 		// String sellerProfilePhotoId = request.getParameter("sellerProfilePhotoId");
 		if (StringUtils.equalsIgnoreCase(sellerHaveMinimumPayment, "N") || StringUtils.isBlank(sellerHaveMinimumPayment)) {
 			sellerHaveMinimumPayment = "N";
@@ -443,6 +457,11 @@ public class UserController extends BaseController {
 			}
 
 			if (!StringUtils.isBlank(userName)) user.setUserName(userName);
+			if (!StringUtils.isBlank(userNameReal)) {
+				user.setUserNameReal(userNameReal);
+			} else {
+				user.setUserNameReal(userName);
+			}
 			if (!StringUtils.isBlank(sex)) user.setSex(sex);
 			if (!StringUtils.isBlank(dob)) user.setDob(dob);
 			if (!StringUtils.isBlank(mobile)) user.setMobile(mobile);
@@ -475,6 +494,7 @@ public class UserController extends BaseController {
 			if (!StringUtils.isBlank(sellerMinimumPaymentForPickup)) user.setSellerMinimumPaymentForPickup(Float.parseFloat(sellerMinimumPaymentForPickup));
 			if (!StringUtils.isBlank(sellerMinimumPaymentForDeliver)) user.setSellerMinimumPaymentForDeliver(Float.parseFloat(sellerMinimumPaymentForDeliver));
 			// if (!StringUtils.isBlank(sellerProfilePhotoId)) user.setSellerProfilePhotoId(Integer.parseInt(sellerProfilePhotoId));
+			if (!StringUtils.isBlank(sellerIsMandatoryChooseDeliveryPickupDate)) user.setSellerIsMandatoryChooseDeliveryPickupDate(sellerIsMandatoryChooseDeliveryPickupDate);
 
 			if (StringUtils.equalsIgnoreCase(actionMode, MelfoodConstants.ACTION_MODE_ADD)) {
 				if (userService.existUser(userId)) throw new Exception("이미 존재하고 있는 사용자 입니다.");

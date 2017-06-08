@@ -16,9 +16,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
-import melfood.framework.user.User;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +28,9 @@ import org.springframework.web.servlet.ModelAndView;
 import melfood.framework.MelfoodConstants;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import melfood.framework.user.User;
 
 /**
  * Controller for Admin main entry management
@@ -50,10 +50,9 @@ public class NoticeDiscussController extends BaseController {
 	@RequestMapping("/Main")
 	public ModelAndView main() throws Exception {
 		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/main");
-
 		Properties htmlProperty = new Properties();
 
-		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "YES_NO");
+		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "IS_FOR_NOTICE");
 		htmlProperty = new Properties("isForNotice");
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
@@ -76,7 +75,6 @@ public class NoticeDiscussController extends BaseController {
 		String category = request.getParameter("category");
 		String subject = request.getParameter("subject");
 		String contents = request.getParameter("contents");
-		String writer = request.getParameter("writer");
 		String writeFrom = request.getParameter("writeFrom");
 		String writeTo = request.getParameter("writeTo");
 		String isForAllSeller = request.getParameter("isForAllSeller");
@@ -89,7 +87,6 @@ public class NoticeDiscussController extends BaseController {
 		if (StringUtils.isNotBlank(category)) noticeDiscuss.setCategory(category);
 		if (StringUtils.isNotBlank(subject)) noticeDiscuss.setSubject(subject);
 		if (StringUtils.isNotBlank(contents)) noticeDiscuss.setContents(contents);
-		if (StringUtils.isNotBlank(writer)) noticeDiscuss.setWriter(writer);
 		if (StringUtils.isNotBlank(writeFrom)) noticeDiscuss.setWriteFrom(writeFrom);
 		if (StringUtils.isNotBlank(writeTo)) noticeDiscuss.setWriteTo(writeTo);
 		if (StringUtils.isNotBlank(isForAllSeller)) noticeDiscuss.setIsForAllSeller(isForAllSeller);
@@ -108,14 +105,6 @@ public class NoticeDiscussController extends BaseController {
 		return model;
 	}
 
-	/**
-	 * 대화내용 상세정보
-	 *
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws Exception
-	 */
 	@RequestMapping("/noticeDiscuss")
 	public ModelAndView noticeDiscuss(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/detailInfo");
@@ -124,98 +113,69 @@ public class NoticeDiscussController extends BaseController {
 		if (StringUtils.isBlank(id)) throw new Exception("Can not be null : id");
 
 		NoticeDiscuss noticeDiscuss = noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id));
-		User userFrom = userService.getUserInfo(noticeDiscuss.getWriteFrom());
-		User userTo = userService.getUserInfo(noticeDiscuss.getWriteTo());
+		mav.addObject("noticeDiscuss", noticeDiscuss);
 
-		noticeDiscuss.setWriteFrom(userFrom.getUserName() + "(" + noticeDiscuss.getWriteFrom() + ")");
-		noticeDiscuss.setWriteTo(userTo.getUserName() + "(" + noticeDiscuss.getWriteTo() + ")");
+		return mav;
+	}
+
+	@RequestMapping("/regist")
+	public ModelAndView noticeDiscussRegistForm(HttpServletRequest request) throws Exception {
+		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/regist");
+		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+		mav.addObject("creator", sessionUser.getUser().getUserName());
+
+		Properties htmlProperty = new Properties();
+
+		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "IS_FOR_NOTICE", "Y");
+		htmlProperty = new Properties("isForNotice");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
+
+		List<Option> isForAllSellerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "Y");
+		htmlProperty = new Properties("isForAllSeller");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllSeller", codeService.generateCmbx(isForAllSellerOptions, htmlProperty));
+
+		List<Option> isForAllCustomerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "Y");
+		htmlProperty = new Properties("isForAllCustomer");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllCustomer", codeService.generateCmbx(isForAllCustomerOptions, htmlProperty));
+
+		mav.addObject("writeFrom", sessionUser.getUser().getUserId());
+		mav.addObject("writeFromName", sessionUser.getUser().getUserName());
+		
+		return mav;
+	}
+
+	@RequestMapping("/modify")
+	public ModelAndView noticeDiscussModifyForm(HttpServletRequest request) throws Exception {
+		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/modify");
+
+		String id = request.getParameter("id");
+		NoticeDiscuss noticeDiscuss = noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id));
+
+		Properties htmlProperty = new Properties();
+
+		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "IS_FOR_NOTICE", noticeDiscuss.getIsForNotice());
+		htmlProperty = new Properties("isForNotice");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
+
+		List<Option> isForAllSellerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForAllSeller());
+		htmlProperty = new Properties("isForAllSeller");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllSeller", codeService.generateCmbx(isForAllSellerOptions, htmlProperty));
+
+		List<Option> isForAllCustomerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForAllCustomer());
+		htmlProperty = new Properties("isForAllCustomer");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxIsForAllCustomer", codeService.generateCmbx(isForAllCustomerOptions, htmlProperty));
 
 		mav.addObject("noticeDiscuss", noticeDiscuss);
 
 		return mav;
 	}
 
-	/**
-	 * 대화내용 등록 폼구성
-	 *
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/noticeDiscussRegistForm")
-	public ModelAndView noticeDiscussRegistForm(HttpServletRequest request) throws Exception {
-		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/regist");
-		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
-
-		Properties htmlProperty = new Properties();
-
-		List<Option> isForSellerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "N");
-		htmlProperty = new Properties("isForAllSeller");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxIsForAllSeller", codeService.generateCmbx(isForSellerOptions, htmlProperty));
-
-		List<Option> isForCustomerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "N");
-		htmlProperty = new Properties("isForAllCustomer");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxIsForAllCustomer", codeService.generateCmbx(isForCustomerOptions, htmlProperty));
-
-		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", "Y");
-		htmlProperty = new Properties("isForNotice");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
-
-		mav.addObject("creator", sessionUser.getUser().getUserName());
-		return mav;
-	}
-
-	/**
-	 * 대화내용 수정 폼구성
-	 *
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
-	@RequestMapping("/noticeDiscussModifyForm")
-	public ModelAndView noticeDiscussModifyForm(HttpServletRequest request) throws Exception {
-		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/modify");
-
-		String id = request.getParameter("id");
-		NoticeDiscuss noticeDiscuss = noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id));
-		mav.addObject("noticeDiscuss", noticeDiscussService.getNoticeDiscussInfo(Integer.parseInt(id)));
-
-		User userFrom = userService.getUserInfo(noticeDiscuss.getWriteFrom());
-		User userTo = userService.getUserInfo(noticeDiscuss.getWriteTo());
-
-		mav.addObject("writeFromLabel", userFrom.getUserName() + "(" + noticeDiscuss.getWriteFrom() + ")");
-		mav.addObject("writeToLabel", userTo.getUserName() + "(" + noticeDiscuss.getWriteTo() + ")");
-
-		Properties htmlProperty = new Properties();
-
-		List<Option> isForSellerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForAllSeller());
-		htmlProperty = new Properties("isForAllSeller");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxIsForAllSeller", codeService.generateCmbx(isForSellerOptions, htmlProperty));
-
-		List<Option> isForCustomerOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForAllCustomer());
-		htmlProperty = new Properties("isForAllCustomer");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxIsForAllCustomer", codeService.generateCmbx(isForCustomerOptions, htmlProperty));
-
-		List<Option> isForNoticeOptions = codeService.getValueCmbxOptions("COMM", "YES_NO", noticeDiscuss.getIsForNotice());
-		htmlProperty = new Properties("isForNotice");
-		htmlProperty.setCssClass("form-control");
-		mav.addObject("cbxIsForNotice", codeService.generateCmbx(isForNoticeOptions, htmlProperty));
-
-		return mav;
-	}
-
-	/**
-	 * 대화내용을 수정하거나 등록할때 내용을 등록한다
-	 *
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
 	@RequestMapping(value = "/saveModify", produces = "application/json")
 	@ResponseBody
 	public Map<String, Object> saveModify(HttpServletRequest request) throws Exception {
@@ -231,48 +191,53 @@ public class NoticeDiscussController extends BaseController {
 		String category = request.getParameter("category");
 		String subject = request.getParameter("subject");
 		String contents = request.getParameter("contents");
-		String writer = request.getParameter("writer");
 		String writeFrom = request.getParameter("writeFrom");
 		String writeTo = request.getParameter("writeTo");
 		String isForAllSeller = request.getParameter("isForAllSeller");
 		String isForAllCustomer = request.getParameter("isForAllCustomer");
 		String isForNotice = request.getParameter("isForNotice");
+		String searchDateFrom = request.getParameter("searchDateFrom");
 		String searchDateTo = request.getParameter("searchDateTo");
 		String creator = sessionUser.getUser().getUserId();
+
+		if (StringUtils.isBlank(writeFrom)) writeFrom = creator;
+
+		if (!StringUtils.isBlank(writeTo)) {
+			isForAllSeller = "N";
+			isForAllCustomer = "N";
+		}
+		if (StringUtils.equalsIgnoreCase(isForAllSeller, "Y") || StringUtils.equalsIgnoreCase(isForAllCustomer, "Y")) {
+			writeTo = null;
+		}
 
 		NoticeDiscuss noticeDiscuss = null;
 
 		try {
 
-			if (StringUtils.isBlank(id) && StringUtils.equals(actionMode, MelfoodConstants.ACTION_MODE_MODIFY)) throw new Exception("Can not be null : id");
-
-			if (StringUtils.isBlank(subject) || StringUtils.isBlank(contents) || StringUtils.isBlank(writeFrom) || StringUtils.isBlank(writeTo)
-					|| StringUtils.isBlank(isForAllSeller) || StringUtils.isBlank(isForAllCustomer) || StringUtils.isBlank(isForNotice) || StringUtils.isBlank(contents)) {
-				throw new Exception("[subject | contents | writeFrom | writeTo | isForAllSeller | isForAllCustomer | isForNotice]  이항목(들)은 빈 값이 될 수 없습니다.");
-			}
-
 			if (StringUtils.equalsIgnoreCase(actionMode, MelfoodConstants.ACTION_MODE_MODIFY)) {
+				if (StringUtils.isBlank(id) || StringUtils.isBlank(subject) || StringUtils.isBlank(contents)) {
+					throw new Exception("[ID | SUBJECT | CONTENTS]  이항목(들)은 빈 값이 될 수 없습니다.");
+				}
 				noticeDiscuss = new NoticeDiscuss(id);
 			} else {
+				if (StringUtils.isBlank(subject) || StringUtils.isBlank(contents)) {
+					throw new Exception("[SUBJECT | CONTENTS]  이항목(들)은 빈 값이 될 수 없습니다.");
+				}
 				noticeDiscuss = new NoticeDiscuss();
+				noticeDiscuss.setCreator(creator);
 			}
 			if (StringUtils.isNotBlank(category)) noticeDiscuss.setCategory(category);
 			if (StringUtils.isNotBlank(subject)) noticeDiscuss.setSubject(subject);
 			if (StringUtils.isNotBlank(contents)) noticeDiscuss.setContents(contents);
-
-			if (StringUtils.isNotBlank(writer)) {
-				noticeDiscuss.setWriter(writer);
-			} else {
-				noticeDiscuss.setWriter(creator);
-			}
 			if (StringUtils.isNotBlank(writeFrom)) noticeDiscuss.setWriteFrom(writeFrom);
 			if (StringUtils.isNotBlank(writeTo)) noticeDiscuss.setWriteTo(writeTo);
 			if (StringUtils.isNotBlank(isForAllSeller)) noticeDiscuss.setIsForAllSeller(isForAllSeller);
 			if (StringUtils.isNotBlank(isForAllCustomer)) noticeDiscuss.setIsForAllCustomer(isForAllCustomer);
 			if (StringUtils.isNotBlank(isForNotice)) noticeDiscuss.setIsForNotice(isForNotice);
+			if (StringUtils.isNotBlank(searchDateFrom)) noticeDiscuss.setSearchDateFrom(searchDateFrom);
+			if (StringUtils.isNotBlank(searchDateTo)) noticeDiscuss.setSearchDateTo(searchDateTo);
 
 			if (StringUtils.equalsIgnoreCase(actionMode, MelfoodConstants.ACTION_MODE_ADD)) {
-				noticeDiscuss.setCreator(creator);
 				updateCnt = noticeDiscussService.registNoticeDiscuss(noticeDiscuss);
 			} else {
 				updateCnt = noticeDiscussService.modifyNoticeDiscuss(noticeDiscuss);
@@ -290,13 +255,6 @@ public class NoticeDiscussController extends BaseController {
 		return model;
 	}
 
-	/**
-	 * 대화내용 삭제
-	 *
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
 	@RequestMapping(value = "/deleteNoticeDiscuss", produces = "application/json")
 	@ResponseBody
 	public Map<String, Object> deleteNoticeDiscuss(HttpServletRequest request) throws Exception {
@@ -316,6 +274,57 @@ public class NoticeDiscussController extends BaseController {
 			e.printStackTrace();
 			model.put("resultCode", "-1");
 			model.put("message", e.getMessage());
+		}
+
+		return model;
+	}
+
+	@RequestMapping("/findUserForm")
+	public ModelAndView addCalendarForm(HttpServletRequest request) throws Exception {
+		ModelAndView mav = new ModelAndView("tiles/framework/noticedisscussmanager/findUserForm");
+		Properties htmlProperty = new Properties();
+
+		String objectName = request.getParameter("objectName");
+		mav.addObject("objectName", objectName);
+
+		List<Option> userTypeOptions = codeService.getValueCmbxOptions("USER_MGT", "USER_TYPE");
+		htmlProperty = new Properties("userType");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxUserType", codeService.generateCmbx(userTypeOptions, htmlProperty));
+
+		return mav;
+	}
+
+	@RequestMapping(value = "/findUser", produces = "application/json")
+	@ResponseBody
+	public Map<String, Object> listUsers(HttpServletRequest request) throws Exception {
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		List<User> list = null;
+
+		String userName = request.getParameter("userName");
+		String userType = request.getParameter("userType");
+
+		User user = new User();
+
+		// For Pagination
+		user.setPagenationPage(getPage(request));
+		user.setPagenationPageSize(getPageSize(request));
+
+		if (StringUtils.isNotBlank(userName)) user.setUserName(userName);
+		if (StringUtils.isNotBlank(userType)) user.setRoleId(userType);
+
+		try {
+			Integer totalCount = 0;
+
+			list = userService.getUsers(user);
+			totalCount = userService.getTotalCntForUsers(user);
+
+			model.put("totalCount", totalCount);
+			model.put("list", list);
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		return model;

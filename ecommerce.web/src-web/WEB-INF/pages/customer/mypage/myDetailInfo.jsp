@@ -32,10 +32,16 @@
                               <td class="value">${user.sexLabel}</td>
                          </tr>                         
                          <tr>
-                              <td class="label">Name </td>
+                              <td class="label">닉네임(Nickname) </td>
                               <td class="value">${user.userName}</td>
+                              <td class="label">실명 </td>
+                              <td class="value">${user.userNameReal}</td>
+                         </tr>
+                         <tr>
                               <td class="label">DOB </td>
                               <td class="value">${user.dob}</td>
+                              <td></td>
+                              <td></td>
                          </tr>
                          
                          <tr style="height: 10px;"><td colspan="4"></td></tr>

@@ -39,7 +39,8 @@
            	   DATE_FORMAT(a.modify_datetime,'%Y-%m-%d') 'modifyDatetime',
 		       a.creator 'creator'
 		  FROM product a
-		       LEFT OUTER JOIN product_category b ON b.category_id = a.category_id
+		       LEFT OUTER JOIN product_category b ON b.category_id = a.category_id	 
+		       LEFT OUTER JOIN shop_check_before_buy c ON c.id = a.check_before_buy	 
   	         WHERE 1 = 1
 				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
 				<if test="name != null"> AND UPPER(a.name) LIKE CONCAT('%', UPPER(#{name}), '%') </if>
@@ -64,6 +65,7 @@
 		SELECT COUNT(*)
 		  FROM product a
 		       LEFT OUTER JOIN product_category b ON b.category_id = a.category_id
+		       LEFT OUTER JOIN shop_check_before_buy c ON c.id = a.check_before_buy		 
   	         WHERE 1 = 1
 				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
 				<if test="name != null"> AND UPPER(a.name) LIKE CONCAT('%', UPPER(#{name}), '%') </if>

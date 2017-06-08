@@ -103,6 +103,7 @@ public class JoinMemberController extends BaseController {
 		String password = request.getParameter("password");
 		String password2 = request.getParameter("password2");
 		String userName = request.getParameter("userName");
+		String userNameReal = request.getParameter("userNameReal");
 		String email = request.getParameter("email");
 		String addressState = request.getParameter("addressState");
 		String addressPostcode = request.getParameter("addressPostcode");
@@ -125,12 +126,14 @@ public class JoinMemberController extends BaseController {
 				user.setUserName(joinMemberService.getDefaultUserName());
 			}
 
-			if (!StringUtils.isEmpty(userName)) user.setUserName(userName);
-			if (!StringUtils.isEmpty(email)) user.setEmail(email);
-			if (!StringUtils.isEmpty(addressState)) user.setAddressState(addressState);
-			if (!StringUtils.isEmpty(addressPostcode)) user.setAddressPostcode(addressPostcode);
-			if (!StringUtils.isEmpty(addressSuburb)) user.setAddressSuburb(addressSuburb);
-			if (!StringUtils.isEmpty(addressStreet)) user.setAddressStreet(addressStreet);
+			if (!StringUtils.isBlank(userName)) user.setUserName(userName);
+			if (!StringUtils.isBlank(userNameReal)) user.setUserNameReal(userNameReal);
+			if (!StringUtils.isBlank(email)) user.setEmail(email);
+			if (!StringUtils.isBlank(addressState)) user.setAddressState(addressState);
+			if (!StringUtils.isBlank(addressPostcode)) user.setAddressPostcode(addressPostcode);
+			if (!StringUtils.isBlank(addressSuburb)) user.setAddressSuburb(addressSuburb);
+			if (!StringUtils.isBlank(addressStreet)) user.setAddressStreet(addressStreet);
+			user.setSellerIsMandatoryChooseDeliveryPickupDate("Y");
 			String userAddress = addressStreet + " " + addressSuburb + " " +  addressPostcode + " " +  addressState;
 
 			user.setUseYn("Y");

@@ -94,7 +94,7 @@
     </update>
         
     <update id="deleteRoleInfo" parameterType="java.lang.String">
-        DELETE FROM cmm_role WHERE role_id = #{roleId}
+        DELETE FROM cmm_role WHERE role_id = #{roleId}    
     </update>    
 
     <insert id="applyMappingWithService" parameterType="java.util.List">

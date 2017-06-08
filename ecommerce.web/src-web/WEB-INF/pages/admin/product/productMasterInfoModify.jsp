@@ -35,9 +35,11 @@ $(document).ready(function() {
 	});
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
+
 </head>
 
 <body>
+
      <table>
           <tr>
                <td valign="top">
@@ -79,8 +81,8 @@ $(document).ready(function() {
                          <tr>
                               <td class="label"><span class="required">* </span>판매상태</td>
                               <td class="value"><c:out value="${cbxSellingStatus}" escapeXml="false" /></td>
-                              <td></td>
-                              <td></td>
+                              <td class="value"></td>
+                              <td class="value"></td>
                          </tr>
                                                   
                          <tr><td colspan="4"><hr/></td></tr>

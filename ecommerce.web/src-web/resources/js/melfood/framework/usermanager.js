@@ -84,7 +84,7 @@ function validateForm(){
  	}
 
  	if(userName == "") {
- 		message = message + prefix + "사용자 이름은 필수 항목입니다.<br>";
+ 		message = message + prefix + "사용자 가명(Nickname)은 필수 항목입니다.<br>";
  		checkObject[checkObject.length] = "userName";
  		validation = false;
  	}
@@ -142,6 +142,8 @@ function validateForm(){
 function save(){
       var userId = $('#userId').val();
       var userName = $('#userName').val();
+      var userNameReal = $('#userNameReal').val();
+      if(userNameReal == '') userNameReal = userName;
       var sex = $('#sex').val();
       var dob = $('#dob').val();
       var email = $('#email').val();
@@ -179,6 +181,8 @@ function save(){
       var sellerHaveMinimumPayment = $('#sellerHaveMinimumPayment').val();
       var sellerMinimumPaymentForPickup = $('#sellerMinimumPaymentForPickup').val();
       var sellerMinimumPaymentForDeliver = $('#sellerMinimumPaymentForDeliver').val();
+      var sellerIsMandatoryChooseDeliveryPickupDate = $('#sellerIsMandatoryChooseDeliveryPickupDate').val();
+      if(sellerIsMandatoryChooseDeliveryPickupDate == '' || sellerIsMandatoryChooseDeliveryPickupDate == undefined ) sellerIsMandatoryChooseDeliveryPickupDate = 'Y';
       
       if(validateForm() == false) return;
       
@@ -187,6 +191,7 @@ function save(){
            data      : {
              userId : userId,
              userName : userName,
+             userNameReal : userNameReal,
              sex : sex,
              dob : dob,
              email : email,
@@ -217,6 +222,7 @@ function save(){
              sellerHaveMinimumPayment : sellerHaveMinimumPayment,
              sellerMinimumPaymentForPickup : sellerMinimumPaymentForPickup,
              sellerMinimumPaymentForDeliver : sellerMinimumPaymentForDeliver,
+             sellerIsMandatoryChooseDeliveryPickupDate : sellerIsMandatoryChooseDeliveryPickupDate,
              actionMode : ACTION_MODE
            },
            success : callbackSave

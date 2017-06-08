@@ -12,9 +12,10 @@
 		       ,a.subject 'subject'
 		       ,a.contents 'contents'
 		       ,a.attached_file 'attachedFile'
-		       ,a.writer 'writer'
 		       ,a.write_from 'writeFrom'
+			   ,(SELECT user_name FROM cmm_user WHERE user_id = a.write_from ) 'writeFromName'
 		       ,a.write_to 'writeTo'
+			   ,(SELECT user_name FROM cmm_user WHERE user_id = a.write_to ) 'writeToName'
 		       ,a.is_for_all_seller 'isForAllSeller'
 		       ,a.is_for_all_customer 'isForAllCustomer'
 		       ,a.is_for_notice 'isForNotice'
@@ -27,10 +28,9 @@
 		        <if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
 		        <if test="subject != null"> AND UPPER(a.subject) LIKE CONCAT('%', UPPER(#{subject}), '%') </if>   
 		        <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>   
-				<if test="writer != null"> AND UPPER(a.writer) LIKE CONCAT('%', UPPER(#{writer}), '%') </if>
-				<if test="writeFrom != null"> AND UPPER(a.writeFrom) LIKE CONCAT('%', UPPER(#{writeFrom}), '%') </if>
-				<if test="writeTo != null"> AND UPPER(a.writeTo) LIKE CONCAT('%', UPPER(#{writeTo}), '%') </if>
-				<if test="isForAllSeller != null"> AND UPPER(a.is_for_all_seller) = UPPER(#{isForAllSeller}) </if>
+		        <if test="writeFrom != null"> AND UPPER(a.write_from) LIKE CONCAT('%',  UPPER(#{writeFrom}), '%') </if>
+		        <if test="writeTo != null"> AND UPPER(a.write_to) LIKE CONCAT('%',  UPPER(#{writeTo}), '%') </if>
+		        <if test="isForAllSeller != null"> AND UPPER(a.is_for_all_seller) = UPPER(#{isForAllSeller}) </if>
 		        <if test="isForAllCustomer != null"> AND UPPER(a.is_for_all_customer) = UPPER(#{isForAllCustomer}) </if>
 		        <if test="isForNotice != null"> AND UPPER(a.is_for_notice) = UPPER(#{isForNotice}) </if>
 		        <if test="creator != null"> AND a.creator = #{creator} </if>
@@ -46,15 +46,39 @@
 		        <if test="id != null and id != 0"> AND a.id = #{id} </if>
 		        <if test="category != null"> AND UPPER(a.category) = UPPER(#{category}) </if>
 		        <if test="subject != null"> AND UPPER(a.subject) LIKE CONCAT('%', UPPER(#{subject}), '%') </if>   
-		        <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>
-				<if test="writer != null"> AND UPPER(a.writer) LIKE CONCAT('%', UPPER(#{writer}), '%') </if>
-				<if test="writeFrom != null"> AND UPPER(a.writeFrom) LIKE CONCAT('%', UPPER(#{writeFrom}), '%') </if>
-				<if test="writeTo != null"> AND UPPER(a.writeTo) LIKE CONCAT('%', UPPER(#{writeTo}), '%') </if>
+		        <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>   
+		        <if test="writeFrom != null"> AND UPPER(a.write_from) LIKE CONCAT('%',  UPPER(#{writeFrom}), '%') </if>
+		        <if test="writeTo != null"> AND UPPER(a.write_to) LIKE CONCAT('%',  UPPER(#{writeTo}), '%') </if>
 		        <if test="isForAllSeller != null"> AND UPPER(a.is_for_all_seller) = UPPER(#{isForAllSeller}) </if>
 		        <if test="isForAllCustomer != null"> AND UPPER(a.is_for_all_customer) = UPPER(#{isForAllCustomer}) </if>
 		        <if test="isForNotice != null"> AND UPPER(a.is_for_notice) = UPPER(#{isForNotice}) </if>
-		        <if test="creator != null"> AND a.creator = #{creator} </if>  
+		        <if test="creator != null"> AND a.creator = #{creator} </if>
     </select>    	
+	
+    <select id="getConversationList" parameterType="NoticeDiscuss" resultType="NoticeDiscuss">
+     /* QUERY ID : getConversationList */
+		SELECT a.id 'id'
+		       ,a.category 'category'
+		       ,a.subject 'subject'
+		       ,a.contents 'contents'
+		       ,a.attached_file 'attachedFile'
+		       ,a.write_from 'writeFrom'
+			   ,(SELECT user_name FROM cmm_user WHERE user_id = a.write_from ) 'writeFromName'
+		       ,a.write_to 'writeTo'
+			   ,(SELECT user_name FROM cmm_user WHERE user_id = a.write_to ) 'writeToName'
+		       ,a.is_for_all_seller 'isForAllSeller'
+		       ,a.is_for_all_customer 'isForAllCustomer'
+		       ,a.is_for_notice 'isForNotice'
+			   ,a.modify_datetime 'modifyDatetime'
+			   ,a.create_datetime 'createDatetime'
+			   ,a.creator 'creator'
+		  FROM cmm_notice_discuss a
+	          WHERE UPPER(a.is_for_notice) = 'N'
+	          		AND (  (UPPER(a.write_from) = UPPER(#{writeFrom}) AND UPPER(a.write_to) = UPPER(#{writeTo})) OR
+	          			   (UPPER(a.write_from)   = UPPER(#{writeTo}) AND UPPER(a.write_to) = UPPER(#{writeFrom})) )
+		      ORDER BY a.id DESC        
+		  LIMIT 0, #{pagenationPageSize}		        
+	</select>	
 	
     <delete id="deleteNoticeDiscuss" parameterType="java.lang.Integer">
         /* QUERY ID : deleteNoticeDiscuss */
@@ -68,7 +92,6 @@
 							,category
 							,subject
 							,contents
-							,writer
 							,write_from
 							,write_to
 							,is_for_all_seller
@@ -79,7 +102,6 @@
 		    ,#{category}
 		    ,#{subject}
 		    ,#{contents}
-		    ,#{writer}
 		    ,#{writeFrom}
 		    ,#{writeTo}
 		    ,#{isForAllSeller}
@@ -92,16 +114,15 @@
      /* QUERY ID : modifyNoticeDiscuss */    
 		UPDATE cmm_notice_discuss
 		   SET create_datetime = CURRENT_TIMESTAMP
-		   	    , category = #{category}
-		   	    , subject = TRIM(#{subject})
-		   	    , contents = TRIM(#{contents})
-		   	    , writer = #{writer}
-		   	    , write_from = #{writeFrom}
-		   	    , write_to = #{writeTo}
-		   	    , is_for_all_seller = UPPER(#{isForAllSeller})
-		   	    , is_for_all_customer = UPPER(#{isForAllCustomer})
-		   	    , is_for_notice = UPPER(#{isForNotice})
-		   	    , creator = #{creator}
+		   	   , category = #{category}
+		   	   , subject = TRIM(#{subject})
+		   	   , contents = TRIM(#{contents})
+		   	   , write_from = #{writeFrom}
+		   	   , write_to = #{writeTo}
+		   	   , is_for_all_seller = UPPER(#{isForAllSeller})
+		   	   , is_for_all_customer = UPPER(#{isForAllCustomer})
+		   	   , is_for_notice = UPPER(#{isForNotice})
+		   	   , creator = #{creator}
         WHERE id =  #{id} 	       
     </update>       
     
@@ -112,7 +133,6 @@
 		   	   <if test="category != null">, category = #{category}</if>
 		   	   <if test="subject != null">, subject = TRIM(#{subject})</if>
 		   	   <if test="contents != null">, contents = TRIM(#{contents})</if>
-		   	   <if test="writer != null">, writer = #{writer}</if>
 		   	   <if test="writeFrom != null">, write_from = #{writeFrom}</if>
 		   	   <if test="writeTo != null">, write_to = #{writeTo}</if>
 		   	   <if test="isForAllSeller != null">, is_for_all_seller = UPPER(#{isForAllSeller})</if>

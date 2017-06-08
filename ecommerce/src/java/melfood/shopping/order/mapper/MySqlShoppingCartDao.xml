@@ -26,16 +26,16 @@
 				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 	    	ORDER BY a.create_datetime DESC 
 		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
-	</select>
-	<select id="getTotalCntShoppingCartProducts" parameterType="ShoppingCart" resultType="java.lang.Integer">
-		/* QUERY ID : getTotalCntShoppingCartProducts */
+	</select>   
+	<select id="getTotalCntForShoppingCartProducts" parameterType="ShoppingCart" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForShoppingCartProducts */
 			SELECT COUNT(*)
              FROM shopping_cart a
 	         WHERE 1 = 1
 				<if test="id != null and id != 0"> AND a.id = #{id} </if>
 				<if test="customerId != null"> AND UPPER(a.customer_id) = UPPER(#{customerId}) </if>
 				<if test="sellerId != null"> AND UPPER(a.seller_id) = UPPER(#{sellerId}) </if>
-				<if test="prodId != null prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
 				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 	</select>
 	
