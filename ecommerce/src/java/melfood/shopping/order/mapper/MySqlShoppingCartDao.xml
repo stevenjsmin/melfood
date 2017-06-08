@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlShoppingCartDao">
+
+	<select id="getShoppingCartProducts" parameterType="ShoppingCart" resultType="ShoppingCart">
+		/* QUERY ID : getShoppingCartProducts */
+			SELECT a.id 'id', 
+				 a.customer_id 'customerId',
+				 (SELECT user_name FROM cmm_user WHERE user_id = a.customer_id) 'customer.userName',
+				 a.seller_id 'sellerId', 
+				 (SELECT user_name FROM cmm_user WHERE user_id = a.seller_id) 'seller.userName',
+				 a.prod_id 'prodId', 
+				 a.amount 'amount'
+				,a.create_datetime 'createDatetime'
+				,a.modify_datetime 'modifyDatetime'
+				,a.creator 'creator'
+             FROM shopping_cart a
+	         WHERE 1 = 1
+				<if test="id != null and id != 0"> AND a.id = #{id} </if>
+				<if test="customerId != null"> AND UPPER(a.customer_id) = UPPER(#{customerId}) </if>
+				<if test="sellerId != null"> AND UPPER(a.seller_id) = UPPER(#{sellerId}) </if>
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.create_datetime DESC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>   
+	<select id="getTotalCntForShoppingCartProducts" parameterType="ShoppingCart" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForShoppingCartProducts */
+			SELECT COUNT(*)
+             FROM shopping_cart a
+	         WHERE 1 = 1
+				<if test="id != null and id != 0"> AND a.id = #{id} </if>
+				<if test="customerId != null"> AND UPPER(a.customer_id) = UPPER(#{customerId}) </if>
+				<if test="sellerId != null"> AND UPPER(a.seller_id) = UPPER(#{sellerId}) </if>
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<!-- 쇼핑카트에서 해당고객에게 해당하는 모든 상품 판매자 정보를 얻어온다. -->
+	<select id="getProductSellers" parameterType="ShoppingCart" resultType="User">
+		/* QUERY ID : getProductSellers */
+			SELECT a.seller_id 'userId',
+			       b.user_name 'userName'
+			  FROM (SELECT DISTINCT seller_id FROM shopping_cart 
+			         WHERE 1 = 1 <if test="customerId != null"> AND UPPER(customer_id) = UPPER(#{customerId}) </if> ) a
+			       LEFT OUTER JOIN cmm_user b ON b.user_id = a.seller_id
+	      ORDER BY b.user_name ASC
+	</select>
+
+
+	<insert id="insertShoppingCart" parameterType="ShoppingCart" useGeneratedKeys="true" keyProperty="shoppingCart.id" keyColumn="id">
+		/* QUERY ID : insertShoppingCart */
+		INSERT INTO shopping_cart(customer_id
+	                     ,seller_id
+	                     ,prod_id
+	                     ,amount
+	                     ,creator)
+		   VALUES ( #{customerId}
+		             ,#{sellerId}
+		             ,#{prodId}
+		             ,#{amount}
+		             ,#{creator})
+		             
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+		    SELECT LAST_INSERT_ID() as id
+		</selectKey>		             		
+	</insert>
+
+	<update id="modifyShoppingCart" parameterType="ShoppingCart">
+		/* QUERY ID : modifyShoppingCart */
+		UPDATE shopping_cart
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,customer_id = #{customerId}
+		       ,seller_id = #{sellerId}
+		       ,prod_id = #{prodId}
+		       ,amount = #{amount}
+		 WHERE id = #{id}
+	</update>
+
+	<update id="modifyShoppingCartForNotNull" parameterType="ShoppingCart">
+		/* QUERY ID : modifyShoppingCartForNotNull */
+		UPDATE shopping_cart
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="customerId != null">, customer_id = TRIM(#{customerId}) </if>
+		       <if test="sellerId != null">, seller_id = TRIM(#{sellerId}) </if>
+		       <if test="prodId != null or prodId != 0">, prod_id = TRIM(#{prodId}) </if>
+		       <if test="amount != null">, amount = TRIM(#{amount}) </if>
+		 WHERE id = #{id}
+	</update>
+
+	<delete id="deleteShoppingCart" parameterType="ShoppingCart">
+		/* QUERY ID : deleteShoppingCart */
+		DELETE FROM shopping_cart 
+		 WHERE 1 = 1
+		 	<if test="customerId != null">AND customer_id = TRIM(#{customerId}) </if>
+		 	<if test="sellerId != null">AND seller_id = TRIM(#{sellerId}) </if>
+		 	<if test="id != null">AND id = TRIM(#{id}) </if>
+	</delete>
+
+</mapper>

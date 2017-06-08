@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlWorkDaysDao">
+
+    <select id="getList" parameterType="WorkDays" resultType="WorkDays">
+     /* QUERY ID : getList */
+		SELECT a.country 'country',
+		       a.state 'state',
+		       a.`year` 'year',
+		       a.`month` 'month',
+		       a.workdays 'workdays',
+		       a.comment 'comment',
+		       a.creator 'creator',
+		       a.create_datetime 'createDatetime',
+		       a.modify_datetime 'modifyDatetime'
+		  FROM rpc_cmm_workdays a     
+	          WHERE 1 = 1
+		        <if test="country != null"> AND UPPER(a.country) = UPPER(#{country}) </if>       
+		        <if test="state != null"> AND UPPER(a.state) = UPPER(#{state}) </if>       
+		        <if test="year != null"> AND a.year = #{year} </if>       
+		        <if test="month != null"> AND a.month = #{month} </if>       
+	   ORDER BY a.country ASC, a.state ASC, a.year ASC, a.month ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}		        
+	</select>
+	
+    <select id="getTotalCntForList" parameterType="WorkDays" resultType="Integer">
+     /* QUERY ID : getTotalCntForList */
+        SELECT COUNT(*)
+          FROM rpc_cmm_workdays a
+	          WHERE 1 = 1
+		        <if test="country != null"> AND UPPER(a.country) = UPPER(#{country}) </if>       
+		        <if test="state != null"> AND UPPER(a.state) = UPPER(#{state}) </if>       
+		        <if test="year != null"> AND a.year = #{year} </if>       
+		        <if test="month != null"> AND a.month = #{month} </if>  
+    </select>   
+
+    <delete id="deleteWorkDays" parameterType="WorkDays">
+        /* QUERY ID : deleteWorkDays */
+        DELETE FROM rpc_cmm_workdays a 
+         WHERE a.country = #{country} 
+           AND a.state = #{state} 
+           AND a.year = #{year}
+           <if test="month != null"> AND a.month = #{month} </if>   
+    </delete> 
+
+    <insert id="insertWorkDays" parameterType="WorkDays">
+     /* QUERY ID : insertWorkDays */
+		INSERT INTO rpc_cmm_workdays(country,
+		                             state,
+		                             `year`,
+		                             month,
+		                             workdays,
+		                             comment,
+		                             creator)
+		VALUES (UPPER(#{country}),
+		        UPPER(#{state}),
+		        #{year},
+		        #{month},
+		        #{workdays},
+		        #{comment},
+		        #{creator});
+    </insert>      
+    
+    <update id="updateWorkDays" parameterType="WorkDays">
+     /* QUERY ID : updateWorkDays */    
+		UPDATE rpc_cmm_workdays
+		   SET workdays = #{workdays},  modify_datetime = CURRENT_TIMESTAMP
+        WHERE
+	        UPPER(a.country) = UPPER(#{country})       
+	        AND UPPER(a.state) = UPPER(#{state})       
+	        AND a.year = #{year}       
+	        AND a.month = #{month}           	       
+    </update> 
+	
+</mapper>

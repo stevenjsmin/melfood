@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlProductDao">
+
+	<select id="getProducts" parameterType="Product" resultType="Product">
+	 /* QUERY ID : getProducts */
+		SELECT a.prod_id 'prodId',
+		       a.name 'name',
+		       a.description 'description',
+		       a.parent_prod_id 'parentProdId',
+		       a.category_id 'categoryId',
+		       b.category_name 'categoryName',
+		       a.seller 'seller',
+		       (SELECT u.user_name FROM cmm_user u WHERE u.user_id = a.seller) 'sellerName',
+		       a.in_stock_cnt 'inStockCnt',
+		       a.unit_price 'unitPrice',
+		       a.validate_until 'validateUntil',
+		       a.register_status 'registerStatus',
+		       (SELECT c.label FROM cmm_code c WHERE c.category = 'PROD_MGT' AND c.type = 'REGISTER_STATUS' AND c.value = a.register_status) 'registerStatusName',
+		       a.selling_status 'sellingStatus',
+		       (SELECT c.label FROM cmm_code c WHERE c.category = 'PROD_MGT' AND c.type = 'SELLING_STATUS' AND c.value = a.selling_status) 'sellingStatusName',
+		       a.selling_commission_type 'sellingCommissionType',
+		       (SELECT c.label FROM cmm_code c WHERE c.category = 'PROD_MGT' AND c.type = 'SELLING_COMMISSION_TYPE' AND c.value = a.selling_commission_type) 'sellingCommissionTypeName',
+		       a.selling_commission_rate 'sellingCommissionRate',
+		       a.selling_commission_fee 'sellingCommissionFee',
+		       a.tags 'tags',
+	           CASE
+	              WHEN a.selling_commission_type = 'RATE' THEN CONCAT((a.selling_commission_rate * 100), ' %')
+	              WHEN a.selling_commission_type = 'FEE' THEN CONCAT('$ ', a.selling_commission_fee)
+	              WHEN a.selling_commission_type = 'NONE' THEN '없음'
+	              ELSE ''
+	           END 'sellingCommission',
+	           (SELECT image_file_id FROM product_image WHERE prod_id = a.prod_id ORDER BY image_seq ASC LIMIT 1) 'productImage.imageFileId',
+	           a.prod_id 'productImage.prodId', 
+		       DATE_FORMAT(a.create_datetime,'%Y-%m-%d') 'createDatetime',
+           	   DATE_FORMAT(a.modify_datetime,'%Y-%m-%d') 'modifyDatetime',
+		       a.creator 'creator'
+		  FROM product a
+		       LEFT OUTER JOIN product_category b ON b.category_id = a.category_id	 
+		       LEFT OUTER JOIN shop_check_before_buy c ON c.id = a.check_before_buy	 
+  	         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="name != null"> AND UPPER(a.name) LIKE CONCAT('%', UPPER(#{name}), '%') </if>
+				<if test="description != null"> AND UPPER(a.description) LIKE CONCAT('%', UPPER(#{description}), '%') </if>
+				<if test="parentProdId != null and parentProdId != 0"> AND a.parent_prod_id = #{parentProdId} </if>
+				<if test="categoryId != null and categoryId != 0"> AND a.category_id = #{categoryId} </if>
+				<if test="categoryName != null"> AND UPPER(b.category_name) LIKE CONCAT('%', UPPER(#{categoryName}), '%') </if>
+				<if test="seller != null"> AND UPPER(a.seller) = UPPER(#{seller}) </if>
+				<if test="unitPrice != null"> AND a.unit_price = #{unitPrice} </if>
+				<if test="validateUntil != null"> AND a.validate_until = #{validateUntil} </if>
+				<if test="registerStatus != null"> AND UPPER(a.register_status) = UPPER(#{registerStatus}) </if>
+				<if test="sellingStatus != null"> AND UPPER(a.selling_status) = UPPER(#{sellingStatus}) </if>
+				<if test="sellingCommissionType != null"> AND UPPER(a.selling_commission_type) = UPPER(#{sellingCommissionType}) </if>
+				<if test="sellingCommissionRate != null"> AND a.selling_commission_rate = #{sellingCommissionRate} </if>
+				<if test="sellingCommissionFee != null"> AND a.selling_commission_fee = #{sellingCommissionFee} </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.create_datetime DESC, a.name ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForProducts" parameterType="Product" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForProducts */
+		SELECT COUNT(*)
+		  FROM product a
+		       LEFT OUTER JOIN product_category b ON b.category_id = a.category_id
+		       LEFT OUTER JOIN shop_check_before_buy c ON c.id = a.check_before_buy		 
+  	         WHERE 1 = 1
+				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
+				<if test="name != null"> AND UPPER(a.name) LIKE CONCAT('%', UPPER(#{name}), '%') </if>
+				<if test="description != null"> AND UPPER(a.description) LIKE CONCAT('%', UPPER(#{description}), '%') </if>
+				<if test="parentProdId != null and parentProdId != 0"> AND a.parent_prod_id = #{parentProdId} </if>
+				<if test="categoryId != null and categoryId != 0"> AND a.category_id = #{categoryId} </if>
+				<if test="categoryName != null"> AND UPPER(b.category_name) LIKE CONCAT('%', UPPER(#{categoryName}), '%') </if>
+				<if test="seller != null"> AND UPPER(a.seller) = UPPER(#{seller}) </if>
+				<if test="unitPrice != null"> AND a.unit_price = #{unitPrice} </if>
+				<if test="validateUntil != null"> AND a.validate_until = #{validateUntil} </if>
+				<if test="registerStatus != null"> AND UPPER(a.register_status) = UPPER(#{registerStatus}) </if>
+				<if test="sellingStatus != null"> AND UPPER(a.selling_status) = UPPER(#{sellingStatus}) </if>
+				<if test="sellingCommissionType != null"> AND UPPER(a.selling_commission_type) = UPPER(#{sellingCommissionType}) </if>
+				<if test="sellingCommissionRate != null"> AND a.selling_commission_rate = #{sellingCommissionRate} </if>
+				<if test="sellingCommissionFee != null"> AND a.selling_commission_fee = #{sellingCommissionFee} </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<select id="getNextProductId" resultType="java.lang.Integer">
+	 /* QUERY ID : getNextProductId */
+			SELECT CASE WHEN max(prod_id) IS NULL THEN 1 ELSE (max(prod_id) + 1) END FROM product 
+	</select>	
+	
+	<insert id="insertProduct" parameterType="Product">
+	 /* QUERY ID : insertProduct */
+		INSERT INTO product(prod_id,
+		                    name,
+		                    description,
+		                    parent_prod_id,
+		                    category_id,
+		                    seller,
+		                    in_stock_cnt,
+		                    unit_price,
+		                    validate_until,
+		                    register_status,
+		                    selling_status,
+		                    selling_commission_type,
+		                    selling_commission_rate,
+		                    selling_commission_fee,
+		                    tags,
+		                    creator)
+		VALUES (#{prodId}
+	        ,#{name}
+	        ,#{description}
+	        ,#{parentProdId}
+	        ,#{categoryId}
+	        ,#{seller}
+	        ,#{inStockCnt}
+	        ,#{unitPrice}
+	        ,#{validateUntil}
+	        ,#{registerStatus}
+	        ,#{sellingStatus}
+	        ,#{sellingCommissionType}
+	        ,#{sellingCommissionRate}
+	        ,#{sellingCommissionFee}
+	        ,UPPER(TRIM(#{tags}))
+	        ,#{creator})
+	</insert>
+
+	<update id="modifyProduct" parameterType="Product">
+	 /* QUERY ID : modifyProduct */
+		UPDATE product
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,name = TRIM(#{name})
+		       ,description = TRIM(#{description})
+		       ,parent_prod_id = #{parentProdId}
+		       ,category_id = #{categoryId}
+		       ,seller = TRIM(#{seller})
+		       ,in_stock_cnt = #{inStockCnt}
+		       ,unit_price = #{unitPrice}
+		       ,validate_until = TRIM(#{validateUntil})
+		       ,register_status = TRIM(#{registerStatus})
+		       ,selling_status = TRIM(#{sellingStatus})
+		       ,selling_commission_type = TRIM(#{sellingCommissionType})
+		       ,selling_commission_rate = #{sellingCommissionRate}
+		       ,selling_commission_fee = #{sellingCommissionFee}
+		       ,tags = UPPER(TRIM(#{tags}))
+		 WHERE prod_id = #{prodId}
+	</update>
+
+	<update id="modifyProductForNotNull" parameterType="Product">
+		/* QUERY ID : modifyProductForNotNull */
+		UPDATE product
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="name != null"> ,name = TRIM(#{name}) </if>
+		       <if test="description != null"> ,description = TRIM(#{description}) </if>
+		       <if test="parentProdId != null and parentProdId != 0"> ,parent_prod_id = #{parentProdId} </if>
+		       <if test="categoryId != null and categoryId != 0"> ,category_id = #{categoryId} </if>
+		       <if test="seller != null"> ,seller = TRIM(#{seller}) </if>
+		       <if test="inStockCnt != null and inStockCnt != 0"> ,in_stock_cnt = #{inStockCnt} </if>
+		       <if test="unitPrice != null"> ,unit_price = #{unitPrice} </if>
+		       <if test="validateUntil != null"> ,validate_until = TRIM(#{validateUntil}) </if>
+		       <if test="registerStatus != null"> ,register_status = TRIM(#{registerStatus}) </if>
+		       <if test="sellingStatus != null"> ,selling_status = TRIM(#{sellingStatus}) </if>
+		       <if test="sellingCommissionType != null"> ,selling_commission_type = TRIM(#{sellingCommissionType}) </if>
+		       <if test="sellingCommissionRate != null"> ,selling_commission_rate = #{sellingCommissionRate} </if>
+		       <if test="sellingCommissionFee != null"> ,selling_commission_fee = #{sellingCommissionFee} </if>
+		       <if test="tags != null"> ,tags = UPPER(TRIM(#{tags})) </if>
+		 WHERE prod_id = #{prodId}
+	</update>
+
+	<delete id="deleteProduct" parameterType="Product">
+		/* QUERY ID : deleteProduct */
+		DELETE FROM product WHERE prod_id = #{prodId}
+	</delete>
+
+	<update id="setNullForCategory" parameterType="java.lang.Integer">
+	 /* QUERY ID : setNullForCategory */
+		UPDATE product
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,category_id = NULL
+		 WHERE category_id = #{categoryId}
+	</update>
+
+
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlCheckBeforeBuyDao">
+
+    <select id="getCheckBeforeBuyList" parameterType="CheckBeforeBuy" resultType="CheckBeforeBuy">
+     /* QUERY ID : getCheckBeforeBuyList */
+		SELECT a.id 'id'
+		    ,a.seller_id 'sellerId'
+		    ,b.user_name 'sellerName'
+		    ,a.subject 'subject'
+		    ,a.contents 'contents'
+		    ,a.is_default 'isDefault'
+		    ,a.confirm_status 'confirmStatus'
+		    ,a.create_datetime 'createDatetime' 
+		    ,a.modify_datetime 'modifyDatetime'
+		    ,a.creator 'creator'
+		  FROM shop_check_before_buy a  LEFT OUTER JOIN cmm_user b ON a.seller_id = b.user_id
+		 WHERE 1 = 1 
+		      <if test="id != null and id != 0"> AND a.id = #{id} </if>
+		      <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>
+		      <if test="subject != null"> AND UPPER(a.subject) LIKE CONCAT('%', UPPER(#{subject}), '%') </if>
+		      <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>
+		      <if test="isDefault != null"> AND UPPER(a.is_default) = UPPER(#{isDefault}) </if>   
+		      <if test="confirmStatus != null"> AND UPPER(a.confirm_status) = UPPER(#{confirmStatus}) </if>
+		      <if test="creator != null"> AND a.creator = #{creator} </if>   
+	  ORDER BY a.id DESC        
+	     LIMIT #{pagenationPage}, #{pagenationPageSize}		        
+	</select>
+	
+	
+    <select id="getTotalCntForCheckBeforeBuyList" parameterType="CheckBeforeBuy" resultType="Integer">
+     /* QUERY ID : getTotalCntForCheckBeforeBuyList */
+        SELECT COUNT(*)
+		  FROM shop_check_before_buy a LEFT OUTER JOIN cmm_user b ON a.seller_id = b.user_id
+		 WHERE 1 = 1 
+		      <if test="id != null and id != 0"> AND a.id = #{id} </if>
+		      <if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>
+		      <if test="subject != null"> AND UPPER(a.subject) LIKE CONCAT('%', UPPER(#{subject}), '%') </if>
+		      <if test="contents != null"> AND UPPER(a.contents) LIKE CONCAT('%', UPPER(#{contents}), '%') </if>
+		      <if test="isDefault != null"> AND UPPER(a.is_default) = UPPER(#{isDefault}) </if>   
+		      <if test="confirmStatus != null"> AND UPPER(a.confirm_status) = UPPER(#{confirmStatus}) </if>
+		      <if test="creator != null"> AND a.creator = #{creator} </if>  
+    </select>    	
+	
+    <delete id="deleteCheckBeforeBuy" parameterType="java.lang.Integer">
+        /* QUERY ID : deleteCheckBeforeBuy */
+        DELETE FROM shop_check_before_buy WHERE id = #{id}
+    </delete>   
+
+    <insert id="registCheckBeforeBuy" parameterType="CheckBeforeBuy">
+     /* QUERY ID : registCheckBeforeBuy */
+		INSERT INTO shop_check_before_buy(seller_id
+							,subject
+							,contents
+							,is_default
+							,confirm_status
+							,creator)     
+		VALUES (#{sellerId}
+		    ,#{subject}
+		    ,#{contents}
+		    ,#{isDefault}
+		    ,#{confirmStatus}
+		    ,#{creator} )
+    </insert>    
+    
+    <update id="modifyCheckBeforeBuy" parameterType="CheckBeforeBuy">
+     /* QUERY ID : modifyCheckBeforeBuy */    
+		UPDATE shop_check_before_buy
+		   SET create_datetime = CURRENT_TIMESTAMP
+		   	   , seller_id = TRIM(#{sellerId})
+		   	   , subject = TRIM(#{subject})
+		   	   , contents = TRIM(#{contents})
+		   	   , is_default = #{isDefault}
+		   	   , confirm_status = #{confirmStatus}
+        WHERE id =  #{id} 	       
+    </update>       
+
+    <update id="setAsNotDefaultCheckBeforeBuy" parameterType="java.lang.String">
+     /* QUERY ID : setAsNotDefaultCheckBeforeBuy */    
+		UPDATE shop_check_before_buy SET is_default = 'N' WHERE seller_id =  #{sellerId} 	       
+    </update> 
+    
+    <update id="modifyCheckBeforeBuyForNotNull" parameterType="CheckBeforeBuy">
+     /* QUERY ID : modifyCheckBeforeBuyForNotNull */    
+		UPDATE shop_check_before_buy
+		   SET create_datetime = CURRENT_TIMESTAMP
+		   	   <if test="sellerId != null">, seller_id = #{sellerId}</if>
+		   	   <if test="subject != null">, subject = TRIM(#{subject})</if>
+		   	   <if test="contents != null">, contents = TRIM(#{contents})</if>
+		   	   <if test="isDefault != null">, is_default = #{isDefault}</if>
+		   	   <if test="confirmStatus != null">, confirm_status = #{confirmStatus}</if>
+        WHERE id =  #{id} 	       
+    </update>       
+           
+</mapper>

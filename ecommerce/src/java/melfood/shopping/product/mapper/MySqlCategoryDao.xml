@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlCategoryDao">
+
+	<select id="getCategories" parameterType="Category" resultType="Category">
+	 /* QUERY ID : getCategories */
+		SELECT a.category_id 'categoryId'
+		       ,a.category_name 'categoryName'
+		       ,a.category_description 'categoryDescription'
+		       ,a.create_datetime 'createDatetime'
+		       ,a.modify_datetime 'modifyDatetime'
+		       ,a.creator 'creator'
+		  FROM product_category a
+  	         WHERE 1 = 1
+				<if test="categoryId != null and categoryId != 0"> AND a.category_id = #{categoryId} </if>
+				<if test="categoryName != null"> AND UPPER(a.category_name) LIKE CONCAT('%', UPPER(#{categoryName}), '%') </if>
+				<if test="categoryDescription != null"> AND UPPER(a.category_description) LIKE CONCAT('%', UPPER(#{categoryDescription}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.category_name ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForCategories" parameterType="Category" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForCategories */
+		SELECT COUNT(*)
+		  FROM product_category a
+  	         WHERE 1 = 1
+				<if test="categoryId != null and categoryId != 0"> AND a.category_id = #{categoryId} </if>
+				<if test="categoryName != null"> AND UPPER(a.category_name) LIKE CONCAT('%', UPPER(#{categoryName}), '%') </if>
+				<if test="categoryDescription != null"> AND UPPER(a.category_description) LIKE CONCAT('%', UPPER(#{categoryDescription}), '%') </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<select id="getNextCategoryId" resultType="java.lang.Integer">
+		/* QUERY ID : getNextCategoryId */
+			SELECT CASE WHEN max(category_id) IS NULL THEN 1 ELSE (max(category_id) + 1) END FROM product_category 
+	</select>	
+	
+	<insert id="insertCategory" parameterType="Category">
+		/* QUERY ID : insertCategory */
+		INSERT INTO product_category(category_id
+	                     ,category_name
+	                     ,category_description
+	                     ,creator)
+		   VALUES ( #{categoryId}
+		             ,#{categoryName}
+		             ,#{categoryDescription}
+		             ,#{creator})		
+	</insert>
+
+	<update id="modifyCategory" parameterType="Category">
+		/* QUERY ID : modifyCategory */
+		UPDATE product_category
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,category_name = TRIM(#{categoryName})
+		       ,category_description = TRIM(#{categoryDescription})
+		 WHERE category_id = #{categoryId}
+	</update>
+
+	<update id="modifyCategoryForNotNull" parameterType="Category">
+		/* QUERY ID : modifyCategoryForNotNull */
+		UPDATE product_category
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="categoryName != null">, category_name = TRIM(#{categoryName}) </if>
+		       <if test="categoryDescription != null">, category_description = TRIM(#{categoryDescription}) </if>
+		 WHERE category_id = #{categoryId}
+	</update>
+
+	<delete id="deleteCategory" parameterType="Category">
+		/* QUERY ID : deleteCategory */
+		DELETE FROM product_category WHERE category_id = #{categoryId}
+	</delete>
+
+</mapper>

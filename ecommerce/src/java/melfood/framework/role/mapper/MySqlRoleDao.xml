@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlRoleDao">
+
+    <select id="roleList" parameterType="java.util.Map" resultType="Role">
+        SELECT a.role_id roleId,
+               a.role_name roleName,
+               a.role_description roleDescription,
+               a.create_datetime createDatetime,
+               a.modify_datetime modifyDatetime
+          FROM cmm_role a
+         WHERE 1 = 1 
+         <if test="roleName != null">  AND UPPER(a.rol_name) like UPPER(#{roleName})</if>
+         <if test="roleDescription != null">  OR UPPER(a.role_description) like UPPER(#{roleDescription}) </if>
+         ORDER BY rol_name ASC
+    </select>
+    
+    
+    <select id="myRoleList" parameterType="java.lang.String" resultType="Role">
+     /* QUERY ID : myRoleList */
+		SELECT a.role_id 'roleId',
+		       a.role_name 'roleName',
+		       a.role_description 'roleDescription',
+		       a.create_datetime 'createDatetime',
+		       a.modify_datetime 'modifyDatetime'
+		  FROM cmm_role a
+		 WHERE a.role_id IN (SELECT DISTINCT (role_id)
+		                       FROM map_user_role b
+		                      WHERE b.user_id = #{userId});  
+    </select>
+    
+    <insert id="addMyRoles" parameterType="java.lang.String">
+     /* QUERY ID : addMyRoles */
+        INSERT INTO map_user_role (user_id, role_id) VALUES
+         <foreach collection="list" index="index" item="item">       
+            <if test="index != 0"> , </if> 
+             ( #{item.userId}, #{item.roleId} )
+         </foreach>
+    </insert>
+
+    <delete id="removeMyRoles" parameterType="java.lang.String">
+     /* QUERY ID : removeMyRoles */
+    	DELETE FROM map_user_role WHERE user_id = #{userId}
+    </delete>
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <select id="getNewRoleId" resultType="java.lang.Integer">
+        SELECT (coalesce(max(role_id), 0) + 1) FROM cmm_role;
+    </select>
+    
+    <insert id="insertRoleInfo" parameterType="java.util.Map">
+        INSERT INTO cmm_role(role_id, role_name, role_description)
+        VALUES (#{roleId},
+                #{roleName},
+                #{roleDescription} )
+    </insert>    
+    
+    <select id="getRoleInfo" parameterType="java.util.Map" resultType="Role">
+        SELECT a.role_id roleId,
+               a.role_name roleName,
+               a.role_description roleDescription,
+               a.create_datetime createDatetime,
+               a.modify_datetime modifyDatetime
+          FROM cmm_role a
+         WHERE a.role_id =  #{roleId}
+    </select>
+    
+    <update id="modifyRoleInfo" parameterType="java.util.Map">
+        UPDATE cmm_role SET
+                role_name = #{roleName},
+                role_description = #{roleDescription},
+                modify_datetime = CURRENT_TIMESTAMP
+        WHERE role_id = #{roleId}    
+    </update>
+        
+    <update id="deleteRoleInfo" parameterType="java.lang.String">
+        DELETE FROM cmm_role WHERE role_id = #{roleId}    
+    </update>    
+
+    <insert id="applyMappingWithService" parameterType="java.util.List">
+        INSERT INTO map_role_service (role_id, service_id ) VALUES
+         <foreach collection="list" index="index" item="item">       
+            <if test="index != 0"> , </if> 
+             ( #{item.roleId}, #{item.serviceId} )
+         </foreach>
+    </insert>
+    
+    <delete id="removeRoleMappingWithService" parameterType="java.util.Map">
+        DELETE FROM map_role_service
+         WHERE role_id = #{roleId}
+           AND service_id IN ( 
+          <foreach collection="list" index="index" item="item">       
+                <if test="index != 0"> , </if> 
+                #{item}
+          </foreach>        
+           )
+    </delete>
+            
+</mapper>

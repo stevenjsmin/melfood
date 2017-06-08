@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlUserDao" >
+ 
+    <select id="getUsers" parameterType="User" resultType="User">
+     /* QUERY ID : getUsers */
+		SELECT a.user_id          'userId'
+		       ,a.user_name        'userName'
+		       ,a.user_name_real   'userNameReal'
+		       ,a.sex              'sex'
+		       ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'SEX' AND value = a.sex ) 'sexLabel'
+		       ,a.dob              'dob'
+		       ,a.mobile           'mobile'
+		       ,a.telephone        'telephone'
+		       ,a.address_street   'addressStreet'
+		       ,a.address_suburb   'addressSuburb'
+		       ,a.address_state    'addressState'
+		       ,a.address_postcode 'addressPostcode'
+		       ,CONCAT(a.address_street, ', ', a.address_suburb, ', ', a.address_state, ' ',  a.address_postcode)       'address'
+		       ,a.use_social_messenger_id    'useSocialMessengerId'
+		       ,a.use_social_messenger    'useSocialMessenger'
+		       ,(SELECT label FROM cmm_code WHERE category = 'COMM' AND type = 'SOCIAL_MESSENGER' AND value = a.use_social_messenger ) 'useSocialMessengerLabel'
+		       ,a.photo_file       'photoFile'
+		       ,a.abn              'abn'
+		       ,a.acn              'acn'
+		       ,a.address_business_samewith_home 'addressBusinessSamewithHome'
+		       ,a.address_business_street        'addressBusinessStreet'
+		       ,a.address_business_suburb        'addressBusinessSuburb'
+		       ,a.address_business_state         'addressBusinessState'
+		       ,a.address_business_postcode      'addressBusinessPostcode'
+		       ,a.password                       'password'
+		       ,a.password_failure_cnt           'passwordFailureCnt'
+		       ,a.password_update_date           'passwordUpdateDate'
+		       ,a.email              'email'                  
+		       ,a.use_yn             'useYn'
+		       ,(SELECT label FROM cmm_code WHERE category = 'COMM' AND type = 'USE_YN' AND value = a.use_yn ) 'useYnLabel'
+		       ,a.apply_status       'applyStatus'
+		       ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'APPLY_STATUS' AND value = a.apply_status ) 'applyStatusLabel'
+			   ,a.seller_delivery_address_street    'sellerDeliveryAddressStreet'                  
+			   ,a.seller_delivery_address_suburb    'sellerDeliveryAddressSuburb'         
+			   ,a.seller_delivery_address_state     'sellerDeliveryAddressState'         
+			   ,a.seller_delivery_address_postcode  'sellerDeliveryAddressPostcode'         
+			   ,a.seller_pickup_address_street      'sellerPickupAddressStreet'         
+			   ,a.seller_pickup_address_suburb      'sellerPickupAddressSuburb'         
+			   ,a.seller_pickup_address_state       'sellerPickupAddressState'         
+			   ,a.seller_pickup_address_postcode    'sellerPickupAddressPostcode'         
+			   ,a.seller_introduction               'sellerIntroduction'
+			   ,a.seller_business_name               'sellerBusinessName'
+			   ,a.seller_have_minimum_payment        'sellerHaveMinimumPayment'
+			   ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'HAVE_MINIMUM_PAYMENT' AND value = a.seller_have_minimum_payment ) 'sellerHaveMinimumPaymentLabel'
+			   ,a.seller_minimum_payment_for_pickup  'sellerMinimumPaymentForPickup'
+			   ,a.seller_minimum_payment_for_deliver 'sellerMinimumPaymentForDeliver'
+			   ,a.seller_is_mandatory_choose_delivery_pickup_date 'sellerIsMandatoryChooseDeliveryPickupDate'
+			   ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'MANDATORY_DELIVERY_PICKUP_DATE' AND value = a.seller_is_mandatory_choose_delivery_pickup_date ) 'sellerIsMandatoryChooseDeliveryPickupDateLabel'
+			   ,a.profile_photo_id           'profilePhotoId'  		       
+		       ,a.create_datetime    'createDatetime'
+		       ,a.modify_datetime    'modifyDatetime'
+		       ,a.creator            'creator'
+		       <if test="passwordChangePeriodDays != null">  
+		            ,CASE
+		                  WHEN (datediff(current_timestamp, a.password_update_date) >= #{passwordChangePeriodDays}) THEN true
+		                  ELSE false
+		             END 'isPasswordChangePeriod'		                   
+		       </if>
+		       <if test="passwordChangePeriodDays == null">  
+		            ,CASE
+		                  WHEN (datediff(current_timestamp, a.password_update_date) >= 365') THEN true
+		                  ELSE false
+		             END 'isPasswordChangePeriod'		                   
+		       </if>
+		       ,b.role_id 'roleId'
+               ,b.role_name 'roleName'		     
+		  FROM cmm_user a
+	          LEFT OUTER JOIN (
+	                SELECT user_id, GROUP_CONCAT(b.role_id SEPARATOR ', ') AS 'role_id' ,GROUP_CONCAT(role_name SEPARATOR ', ') AS 'role_name' 
+	                   FROM map_user_role a
+	                           LEFT OUTER JOIN cmm_role b ON b.role_id = a.role_id
+	              GROUP BY user_id
+	          ) b ON b.user_id = a.user_id		  
+		 WHERE 1 = 1
+         	<if test="userId != null">  AND a.user_id = #{userId} </if>
+         	<if test="userName != null"> AND UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%') </if>
+         	<if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
+         	<if test="sex != null">  AND UPPER(a.sex) = UPPER(#{sex}) </if>
+         	<if test="dob != null">  AND a.dob = #{dob} </if>
+         	<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
+         	<if test="addressSuburb != null">  AND UPPER(a.address_suburb) = UPPER(#{addressSuburb}) </if>
+         	<if test="addressState != null">  AND UPPER(a.address_state) = UPPER(#{addressState}) </if>
+         	<if test="addressPostcode != null"> AND a.address_postcode LIKE CONCAT('%', #{addressPostcode}, '%') </if>
+         	<if test="abn != null"> AND UPPER(a.abn) LIKE CONCAT('%', UPPER(#{abn}), '%') </if>
+         	<if test="acn != null"> AND UPPER(a.acn) LIKE CONCAT('%', UPPER(#{acn}), '%') </if>
+         	<if test="addressBusinessSamewithHome != null">  AND UPPER(a.address_business_samewith_home) = UPPER(#{addressBusinessSamewithHome}) </if>
+         	<if test="addressBusinessStreet != null"> AND UPPER(a.address_business_street) LIKE CONCAT('%', UPPER(#{addressBusinessStreet}), '%') </if>
+         	<if test="addressBusinessSuburb != null">  AND UPPER(a.address_business_suburb) = UPPER(#{addressBusinessSuburb}) </if>
+         	<if test="addressBusinessState != null">  AND UPPER(a.address_business_state) = UPPER(#{addressBusinessState}) </if>
+         	<if test="addressBusinessPostcode != null"> AND a.address_business_postcode LIKE CONCAT('%', #{addressBusinessPostcode}, '%') </if>
+         	<if test="password != null">  AND a.password = #{password} </if>
+         	<if test="email != null"> AND UPPER(a.email) LIKE CONCAT('%', UPPER(#{email}), '%') </if>
+         	<if test="useYn != null">  AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+         	<if test="applyStatus != null">  AND UPPER(a.apply_status) = UPPER(#{applyStatus}) </if>
+         	<if test="roleId != null"> AND UPPER(b.role_id) LIKE CONCAT('%', UPPER(#{roleId}), '%') </if>
+		 ORDER BY a.user_id ASC        
+		    LIMIT #{pagenationPage}, #{pagenationPageSize}         	
+    </select> 
+    <select id="getTotalCntForGetUsers" parameterType="User" resultType="Integer">
+     /* QUERY ID : getTotalCntForMenuList */
+        SELECT COUNT(*)
+		  FROM cmm_user a
+	          LEFT OUTER JOIN (
+	                SELECT user_id, GROUP_CONCAT(b.role_id SEPARATOR ', ') AS 'role_id' ,GROUP_CONCAT(role_name SEPARATOR ', ') AS 'role_name' 
+	                   FROM map_user_role a
+	                           LEFT OUTER JOIN cmm_role b ON b.role_id = a.role_id
+	              GROUP BY user_id
+	          ) b ON b.user_id = a.user_id		
+	          WHERE 1 = 1
+         	<if test="userId != null">  AND a.user_id = #{userId} </if>
+         	<if test="userName != null"> AND UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%') </if>
+         	<if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
+         	<if test="sex != null">  AND UPPER(a.sex) = UPPER(#{sex}) </if>
+         	<if test="dob != null">  AND a.dob = #{dob} </if>
+         	<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
+         	<if test="addressSuburb != null">  AND UPPER(a.address_suburb) = UPPER(#{addressSuburb}) </if>
+         	<if test="addressState != null">  AND UPPER(a.address_state) = UPPER(#{addressState}) </if>
+         	<if test="addressPostcode != null"> AND a.address_postcode LIKE CONCAT('%', #{addressPostcode}, '%') </if>
+         	<if test="abn != null"> AND UPPER(a.abn) LIKE CONCAT('%', UPPER(#{abn}), '%') </if>
+         	<if test="acn != null"> AND UPPER(a.acn) LIKE CONCAT('%', UPPER(#{acn}), '%') </if>
+         	<if test="addressBusinessSamewithHome != null">  AND UPPER(a.address_business_samewith_home) = UPPER(#{addressBusinessSamewithHome}) </if>
+         	<if test="addressBusinessStreet != null"> AND UPPER(a.address_business_street) LIKE CONCAT('%', UPPER(#{addressBusinessStreet}), '%') </if>
+         	<if test="addressBusinessSuburb != null">  AND UPPER(a.address_business_suburb) = UPPER(#{addressBusinessSuburb}) </if>
+         	<if test="addressBusinessState != null">  AND UPPER(a.address_business_state) = UPPER(#{addressBusinessState}) </if>
+         	<if test="addressBusinessPostcode != null"> AND a.address_business_postcode LIKE CONCAT('%', #{addressBusinessPostcode}, '%') </if>
+         	<if test="password != null">  AND a.password = #{password} </if>
+         	<if test="email != null"> AND UPPER(a.email) LIKE CONCAT('%', UPPER(#{email}), '%') </if>
+         	<if test="useYn != null">  AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+         	<if test="applyStatus != null">  AND UPPER(a.apply_status) = UPPER(#{applyStatus}) </if>
+         	<if test="roleId != null"> AND UPPER(b.role_id) LIKE CONCAT('%', UPPER(#{roleId}), '%') </if>
+    </select>         
+    
+    <insert id="insertUser" parameterType="User">
+     /* QUERY ID : insertUser */
+		INSERT INTO cmm_user(user_id,
+		                 user_name,
+		                 user_name_real,
+		                 sex,
+		                 dob,
+		                 address_street,
+		                 address_suburb,
+		                 address_state,
+		                 address_postcode,
+		                 photo_file,
+		                 abn,
+		                 acn,
+		                 address_business_street,
+		                 address_business_suburb,
+		                 address_business_state,
+		                 address_business_postcode,
+		                 password,
+		                 password_failure_cnt,
+		                 password_update_date,
+		                 email,
+		                 apply_status,
+						 seller_delivery_address_street,  
+						 seller_delivery_address_suburb,  
+						 seller_delivery_address_state,   
+						 seller_delivery_address_postcode,
+						 seller_pickup_address_street,    
+						 seller_pickup_address_suburb,    
+						 seller_pickup_address_state,     
+						 seller_pickup_address_postcode,  
+						 seller_introduction,
+						 seller_business_name,   
+						 seller_have_minimum_payment,   
+						 seller_minimum_payment_for_pickup,   
+						 seller_minimum_payment_for_deliver,   
+						 seller_is_mandatory_choose_delivery_pickup_date,   
+						 profile_photo_id,     		                 
+		                 creator)
+		VALUES (LOWER(#{userId}),
+		        #{userName},
+		        #{userNameReal},
+		        #{sex},
+		        #{dob},
+		        #{addressStreet},
+		        #{addressSuburb},
+		        #{addressState},
+		        #{addressPostcode},
+		        #{photoFile},
+		        #{abn},
+		        #{acn},
+		        #{addressBusinessStreet},
+		        #{addressBusinessSuburb},
+		        #{addressBusinessState},
+		        #{addressBusinessPostcode},
+		        #{password},
+		        0,
+		        DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d'),
+		        #{email},
+		        UPPER(#{applyStatus}),
+				#{sellerDeliveryAddressStreet},      
+				#{sellerDeliveryAddressSuburb},
+				#{sellerDeliveryAddressState},
+				#{sellerDeliveryAddressPostcode},
+				#{sellerPickupAddressStreet},
+				#{sellerPickupAddressSuburb},
+				#{sellerPickupAddressState},
+				#{sellerPickupAddressPostcode},
+				#{sellerIntroduction},
+				#{sellerBusinessName},
+				#{sellerHaveMinimumPayment},
+				#{sellerMinimumPaymentForPickup},
+				#{sellerMinimumPaymentForDeliver},
+				#{sellerIsMandatoryChooseDeliveryPickupDate},
+				NULL,		        
+		        #{creator})     
+    </insert>        
+
+     <delete id="deleteUser" parameterType="User">
+     /* QUERY ID : deleteUser */
+		UPDATE cmm_user
+		   SET modify_datetime = CURRENT_TIMESTAMP
+              ,use_yn = 'N'
+              ,password_failure_cnt = 0
+         WHERE user_id = #{userId}
+    </delete>      
+    
+	<select id="getUserRoles" parameterType="String" resultType="Role">
+     /* QUERY ID : getUserRoles */
+        SELECT b.role_id 'roleId',
+               b.role_name 'roleName',
+               b.role_description 'roleDescription',
+          FROM map_user_role a, cmm_role b
+         WHERE a.user_id = #{userId} AND a.role_id = b.role_id;
+    </select>
+    
+    <select id="getUserRolesNotMaped" parameterType="String" resultType="Role">
+     /* QUERY ID : getUserRolesNotMaped */
+        SELECT role_id 'roleId', role_name 'roleName', role_description 'roleDescription'
+          FROM cmm_role
+         WHERE role_id NOT IN (SELECT a.role_id FROM map_user_role a, cmm_role b WHERE a.user_id = #{userId}  AND a.role_id = b.role_id)
+    </select>
+            
+    <insert id="applyMapping" parameterType="java.util.List">
+    /* QUERY ID : applyMapping */
+        INSERT INTO map_user_role (user_id, role_id) VALUES
+         <foreach collection="list" index="index" item="item">       
+            <if test="index != 0"> , </if> 
+             ( #{item.userId}, #{item.roleId} )
+         </foreach>
+    </insert>            
+            
+    <delete id="removeMapping" parameterType="java.util.List">
+    /* QUERY ID : removeMapping */
+        DELETE FROM map_user_role
+         WHERE  
+          <foreach collection="list" index="index" item="item">       
+                <if test="index != 0"> OR </if>
+                (user_id = #{item.userId} AND role_id = #{item.roleId} ) 
+          </foreach>        
+    </delete>   
+                
+    <update id="updateUser" parameterType="User">
+     /* QUERY ID : updateUser */
+			 UPDATE cmm_user
+			   SET  modify_datetime = CURRENT_TIMESTAMP
+			        ,user_name = #{userName}
+			        ,user_name_real = #{userNameReal}
+			        ,sex = #{sex}
+			        ,dob = #{dob} 
+			        ,mobile = #{mobile} 
+			        ,telephone = #{telephone} 
+			        ,use_social_messenger = #{useSocialMessenger} 
+			        ,use_social_messenger_id = #{useSocialMessengerId} 
+					,address_street = #{addressStreet} 
+					,address_suburb = #{addressSuburb} 
+					,address_state = #{addressState} 
+					,address_postcode = #{addressPostcode} 
+					,photo_file = #{photoFile} 
+					,abn = #{abn} 
+					,acn = #{acn} 
+					,address_business_samewith_home = #{addressBusinessSamewithHome} 
+					,address_business_street = #{addressBusinessStreet} 
+					,address_business_suburb = #{addressBusinessSuburb} 
+					,address_business_state = #{addressBusinessState} 
+					,address_business_postcode = #{addressBusinessPostcode} 
+					,password = #{password} 
+					,password_failure_cnt = #{passwordFailureCnt} 
+					,password_update_date = DATE(CURRENT_TIMESTAMP) 
+					,email= #{email} 
+					,use_yn  = UPPER(#{useYn}) 
+					,apply_status  = UPPER(#{applyStatus}) 
+					,seller_delivery_address_street   = #{sellerDeliveryAddressStreet}                  
+					,seller_delivery_address_suburb   = #{sellerDeliveryAddressSuburb}         
+					,seller_delivery_address_state    = #{sellerDeliveryAddressState}         
+					,seller_delivery_address_postcode = #{sellerDeliveryAddressPostcode}         
+					,seller_pickup_address_street     = #{sellerPickupAddressStreet}         
+					,seller_pickup_address_suburb     = #{sellerPickupAddressSuburb}         
+					,seller_pickup_address_state      = #{sellerPickupAddressState}         
+					,seller_pickup_address_postcode   = #{sellerPickupAddressPostcode}         
+					,seller_introduction              = #{sellerIntroduction}
+					,seller_business_name              = #{sellerBusinessName}
+					,seller_have_minimum_payment       = #{sellerHaveMinimumPayment}
+					,seller_minimum_payment_for_pickup = #{sellerMinimumPaymentForPickup}
+					,seller_minimum_payment_for_deliver = #{sellerMinimumPaymentForDeliver}
+					,seller_is_mandatory_choose_delivery_pickup_date = #{sellerIsMandatoryChooseDeliveryPickupDate}
+			 WHERE user_id = #{userId}
+    </update>
+                
+    <update id="updateUserForNotNull" parameterType="User">
+     /* QUERY ID : updateUserForNotNull */
+			 UPDATE cmm_user
+			   SET  modify_datetime = CURRENT_TIMESTAMP
+			        <if test="userName != null">,user_name = #{userName} </if>
+			        <if test="userNameReal != null">,user_name_real = #{userNameReal} </if>
+			        <if test="sex != null">,sex = #{sex} </if>
+			        <if test="dob != null">,dob = #{dob} </if>
+			        <if test="mobile != null">,mobile = #{mobile} </if>
+			        <if test="telephone != null">,telephone = #{telephone} </if>
+			        <if test="useSocialMessenger != null">,use_social_messenger = #{useSocialMessenger} </if>
+			        <if test="useSocialMessengerId != null">,use_social_messenger_id = #{useSocialMessengerId} </if>
+					<if test="addressStreet != null">,address_street = #{addressStreet} </if>
+					<if test="addressSuburb != null">,address_suburb = #{addressSuburb} </if>
+					<if test="addressState != null">,address_state = #{addressState} </if>
+					<if test="addressPostcode != null">,address_postcode = #{addressPostcode} </if>
+					<if test="photoFile != null">,photo_file = #{photoFile} </if>
+					<if test="abn != null">,abn = #{abn} </if>
+					<if test="acn != null">,acn = #{acn} </if>
+					<if test="addressBusinessSamewithHome != null">,address_business_samewith_home = #{addressBusinessSamewithHome} </if>
+					<if test="addressBusinessStreet != null">,address_business_street = #{addressBusinessStreet} </if>
+					<if test="addressBusinessSuburb != null">,address_business_suburb = #{addressBusinessSuburb} </if>
+					<if test="addressBusinessState != null">,address_business_state = #{addressBusinessState} </if>
+					<if test="addressBusinessPostcode != null">,address_business_postcode = #{addressBusinessPostcode} </if>
+					<if test="password != null">,password = #{password} </if>
+					<if test="password != null">,password_update_date = DATE_FORMAT(now(), '%Y-%m-%d') </if>
+					<if test="passwordFailureCnt != null">,password_failure_cnt = #{passwordFailureCnt} </if>
+					<if test="email != null">,email= #{email} </if>
+					<if test="useYn != null">,use_yn  = UPPER(#{useYn}) </if>
+					<if test="applyStatus != null">,apply_status  = UPPER(#{applyStatus}) </if>
+					<if test="sellerDeliveryAddressStreet != null">,seller_delivery_address_street   = #{sellerDeliveryAddressStreet}  </if>                
+					<if test="sellerDeliveryAddressSuburb != null">,seller_delivery_address_suburb   = #{sellerDeliveryAddressSuburb} </if>        
+					<if test="sellerDeliveryAddressState != null">,seller_delivery_address_state = #{sellerDeliveryAddressState} </if>         
+					<if test="sellerDeliveryAddressPostcode != null">,seller_delivery_address_postcode = #{sellerDeliveryAddressPostcode} </if>         
+					<if test="sellerPickupAddressStreet != null">,seller_pickup_address_street = #{sellerPickupAddressStreet} </if>        
+					<if test="sellerPickupAddressSuburb != null">,seller_pickup_address_suburb  = #{sellerPickupAddressSuburb} </if>         
+					<if test="sellerPickupAddressState != null">,seller_pickup_address_state  = #{sellerPickupAddressState}  </if>        
+					<if test="sellerPickupAddressPostcode != null">,seller_pickup_address_postcode   = #{sellerPickupAddressPostcode} </if>        
+					<if test="sellerIntroduction != null">,seller_introduction    = #{sellerIntroduction} </if>
+					<if test="sellerBusinessName != null">,seller_business_name              = #{sellerBusinessName} </if>
+					<if test="sellerHaveMinimumPayment != null">,seller_have_minimum_payment       = #{sellerHaveMinimumPayment} </if>
+					<if test="sellerMinimumPaymentForPickup != null and sellerMinimumPaymentForPickup != 0">,seller_minimum_payment_for_pickup = #{sellerMinimumPaymentForPickup} </if>
+					<if test="sellerMinimumPaymentForDeliver != null and sellerMinimumPaymentForDeliver != 0">,seller_minimum_payment_for_deliver = #{sellerMinimumPaymentForDeliver} </if>
+					<if test="sellerIsMandatoryChooseDeliveryPickupDate != null">,seller_is_mandatory_choose_delivery_pickup_date       = #{sellerIsMandatoryChooseDeliveryPickupDate} </if>
+					<if test="profilePhotoId != null and profilePhotoId != 0">,profile_photo_id    = #{profilePhotoId} </if>
+			 WHERE user_id = #{userId}
+    </update>            
+    
+    <!-- password_update_date = date_add(password_failure_cnt, INTERVAL -365 DAY) -->
+    <update id="initialUserAccount" parameterType="User">
+     /* QUERY ID : initialUserAccount */
+        UPDATE cmm_user
+           SET password_update_date = DATE_FORMAT(now(), '%Y-%m-%d'),
+               password_failure_cnt = 0,
+               use_yn = 'Y',
+               <if test="password != null">password = #{password}, </if>
+               apply_status = 'COMPLETE',
+               modify_datetime = current_timestamp
+         WHERE user_id = #{userId}
+    </update>    
+    
+    <select id="getAllRoles" parameterType="java.lang.String" resultType="java.lang.String">
+     /* QUERY ID : getAllRoles */
+		SELECT GROUP_CONCAT(b.role_id SEPARATOR ', ') AS 'role_id'
+		                    FROM map_user_role a
+		                            LEFT OUTER JOIN cmm_role b ON b.role_id = a.role_id
+		               GROUP BY user_id
+		               HAVING user_id = #{userId}
+    </select>
+    
+    <update id="updateUserProfilePhoto" parameterType="User">
+     /* QUERY ID : updateUserProfilePhoto */
+			 UPDATE cmm_user
+			   SET  modify_datetime = CURRENT_TIMESTAMP
+					<if test="profilePhotoId == 0 or profilePhotoId == null">,profile_photo_id    = NULL </if>
+					<if test="profilePhotoId != null and profilePhotoId != 0">,profile_photo_id    = #{profilePhotoId} </if>
+					<if test="creator != null">,creator    = #{creator} </if>
+			 WHERE user_id = #{userId}
+    </update>    
+  	      
+</mapper>

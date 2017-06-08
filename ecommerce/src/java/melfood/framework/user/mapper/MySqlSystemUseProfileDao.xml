@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlSystemUseProfileDao" >
+    
+    <select id="getSystemUseProfileList" parameterType="java.util.Map" resultType="SystemUseProfile">
+     /* QUERY ID : getSystemUseProfileList */
+		SELECT a.seq 'seq',
+		       a.user_id 'userId',
+		       a.login_ip_address 'loginIPAddress',
+		       a.login_datetime 'loginDatetime',
+		       a.logout_datetime 'logoutDatetime',
+		       a.minutes_of_use 'minutesOfUse',
+		       DATE_FORMAT(a.create_dt, '%d/%m/%Y %H:%i') 'createDt'
+		  FROM rpc_cmm_system_useprofile a
+  	  WHERE 1 = 1        
+         <if test="userId != null">  AND a.userId like #{userId} </if>
+         <if test="searchType != null and periodFrom != null and periodTo != null">
+            <choose>
+                 <when test="searchType == 'login'">
+                     AND (a.login_datetime  <![CDATA[ >=]]> str_to_date(#{periodFrom}, '%d/%m/%Y') AND a.login_datetime <![CDATA[ <=]]> str_to_date(#{periodTo}, '%d/%m/%Y') )
+                 </when>
+                 <when test="searchType == 'logout'">
+                     AND (a.logout_datetime <![CDATA[ >=]]> str_to_date(#{periodFrom}, '%d/%m/%Y') AND a.logout_datetime <![CDATA[ <=]]> str_to_date(#{periodTo}, '%d/%m/%Y') )
+                 </when>
+            </choose>
+         </if>         
+    </select>
+
+
+    <insert id="insertSystemUseProfile" parameterType="java.util.Map">
+     /* QUERY ID : insertSystemUseProfile */
+            INSERT INTO rpc_cmm_system_useprofile (user_id
+                            ,login_ip_address
+                            ,login_datetime
+                            ,logout_datetime
+                            ,minutes_of_use)
+            VALUES ( #{userId}
+                    ,#{loginIPAddress}
+                    ,STR_TO_DATE(#{loginDatetime}, '%d/%m/%Y %H:%i:%s')
+                    ,STR_TO_DATE(#{logoutDatetime}, '%d/%m/%Y %H:%i:%s')
+                    ,#{minutesOfUse})
+    </insert> 
+          
+</mapper>

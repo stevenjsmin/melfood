@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlPaymentMethodDao">
+
+	<select id="getPaymentMethods" parameterType="PaymentMethod" resultType="PaymentMethod">
+	 /* QUERY ID : getPaymentMethods */
+		SELECT a.user_id AS 'userId',
+		       b.user_name AS 'seller.userName',
+		       a.method_seq AS 'methodSeq',
+		       (SELECT label FROM cmm_code WHERE category = 'COMM' AND type = 'PAYMENT_METHOD' AND value = a.payment_method) AS 'paymentMethodCodeName',
+		       (SELECT label FROM cmm_code WHERE category = 'COMM' AND type = 'BANK' AND value = a.bank_name) AS 'bankNameCodeName',
+		       a.payment_method AS 'paymentMethod',
+		       a.bank_name AS 'bankName',
+		       a.bank_bsb AS 'bankBsb',
+		       a.bank_account_no AS 'bankAccountNo',
+		       a.bank_account_owner_name AS 'bankAccountOwnerName',
+		       a.use_yn AS 'useYn',
+		       a.create_datetime AS 'createDatetime',
+		       a.modify_datetime AS 'modifyDatetime',
+		       a.creator AS 'creator'    		       
+		  FROM shopping_payment_method a LEFT OUTER JOIN cmm_user b ON b.user_id = a.user_id
+  	         WHERE 1 = 1
+				<if test="userId != null"> AND a.user_id = #{userId} </if>
+				<if test="methodSeq != null and methodSeq != 0"> AND a.method_seq = #{methodSeq} </if>
+				<if test="paymentMethod != null"> AND a.payment_method = #{paymentMethod} </if>
+				<if test="bankName != null"> AND a.bank_name = #{bankName} </if>
+				<if test="bankBsb != null"> AND a.bank_bsb LIKE CONCAT('%', #{bankBsb}, '%') </if>
+				<if test="bankAccountNo != null"> AND a.bank_account_no LIKE CONCAT('%', #{bankAccountNo}, '%') </if>
+				<if test="bankAccountOwnerName != null"> AND a.bank_account_owner_name LIKE CONCAT('%', #{bankAccountOwnerName}, '%') </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.method_seq ASC, a.create_datetime ASC 
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}	    	
+	</select>
+	<select id="getTotalCntForPaymentMethods" parameterType="PaymentMethod" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForPaymentMethods */
+		SELECT COUNT(*)
+		  FROM shopping_payment_method a LEFT OUTER JOIN cmm_user b ON b.user_id = a.user_id
+  	         WHERE 1 = 1
+				<if test="userId != null"> AND a.user_id = #{userId} </if>
+				<if test="methodSeq != null and methodSeq != 0"> AND a.method_seq = #{methodSeq} </if>
+				<if test="paymentMethod != null"> AND a.payment_method = #{paymentMethod} </if>
+				<if test="bankName != null"> AND a.bank_name = #{bankName} </if>
+				<if test="bankBsb != null"> AND a.bank_bsb LIKE CONCAT('%', #{bankBsb}, '%') </if>
+				<if test="bankAccountNo != null"> AND a.bank_account_no LIKE CONCAT('%', #{bankAccountNo}, '%') </if>
+				<if test="bankAccountOwnerName != null"> AND a.bank_account_owner_name LIKE CONCAT('%', #{bankAccountOwnerName}, '%') </if>
+				<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+	
+	<select id="getNextPaymentMethodSeq" parameterType="PaymentMethod" resultType="java.lang.Integer">
+		/* QUERY ID : getNextPaymentMethodSeq */
+			SELECT CASE WHEN max(method_seq) IS NULL THEN 1 ELSE (max(method_seq) + 1) END FROM shopping_payment_method WHERE user_id = #{userId} 
+	</select>	
+
+	
+	<insert id="insertPaymentMethod" parameterType="PaymentMethod">
+		/* QUERY ID : insertPaymentMethod */
+		INSERT INTO shopping_payment_method (user_id
+	                     ,method_seq
+	                     ,payment_method
+	                     ,bank_name
+	                     ,bank_bsb
+	                     ,bank_account_no
+	                     ,bank_account_owner_name
+	                     ,use_yn
+	                     ,creator)
+		   VALUES ( #{userId}
+		             ,#{methodSeq}
+		             ,UPPER(#{paymentMethod})
+		             ,UPPER(#{bankName})
+		             ,TRIM(#{bankBsb})
+		             ,TRIM(#{bankAccountNo})
+		             ,TRIM(#{bankAccountOwnerName})
+		             ,UPPER(TRIM(#{useYn}))
+		             ,#{creator})		
+	</insert>
+
+	<update id="modifyPaymentMethod" parameterType="PaymentMethod">
+		/* QUERY ID : modifyPaymentMethod */
+		UPDATE shopping_payment_method
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,payment_method = UPPER(#{paymentMethod})
+		       ,bank_name = UPPER(#{bankName})
+		       ,bank_bsb = TRIM(#{bankBsb})
+		       ,bank_account_no = TRIM(#{bankAccountNo})
+		       ,bank_account_owner_name = TRIM(#{bankAccountOwnerName})
+		       ,use_yn = UPPER(TRIM(#{useYn}))
+		       ,creator = TRIM(#{creator})
+		 WHERE user_id = #{userId} AND method_seq = #{methodSeq}
+	</update>
+
+	<update id="modifyPaymentMethodForNotNull" parameterType="PaymentMethod">
+		/* QUERY ID : modifyPaymentMethodForNotNull */
+		UPDATE shopping_payment_method
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="paymentMethod != null">, payment_method = TRIM(#{paymentMethod}) </if>
+		       <if test="bankName != null">, payment_method = TRIM(#{bankName}) </if>
+		       <if test="bankBsb != null">, payment_method = TRIM(#{bankBsb}) </if>
+		       <if test="bankAccountNo != null">, payment_method = TRIM(#{bankAccountNo}) </if>
+		       <if test="bankAccountOwnerName != null">, payment_method = TRIM(#{bankAccountOwnerName}) </if>
+		       <if test="useYn != null">, use_yn = UPPER(TRIM(#{useYn})) </if>
+		       <if test="creator != null">creator = TRIM(#{creator}) </if>
+		 WHERE user_id = #{userId} AND method_seq = #{methodSeq}
+	</update>
+
+	<delete id="deletePaymentMethod" parameterType="PaymentMethod">
+		/* QUERY ID : deletePaymentMethod */
+		DELETE FROM shopping_payment_method WHERE user_id = #{userId} AND method_seq = #{methodSeq}
+	</delete>
+
+	
+</mapper>

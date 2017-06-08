@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlEmailDAO">
+
+    <insert id="insertEmail" parameterType="EmailDTO">
+     /* QUERY ID : insertEmail */
+		INSERT INTO rpc_cmm_email
+		    (email_id, seq, sender, reciver, cc, bcc, subject, contents, attached_document_id_1, attached_document_id_2, attached_document_id_3, attached_document_id_4, attached_document_id_5, attached_file_id_1, attached_file_id_2, attached_file_id_3, attached_file_id_4, attached_file_id_5, send_datetime, create_datetime, creator) 
+        VALUES (#{emailId},
+                #{seq},
+                #{sender},
+                #{reciver},
+                #{cc},
+                #{bcc},
+                #{subject},
+                #{contents},
+                #{attachedDocumentId1},
+                #{attachedDocumentId2},
+                #{attachedDocumentId3},
+                #{attachedDocumentId4},
+                #{attachedDocumentId5},
+                #{attachedFileId1},
+                #{attachedFileId2},
+                #{attachedFileId3},
+                #{attachedFileId4},
+                #{attachedFileId5},
+                #{sendDatetime},
+                CURRENT_TIMESTAMP,
+                #{creator})
+    </insert>
+
+    <update id="updateSendEmailResult" parameterType="EmailDTO">
+     /* QUERY ID : updateSendEmailResult */    
+        UPDATE rpc_cmm_email SET
+                    result_code = #{resultCode},
+                    result_message = #{resultMessage},
+                    belonging_email_cnt = #{belongingEmailCnt}
+        WHERE email_id =  #{emailId} AND seq =  #{seq}
+    </update>
+
+    <select id="getNextEmailId" resultType="java.lang.Integer">
+     /* QUERY ID : getNextEmailId */
+        SELECT CASE
+                  WHEN max(email_id) IS NULL THEN 1
+                  ELSE (max(email_id) + 1)
+               END nextEmailId
+          FROM rpc_cmm_email
+    </select>
+
+    <select id="getNextEmailSequence" parameterType="java.lang.String" resultType="java.lang.Integer">
+     /* QUERY ID : getNextEmailSequence */
+        SELECT CASE
+                  WHEN max(seq) IS NULL THEN 1
+                  ELSE (max(seq) + 1)
+               END nextSeq
+          FROM rpc_cmm_email 
+         WHERE email_id = #{emailId}
+    </select>
+
+    <select id="getBelongingEmailCnt" parameterType="java.lang.String" resultType="java.lang.Integer">
+     /* QUERY ID : getBelongingEmailCnt */
+		SELECT count(*) belongingEmailCnt FROM rpc_cmm_email WHERE email_id = #{emailId}
+    </select>
+    
+    <select id="getEmailList" parameterType="java.util.Map" resultType="EmailDTO">
+     /* QUERY ID : getEmailList */
+		SELECT a.email_id                 'emailId',              
+		       a.seq                      'seq',                   
+		       a.sender                   'sender',                
+		       a.reciver                  'reciver',               
+		       a.cc                       'cc',                    
+		       a.bcc                      'bcc',                   
+		       a.subject                  'subject',               
+		       a.contents                 'contents',              
+		       a.attached_document_id_1   'attachedDocumentId1',
+		       a.attached_document_id_2   'attachedDocumentId2',
+		       a.attached_document_id_3   'attachedDocumentId3',
+		       a.attached_document_id_4   'attachedDocumentId4',
+		       a.attached_document_id_5   'attachedDocumentId5',
+		       a.attached_file_id_1       'attachedFileId1',    
+		       a.attached_file_id_2       'attachedFileId2',    
+		       a.attached_file_id_3       'attachedFileId3',    
+		       a.attached_file_id_4       'attachedFileId4',    
+		       a.attached_file_id_5       'attachedFileId5',    
+		       DATE_FORMAT(a.send_datetime, '%d/%m/%Y') 'sendDatetime',         
+		       a.result_code              'resultCode',           
+		       a.result_message           'resultMessage',        
+		       a.create_datetime          'createDatetime',
+		       DATE_FORMAT(a.create_datetime, '%d/%m/%Y') 'createDatetime',       
+		       a.creator                  'creator'                
+		  FROM rpc_cmm_email a
+         WHERE 1 = 1 
+                <if test="emailId != null"> AND a.email_id = #{emailId} </if>
+                <if test="seq != null"> AND a.seq = #{seq} </if>
+                <if test="sender != null"> AND UPPER(a.sender) like CONCAT('%', UPPER(#{sender}), '%') </if>
+                <if test="reciver != null"> AND UPPER(a.reciver) like CONCAT('%', UPPER(#{reciver}), '%') </if>
+                <if test="cc != null"> AND UPPER(a.cc) like CONCAT('%', UPPER(#{cc}), '%') </if>
+                <if test="bcc != null"> AND UPPER(a.bcc) like CONCAT('%', UPPER(#{bcc}), '%') </if>
+                <if test="subject != null"> AND UPPER(a.subject) like CONCAT('%', UPPER(#{subject}), '%') </if>
+                <if test="contents != null"> AND UPPER(a.contents) like CONCAT('%', UPPER(#{contents}), '%') </if>
+                <if test="resultCode != null"> AND a.result_code = #{resultCode} </if>
+                <if test="resultMessage != null"> AND a.result_message = #{resultMessage} </if>
+                <if test="creator != null"> AND a.creator = #{creator} </if>         
+         ORDER BY a.seq DESC
+    </select>
+
+    <delete id="deleteEmail" parameterType="java.util.Map">
+     /* QUERY ID : deleteEmail */
+        DELETE FROM rpc_cmm_email
+         WHERE email_id = #{emailId} <if test="seq != null"> AND seq = #{seq}</if>         
+    </delete>
+
+
+    <insert id="insertEmailAttachedFile" parameterType="EmailAttachedFileDTO">
+     /* QUERY ID : insertEmailAttachedFile */    
+		INSERT INTO rpc_cmm_email_attached_file
+		    (file_id, original_filename, saved_filename, file_type, file_size, file_description, create_datetime, creator) 
+		VALUES (#{fileId},
+		        #{originalFilename},
+		        #{savedFilename},
+		        #{fileType},
+		        #{fileSize},
+		        #{fileDescription},
+		        CURRENT_TIMESTAMP,
+		        #{creator})
+    </insert>
+    
+    <select id="getNextEmailAttachedFileId" resultType="java.lang.String">
+     /* QUERY ID : getNextEmailAttachedFileId */
+        SELECT CASE
+                  WHEN max(file_id) IS NULL THEN 1
+                  ELSE (max(file_id) + 1)
+               END nextFileId
+          FROM rpc_cmm_email_attached_file
+    </select>
+
+    <select id="getEmailAttachedFileList" parameterType="java.util.Map" resultType="EmailAttachedFileDTO">
+     /* QUERY ID : getEmailAttachedFileList */
+		SELECT  a.file_id           'fileId',                               
+				a.saved_filename    'savedFilename',                
+				a.original_filename 'originalFilename',         
+				a.file_type         'fileType',                         
+				a.file_size         'fileSize',                         
+				a.file_description  'fileDescription',          
+				a.create_datetime   'createDatetime',                          
+				a.creator           'creator'
+		  FROM rpc_cmm_email_attached_file a                 
+         WHERE 1 = 1 
+                <if test="fileId != null"> AND a.file_id = #{fileId} </if>
+                <if test="savedFilename != null"> AND UPPER(a.saved_filename) like CONCAT('%', UPPER(#{savedFilename}), '%') </if>
+                <if test="originalFilename != null"> AND UPPER(a.original_filename) like CONCAT('%', UPPER(#{originalFilename}), '%') </if>
+                <if test="fileType != null"> AND a.file_type = #{fileType} </if>
+                <if test="fileDescription != null"> AND UPPER(a.file_description) like CONCAT('%', UPPER(#{fileDescription}), '%') </if>
+                <if test="creator != null"> AND a.creator = #{creator} </if>         
+         ORDER BY a.file_id ASC
+    </select>
+
+
+    <select id="getEmailAttachedFileListByFileIDs" parameterType="java.util.List" resultType="EmailAttachedFileDTO">
+     /* QUERY ID : getEmailAttachedFileListByFileIDs */
+		SELECT  a.file_id           'fileId',                               
+				a.saved_filename    'savedFilename',                
+				a.original_filename 'originalFilename',         
+				a.file_type         'fileType',                         
+				a.file_size         'fileSize',                         
+				a.file_description  'fileDescription',          
+				a.create_datetime   'createDatetime',                          
+				a.creator           'creator'
+		  FROM rpc_cmm_email_attached_file a                 
+         WHERE 1 = 1 
+	       <if test="list != null">
+	             AND a.file_id IN 
+	                <foreach collection="list" index="index" item="item" separator="," open="(" close=")">       
+	                    #{item}
+	                </foreach>
+	       </if>    
+         ORDER BY a.file_id ASC
+    </select>
+
+    <delete id="deleteEmailAttachedFile" parameterType="java.util.List">
+        /* QUERY ID : deleteEmailAttachedFile */
+        DELETE FROM rpc_cmm_email_attached_file
+       WHERE file_id IN
+           <if test="list != null">
+                 <foreach collection="list" index="index" item="item" separator="," open="(" close=")">       
+                     #{item}
+                 </foreach>
+           </if>         
+    </delete>
+            
+</mapper>
