@@ -1,9 +1,9 @@
-/** 
- * 2015 RpcGoogleMapService.java
+/**
+ * 2015 MelfoodGoogleMapService.java
  * Created by Steven J.S Min(steven.min@utilitiessoftwareservices.com)
- *  
- * Licensed to the Utilities Software Services(USS). 
- * For use this source code, you must obtain proper permission. 
+ *
+ * Licensed to the Utilities Software Services(USS).
+ * For use this source code, you must obtain proper permission.
  * Or enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.
  */
 package melfood.framework.gmap;
@@ -16,11 +16,11 @@ import com.google.maps.model.GeocodingResult;
  * @author Steven J.S Min(steven.min@utilitiessoftwareservices.com)
  *
  */
-public interface RpcGoogleMapService {
+public interface MelfoodGoogleMapService {
 
 	/**
 	 * Return lookup a result from google web services coresponding given addresse
-	 * 
+	 *
 	 * @param address
 	 * @return
 	 * @throws Exception
@@ -29,7 +29,7 @@ public interface RpcGoogleMapService {
 
 	/**
 	 * Return lookup results from google web services coresponding given addresses
-	 * 
+	 *
 	 * @param addresses
 	 * @return
 	 * @throws Exception

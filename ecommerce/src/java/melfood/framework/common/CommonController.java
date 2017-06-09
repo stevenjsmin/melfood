@@ -45,7 +45,7 @@ import melfood.framework.document.DocumentFactory;
 import melfood.framework.email.EmailDTO;
 import melfood.framework.email.EmailServices;
 import melfood.framework.email.IEmailService;
-import melfood.framework.gmap.RpcGoogleMapService;
+import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
 import melfood.shopping.order.ShoppingCart;
 import melfood.shopping.order.ShoppingCartService;
@@ -64,7 +64,7 @@ public class CommonController extends BaseController {
 	IEmailService emailService;
 
 	@Autowired
-	RpcGoogleMapService rpcGoogleMapService;
+	MelfoodGoogleMapService melfoodGoogleMapService;
 
 	@Autowired
 	private ShoppingCartService shoppingCartService;

@@ -39,7 +39,7 @@ import melfood.framework.document.DocumentTemplate;
 import melfood.framework.email.EmailDTO;
 import melfood.framework.email.EmailServices;
 import melfood.framework.email.IEmailService;
-import melfood.framework.gmap.RpcGoogleMapService;
+import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
 
 /**
@@ -59,7 +59,7 @@ public class CommonController extends BaseController {
 	AttachmentFileService attachmentFileService;
 
 	@Autowired
-	RpcGoogleMapService rpcGoogleMapService;
+	MelfoodGoogleMapService melfoodGoogleMapService;
 
 	@RequestMapping(value = "/ABNLookup", produces = "application/json")
 	@ResponseBody

@@ -487,7 +487,7 @@ function cancelChooseDeliveryDate(){
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="pk_test_9vypCb6MRqSERMISU4gxHt5W"
     data-amount="999"
-    data-name="Melfood.com.au"
+    data-name="Coupang.com.au"
     data-description="Hello"
     data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
     data-locale="auto"

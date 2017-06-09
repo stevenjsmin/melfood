@@ -3,12 +3,12 @@
     <head>
         <meta charset="utf-8" />
         <title>USS RPC Business platform :: For mobile</title>
-        <link type="text/css" rel="stylesheet" href="http://rpc.dev.utilitiessoftwareservices.com:8081/rpc/resources/mobile/css/demo.css" />
-        <link type="text/css" rel="stylesheet" href="http://rpc.dev.utilitiessoftwareservices.com:8081/rpc/resources/mobile/css/jquery.mmenu.all.css" />
+        <link type="text/css" rel="stylesheet" href="http://melfood.com.au/resources/mobile/css/demo.css" />
+        <link type="text/css" rel="stylesheet" href="http://melfood.com.au/resources/mobile/css/jquery.mmenu.all.css" />
         
         
-        <script type="text/javascript" src="http://rpc.dev.utilitiessoftwareservices.com:8081/rpc/resources/mobile/js/jquery.min.js"></script>
-        <script type="text/javascript" src="http://rpc.dev.utilitiessoftwareservices.com:8081/rpc/resources/mobile/js/jquery.mmenu.min.all.js"></script>
+        <script type="text/javascript" src="http://melfood.com.au/resources/mobile/js/jquery.min.js"></script>
+        <script type="text/javascript" src="http://melfood.com.au/resources/mobile/js/jquery.mmenu.min.all.js"></script>
         <script type="text/javascript">
             $(function() {
                 $('nav#menu').mmenu({
@@ -31,7 +31,7 @@
                 document.location.href = url;
             }
             function logout() {
-                document.location.href = "/rpc/common/auth/Logout.yum";
+                document.location.href = "/common/auth/Logout.yum";
             }    
         </script>        
     </head>
@@ -66,17 +66,17 @@
             </div> <!-- // end of contents -->
             <nav id="menu">
                 <ul>
-                    <li><a onclick="go('/rpc/business/quotationMultiProductsManager/Main.yum')">Quotation</a></li>
+                    <li><a onclick="go('/business/quotationMultiProductsManager/Main.yum')">Quotation</a></li>
                 
-                    <!-- li><a onclick="go('/rpc/business/quotationmanager/Main.yum')">Quotation</a></li-->
-                    <li><a onclick="go('/rpc/business/contractmanager/Main.yum')">Contract</a></li>
-                    <li><a onclick="go('/rpc/business/salesRecord/Main.yum')">Sales Records</a></li>
-                    <li><a onclick="go('/rpc/business/report/reportmanager/Dashbord.yum')">Dashboard</a></li>
+                    <!-- li><a onclick="go('/business/quotationmanager/Main.yum')">Quotation</a></li-->
+                    <li><a onclick="go('/business/contractmanager/Main.yum')">Contract</a></li>
+                    <li><a onclick="go('/business/salesRecord/Main.yum')">Sales Records</a></li>
+                    <li><a onclick="go('/business/report/reportmanager/Dashbord.yum')">Dashboard</a></li>
                     <li><a href="#">Administration</a>
                         <ul>
-                            <li><a onclick="go('/rpc/framework/usermanager/Main.yum')">User management</a></li>
-                            <li><a onclick="go('/rpc/framework/codemanager/Main.yum')">Code management</a></li>
-                            <li><a onclick="go('/rpc/framework/rolemanager/Main.yum.yum')">Role management</a></li>
+                            <li><a onclick="go('/framework/usermanager/Main.yum')">User management</a></li>
+                            <li><a onclick="go('/framework/codemanager/Main.yum')">Code management</a></li>
+                            <li><a onclick="go('/framework/rolemanager/Main.yum.yum')">Role management</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -1,9 +1,9 @@
-/** 
- * 2015 RpcGoogleMapServiceImpl.java
+/**
+ * 2015 MelfoodGoogleMapServiceImpl.java
  * Created by steven.min
- *  
- * Licensed to the Utilities Software Services(USS). 
- * For use this source code, you must obtain proper permission. 
+ *
+ * Licensed to the Utilities Software Services(USS).
+ * For use this source code, you must obtain proper permission.
  * Or enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.
  */
 
@@ -27,9 +27,9 @@ import melfood.framework.Ctx;
  *
  */
 @Service
-public class RpcGoogleMapServiceImpl implements RpcGoogleMapService {
+public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
 
-	private static final Logger logger = LoggerFactory.getLogger(RpcGoogleMapServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(MelfoodGoogleMapServiceImpl.class);
 
 	@Override
 	public GeocodingResult lookupGMap(String address) throws Exception {
@@ -53,7 +53,7 @@ public class RpcGoogleMapServiceImpl implements RpcGoogleMapService {
 	public List<GeocodingResult> lookupGMap(List<String> addresses) throws Exception {
 
 		String googleMapApiKey = Ctx.xmlConfig.getString("system-config/google-web-service/map-service/geo-api-key");
-		
+
 		GeoApiContext context = new GeoApiContext().setApiKey(googleMapApiKey);
 		GeocodingResult[] results = null;
 

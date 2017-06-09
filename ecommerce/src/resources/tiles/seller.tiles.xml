@@ -9,7 +9,7 @@
 	<!-- Layout Define -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<definition name="tiles/seller/root" extends="layout/panel_300">
-		<put-attribute name="navigation" value="Coupang.com.au > Seller" />
+		<put-attribute name="navigation" value="Melfood.com.au > Seller" />
 		<put-attribute name="left-side" value="/WEB-INF/pages/seller/seller_leftmain_menu.jsp" /> 
 	</definition>
 

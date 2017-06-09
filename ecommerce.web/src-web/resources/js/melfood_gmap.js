@@ -17,14 +17,14 @@
 /* TYPE 11 */ var MAPSTYLE_SUBTLE_GRAYSCALE = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}];
 /* TYPE 12 */ var MAPSTYLE_CLADME = [{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#4f595d"},{"visibility":"on"}]}];
 
-function getMapStyle(MelfoodGmap, mapType){
+function getMapStyle(CoupangGmap, mapType){
 	var mapStyleNo = null;
 	
 	// Default MAP style select
 	var mapStyle = MAPSTYLE_UNSATURATED_BROWNS;
 	if(mapType == 'HEAT') mapStyle = MAPSTYLE_BENTLEY;
 	
-	if (typeof MelfoodGmap.mapStyleNo != 'undefined') mapStyleNo = MelfoodGmap.mapStyleNo;
+	if (typeof CoupangGmap.mapStyleNo != 'undefined') mapStyleNo = CoupangGmap.mapStyleNo;
 	
 	if(mapStyleNo == '1')  mapStyle  = MAPSTYLE_NEUTRAL_BLUE;
 	if(mapStyleNo == '2')  mapStyle  = MAPSTYLE_GOWALLA;
@@ -50,24 +50,24 @@ var prev_gmap_infowindow = false;
 
 
 
-function markAddressOnGMap(MelfoodGmap){
+function markAddressOnGMap(CoupangGmap){
 	
 	var mapStyleNo = null;
-	var mapName = "Melfood Map";
+	var mapName = "Coupang Map";
 	var mapBindObjID = "map-canvas";
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
-	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
+	var mapStyleNo = getMapStyle(CoupangGmap,'HEAT');
 	var mapMessage = "";
 	var mapIsMultipleMark = "no";
 	
 	
-	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
-	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
-	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
-	if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
-	if (typeof MelfoodGmap.mapMessage != 'undefined') mapMessage = MelfoodGmap.mapMessage;
-	if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
+	if (typeof CoupangGmap.mapName != 'undefined') mapName = CoupangGmap.mapName;
+	if (typeof CoupangGmap.mapBindObjID != 'undefined') mapBindObjID = CoupangGmap.mapBindObjID;
+	if (typeof CoupangGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(CoupangGmap.mapZoomLevel);
+	if (typeof CoupangGmap.mapAddress != 'undefined') mapAddress = CoupangGmap.mapAddress;
+	if (typeof CoupangGmap.mapMessage != 'undefined') mapMessage = CoupangGmap.mapMessage;
+	if (typeof CoupangGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = CoupangGmap.mapIsMultipleMark;
 	
 	var styledMap = new google.maps.StyledMapType(mapStyleNo, {name: mapName});
 	var latlng = new google.maps.LatLng( -37.813556, 144.963050 );	// Melbourne, VIC
@@ -91,12 +91,12 @@ function markAddressOnGMap(MelfoodGmap){
  		geocoder.geocode( { 'address': mapAddress }, function(results, status) {
  			var addr_type = results[0].types[0];	// [addr_type : administrative_area_level_1 | locality | street_address]
  			if ( status == google.maps.GeocoderStatus.OK ) 
- 				geocodeAddressForOnePlace( results[0].geometry.location, MelfoodGmap);
+ 				geocodeAddressForOnePlace( results[0].geometry.location, CoupangGmap);
  			else     
  				alert("Geocode was not successful for the following reason: " + status);        
  		});	 	
  	} else {
- 		var list = MelfoodGmap.mapDeliverySchedules;
+ 		var list = CoupangGmap.mapDeliverySchedules;
  		if(list != null && list.length > 0) {
  			while((a=list.pop()) != null){ 
  				geocodeAddressForMultiPlace(a.address, a.message, a.clickEvent);
@@ -106,9 +106,9 @@ function markAddressOnGMap(MelfoodGmap){
  	
 }
 
-function geocodeAddressForOnePlace( latlng, MelfoodGmap){
-	var address = MelfoodGmap.mapAddress;
-	var zoom = MelfoodGmap.mapZoomLevel;
+function geocodeAddressForOnePlace( latlng, CoupangGmap){
+	var address = CoupangGmap.mapAddress;
+	var zoom = CoupangGmap.mapZoomLevel;
 	
 	// Center the map at the specified location
 	// Set the zoom level according to the address level of detail the user specified
@@ -124,7 +124,7 @@ function geocodeAddressForOnePlace( latlng, MelfoodGmap){
 	});
 	
 	// Create an InfoWindow for the marker
-	var contentString = MelfoodGmap.mapMessage;	// HTML text to display in the InfoWindow
+	var contentString = CoupangGmap.mapMessage;	// HTML text to display in the InfoWindow
 	var infowindow = new google.maps.InfoWindow( { content: contentString } );
 	
 	// Set event to display the InfoWindow anchored to the marker when the marker is clicked.
@@ -183,26 +183,26 @@ function infoWindow(marker, map, message) {
     });
 }
 
-function markStreeViewOnGMap(MelfoodGmap){
+function markStreeViewOnGMap(CoupangGmap){
 	var latitude = "-37.813556";
 	var longitude = "144.963050";
 	
 	var mapStyleNo = null;
-	var mapName = "Melfood Map";
+	var mapName = "Coupang Map";
 	var mapBindObjID = "map-street-canvas";
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
-	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
+	var mapStyleNo = getMapStyle(CoupangGmap,'HEAT');
 	var mapMessage = "";
 	var mapIsMultipleMark = "no";
 	
 	
-	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
-	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
-	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
-	if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
-	if (typeof MelfoodGmap.mapMessage != 'undefined') mapMessage = MelfoodGmap.mapMessage;
-	if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
+	if (typeof CoupangGmap.mapName != 'undefined') mapName = CoupangGmap.mapName;
+	if (typeof CoupangGmap.mapBindObjID != 'undefined') mapBindObjID = CoupangGmap.mapBindObjID;
+	if (typeof CoupangGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(CoupangGmap.mapZoomLevel);
+	if (typeof CoupangGmap.mapAddress != 'undefined') mapAddress = CoupangGmap.mapAddress;
+	if (typeof CoupangGmap.mapMessage != 'undefined') mapMessage = CoupangGmap.mapMessage;
+	if (typeof CoupangGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = CoupangGmap.mapIsMultipleMark;
 
  	geocoder.geocode( { 'address': mapAddress}, function(results, status) {
  		if (status == google.maps.GeocoderStatus.OK) {

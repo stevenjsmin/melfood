@@ -231,17 +231,14 @@ public class ShoppingCartController extends BaseController {
 
 		try {
 
-			// 상품기본정보와 판매자 정보를 가져온다.
 			Product product = productService.getProduct(new Product(prodId));
 			String sellerId = product.getSeller();
 
-			// 장바구니에 주문에 상품 마스터 정보를 등록한다.
 			ShoppingCart shoppingCart = new ShoppingCart(customerId, sellerId);
 			shoppingCart.setAmount(Integer.parseInt(amount));
 			shoppingCart.setProdId(Integer.parseInt(prodId));
 			int insertedCartId = shoppingCartService.addProductOnCart(shoppingCart);
 
-			// 만일 주문상품에 옵션 선택사항이 존재한다면, 옵션을 구성(목록형태로)하여 주문된 상품의 옵션 테이블(order_product_option)에 추가해준다.
 			if (!StringUtils.isBlank(productOptions)) {
 				prodOptions = StringUtils.split(productOptions, "^");
 				if (prodOptions.length > 0) {
@@ -262,8 +259,6 @@ public class ShoppingCartController extends BaseController {
 					for (int i = 0; i < optionList.size(); i++) {
 						optionList.get(i).setSeq((nextOptionSeq + i));
 					}
-					
-					// 구성된 주문상품의 옵션정보를 등록한다.
 					orderProductOptionService.insertOrderProductOption(optionList);
 				}
 			}

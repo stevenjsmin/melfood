@@ -103,7 +103,7 @@
 			return false;
 		} else {
 			$.ajax({
-				url : "/rpc/common/auth/Login.yum",
+				url : "/common/auth/Login.yum",
 				data : {
 					userId : userId,
 					password : password
@@ -116,9 +116,9 @@
 	function callbackLogin(data) {
 		if (data.status == 'success') {
 			pageLog(data.message, "success");
-			document.location.href = "/rpc/common/auth/Welcome.yum";
+			document.location.href = "/common/auth/Welcome.yum";
 		} else if (data.status == 'change_pwd') {
-			document.location.href = "/rpc/common/mypage/PasswordChange.yum";
+			document.location.href = "/common/mypage/PasswordChange.yum";
 		} else {
 			$('#loginResultMsg').html(data.message + " ");
 			pageLog(data.message, "warn");
@@ -147,7 +147,7 @@
 						      <table style="width: 100%;"><tr style="height: 38px;"><td class="label strong_font">User ID</td></tr></table>
 						</td>
 						<td style="width: 60%;"class="value special_color"><input type="name" id="userId" name="userId" maxlength="15" style="font-size: 20; font-weight: bold; background-color: #F1F1F8; height: 30px; width: 90%;" onkeydown="pressEnter();" />
-						<td style="width: 20%;vertical-align: bottom; text-align: left;" rowspan="2"><img src="http://rpc.dev.utilitiessoftwareservices.com:8081/rpc/resources/image/login.jpg" style="width: 80px; height 80px;cursor: pointer;text-align: left;" onclick="javascript:login();"></td>
+						<td style="width: 20%;vertical-align: bottom; text-align: left;" rowspan="2"><img src="http://melfood.com.au/resources/image/login.jpg" style="width: 80px; height 80px;cursor: pointer;text-align: left;" onclick="javascript:login();"></td>
 					</tr>
 					<tr>
 						<td style="width: 120px; padding-right: 0px"><table style="width: 100%;"><tr style="height: 38px;"><td class="label strong_font">Password</td></tr></table></td>

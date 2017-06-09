@@ -9,7 +9,7 @@
 	<!-- LAYOUT DEFINE -->
 	<definition name="tiles/admin/root" extends="layout/panel_300">
 		<put-attribute name="leftMenuName" value="ADMIN" />
-		<put-attribute name="navigation" value="Coupang.com.au > Admin" />
+		<put-attribute name="navigation" value="Melfood.com.au > Admin" />
 		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" /> 
 	</definition>
 
@@ -72,7 +72,7 @@
 		<put-attribute name="body" value="/WEB-INF/pages/common/empty.jsp" />
 	</definition>
 	<definition name="tiles/admin/prod/root" extends="layout/panel_310">
-		<put-attribute name="navigation" value="Coupang.com.au > Admin" />
+		<put-attribute name="navigation" value="Melfood.com.au > Admin" />
 		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" /> 
 	</definition>
 	

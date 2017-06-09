@@ -285,7 +285,7 @@ function commonEmailSendForm(UssEmail){
     var top_email_param =  "emailId=" + top_email_emailId + "&subject=" + top_email_subject + "&sender=" + top_email_sender  + "&to=" + top_email_to  + "&cc=" + top_email_cc  + "&bcc=" + top_email_bcc + "&contentsTemplate=" + top_email_contentsTemplate  + "&doc1=" + top_email_doc1  + "&doc2=" + top_email_doc2  + "&doc3=" + top_email_doc3 + "&doc4=" + top_email_doc4 + "&doc5=" + top_email_doc5 + "&callbackUrl=" + top_email_callbackUrl+ "&callbackParam=" + top_email_callbackParam + "&defaultActivateTab=" + top_email_defaultActivateTab;
     
     $("#common_email_send").kendoWindow({
-          content: "/rpc/common/EmailSendFrom.yum?" + top_email_param,
+          content: "/common/EmailSendFrom.yum?" + top_email_param,
           actions: [ "Minimize", "Maximize","Close" ],
           title: "Send Email",
           modal: true,
@@ -340,7 +340,7 @@ function commonNMIDetailInfo(UssNMI){
     var detail_info_param =  "nmi=" + top_nmi_no + "&option=";
     
     $("#common_nmi_detail_info").kendoWindow({
-          content: "/rpc/common/NMIDetailInfoFrom.yum?" + detail_info_param,
+          content: "/common/NMIDetailInfoFrom.yum?" + detail_info_param,
           actions: [ "Minimize", "Maximize","Close" ],
           title: top_nmi_wintitle,
           modal: true,

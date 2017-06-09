@@ -9,7 +9,7 @@
 	<!-- LAYOUT DEFINE -->
 	<definition name="tiles/framework/root" extends="layout/panel_300">
 		<put-attribute name="leftMenuName" value="ADMIN" />
-		<put-attribute name="navigation" value="Coupang.com.au > Admin" />
+		<put-attribute name="navigation" value="Melfood.com.au > Admin" />
 		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" /> 
 	</definition>
 

@@ -6,7 +6,7 @@
 <!doctype html>
 <head>
 <!-- <META http-equiv="refresh" content="1;URL=redirect.html"> -->
-<!-- META http-equiv="refresh" content="1;URL=http://rpc.dev.utilitiessoftwareservices.com:8080/rpc/redirect.html"-->
+<!-- META http-equiv="refresh" content="1;URL=http://melfood.com.au/redirect.html"-->
 
 <script type="text/javascript">
 function menuSelect() {

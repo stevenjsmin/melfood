@@ -63,7 +63,7 @@ function markNMIOnGMap(NMIs, UssNmiGmap){
 	var ussMapStyle = getMapStyle(UssNmiGmap,'NORMAL');
 	var ussMapName = "USS Map";
 	var ussBindObjID = "map_canvas";
-	var ussMapMarkIcon = "/rpc/resources/image/map_marker03.yum";
+	var ussMapMarkIcon = "/resources/image/map_marker03.yum";
 	var ussMapIconXSize = 25;
 	var ussMapIconYSize = 34;
 	var ussMapZoomLevel = 10;
