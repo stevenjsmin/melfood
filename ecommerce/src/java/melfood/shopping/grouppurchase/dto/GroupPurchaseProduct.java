@@ -19,6 +19,11 @@ public class GroupPurchaseProduct extends BaseDto {
         this.productId = productId;
     }
 
+    public GroupPurchaseProduct(String groupPurchaseId, String productId) {
+        this.groupPurchaseId = Integer.parseInt(groupPurchaseId);
+        this.productId = Integer.parseInt(productId);
+    }
+
     public int getGroupPurchaseId() {
         return groupPurchaseId;
     }

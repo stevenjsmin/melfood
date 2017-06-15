@@ -64,6 +64,11 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
     }
 
     @Override
+    public List<Option> getOrganizers(String selectedUserId) throws Exception {
+        return null;
+    }
+
+    @Override
     public List<Option> getMarketSuburbs() throws Exception {
         return null;
     }

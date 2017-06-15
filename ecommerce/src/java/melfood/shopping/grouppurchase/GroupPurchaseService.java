@@ -24,6 +24,7 @@ public interface GroupPurchaseService {
     public Integer modifyGroupPurchaseForNotNull(GroupPurchase groupPurchase) throws Exception;
 
     public List<Option> getOrganizers()throws Exception;
+    public List<Option> getOrganizers(String selectedUserId)throws Exception;
     public List<Option> getMarketSuburbs()throws Exception;
     public List<Option> getDiscountMethods()throws Exception;
     public List<Option> getStopSellingOptions()throws Exception;

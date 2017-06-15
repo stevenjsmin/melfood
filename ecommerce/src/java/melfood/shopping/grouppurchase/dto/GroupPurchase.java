@@ -38,6 +38,10 @@ public class GroupPurchase extends BaseDto {
         this.groupPurchaseId = groupPurchaseId;
     }
 
+    public GroupPurchase(String groupPurchaseId) {
+        this.groupPurchaseId = Integer.parseInt(groupPurchaseId);
+    }
+
     public int getGroupPurchaseId() {
         return groupPurchaseId;
     }
