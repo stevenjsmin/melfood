@@ -33,6 +33,10 @@ public class DeliveryCalendar extends BaseDto {
 	private String isPickup;
 	private String btwnFromHhmm;
 	private String btwnToHhmm;
+	private String amPm;
+
+	private String orderingStartDt; // 주문 받을 일시
+	private String orderingEndDt; // 주문을 더이상 받지 않을 일시
 
 	private Postcode postcode;
 	private User seller;
@@ -177,4 +181,28 @@ public class DeliveryCalendar extends BaseDto {
 		this.btwnToHhmm = btwnToHhmm;
 	}
 
+	public void setAmPm(String amPm) {
+		this.amPm = amPm;
+	}
+
+	public String getAmPm() {
+
+		return amPm;
+	}
+
+	public String getOrderingStartDt() {
+		return orderingStartDt;
+	}
+
+	public void setOrderingStartDt(String orderingStartDt) {
+		this.orderingStartDt = orderingStartDt;
+	}
+
+	public String getOrderingEndDt() {
+		return orderingEndDt;
+	}
+
+	public void setOrderingEndDt(String orderingEndDt) {
+		this.orderingEndDt = orderingEndDt;
+	}
 }

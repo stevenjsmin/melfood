@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlGroupPurchaseDao">
+
+    <select id="getGroupPurchase" parameterType="GroupPurchase" resultType="GroupPurchase">
+        /* QUERY ID : getGroupPurchase */
+        SELECT
+            a.group_purchase_id 'groupPurchaseId',
+            a.group_purchase_title 'groupPurchaseTitle',
+            a.group_purchase_subtitle 'groupPurchaseSubtitle',
+            a.purchase_organizer 'purchaseOrganizer',
+            a.ordering_start_dt 'orderingStartDt',
+            a.ordering_end_dt 'orderingEndDt',
+            a.stop_selling 'stopSelling',
+            a.stop_selling_reason 'stopSellingReason',
+            a.market_address_street 'marketAddressStreet',
+            a.market_address_suburb 'marketAddressSuburb',
+            a.market_address_state 'marketAddressState',
+            a.market_address_postcode 'marketAddressPostcode',
+            a.market_address_comment 'marketAddressComment',
+            a.minimum_purchase_amount 'minimumPurchaseAmount',
+            a.discount_method 'discountMethod',
+            a.discount_fixed_amount 'discountFixedAmount',
+            a.discount_rate_value 'discountRateValue',
+            a.group_purchase_notice 'groupPurchaseNotice',
+            a.mall_master_checked 'mallMasterChecked',
+            a.use_yn 'useYn',
+            a.create_datetime 'createDatetime',
+            a.modify_datetime 'modifyDatetime',
+            a.creator 'creator'
+        FROM group_purchase a
+       WHERE 1 = 1
+            <if test="groupPurchaseId != null"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
+            <if test="groupPurchaseTitle != null"> AND UPPER(a.group_purchase_title) LIKE CONCAT('%', UPPER(#{groupPurchaseTitle}), '%') </if>
+            <if test="groupPurchaseSubtitle != null"> AND UPPER(a.group_purchase_subtitle) LIKE CONCAT('%', UPPER(#{groupPurchaseSubtitle}), '%') </if>
+            <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
+            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.orderingStartDt, '%Y-%m-%d') </if>
+            <if test="orderingEndDt != null"> AND str_to_date(#{orderingEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.ordering_end_dt, '%Y-%m-%d') </if>
+            <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
+            <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
+            <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
+            <if test="marketAddressSuburb != null"> AND UPPER(a.market_address_suburb) LIKE CONCAT('%', UPPER(#{marketAddressSuburb}), '%') </if>
+            <if test="marketAddressState != null"> AND UPPER(a.market_address_state) LIKE CONCAT('%', UPPER(#{marketAddressState}), '%') </if>
+            <if test="marketAddressPostcode != null"> AND UPPER(a.market_address_postcode) LIKE CONCAT('%', UPPER(#{marketAddressPostcode}), '%') </if>
+            <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
+            <if test="minimumPurchaseAmount != null"> AND UPPER(a.minimum_purchase_amount) = UPPER(#{groupPurchaseId}) </if>
+            <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
+            <if test="discountFixedAmount != null"> AND UPPER(a.discount_fixed_amount) = UPPER(#{discountFixedAmount}) </if>
+            <if test="discountRateValue != null"> AND UPPER(a.discount_rate_value) = UPPER(#{discountRateValue}) </if>
+            <if test="groupPurchaseNotice != null"> AND UPPER(a.group_purchase_notice) LIKE CONCAT('%', UPPER(#{groupPurchaseNotice}), '%') </if>
+            <if test="mallMasterChecked != null"> AND UPPER(a.mall_master_checked) = UPPER(#{mallMasterChecked}) </if>
+            <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+            <if test="createDatetime != null"> AND str_to_date(#{createDatetime}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+            <if test="modifyDatetime != null"> AND str_to_date(#{modifyDatetime}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.modify_datetime, '%Y-%m-%d') </if>
+            <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+        ORDER BY a.group_purchase_id ASC
+        LIMIT #{pagenationPage}, #{pagenationPageSize}
+    </select>
+    <select id="getTotalCntGroupPurchase" parameterType="Code" resultType="java.lang.Integer">
+        /* QUERY ID : getTotalCntGroupPurchase */
+        SELECT COUNT(*)
+        FROM group_purchase a
+        WHERE 1 = 1
+            <if test="groupPurchaseId != null"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
+            <if test="groupPurchaseTitle != null"> AND UPPER(a.group_purchase_title) LIKE CONCAT('%', UPPER(#{groupPurchaseTitle}), '%') </if>
+            <if test="groupPurchaseSubtitle != null"> AND UPPER(a.group_purchase_subtitle) LIKE CONCAT('%', UPPER(#{groupPurchaseSubtitle}), '%') </if>
+            <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
+            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.orderingStartDt, '%Y-%m-%d') </if>
+            <if test="orderingEndDt != null"> AND str_to_date(#{orderingEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.ordering_end_dt, '%Y-%m-%d') </if>
+            <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
+            <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
+            <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
+            <if test="marketAddressSuburb != null"> AND UPPER(a.market_address_suburb) LIKE CONCAT('%', UPPER(#{marketAddressSuburb}), '%') </if>
+            <if test="marketAddressState != null"> AND UPPER(a.market_address_state) LIKE CONCAT('%', UPPER(#{marketAddressState}), '%') </if>
+            <if test="marketAddressPostcode != null"> AND UPPER(a.market_address_postcode) LIKE CONCAT('%', UPPER(#{marketAddressPostcode}), '%') </if>
+            <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
+            <if test="minimumPurchaseAmount != null"> AND UPPER(a.minimum_purchase_amount) = UPPER(#{groupPurchaseId}) </if>
+            <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
+            <if test="discountFixedAmount != null"> AND UPPER(a.discount_fixed_amount) = UPPER(#{discountFixedAmount}) </if>
+            <if test="discountRateValue != null"> AND UPPER(a.discount_rate_value) = UPPER(#{discountRateValue}) </if>
+            <if test="groupPurchaseNotice != null"> AND UPPER(a.group_purchase_notice) LIKE CONCAT('%', UPPER(#{groupPurchaseNotice}), '%') </if>
+            <if test="mallMasterChecked != null"> AND UPPER(a.mall_master_checked) = UPPER(#{mallMasterChecked}) </if>
+            <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+            <if test="createDatetime != null"> AND str_to_date(#{createDatetime}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+            <if test="modifyDatetime != null"> AND str_to_date(#{modifyDatetime}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.modify_datetime, '%Y-%m-%d') </if>
+            <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+    </select>
+
+    <insert id="insertGroupPurchase" parameterType="GroupPurchase">
+        /* QUERY ID : insertGroupPurchase */
+        INSERT INTO group_purchase (
+            ,group_purchase_title
+            ,group_purchase_subtitle
+            ,purchase_organizer
+            ,ordering_start_dt
+            ,ordering_end_dt
+            ,stop_selling
+            ,stop_selling_reason
+            ,market_address_street
+            ,market_address_suburb
+            ,market_address_state
+            ,market_address_postcode
+            ,market_address_comment
+            ,minimum_purchase_amount
+            ,discount_method
+            ,discount_fixed_amount
+            ,discount_rate_value
+            ,group_purchase_notice
+            ,mall_master_checked
+            ,use_yn
+            ,creator
+        VALUES (
+            TRIM(#{groupPurchaseTitle}),
+            TRIM(#{groupPurchaseSubtitle}),
+            TRIM(#{purchaseOrganizer}),
+            STR_TO_DATE(TRIM(#{orderingStartDt}), '%Y%m%d %r')
+            STR_TO_DATE(TRIM(#{orderingEndDt}), '%Y%m%d %r')
+            TRIM(#{stopSelling}),
+            TRIM(#{stopSellingReason}),
+            TRIM(#{marketAddressStreet}),
+            TRIM(#{marketAddressSuburb}),
+            TRIM(#{marketAddressState}),
+            TRIM(#{marketAddressPostcode}),
+            TRIM(#{marketAddressComment}),
+            TRIM(#{minimumPurchaseAmount}),
+            TRIM(#{discountMethod}),
+            TRIM(#{discountFixedAmount}),
+            TRIM(#{discountRateValue}),
+            TRIM(#{groupPurchaseNotice}),
+            TRIM(#{mallMasterChecked}),
+            TRIM(#{useYn}),
+            TRIM(#{creator})
+    </insert>
+
+    <update id="modifyGroupPurchase" parameterType="GroupPurchase">
+        /* QUERY ID : modifyGroupPurchase */
+        UPDATE group_purchase SET
+            modify_datetime = CURRENT_TIMESTAMP
+            ,group_purchase_id = TRIM(#{groupPurchaseId})
+            ,group_purchase_title = TRIM(#{groupPurchaseTitle})
+            ,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle})
+            ,purchase_organizer = TRIM(#{purchaseOrganizer})
+            ,ordering_start_dt = STR_TO_DATE(TRIM(#{orderingStartDt}), '%Y%m%d %r')
+            ,ordering_end_dt = STR_TO_DATE(TRIM(#{orderingEndDt}), '%Y%m%d %r')
+            ,stop_selling = TRIM(#{stopSelling})
+            ,stop_selling_reason = TRIM(#{stopSellingReason})
+            ,market_address_street = TRIM(#{marketAddressStreet})
+            ,market_address_suburb = TRIM(#{marketAddressSuburb})
+            ,market_address_state = TRIM(#{marketAddressState})
+            ,market_address_postcode = TRIM(#{marketAddressPostcode})
+            ,market_address_comment = TRIM(#{marketAddressComment})
+            ,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount})
+            ,discount_method = TRIM(#{discountMethod})
+            ,discount_fixed_amount = TRIM(#{discountFixedAmount})
+            ,discount_rate_value = TRIM(#{discountRateValue})
+            ,group_purchase_notice = TRIM(#{groupPurchaseNotice})
+            ,mall_master_checked = TRIM(#{mallMasterChecked})
+            ,use_yn = TRIM(#{useYn})
+            ,creator = TRIM(#{creator})
+        WHERE group_purchase_id = #{groupPurchaseId}
+    </update>
+
+    <update id="modifyGroupPurchaseForNotNull" parameterType="GroupPurchase">
+        /* QUERY ID : modifyGroupPurchaseForNotNull */
+        UPDATE group_purchase SET
+            modify_datetime = CURRENT_TIMESTAMP
+            <if test="label != null">,group_purchase_id = TRIM(#{groupPurchaseId}) </if>
+            <if test="label != null">,group_purchase_title = TRIM(#{groupPurchaseTitle}) </if>
+            <if test="label != null">,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle}) </if>
+            <if test="label != null">,purchase_organizer = TRIM(#{purchaseOrganizer}) </if>
+            <if test="label != null">,ordering_start_dt = STR_TO_DATE(TRIM(#{orderingStartDt}), '%Y%m%d %r')</if>
+            <if test="label != null">,ordering_end_dt = STR_TO_DATE(TRIM(#{orderingEndDt}), '%Y%m%d %r')</if>
+            <if test="label != null">,stop_selling = TRIM(#{stopSelling}) </if>
+            <if test="label != null">,stop_selling_reason = TRIM(#{stopSellingReason}) </if>
+            <if test="label != null">,market_address_street = TRIM(#{marketAddressStreet}) </if>
+            <if test="label != null">,market_address_suburb = TRIM(#{marketAddressSuburb}) </if>
+            <if test="label != null">,market_address_state = TRIM(#{marketAddressState}) </if>
+            <if test="label != null">,market_address_postcode = TRIM(#{marketAddressPostcode}) </if>
+            <if test="label != null">,market_address_comment = TRIM(#{marketAddressComment}) </if>
+            <if test="label != null">,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount}) </if>
+            <if test="label != null">,discount_method = TRIM(#{discountMethod}) </if>
+            <if test="label != null">,discount_fixed_amount = TRIM(#{discountFixedAmount}) </if>
+            <if test="label != null">,discount_rate_value = TRIM(#{discountRateValue}) </if>
+            <if test="label != null">,group_purchase_notice = TRIM(#{groupPurchaseNotice}) </if>
+            <if test="label != null">,mall_master_checked = TRIM(#{mallMasterChecked}) </if>
+            <if test="label != null">,use_yn = TRIM(#{useYn}) </if>
+            <if test="label != null">,creator = TRIM(#{creator}) </if>
+        WHERE group_purchase_id = #{groupPurchaseId}
+    </update>
+
+    <delete id="deleteGroupPurchase" parameterType="GroupPurchase">
+        /* QUERY ID : deleteGroupPurchase */
+        DELETE FROM group_purchase
+        WHERE group_purchase_id = #{groupPurchaseId}
+    </delete>
+
+</mapper>

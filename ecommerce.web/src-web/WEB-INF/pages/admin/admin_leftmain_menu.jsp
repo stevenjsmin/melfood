@@ -27,7 +27,9 @@ function menuSelect() {
 	} else if(pathName.startsWith("/admin/deliverycalendarmgt")) {
 		barElement = view.findByText("배송일정 관리");	
 	} else if(pathName.startsWith("/admin/paymentmethodmgt")) {
-		barElement = view.findByText("결재수단 관리");	
+		barElement = view.findByText("결재수단 관리");
+	} else if(pathName.startsWith("/admin/grouppurchase")) {
+		barElement = view.findByText("공동구매 관리");
 	} else if(pathName.startsWith("/framework/noticedisscussmanager")) {
 		barElement = view.findByText("Notice/Discuss 관리");			
 	} else if (pathName.startsWith("/framework/usermanager")) {
@@ -59,6 +61,7 @@ function menuSelect() {
             {id: 220, text: "배송일정 관리", LinksTo: "/admin/deliverycalendarmgt/Main.yum", image: "/resources/css/images/gic/ic_send_black_18dp_1x.png" },
             {id: 230, text: "결재수단 관리", LinksTo: "/admin/paymentmethodmgt/Main.yum", image: "/resources/css/images/gic/ic_payment_black_18dp_1x.png" }
        	]},
+       	{id: 250, text: "공동구매 관리", LinksTo: "/admin/grouppurchase/Main.yum", image: "/resources/css/images/gic/ic_group_work_black_18dp_1x.png" },
        	{id: 300, text: "S.Window 관리", image: "/resources/css/images/gic/ic_dashboard_black_18dp_1x.png" },
        	{id: 350, text: "Notice/Discuss 관리", LinksTo: "/framework/noticedisscussmanager/Main.yum", image: "/resources/css/images/gic/ic_chat_black_18dp_1x.png" },
         {id: 400, text: "시스템관리", image: "/resources/css/images/gic/ic_settings_black_18dp_1x.png", items: [

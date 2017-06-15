@@ -9,16 +9,14 @@
 
 package melfood.controller.admin;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import melfood.framework.user.User;
+import melfood.shopping.contract.ContractInfoService;
+import melfood.shopping.delivery.DeliveryCalendar;
+import melfood.shopping.delivery.DeliveryCalendarService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,14 +26,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.auth.SessionUserInfo;
-import melfood.framework.system.BaseController;
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
-import melfood.framework.user.User;
-import melfood.shopping.contract.ContractInfoService;
-import melfood.shopping.delivery.DeliveryCalendar;
-import melfood.shopping.delivery.DeliveryCalendarService;
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author steven.min
@@ -224,7 +218,7 @@ public class DeliveryCalendarMgtController extends BaseController {
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxDefaultPickupState", codeService.generateCmbx(defaultPickupStreetOptions, htmlProperty));
 
-		List<Option> isPickupOptions = codeService.getValueCmbxOptions("DELIVER_MGT", "DELIVER_METHOD_ISPICKUP");
+		List<Option> isPickupOptions = codeService.getValueCmbxOptions("DELIVER_MGT", "DELIVER_METHOD_ISPICKUP", "Y");
 		htmlProperty = new Properties("isPickup");
 		htmlProperty.setOnchange("infoForPickupservice(this)");
 		htmlProperty.setCssClass("form-control");
@@ -251,9 +245,10 @@ public class DeliveryCalendarMgtController extends BaseController {
 		String addressStreet = request.getParameter("addressStreet");
 		String addressNote = request.getParameter("addressNote");
 		String isPickup = request.getParameter("isPickup");
-		// String amPm = request.getParameter("amPm");
 		String btwnFromHhmm = request.getParameter("btwnFromHhmm");
 		String btwnToHhmm = request.getParameter("btwnToHhmm");
+		String orderingStartDt = request.getParameter("orderingStartDt");
+		String orderingEndDt = request.getParameter("orderingEndDt");
 
 		try {
 			if (StringUtils.isBlank(sellerId) || StringUtils.isBlank(yyyyMmDd) || StringUtils.isBlank(addressPostcode) || StringUtils.isBlank(addressSuburb) || StringUtils.isBlank(isPickup))
@@ -262,9 +257,10 @@ public class DeliveryCalendarMgtController extends BaseController {
 			DeliveryCalendar deliveryCalendar = new DeliveryCalendar(sellerId, yyyyMmDd);
 
 			deliveryCalendar.setIsPickup(isPickup);
-			// if (StringUtils.isNotBlank(amPm)) deliveryCalendar.setAmPm(amPm);
 			if (StringUtils.isNotBlank(btwnFromHhmm)) deliveryCalendar.setBtwnFromHhmm(btwnFromHhmm);
 			if (StringUtils.isNotBlank(btwnToHhmm)) deliveryCalendar.setBtwnToHhmm(btwnToHhmm);
+			if (StringUtils.isNotBlank(orderingStartDt)) deliveryCalendar.setOrderingStartDt(orderingStartDt);
+			if (StringUtils.isNotBlank(orderingEndDt)) deliveryCalendar.setOrderingEndDt(orderingEndDt);
 
 			if (StringUtils.equalsIgnoreCase(isPickup, "Y")) {
 				if (StringUtils.isBlank(addressPostcode) || StringUtils.isBlank(addressState) || StringUtils.isBlank(addressSuburb) || StringUtils.isBlank(addressStreet)) {

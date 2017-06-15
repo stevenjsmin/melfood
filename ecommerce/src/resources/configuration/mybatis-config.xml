@@ -38,6 +38,9 @@
 		
 		<typeAlias type="melfood.shopping.shop.ShopTemplate" alias="ShopTemplate" />
 		<typeAlias type="melfood.shopping.shop.ShopTemplateSection" alias="ShopTemplateSection" />
+
+		<typeAlias type="melfood.shopping.grouppurchase.dto.GroupPurchase" alias="GroupPurchase" />
+		<typeAlias type="melfood.shopping.grouppurchase.dto.GroupPurchaseProduct" alias="GroupPurchaseProduct" />
 		
 		<typeAlias type="melfood.framework.user.UserRole" alias="UserRole" />
 		<typeAlias type="melfood.framework.user.SystemUseProfile" alias="SystemUseProfile" />

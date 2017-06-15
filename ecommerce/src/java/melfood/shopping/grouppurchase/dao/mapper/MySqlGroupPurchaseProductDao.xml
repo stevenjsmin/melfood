@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlGroupPurchaseProductDao">
+
+	<select id="getGroupPurchaseProducts" parameterType="GroupPurchaseProduct" resultType="GroupPurchaseProduct">
+		/* QUERY ID : getGroupPurchaseProducts */
+		SELECT
+		  	a.group_purchase_id "groupPurchaseId"
+			,a.product_id "productId"
+			,a.stop_selling "stopSelling"
+			,a.stop_selling_reason "stopSellingReason"
+			,a.use_yn "useYn"
+			,a.create_datetime "createDatetime"
+			,a.modify_datetime "modifyDatetime"
+			,a.creator "creator"
+		FROM group_purchase_product a
+	   WHERE 1 = 1
+			<if test="groupPurchaseId != null"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
+			<if test="productId != null"> AND UPPER(a.productId) = UPPER(#{productId}) </if>
+			<if test="stopSelling != null"> AND UPPER(a.stop_selling) LIKE CONCAT('%', UPPER(#{stopSelling}), '%') </if>
+			<if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) LIKE CONCAT('%', UPPER(#{stopSellingReason}), '%') </if>
+			<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+			<if test="createDatetime != null"> AND str_to_date(#{createDatetime}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+			<if test="modifyDatetime != null"> AND str_to_date(#{modifyDatetime}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.modify_datetime, '%Y-%m-%d') </if>
+			<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	   ORDER BY a.group_purchase_id, ASC a.productId ASC
+			LIMIT #{pagenationPage}, #{pagenationPageSize}
+	</select>
+	<select id="getTotalCntGroupPurchaseProducts" parameterType="Code" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntGroupPurchaseProducts */
+		SELECT COUNT(*)
+		  FROM group_purchase_product a
+		 WHERE 1 = 1
+			<if test="groupPurchaseId != null"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
+			<if test="productId != null"> AND UPPER(a.productId) = UPPER(#{productId}) </if>
+			<if test="stopSelling != null"> AND UPPER(a.stop_selling) LIKE CONCAT('%', UPPER(#{stopSelling}), '%') </if>
+			<if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) LIKE CONCAT('%', UPPER(#{stopSellingReason}), '%') </if>
+			<if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
+			<if test="createDatetime != null"> AND str_to_date(#{createDatetime}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+			<if test="modifyDatetime != null"> AND str_to_date(#{modifyDatetime}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.modify_datetime, '%Y-%m-%d') </if>
+			<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+
+	<insert id="insertGroupPurchaseProduct" parameterType="GroupPurchaseProduct">
+		/* QUERY ID : insertGroupPurchaseProduct */
+		INSERT INTO group_purchase_product (
+		  	 group_purchase_id
+			,product_id
+			,stop_selling
+			,stop_selling_reason
+			,use_yn
+			,creator
+		VALUES (
+			#{groupPurchaseId}
+			,#{productId}
+			TRIM(#{stopSelling}),
+			TRIM(#{stopSellingReason}),
+			TRIM(#{useYn}),
+			TRIM(#{creator})
+	</insert>
+
+	<insert id="insertGroupPurchaseProducts" parameterType="java.lang.String">
+		/* QUERY ID : insertGroupPurchaseProducts */
+		INSERT INTO group_purchase_product (group_purchase_id, product_id, stop_selling, stop_selling_reason, use_yn, creator) VALUES
+		<foreach collection="list" index="index" item="item">
+			<if test="index != 0"> , </if>
+			( #{item.groupPurchaseId}, #{item.productId}, #{item.stopSelling}, #{item.stopSellingReason}, #{item.useYn}, #{item.creator} )
+		</foreach>
+	</insert>
+
+
+	<update id="modifyGroupPurchaseProduct" parameterType="GroupPurchaseProduct">
+		/* QUERY ID : modifyGroupPurchaseProduct */
+		UPDATE group_purchase_product SET
+			modify_datetime = CURRENT_TIMESTAMP
+			,stop_selling = TRIM(#{stopSelling})
+			,stop_selling_reason = TRIM(#{stopSellingReason})
+			,use_yn = TRIM(#{useYn})
+			,creator = TRIM(#{creator})
+		WHERE group_purchase_id = #{groupPurchaseId} AND product_id = #{productId}
+	</update>
+
+	<update id="modifyGroupPurchaseProductForNotNull" parameterType="GroupPurchaseProduct">
+		/* QUERY ID : modifyGroupPurchaseProductForNotNull */
+		UPDATE group_purchase_product SET
+			modify_datetime = CURRENT_TIMESTAMP
+			<if test="stopSelling != null">,stop_selling = TRIM(#{stopSelling}) </if>
+			<if test="stopSellingReason != null">,stop_selling_reason = TRIM(#{stopSellingReason}) </if>
+			<if test="useYn != null">,use_yn = TRIM(#{useYn}) </if>
+			<if test="creator != null">,creator = TRIM(#{creator}) </if>
+		WHERE group_purchase_id = #{groupPurchaseId} AND product_id = #{productId}
+	</update>
+
+	<delete id="deleteGroupPurchaseProduct" parameterType="GroupPurchaseProduct">
+		/* QUERY ID : deleteGroupPurchaseProduct */
+		DELETE FROM group_purchase_product
+		 WHERE group_purchase_id = #{groupPurchaseId} AND product_id = #{productId}
+	</delete>
+
+</mapper>

@@ -55,7 +55,7 @@
 	  	     <if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>	 
 	  	     <if test="addressState != null"> AND UPPER(a.address_state) = UPPER(#{addressState}) </if>	 
 			 <if test="addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%') </if>	  	     
-			 <if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>	  	     
+			 <if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
 	  	     <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
 			 <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 			 <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
@@ -79,7 +79,7 @@
 		       a.is_pickup 'isPickup',
 		       b.user_name 'seller.userName',
 		       a.btwn_from_hhmm 'btwnFromHhmm',
-		       a.btwn_to_hhmm 'btwnToHhmm',		       
+		       a.btwn_to_hhmm 'btwnToHhmm',
 		       a.use_yn 'useYn',
 		       a.create_datetime 'createDatetime',
 		       a.modify_datetime 'modifyDatetime',
