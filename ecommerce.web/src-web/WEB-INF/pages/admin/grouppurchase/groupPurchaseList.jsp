@@ -14,6 +14,24 @@
 <script type="text/javascript">
 var KENDO_SELECTED_RECORD = null;
 $(document).ready(function () {
+
+    $("#orderingStartDt").kendoDatePicker({
+        format: "yyyy-MM-dd",
+        start: "year"
+    });
+    var datepicker1 = $("#orderingStartDt").data("kendoDatePicker");
+    $("#orderingStartDt").click(function() {
+        datepicker1.open();
+    });
+
+    $("#orderingEndDt").kendoDatePicker({
+        format: "yyyy-MM-dd",
+        start: "year"
+    });
+    var datepicker2 = $("#orderingEndDt").data("kendoDatePicker");
+    $("#orderingEndDt").click(function() {
+        datepicker2.open();
+    });
     
     // DEFINE DATASOURCE
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
@@ -169,6 +187,8 @@ $(document).ready(function () {
 </head>
 <body>
 
+    <div id="registGroupPurchasePopup"></div>
+
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Search -->
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
@@ -176,9 +196,9 @@ $(document).ready(function () {
     	 <table class="search_table">
     	 	<tr>
     	 		<td class="label">Organizer : </td>
-    	 		<td class="value"></td>
-                <td class="label">판매상태 : </td>
-                <td class="value"></td>
+    	 		<td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
+                <td class="label">상태 :</td>
+                <td class="value"><c:out value="${cbxStopSelling}" escapeXml="false"/></td>
                 <td class="label">공동구매 시작일시 :  </td>
                 <td class="value"><input id="orderingStartDt" name="orderingStartDt" value="${orderingStartDt}"></input></td>
                 <td class="label">공동구매 종료일시 :  </td>
@@ -201,7 +221,7 @@ $(document).ready(function () {
      <table class="action_button_table">
          <tr>
              <td>
-             	<button type="button" class="btn btn-primary" onclick="add();">Add Item</button>
+             	<button type="button" class="btn btn-primary" onclick="openRegistGroupPurchasePopup();">Add Item</button>
              </td>
          </tr>
      </table>

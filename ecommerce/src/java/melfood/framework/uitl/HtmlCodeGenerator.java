@@ -49,12 +49,14 @@ public final class HtmlCodeGenerator {
 		html.append(">");
 		
 		html.append("<option value=''> - Select - </option>");
-		for (Code code : list) {
+		if (list != null && list.size() > 0) {
+			for (Code code : list) {
 
-			if (StringUtils.equalsIgnoreCase(code.getValue(), defaultSelect)) {
-				html.append("<option value='" + code.getValue() + "' selected>" + code.getLabel() + "</option>");
-			} else {
-				html.append("<option value='" + code.getValue() + "'>" + code.getLabel() + "</option>");
+				if (StringUtils.equalsIgnoreCase(code.getValue(), defaultSelect)) {
+					html.append("<option value='" + code.getValue() + "' selected>" + code.getLabel() + "</option>");
+				} else {
+					html.append("<option value='" + code.getValue() + "'>" + code.getLabel() + "</option>");
+				}
 			}
 		}
 		html.append("</select>");
@@ -97,12 +99,14 @@ public final class HtmlCodeGenerator {
 		html.append(">");
 
 		html.append("<option value=''> - Select - </option>");
-		for (Option option : list) {
+		if (list != null && list.size() > 0) {
+			for (Option option : list) {
 
-			if (StringUtils.equalsIgnoreCase(option.getValue(), defaultSelect)) {
-				html.append("<option value='" + option.getValue() + "' selected>" + option.getName() + "</option>");
-			} else {
-				html.append("<option value='" + option.getValue() + "'>" + option.getName() + "</option>");
+				if (StringUtils.equalsIgnoreCase(option.getValue(), defaultSelect)) {
+					html.append("<option value='" + option.getValue() + "' selected>" + option.getName() + "</option>");
+				} else {
+					html.append("<option value='" + option.getValue() + "'>" + option.getName() + "</option>");
+				}
 			}
 		}
 		html.append("</select>");

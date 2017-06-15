@@ -43,34 +43,25 @@ public class GroupPurchaseController extends BaseController {
     public ModelAndView main(HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/main");
 
-// TODO : 검색조건에선택
-//        오가나이저
-//        서버브선택 (주 + 서버브)
-//        할일방법선택
-//        마스터가 체크한여부
-//        판매정지여부
-//        공동구매시작일
-//        공동구매종료일
+        // 공동구매 주관자 설정
+        List<Option> purchaseOrganizerOptions = groupPurchaseService.getOrganizers();
+        String htmlForOrganizerCbx = HtmlCodeGenerator.generateComboboxForOptions("purchaseOrganizer", purchaseOrganizerOptions);
+        mav.addObject("cbxPurchaseOrganizer", htmlForOrganizerCbx);
 
-//        User seller = new User();
-//        seller.setUseYn("Y");
-//
-//        Properties htmlProperty = new Properties();
-//        List<Option> contractorOptions = contractInfoService.getSellers(seller);
-//        htmlProperty = new Properties("sellerId");
-//        htmlProperty.setCssClass("form-control");
-//        mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
-//
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(new Date());
-//        String searchDateFrom = df.format(cal.getTime());
-//        mav.addObject("defaultSearchDateFrom", searchDateFrom);
-//
-//        List<Option> isPickupOptions = codeService.getValueCmbxOptions("DELIVER_MGT", "DELIVER_METHOD_ISPICKUP");
-//        htmlProperty = new Properties("isPickup");
-//        htmlProperty.setCssClass("form-control");
-//        mav.addObject("cbxIsPickup", codeService.generateCmbx(isPickupOptions, htmlProperty));
+        // 공동구매 정지여부 : 기본값 : N
+        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "N");
+        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
+        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
+
+        // 공동구매 장소를 위한 State 설정 콤보박스 : 기본값-빅토리아
+        List<Option> marketAddressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", "VIC");
+        String htmlForMarketAddressStateCbx = HtmlCodeGenerator.generateComboboxForOptions("marketAddressState", marketAddressStateOptions);
+        mav.addObject("cbxAddressState", htmlForMarketAddressStateCbx);
+
+        // 할인방법 콤보박스 설정 : 기본값 : %
+        List<Option> discountMethodOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DISCOUNT_METHOD");
+        String htmlForDiscountMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("discountMethod", discountMethodOptions);
+        mav.addObject("cbxDiscountMethod", htmlForDiscountMethodCbx);
 
         return mav;
     }

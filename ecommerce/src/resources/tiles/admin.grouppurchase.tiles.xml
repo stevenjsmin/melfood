@@ -5,11 +5,15 @@
 
 <tiles-definitions>
 
-	<!-- CONTRACT MANAGEMENT -->
+	<!-- GROUP PURCHASE MANAGEMENT -->
 	<definition name="tiles/admin/grouppurchase/main" extends="tiles/admin/root">
 		<put-attribute name="title" value="Group Purchase search" />
 		<put-attribute name="navigation" value="Admin > Group Purchase > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/groupPurchaseList.jsp" />
+	</definition>
+	<definition name="tiles/admin/grouppurchase/regist" extends="layout/panel_100">
+		<put-attribute name="title" value="Create Group Purchase" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/registGroupPurchaseForm.jsp" />
 	</definition>
 
 </tiles-definitions>

@@ -62,7 +62,7 @@ function menuSelect() {
             {id: 230, text: "결재수단 관리", LinksTo: "/admin/paymentmethodmgt/Main.yum", image: "/resources/css/images/gic/ic_payment_black_18dp_1x.png" }
        	]},
        	{id: 250, text: "공동구매 관리", LinksTo: "/admin/grouppurchase/Main.yum", image: "/resources/css/images/gic/ic_group_work_black_18dp_1x.png" },
-       	{id: 300, text: "S.Window 관리", image: "/resources/css/images/gic/ic_dashboard_black_18dp_1x.png" },
+       	// {id: 300, text: "S.Window 관리", image: "/resources/css/images/gic/ic_dashboard_black_18dp_1x.png" },
        	{id: 350, text: "Notice/Discuss 관리", LinksTo: "/framework/noticedisscussmanager/Main.yum", image: "/resources/css/images/gic/ic_chat_black_18dp_1x.png" },
         {id: 400, text: "시스템관리", image: "/resources/css/images/gic/ic_settings_black_18dp_1x.png", items: [
            {id: 410, text: "코드 관리", LinksTo: "/framework/codemanager/Main.yum", image: "/resources/css/images/gic/ic_developer_board_black_18dp_1x.png"  },
