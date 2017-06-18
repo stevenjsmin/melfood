@@ -119,7 +119,7 @@ public class GroupPurchaseController extends BaseController {
 
         // 공동구매 정지여부 : 기본값 : N
         List<Option> contractStatusOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "N");
-        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", purchaseOrganizerOptions);
+        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", contractStatusOptions);
         mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
 
         // 공동구매 장소를 위한 State 설정 콤보박스 : 기본값-빅토리아
@@ -129,7 +129,7 @@ public class GroupPurchaseController extends BaseController {
 
         // 할인방법 콤보박스 설정 : 기본값 : %
         List<Option> discountMethodOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DISCOUNT_METHOD", "RATE");
-        String htmlForDiscountMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("marketAddressState", addressStateOptions);
+        String htmlForDiscountMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("marketAddressState", discountMethodOptions);
         mav.addObject("cbxDiscountMethod", htmlForDiscountMethodCbx);
 
         return mav;

@@ -2,7 +2,23 @@ var checkObject = [];
 
 $(document).ready(function() {
 
+    $("#orderingStartDt").kendoDatePicker({
+        format: "yyyy-MM-dd",
+        start: "year"
+    });
+    var datepicker1 = $("#orderingStartDt").data("kendoDatePicker");
+    $("#orderingStartDt").click(function() {
+        datepicker1.open();
+    });
 
+    $("#orderingEndDt").kendoDatePicker({
+        format: "yyyy-MM-dd",
+        start: "year"
+    });
+    var datepicker2 = $("#orderingEndDt").data("kendoDatePicker");
+    $("#orderingEndDt").click(function() {
+        datepicker2.open();
+    });
 	
 
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -363,7 +379,7 @@ function openRegistGroupPurchasePopup(){
     var popup_dialog = $("#registGroupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 350
+        height: 800
     });
     popup_dialog.center();
 

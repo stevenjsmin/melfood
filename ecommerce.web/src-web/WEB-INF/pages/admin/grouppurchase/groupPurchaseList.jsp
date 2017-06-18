@@ -15,24 +15,6 @@
 var KENDO_SELECTED_RECORD = null;
 $(document).ready(function () {
 
-    $("#orderingStartDt").kendoDatePicker({
-        format: "yyyy-MM-dd",
-        start: "year"
-    });
-    var datepicker1 = $("#orderingStartDt").data("kendoDatePicker");
-    $("#orderingStartDt").click(function() {
-        datepicker1.open();
-    });
-
-    $("#orderingEndDt").kendoDatePicker({
-        format: "yyyy-MM-dd",
-        start: "year"
-    });
-    var datepicker2 = $("#orderingEndDt").data("kendoDatePicker");
-    $("#orderingEndDt").click(function() {
-        datepicker2.open();
-    });
-    
     // DEFINE DATASOURCE
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
     var dataSource = new kendo.data.DataSource({
