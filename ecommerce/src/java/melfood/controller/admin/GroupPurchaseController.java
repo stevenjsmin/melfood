@@ -4,7 +4,8 @@ import melfood.framework.MelfoodConstants;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
-import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.*;
+import melfood.framework.uitl.html.Properties;
 import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
@@ -129,8 +130,11 @@ public class GroupPurchaseController extends BaseController {
 
         // 할인방법 콤보박스 설정 : 기본값 : %
         List<Option> discountMethodOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DISCOUNT_METHOD", "RATE");
-        String htmlForDiscountMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("marketAddressState", discountMethodOptions);
-        mav.addObject("cbxDiscountMethod", htmlForDiscountMethodCbx);
+        Properties htmlProperty = new Properties();
+        htmlProperty = new Properties("discountMethod");
+        htmlProperty.setCssClass("form-control");
+        htmlProperty.setOnchange("changeDiscountMethod(this)");
+        mav.addObject("cbxDiscountMethod", codeService.generateCmbx(discountMethodOptions, htmlProperty));
 
         return mav;
     }

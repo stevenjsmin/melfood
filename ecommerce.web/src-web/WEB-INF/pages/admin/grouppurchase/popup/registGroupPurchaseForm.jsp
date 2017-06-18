@@ -15,6 +15,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            $('#spanDiscountRateValue').show();
+            $('#spanDiscountFixedAmount').hide();
+            $('#discountFixedAmount').val('');
+
             $("#groupPurchaseNotice").kendoEditor({
                 encoded: false
             });
@@ -22,6 +26,11 @@
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
+
+    <style>
+        /** To force height of kendoEditor */
+        .k-content{  height:100px !important; }
+    </style>
 </head>
 
 
@@ -63,15 +72,9 @@
                     <td class="value"><c:out value="${cbxDiscountMethod}" escapeXml="false"/></td>
                     <td class="label">비율/금액 :</td>
                     <td class="value">
-                            <input id="discountFixedAmount" name="discountFixedAmount" value=""></input>
-                            <input id="discountRateValue" name="discountRateValue" value=""></input>
+                        <span id="spanDiscountRateValue" style="display: none;"><input id="discountRateValue" name="discountRateValue" value=""></input></span>
+                        <span id="spanDiscountFixedAmount" style="display: none;"><input id="discountFixedAmount" name="discountFixedAmount" value=""></input></span>
                     </td>
-                </tr>
-                <tr>
-                    <td class="label">공동구매 시작일시 :</td>
-                    <td class="value"><input id="orderingStartDt" name="orderingStartDt" value=""></input></td>
-                    <td class="label">공동구매 종료일시 :</td>
-                    <td class="value"><input id="orderingEndDt" name="orderingEndDt" value=""></input></td>
                 </tr>
 
                 <tr>
@@ -80,6 +83,12 @@
                         <span class="subtitle"> 공동구매 상태정보</span>
                         <hr class="subtitle"/>
                     </td>
+                </tr>
+                <tr>
+                    <td class="label">공동구매 시작일시 :</td>
+                    <td class="value"><input id="orderingStartDt" name="orderingStartDt" value=""></input></td>
+                    <td class="label">공동구매 종료일시 :</td>
+                    <td class="value"><input id="orderingEndDt" name="orderingEndDt" value=""></input></td>
                 </tr>
                 <tr>
                     <td class="label">상태 :</td>
@@ -134,7 +143,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="value" colspan="4"><textarea class="form-control" rows="3" id="groupPurchaseNotice" name="groupPurchaseNotice"></textarea></td>
+                    <td class="value" colspan="4"><textarea class="form-control" style="height:100px;" id="groupPurchaseNotice" name="groupPurchaseNotice"></textarea></td>
                 </tr>
                 <tr style="height: 10px;"><td colspan="4"></td></tr>
 
@@ -150,7 +159,7 @@
             <table class="action_button_table" width="100%">
                 <tr>
                     <td>
-                        <a href="javascript:goList();" class="btn btn-info">&nbsp;&nbsp; List &nbsp;&nbsp;</a>
+                        <a href="javascript:parent.closeGroupPurchaseRegistPopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
                         <a href="javascript:save();" class="btn btn-primary">Save</a>
                     </td>
                 </tr>

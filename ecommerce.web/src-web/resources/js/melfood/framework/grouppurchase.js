@@ -19,7 +19,25 @@ $(document).ready(function() {
     $("#orderingEndDt").click(function() {
         datepicker2.open();
     });
-	
+
+    $("#minimumPurchaseAmount").kendoNumericTextBox({
+        max: 99999,
+        min: 0.00,
+        format: "c2"
+    });
+
+    $("#discountFixedAmount").kendoNumericTextBox({
+        max: 99999,
+        min: 1,
+        format: "c2"
+    });
+
+    $("#discountRateValue").kendoNumericTextBox({
+        format: "p0",
+        min: 0,
+        max: 0.1,
+        step: 0.01
+    });
 
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
@@ -320,10 +338,6 @@ function callbackDeleteInfo(data) {
 }
 
 
-function closeProfilePhotoWindow() {
-	var win_dialog = $("#userProfilePhotoPopup").data("kendoWindow");
-	win_dialog.close();
-}
 
 function deleteProfilePhoto (userId) {
     $.ajax({
@@ -365,7 +379,7 @@ function openPopupForRegisterProfilePhoto(userId) {
 	$("#userProfilePhotoPopup").data("kendoWindow").open();
 }
 
-
+// +++++++++++++++++++++++++++++++++++++++++++++++
 
 function openRegistGroupPurchasePopup(){
     $("#registGroupPurchasePopup").kendoWindow({
@@ -379,9 +393,33 @@ function openRegistGroupPurchasePopup(){
     var popup_dialog = $("#registGroupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 800
+        height: 700
     });
     popup_dialog.center();
 
     $("#registGroupPurchasePopup").data("kendoWindow").open();
+}
+
+function closeGroupPurchaseRegistPopup() {
+    var win_dialog = $("#registGroupPurchasePopup").data("kendoWindow");
+    win_dialog.close();
+}
+
+
+function changeDiscountMethod(obj) {
+    var discountMethod = obj.value;
+    if(discountMethod == 'FIXED') {
+        $('#spanDiscountFixedAmount').show();
+        $('#spanDiscountRateValue').hide();
+        $('#discountRateValue').val('');
+    } else if(discountMethod == 'RATE') {
+        $('#spanDiscountRateValue').show();
+        $('#spanDiscountFixedAmount').hide();
+        $('#discountFixedAmount').val('');
+
+    } else {
+        $('#spanDiscountFixedAmount').hide();
+        $('#spanDiscountRateValue').hide();
+
+    }
 }
