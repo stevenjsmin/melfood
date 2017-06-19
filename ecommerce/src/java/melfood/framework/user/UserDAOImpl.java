@@ -9,14 +9,13 @@
 
 package melfood.framework.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import melfood.framework.core.BaseDAO;
+import melfood.framework.role.Role;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import melfood.framework.core.BaseDAO;
-import melfood.framework.role.Role;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Steven J.S Min
@@ -139,6 +138,15 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
 	public String updateUserProfilePhoto(User user) throws Exception {
 		sqlSession.update("mySqlUserDao.updateUserProfilePhoto", user);
 		return user.getUserId();
+	}
+
+	@Override
+	public List<User> getUsersByRoleIds(String[] userRoles) throws Exception {
+		List<Role> roles = new ArrayList<Role>();
+		for (String role : userRoles) {
+			roles.add(new Role(role));
+		}
+		return sqlSession.selectList("mySqlUserDao.getUsersByRoleIds", roles);
 	}
 
 }

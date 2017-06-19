@@ -181,9 +181,9 @@ $(document).ready(function () {
     	 		<td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
                 <td class="label">상태 :</td>
                 <td class="value"><c:out value="${cbxStopSelling}" escapeXml="false"/></td>
-                <td class="label">공동구매 시작일시 :  </td>
+                <td class="label">공동구매 시작일 :  </td>
                 <td class="value"><input id="orderingStartDt" name="orderingStartDt" value="${orderingStartDt}"></input></td>
-                <td class="label">공동구매 종료일시 :  </td>
+                <td class="label">공동구매 종료일 :  </td>
                 <td class="value_end"><input id="orderingEndDt" name="orderingEndDt" value=""></input></td>
                 <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
 

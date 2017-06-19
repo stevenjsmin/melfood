@@ -134,6 +134,11 @@
                     <td class="value" colspan="2"><input class="form-control" type="text" id="marketAddressStreet" name="marketAddressStreet" value=''/></td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td class="label">비고</td>
+                    <td class="value" colspan="3"><input class="form-control" type="text" id="marketAddressComment" name="marketAddressComment" value=''/></td>
+                    <td></td>
+                </tr>
 
                 <tr>
                     <td colspan="4">

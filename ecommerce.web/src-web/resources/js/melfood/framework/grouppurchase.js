@@ -2,20 +2,20 @@ var checkObject = [];
 
 $(document).ready(function() {
 
-    $("#orderingStartDt").kendoDatePicker({
-        format: "yyyy-MM-dd",
+    $("#orderingStartDt").kendoDateTimePicker({
+        format: "yyyy-MM-dd hh:mm tt",
         start: "year"
     });
-    var datepicker1 = $("#orderingStartDt").data("kendoDatePicker");
+    var datepicker1 = $("#orderingStartDt").data("kendoDateTimePicker");
     $("#orderingStartDt").click(function() {
         datepicker1.open();
     });
 
-    $("#orderingEndDt").kendoDatePicker({
-        format: "yyyy-MM-dd",
+    $("#orderingEndDt").kendoDateTimePicker({
+        format: "yyyy-MM-dd hh:mm tt",
         start: "year"
     });
-    var datepicker2 = $("#orderingEndDt").data("kendoDatePicker");
+    var datepicker2 = $("#orderingEndDt").data("kendoDateTimePicker");
     $("#orderingEndDt").click(function() {
         datepicker2.open();
     });
@@ -56,9 +56,8 @@ function goModify(){
 	document.location.href = "/framework/usermanager/modifyUserForm.yum?userId=" + _USERID;
 }
 
-function add(){
-	document.location.href = "/framework/usermanager/registUserForm.yum";
-}
+
+
 
 function search(){
   	$('#grid_panel_main').data('kendoGrid').dataSource.read();
@@ -80,64 +79,118 @@ function validateForm(){
     var prefix = "- &nbsp;&nbsp;";
     var message = "";
 
-	var userId = $('#userId').val();
-    var userName = $('#userName').val();
-    var dob = $('#dob').val();
-    var email = $('#email').val();
-    var mobile = $('#mobile').val();
-    var useSocialMessenger = $('#useSocialMessenger').val();
-    var useSocialMessengerId = $('#useSocialMessengerId').val();
-    var useYn = $('#useYn').val();
-    var passwordFailureCnt = $('#passwordFailureCnt').val();
-    var applyStatus = $('applyStatus').val();
+	var groupPurchaseTitle = $('#groupPurchaseTitle').val();
+    var groupPurchaseSubtitle = $('#groupPurchaseSubtitle').val();
+    var purchaseOrganizer = $('#purchaseOrganizer').val();
+    var minimumPurchaseAmount = $('#minimumPurchaseAmount').val();
+    var discountMethod = $('#discountMethod').val();
+    var discountRateValue = $('#discountRateValue').val();
+    var discountFixedAmount = $('#discountFixedAmount').val();
+    var orderingStartDt = $('#orderingStartDt').val();
+    var orderingEndDt = $('#orderingEndDt').val();
+    var stopSelling = $('stopSelling').val();
+    var stopSellingReason = $('stopSellingReason').val();
+    var marketAddressState = $('marketAddressState').val();
+    var marketAddressPostcode = $('marketAddressPostcode').val();
+    var marketAddressStreet = $('marketAddressStreet').val();
+    var marketAddressSuburb = $('marketAddressSuburb').val();
+    var marketAddressComment = $('marketAddressComment').val();
+    var groupPurchaseNotice = $('groupPurchaseNotice').val();
 
- 	if(userId == "") {
- 		message = message + prefix + "사용자 ID는 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "userId";
+ 	if(groupPurchaseTitle == "") {
+ 		message = message + prefix + "공동구매 제목은 필수입력 항목입니다.<br>";
+ 		checkObject[checkObject.length] = "groupPurchaseTitle";
         validation = false;
  	}
 
- 	if(userName == "") {
- 		message = message + prefix + "사용자 가명(Nickname)은 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "userName";
+ 	if(purchaseOrganizer == "") {
+ 		message = message + prefix + "공동생성자는 필수선택 항목입니다.<br>";
+ 		checkObject[checkObject.length] = "purchaseOrganizer";
  		validation = false;
  	}
 
-    if(dob != ""){
-        var parsedDate = kendo.parseDate(dob, "yyyy-MM-dd");
-        if (!parsedDate) {
-            message = message + prefix + "올바른 생년월일 형식이 아닙니다. [YYYY-MM-DD] 형식으로 입력해주세요<br>";
-            checkObject[checkObject.length] = "dob";
+ 	if(minimumPurchaseAmount == "") {
+ 		message = message + prefix + "최소금액 입력은 필수입력 항목입니다.<br>";
+ 		checkObject[checkObject.length] = "minimumPurchaseAmount";
+ 		validation = false;
+ 	}
+
+ 	if(discountMethod == "") {
+ 		message = message + prefix + "할인방법지정은 필수선택 항목입니다.<br>";
+ 		checkObject[checkObject.length] = "discountMethod";
+ 		validation = false;
+ 	}
+
+ 	if(discountMethod == "" || discountMethod == null ) {
+        discountMethod = "RATE";
+        discountFixedAmount = 0;
+        discountRateValue = 0;
+ 	} else {
+        if(discountMethod == "RATE"){
+            if(discountRateValue == "" || discountRateValue == null){
+                message = message + prefix + "할일값(%)은 필수선택 입력 항목입니다.<br>";
+                checkObject[checkObject.length] = "discountRateValue";
+                validation = false;
+            }
+        } else if (discountMethod = "FIXED") {
+            if(discountFixedAmount == "" || discountFixedAmount == null){
+                message = message + prefix + "할일값(금액)은 필수선택 입력 항목입니다.<br>";
+                checkObject[checkObject.length] = "discountFixedAmount";
+                validation = false;
+            }
+        } else {
+            message = message + prefix + "할인방법지정은 필수선택 항목입니다.<br>";
+            checkObject[checkObject.length] = "discountMethod";
             validation = false;
         }
+
     }
 
- 	if(email == "" && mobile == "") {
- 		message = message + prefix + "Email, 모바일 번호중 하나는 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "email";
- 		checkObject[checkObject.length] = "mobile";
- 		validation = false;
- 	}
- 	if(useSocialMessenger != "" && useSocialMessengerId == "") {
- 		message = message + prefix + "메신저 종류가 설정되었으면 메신지 아이디는 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "useSocialMessengerId";
- 		validation = false;
- 	}
- 	if(useSocialMessenger == "" && useSocialMessengerId != "") {
- 		message = message + prefix + "메신저ID를 지정한경우 메신저 종류는 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "useSocialMessenger";
- 		validation = false;
- 	}
- 	if(useYn == "") {
- 		message = message + prefix + "사용여부는 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "useYn";
+    var parsedOrderingStartDt = kendo.parseDate(orderingStartDt, "yyyy-MM-dd hh:mm tt");
+    if (!parsedOrderingStartDt) {
+        message = message + prefix + "올바른 공동구매 시작일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
+        checkObject[checkObject.length] = "orderingStartDt";
         validation = false;
- 	}
- 	if(applyStatus == "") {
- 		message = message + prefix + "가입상태 선택은 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "applyStatus";
- 		validation = false;
- 	}
+    }
+
+    var parsedOrderingEndDt = kendo.parseDate(orderingEndDt, "yyyy-MM-dd hh:mm tt");
+    if (!parsedOrderingEndDt) {
+        message = message + prefix + "올바른 공동구매 종료일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
+        checkObject[checkObject.length] = "orderingEndDt";
+        validation = false;
+    }
+
+    if(stopSelling != "" && stopSelling == "Y"){
+        if(stopSellingReason == "" || stopSellingReason == null){
+            message = message + prefix + "공동구매 정지일경우 공동구매 정지이유는 필수입력 항목입니다<br>";
+            checkObject[checkObject.length] = "stopSellingReason";
+            validation = false;
+        }
+    } else {
+        stopSellingReason = "";
+        stopSelling = "N";
+    }
+
+    if(marketAddressState == "") {
+        message = message + prefix + "공동구매 장소의 State는 필수입력항목입니다<br>";
+        checkObject[checkObject.length] = "marketAddressState";
+        validation = false;
+    }
+    if(marketAddressPostcode == "") {
+        message = message + prefix + "공동구매 장소의 우편번호입력은 필수입력항목입니다<br>";
+        checkObject[checkObject.length] = "marketAddressPostcode";
+        validation = false;
+    }
+    if(marketAddressSuburb == "") {
+        message = message + prefix + "공동구매 장소의 Suburb입력은 필수입력항목입니다<br>";
+        checkObject[checkObject.length] = "marketAddressSuburb";
+        validation = false;
+    }
+    if(marketAddressStreet == "") {
+        message = message + prefix + "공동구매 장소의 세부주소 입력은 필수입력항목입니다<br>";
+        checkObject[checkObject.length] = "marketAddressStreet";
+        validation = false;
+    }
 
  	// 검증된 필드들을 마킹한다.
 	for(count=0; count < checkObject.length; count++ ){
@@ -154,90 +207,47 @@ function validateForm(){
 
 
 function save(){
-      var userId = $('#userId').val();
-      var userName = $('#userName').val();
-      var userNameReal = $('#userNameReal').val();
-      if(userNameReal == '') userNameReal = userName;
-      var sex = $('#sex').val();
-      var dob = $('#dob').val();
-      var email = $('#email').val();
-      var mobile = $('#mobile').val();
-      var telephone = $('#telephone').val();
-      var useSocialMessenger = $('#useSocialMessenger').val();
-      var useSocialMessengerId = $('#useSocialMessengerId').val();
-      var addressState = $('#addressState').val();
-      var addressPostcode = $('#addressPostcode').val();
-      var addressSuburb = $('#addressSuburb').val();
-      var addressStreet = $('#addressStreet').val();
-      var useYn = $('#useYn').val();
-      var passwordFailureCnt = $('#passwordFailureCnt').val();
-      var applyStatus = $('#applyStatus').val();
+    var groupPurchaseTitle = $('#groupPurchaseTitle').val();
+    var groupPurchaseSubtitle = $('#groupPurchaseSubtitle').val();
+    var purchaseOrganizer = $('#purchaseOrganizer').val();
+    var minimumPurchaseAmount = $('#minimumPurchaseAmount').val();
+    var discountMethod = $('#discountMethod').val();
+    var discountRateValue = $('#discountRateValue').val();
+    var discountFixedAmount = $('#discountFixedAmount').val();
+    var orderingStartDt = $('#orderingStartDt').val();
+    var orderingEndDt = $('#orderingEndDt').val();
+    var stopSelling = $('stopSelling').val();
+    var stopSellingReason = $('stopSellingReason').val();
+    var marketAddressState = $('marketAddressState').val();
+    var marketAddressPostcode = $('marketAddressPostcode').val();
+    var marketAddressStreet = $('marketAddressStreet').val();
+    var marketAddressSuburb = $('marketAddressSuburb').val();
+    var marketAddressComment = $('marketAddressComment').val();
+    var groupPurchaseNotice = $('groupPurchaseNotice').val();
 
-      var multiAllowedRoles = $("#userRoles").data("kendoMultiSelect");
-      var allowedRolesArray = multiAllowedRoles.value();
-      var allowedRoles = "";
-      for(var i=0; i<allowedRolesArray.length; i++){
-     		allowedRoles = allowedRoles + allowedRolesArray[i] + ",";
-      }
+    if(validateForm() == false) return;
 
-      var abn = $('#abn').val();
-      var acn = $('#acn').val();
-      var sellerDeliveryAddressStreet = $('#sellerDeliveryAddressStreet').val();
-      var sellerDeliveryAddressSuburb = $('#sellerDeliveryAddressSuburb').val();
-      var sellerDeliveryAddressState = $('#sellerDeliveryAddressState').val();
-      var sellerDeliveryAddressPostcode = $('#sellerDeliveryAddressPostcode').val();
-      var sellerPickupAddressStreet = $('#sellerPickupAddressStreet').val();
-      var sellerPickupAddressSuburb = $('#sellerPickupAddressSuburb').val();
-      var sellerPickupAddressState = $('#sellerPickupAddressState').val();
-      var sellerPickupAddressPostcode = $('#sellerPickupAddressPostcode').val();
-      var sellerIntroduction = $('#sellerIntroduction').val();
-      var sellerBusinessName = $('#sellerBusinessName').val();
-      var sellerHaveMinimumPayment = $('#sellerHaveMinimumPayment').val();
-      var sellerMinimumPaymentForPickup = $('#sellerMinimumPaymentForPickup').val();
-      var sellerMinimumPaymentForDeliver = $('#sellerMinimumPaymentForDeliver').val();
-      var sellerIsMandatoryChooseDeliveryPickupDate = $('#sellerIsMandatoryChooseDeliveryPickupDate').val();
-      if(sellerIsMandatoryChooseDeliveryPickupDate == '' || sellerIsMandatoryChooseDeliveryPickupDate == undefined ) sellerIsMandatoryChooseDeliveryPickupDate = 'Y';
-
-      if(validateForm() == false) return;
-
-      $.ajax({
-           url  : "/framework/usermanager/saveUser.yum",
-           data      : {
-             userId : userId,
-             userName : userName,
-             userNameReal : userNameReal,
-             sex : sex,
-             dob : dob,
-             email : email,
-             mobile : mobile,
-             telephone : telephone,
-             useSocialMessenger : useSocialMessenger,
-             useSocialMessengerId : useSocialMessengerId,
-             addressState : addressState,
-             addressPostcode : addressPostcode,
-             addressSuburb : addressSuburb,
-             addressStreet : addressStreet,
-             useYn : useYn,
-             passwordFailureCnt : passwordFailureCnt,
-             applyStatus : applyStatus,
-             userTypes : allowedRoles,
-             abn : abn,
-             acn : acn,
-             sellerDeliveryAddressStreet : sellerDeliveryAddressStreet,
-             sellerDeliveryAddressSuburb : sellerDeliveryAddressSuburb,
-             sellerDeliveryAddressState : sellerDeliveryAddressState,
-             sellerDeliveryAddressPostcode : sellerDeliveryAddressPostcode,
-             sellerPickupAddressStreet : sellerPickupAddressStreet,
-             sellerPickupAddressSuburb : sellerPickupAddressSuburb,
-             sellerPickupAddressState : sellerPickupAddressState,
-             sellerPickupAddressPostcode : sellerPickupAddressPostcode,
-             sellerIntroduction : sellerIntroduction,
-             sellerBusinessName : sellerBusinessName,
-             sellerHaveMinimumPayment : sellerHaveMinimumPayment,
-             sellerMinimumPaymentForPickup : sellerMinimumPaymentForPickup,
-             sellerMinimumPaymentForDeliver : sellerMinimumPaymentForDeliver,
-             sellerIsMandatoryChooseDeliveryPickupDate : sellerIsMandatoryChooseDeliveryPickupDate,
-             actionMode : ACTION_MODE
+    $.ajax({
+           url  : "/admin/grouppurchase/saveGroupPurchase.yum",
+           data : {
+               groupPurchaseTitle : groupPurchaseTitle,
+               groupPurchaseSubtitle : groupPurchaseSubtitle,
+               purchaseOrganizer : purchaseOrganizer,
+               minimumPurchaseAmount : minimumPurchaseAmount,
+               discountMethod : discountMethod,
+               discountRateValue : discountRateValue,
+               discountFixedAmount : discountFixedAmount,
+               orderingStartDt : orderingStartDt,
+               orderingEndDt : orderingEndDt,
+               stopSelling : stopSelling,
+               stopSellingReason : stopSellingReason,
+               marketAddressState : marketAddressState,
+               marketAddressPostcode : marketAddressPostcode,
+               marketAddressStreet : marketAddressStreet,
+               marketAddressSuburb : marketAddressSuburb,
+               marketAddressComment : marketAddressComment,
+               groupPurchaseNotice : groupPurchaseNotice,
+               actionMode : ACTION_MODE
            },
            success : callbackSave
       });
@@ -254,36 +264,6 @@ function callbackSave(data) {
     	  //goList();
       }
 }
-
-
-
-function setInitialize(userId){
-	$.ajax({ url : "/framework/usermanager/initialUserAccount.yum?userId=" + userId,
-             success : callbackSetInitialize
-    });
-}
-
-function callbackSetInitialize(data) {
-      var message = data.message;
-      var resultCode = data.resultCode;
-
-      if (resultCode != "0") {
-           warningPopup(data.message);
-      } else {
-			BootstrapDialog.show({
-	            title: 'INFO  :: 호주가 즐거운 이유, 쿠빵!!',
-	            message: '정상적으로 초기화 되었습니다.',
-	            type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-	            buttons: [{
-                  label: '확인',
-                  action: function(dialog) {
-                    goDetailInfo(data.userId);
-                  }
-                }]
-	        });
-      }
-}
-
 
 function setSuburbCbx(postcodeObjId, objName){
 	var postcode = $('#' + postcodeObjId).val();
@@ -317,7 +297,7 @@ function deleteInfo(){
         callback: function(result) {
             if(result) {
 			      $.ajax({
-			           url  : "/framework/usermanager/deleteUser.yum",
+			           url  : "/admin/grouppurchase/deleteGroupPurchase.yum",
 			           data      : {
 			             userId : _USERID
 			           },
@@ -339,49 +319,6 @@ function callbackDeleteInfo(data) {
       }
 }
 
-
-
-function deleteProfilePhoto (userId) {
-    $.ajax({
-         url  : "/framework/usermanager/deleteProfileImage.yum",
-         data      : {
-           userId : userId
-         },
-         success : callbackDeleteProfilePhoto
-    });
-}
-
-function callbackDeleteProfilePhoto(data) {
-      var message = data.message;
-      var resultCode = data.resultCode;
-
-      if (resultCode != "0") {
-           warningPopup(data.message);
-      } else {
-    	  $("#profilePhotoId").attr("src","/resources/image/profile_photo.png");
-      }
-}
-
-function openPopupForRegisterProfilePhoto(userId) {
-    $("#userProfilePhotoPopup").kendoWindow({
-        content: "/framework/usermanager/profileImageUploadForm.yum?userId=" + userId,
-        actions: [ "Minimize", "Maximize","Close" ],
-        title: "Modify Product image",
-        modal: true,
-        iframe: true
-		});
-
-	var popup_dialog = $("#userProfilePhotoPopup").data("kendoWindow");
-	popup_dialog.setOptions({
-	            width: 650,
-	            height: 300
-	          });
-	popup_dialog.center();
-
-	$("#userProfilePhotoPopup").data("kendoWindow").open();
-}
-
-// +++++++++++++++++++++++++++++++++++++++++++++++
 
 function openRegistGroupPurchasePopup(){
     $("#registGroupPurchasePopup").kendoWindow({

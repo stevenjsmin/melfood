@@ -386,6 +386,21 @@
 					<if test="profilePhotoId != null and profilePhotoId != 0">,profile_photo_id    = #{profilePhotoId} </if>
 					<if test="creator != null">,creator    = #{creator} </if>
 			 WHERE user_id = #{userId}
-    </update>    
-  	      
+    </update>
+
+
+
+	<select id="getUsersByRoleIds" parameterType="java.util.List" resultType="User">
+		/* QUERY ID : getUsersByRoleIds */
+		SELECT user_id 'userId', user_name 'userName' FROM cmm_user
+		 WHERE user_id IN (
+					SELECT DISTINCT user_id FROM map_user_role WHERE role_id IN (
+							<foreach collection="list" index="index" item="item">
+								<if test="index != 0"> , </if>
+									#{item.roleId}
+							</foreach>
+					)
+				)
+	</select>
+
 </mapper>

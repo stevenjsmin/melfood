@@ -1,6 +1,7 @@
 package melfood.shopping.grouppurchase;
 
 import melfood.framework.uitl.html.Option;
+import melfood.framework.user.UserService;
 import melfood.shopping.grouppurchase.dao.GroupPurchaseDAO;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
 
     @Autowired
     GroupPurchaseDAO groupPurchaseDAO;
+
+    @Autowired
+    protected UserService userService;
 
     @Override
     public GroupPurchase getGroupPurchase(int groupPurchaseId) throws Exception {
@@ -60,7 +64,7 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
 
     @Override
     public List<Option> getOrganizers() throws Exception {
-        return null;
+        return userService.getUsersByRoleId("GROUP_PURCHASER");
     }
 
     @Override
