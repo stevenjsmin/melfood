@@ -23,19 +23,21 @@ $(document).ready(function() {
     $("#minimumPurchaseAmount").kendoNumericTextBox({
         max: 99999,
         min: 0.00,
+        step: 0.50,
         format: "c2"
     });
 
     $("#discountFixedAmount").kendoNumericTextBox({
         max: 99999,
-        min: 1,
+        min: 0,
+        step: 0.50,
         format: "c2"
     });
 
     $("#discountRateValue").kendoNumericTextBox({
-        format: "p0",
-        min: 0,
-        max: 0.1,
+        format: "p1",
+        max: 1.0,
+        min: 0.00,
         step: 0.01
     });
 
@@ -411,15 +413,17 @@ function changeDiscountMethod(obj) {
     if(discountMethod == 'FIXED') {
         $('#spanDiscountFixedAmount').show();
         $('#spanDiscountRateValue').hide();
-        $('#discountRateValue').val('');
+        $('#discountRateValue').val('0.00');
     } else if(discountMethod == 'RATE') {
         $('#spanDiscountRateValue').show();
         $('#spanDiscountFixedAmount').hide();
-        $('#discountFixedAmount').val('');
+        $('#discountFixedAmount').val('0.00');
 
     } else {
         $('#spanDiscountFixedAmount').hide();
         $('#spanDiscountRateValue').hide();
+        $('#discountFixedAmount').val('0.00');
+        $('#discountRateValue').val('0.00');
 
     }
 }

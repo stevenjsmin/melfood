@@ -17,7 +17,7 @@
 
             $('#spanDiscountRateValue').show();
             $('#spanDiscountFixedAmount').hide();
-            $('#discountFixedAmount').val('');
+            $('#discountFixedAmount').val('0');
 
             $("#groupPurchaseNotice").kendoEditor({
                 encoded: false
@@ -57,7 +57,7 @@
                     <td class="value" colspan="3"><input class="form-control" type="text" id="groupPurchaseTitle" name="groupPurchaseTitle" value='' placeholder="공동구매 제목"/></td>
                 </tr>
                 <tr>
-                    <td class="label"><span class="required">* </span>Title :</td>
+                    <td class="label"><span class="required">* </span>Subtitle :</td>
                     <td class="value" colspan="2"><input class="form-control" type="text" id="groupPurchaseSubtitle" name="groupPurchaseSubtitle" value='' placeholder="부제목"/></td>
                     <td></td>
                 </tr>
@@ -65,15 +65,15 @@
                     <td class="label"><span class="required">* </span>공동구매 주관자 :</td>
                     <td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
                     <td class="label">최소 참여금액 :</td>
-                    <td class="value"><input id="minimumPurchaseAmount" name="minimumPurchaseAmount" value="$"></input></td>
+                    <td class="value"><input id="minimumPurchaseAmount" name="minimumPurchaseAmount" value="0.00"></input></td>
                 </tr>
                 <tr>
                     <td class="label">할인비율/금액 :</td>
                     <td class="value"><c:out value="${cbxDiscountMethod}" escapeXml="false"/></td>
                     <td class="label">비율/금액 :</td>
                     <td class="value">
-                        <span id="spanDiscountRateValue" style="display: none;"><input id="discountRateValue" name="discountRateValue" value=""></input></span>
-                        <span id="spanDiscountFixedAmount" style="display: none;"><input id="discountFixedAmount" name="discountFixedAmount" value=""></input></span>
+                        <span id="spanDiscountRateValue" style="display: none;"><input id="discountRateValue" name="discountRateValue" value="0.00"></input></span>
+                        <span id="spanDiscountFixedAmount" style="display: none;"><input id="discountFixedAmount" name="discountFixedAmount" value="0.00"></input></span>
                     </td>
                 </tr>
 
