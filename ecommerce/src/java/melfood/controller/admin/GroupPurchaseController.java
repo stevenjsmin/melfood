@@ -50,9 +50,9 @@ public class GroupPurchaseController extends BaseController {
         mav.addObject("cbxPurchaseOrganizer", htmlForOrganizerCbx);
 
         // 공동구매 정지여부 : 기본값 : N
-        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "Y");
-        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
-        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
+//        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "Y");
+//        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
+//        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
 
         // 공동구매 장소를 위한 State 설정 콤보박스 : 기본값-빅토리아
         List<Option> marketAddressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", "VIC");
@@ -100,11 +100,11 @@ public class GroupPurchaseController extends BaseController {
             orderingStartDt = df.format(cal.getTime());
         }
         groupPurchase.setOrderingStartDt(orderingStartDt);
-        if(StringUtils.isNotBlank(orderingEndDt)) groupPurchase.setOrderingEndDt(orderingEndDt);
+        if (StringUtils.isNotBlank(orderingEndDt)) groupPurchase.setOrderingEndDt(orderingEndDt);
 
-        if(StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
-        if(StringUtils.isNotBlank(stopSelling)) groupPurchase.setStopSelling(stopSelling);
-        if(StringUtils.isNotBlank(marketAddressSuburb)) groupPurchase.setMarketAddressSuburb(marketAddressSuburb);
+        if (StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
+        if (StringUtils.isNotBlank(stopSelling)) groupPurchase.setStopSelling(stopSelling);
+        if (StringUtils.isNotBlank(marketAddressSuburb)) groupPurchase.setMarketAddressSuburb(marketAddressSuburb);
 
         Integer totalCount = 0;
         List<GroupPurchase> list = groupPurchaseService.getGroupPurchases(groupPurchase);

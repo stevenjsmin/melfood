@@ -38,7 +38,6 @@ $(document).ready(function () {
                             page : options.page,
                             pageSize : options.pageSize,
                             purchaseOrganizer : $("#purchaseOrganizer").val(),
-                            stopSelling : $("#stopSelling").val(),
                             orderingStartDt : $("#orderingStartDt").val(),
                             orderingEndDt : $("#orderingEndDt").val()
                         };
@@ -176,8 +175,6 @@ $(document).ready(function () {
     	 	<tr>
     	 		<td class="label">Organizer : </td>
     	 		<td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
-                <td class="label">상태 :</td>
-                <td class="value"><c:out value="${cbxStopSelling}" escapeXml="false"/></td>
                 <td class="label">공동구매 시작일 :  </td>
                 <td class="value"><input id="orderingStartDt" name="orderingStartDt" value="${orderingStartDt}"></input></td>
                 <td class="label">공동구매 종료일 :  </td>
