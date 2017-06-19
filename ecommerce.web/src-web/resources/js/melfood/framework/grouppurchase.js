@@ -88,14 +88,14 @@ function validateForm(){
     var discountFixedAmount = $('#discountFixedAmount').val();
     var orderingStartDt = $('#orderingStartDt').val();
     var orderingEndDt = $('#orderingEndDt').val();
-    var stopSelling = $('stopSelling').val();
-    var stopSellingReason = $('stopSellingReason').val();
-    var marketAddressState = $('marketAddressState').val();
-    var marketAddressPostcode = $('marketAddressPostcode').val();
-    var marketAddressStreet = $('marketAddressStreet').val();
-    var marketAddressSuburb = $('marketAddressSuburb').val();
-    var marketAddressComment = $('marketAddressComment').val();
-    var groupPurchaseNotice = $('groupPurchaseNotice').val();
+    var stopSelling = $('#stopSelling').val();
+    var stopSellingReason = $('#stopSellingReason').val();
+    var marketAddressState = $('#marketAddressState').val();
+    var marketAddressPostcode = $('#marketAddressPostcode').val();
+    var marketAddressStreet = $('#marketAddressStreet').val();
+    var marketAddressSuburb = $('#marketAddressSuburb').val();
+    var marketAddressComment = $('#marketAddressComment').val();
+    var groupPurchaseNotice = $('#groupPurchaseNotice').val();
 
  	if(groupPurchaseTitle == "") {
  		message = message + prefix + "공동구매 제목은 필수입력 항목입니다.<br>";
@@ -160,7 +160,7 @@ function validateForm(){
         validation = false;
     }
 
-    if(stopSelling != "" && stopSelling == "Y"){
+    if(stopSelling != "" && stopSelling == "N"){
         if(stopSellingReason == "" || stopSellingReason == null){
             message = message + prefix + "공동구매 정지일경우 공동구매 정지이유는 필수입력 항목입니다<br>";
             checkObject[checkObject.length] = "stopSellingReason";
@@ -216,14 +216,14 @@ function save(){
     var discountFixedAmount = $('#discountFixedAmount').val();
     var orderingStartDt = $('#orderingStartDt').val();
     var orderingEndDt = $('#orderingEndDt').val();
-    var stopSelling = $('stopSelling').val();
-    var stopSellingReason = $('stopSellingReason').val();
-    var marketAddressState = $('marketAddressState').val();
-    var marketAddressPostcode = $('marketAddressPostcode').val();
-    var marketAddressStreet = $('marketAddressStreet').val();
-    var marketAddressSuburb = $('marketAddressSuburb').val();
-    var marketAddressComment = $('marketAddressComment').val();
-    var groupPurchaseNotice = $('groupPurchaseNotice').val();
+    var stopSelling = $('#stopSelling').val();
+    var stopSellingReason = $('#stopSellingReason').val();
+    var marketAddressState = $('#marketAddressState').val();
+    var marketAddressPostcode = $('#marketAddressPostcode').val();
+    var marketAddressStreet = $('#marketAddressStreet').val();
+    var marketAddressSuburb = $('#marketAddressSuburb').val();
+    var marketAddressComment = $('#marketAddressComment').val();
+    var groupPurchaseNotice = $('#groupPurchaseNotice').val();
 
     if(validateForm() == false) return;
 
@@ -260,7 +260,7 @@ function callbackSave(data) {
       if (resultCode != "0") {
            warningPopup(data.message);
       } else {
-    	  goDetailInfo(data.userId);
+    	  //goDetailInfo(data.userId);
     	  //goList();
       }
 }

@@ -50,7 +50,7 @@ public class GroupPurchaseController extends BaseController {
         mav.addObject("cbxPurchaseOrganizer", htmlForOrganizerCbx);
 
         // 공동구매 정지여부 : 기본값 : N
-        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "N");
+        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "Y");
         String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
         mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
 
@@ -63,6 +63,13 @@ public class GroupPurchaseController extends BaseController {
         List<Option> discountMethodOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DISCOUNT_METHOD");
         String htmlForDiscountMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("discountMethod", discountMethodOptions);
         mav.addObject("cbxDiscountMethod", htmlForDiscountMethodCbx);
+
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        String to_yyyymmdd = df.format(cal.getTime());
+        mav.addObject("orderingStartDt", (to_yyyymmdd + " 12:00 AM"));
 
         return mav;
     }
@@ -93,11 +100,11 @@ public class GroupPurchaseController extends BaseController {
             orderingStartDt = df.format(cal.getTime());
         }
         groupPurchase.setOrderingStartDt(orderingStartDt);
-        if (!StringUtils.isBlank(orderingStartDt)) groupPurchase.setOrderingEndDt(orderingEndDt);
+        if(StringUtils.isNotBlank(orderingEndDt)) groupPurchase.setOrderingEndDt(orderingEndDt);
 
-        groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
-        groupPurchase.setStopSelling(stopSelling);
-        groupPurchase.setMarketAddressSuburb(marketAddressSuburb);
+        if(StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
+        if(StringUtils.isNotBlank(stopSelling)) groupPurchase.setStopSelling(stopSelling);
+        if(StringUtils.isNotBlank(marketAddressSuburb)) groupPurchase.setMarketAddressSuburb(marketAddressSuburb);
 
         Integer totalCount = 0;
         List<GroupPurchase> list = groupPurchaseService.getGroupPurchases(groupPurchase);
@@ -119,8 +126,8 @@ public class GroupPurchaseController extends BaseController {
         mav.addObject("cbxPurchaseOrganizer", htmlForOrganizerCbx);
 
         // 공동구매 정지여부 : 기본값 : N
-        List<Option> contractStatusOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "N");
-        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", contractStatusOptions);
+        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "Y");
+        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
         mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
 
         // 공동구매 장소를 위한 State 설정 콤보박스 : 기본값-빅토리아
@@ -193,6 +200,7 @@ public class GroupPurchaseController extends BaseController {
         String marketAddressStreet = request.getParameter("marketAddressStreet");
         String marketAddressSuburb = request.getParameter("marketAddressSuburb");
         String marketAddressPostcode = request.getParameter("marketAddressPostcode");
+        String marketAddressState = request.getParameter("marketAddressState");
         String marketAddressComment = request.getParameter("marketAddressComment");
         String minimumPurchaseAmount = request.getParameter("minimumPurchaseAmount");
         String discountMethod = request.getParameter("discountMethod");
@@ -200,6 +208,12 @@ public class GroupPurchaseController extends BaseController {
         String discountRateValue = request.getParameter("discountRateValue");
         String groupPurchaseNotice = request.getParameter("groupPurchaseNotice");
         String creator = sessionUser.getUser().getUserId();
+
+        // 특별히 지정된 값이 없는 경우 "공동구매 개시" 상태로 처리
+        if (StringUtils.isBlank(stopSelling)) {
+            stopSelling = "Y";
+            stopSellingReason = null;
+        }
 
         try {
 
@@ -224,12 +238,10 @@ public class GroupPurchaseController extends BaseController {
             if (StringUtils.isNotBlank(stopSellingReason)) groupPurchase.setStopSellingReason(stopSellingReason);
             if (StringUtils.isNotBlank(marketAddressStreet)) groupPurchase.setMarketAddressStreet(marketAddressStreet);
             if (StringUtils.isNotBlank(marketAddressSuburb)) groupPurchase.setMarketAddressSuburb(marketAddressSuburb);
-            if (StringUtils.isNotBlank(marketAddressPostcode))
-                groupPurchase.setMarketAddressPostcode(marketAddressPostcode);
-            if (StringUtils.isNotBlank(marketAddressComment))
-                groupPurchase.setMarketAddressComment(marketAddressComment);
-            if (StringUtils.isNotBlank(minimumPurchaseAmount))
-                groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
+            if (StringUtils.isNotBlank(marketAddressPostcode)) groupPurchase.setMarketAddressPostcode(marketAddressPostcode);
+            if (StringUtils.isNotBlank(marketAddressState)) groupPurchase.setMarketAddressState(marketAddressState);
+            if (StringUtils.isNotBlank(marketAddressComment)) groupPurchase.setMarketAddressComment(marketAddressComment);
+            if (StringUtils.isNotBlank(minimumPurchaseAmount)) groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
 
             if (StringUtils.isNotBlank(discountMethod)) {
@@ -244,7 +256,13 @@ public class GroupPurchaseController extends BaseController {
                     if (StringUtils.isNotBlank(discountRateValue))
                         groupPurchase.setDiscountRateValue(Float.parseFloat(discountRateValue));
                 }
+            } else {
+                discountMethod = "RATE";
+                discountRateValue = "0.00";
+                discountFixedAmount = "0.00";
             }
+
+
             if (StringUtils.isNotBlank(groupPurchaseNotice)) groupPurchase.setGroupPurchaseNotice(groupPurchaseNotice);
             if (StringUtils.isNotBlank(creator)) groupPurchase.setCreator(creator);
 

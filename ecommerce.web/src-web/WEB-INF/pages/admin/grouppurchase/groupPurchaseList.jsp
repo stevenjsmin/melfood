@@ -23,12 +23,12 @@ $(document).ready(function () {
             serverFiltering: true,
             transport: {
                 read: {
-                    url: "/amdin/grouppurchase/getGroupPurchases.yum",
+                    url: "/admin/grouppurchase/getGroupPurchases.yum",
                     dataType: "json",
                     type: "POST"
                 },
                 destroy: {
-                    url: "/framework/grouppurchase/deleteGroupPurchase.yum",
+                    url: "/admin/grouppurchase/deleteGroupPurchase.yum",
                     dataType: "jsonp",
                     type: "POST"
                 }, 
@@ -36,29 +36,25 @@ $(document).ready(function () {
                     if (operation == "read") {
                         return {
                             page : options.page,
-                            pageSize : options.pageSize,                          	
-                        	category : $("#category").val(),
-                            type : $("#type").val(),
-                            label : $("#label").val(),
-                            useYn : $("#useYn").val()
+                            pageSize : options.pageSize,
+                            purchaseOrganizer : $("#purchaseOrganizer").val(),
+                            stopSelling : $("#stopSelling").val(),
+                            orderingStartDt : $("#orderingStartDt").val(),
+                            orderingEndDt : $("#orderingEndDt").val()
                         };
                     } else if (operation == "destroy") {
                         console.log(options);
                         return {
-                        	category : options.category,
-                            type : options.type,
-                            value : options.value
+                            groupPurchaseId : options.groupPurchaseId
                         };
                     }
                 }
             }, 
             schema: {
                 model: {
-                    id: "category",
+                    id: "groupPurchaseId",
                     fields: {
-                    	category : { type: "string"},
-                        type : { type: "string"},
-                        value : { type: "string" }
+                        groupPurchaseId : { type: "string" }
                     }
                 },
                 data: function(response) {
@@ -96,12 +92,13 @@ $(document).ready(function () {
             } 
         },         
 		columns: [
-		          { title : 'Organizer', field: 'purchaseOrganizer', width: 100, attributes: {style: "color: 606000; font-weight: bolder;" }, filterable: false},
-		          { title : 'Title', field: 'groupPurchaseTitle', width: 200, attributes: {style: "color: 939300; font-weight: bolder;" }},
-		          { title : 'Start', field: 'orderingStartDt', width: 200, attributes: {style: "color: e37200;font-weight: bolder;" }},
-		          { title : 'End', field: 'orderingEndDt', width: 90, attributes: {style: "text-align: center;" }},
-		          { title : 'Market Address', template: kendo.template($("#marketAddress-template").html()), attributes: {style: "text-align: center;" }},
-		          { command: [ {text : "Delete", name: "destory", click: deleteItem}]}
+                  { hidden : true, field: 'groupPurchaseId'},
+		          { title : 'Organizer', field: 'purchaseOrganizer', width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }, filterable: false},
+		          { title : 'Title', field: 'groupPurchaseTitle', attributes: {style: "color: 939300; font-weight: bolder;" }},
+		          { title : 'Start', field: 'orderingStartDt', width: 150, attributes: {style: "text-align: left;" }},
+		          { title : 'End', field: 'orderingEndDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
+		          { title : 'Market Address', template: kendo.template($("#marketAddress-template").html()), attributes: {style: "text-align: left;" }},
+		          { command: [ {text : "Delete", name: "destory", click: deleteItem}], width: 140}
 
 		 ] // End of Columns
     }); // End of GRID

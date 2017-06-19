@@ -102,7 +102,7 @@ public final class HtmlCodeGenerator {
 		if (list != null && list.size() > 0) {
 			for (Option option : list) {
 
-				if (StringUtils.equalsIgnoreCase(option.getValue(), defaultSelect)) {
+				if (StringUtils.equalsIgnoreCase(option.getValue(), defaultSelect) || option.isSelected()) {
 					html.append("<option value='" + option.getValue() + "' selected>" + option.getName() + "</option>");
 				} else {
 					html.append("<option value='" + option.getValue() + "'>" + option.getName() + "</option>");

@@ -14,12 +14,12 @@ public class GroupPurchaseDAOImpl extends BaseDAO implements GroupPurchaseDAO {
 
     @Override
     public List<GroupPurchase> getGroupPurchases(GroupPurchase groupPurchase) throws Exception {
-        return sqlSession.selectList("mySqlGroupPurchaseDao.getGroupPurchases", groupPurchase);
+        return sqlSession.selectList("mySqlGroupPurchaseDao.getGroupPurchase", groupPurchase);
     }
 
     @Override
     public Integer getTotalCntForGroupPurchases(GroupPurchase groupPurchase) {
-        return sqlSession.selectOne("mySqlGroupPurchaseDao.getTotalCntForGroupPurchases", groupPurchase);
+        return sqlSession.selectOne("mySqlGroupPurchaseDao.getTotalCntGroupPurchase", groupPurchase);
     }
 
     @Override

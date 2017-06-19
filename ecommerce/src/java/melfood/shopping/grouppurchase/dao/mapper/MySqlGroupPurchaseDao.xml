@@ -11,9 +11,9 @@
             a.group_purchase_id 'groupPurchaseId',
             a.group_purchase_title 'groupPurchaseTitle',
             a.group_purchase_subtitle 'groupPurchaseSubtitle',
-            a.purchase_organizer 'purchaseOrganizer',
-            a.ordering_start_dt 'orderingStartDt',
-            a.ordering_end_dt 'orderingEndDt',
+            (SELECT CONCAT(user_id, ' / ', user_name) FROM cmm_user WHERE user_id = a.purchase_organizer) 'purchaseOrganizer',
+            DATE_FORMAT(a.ordering_start_dt,'%Y-%m-%d %h:%i %p') 'orderingStartDt',
+            DATE_FORMAT(a.ordering_end_dt,'%Y-%m-%d %h:%i %p') 'orderingEndDt',
             a.stop_selling 'stopSelling',
             a.stop_selling_reason 'stopSellingReason',
             a.market_address_street 'marketAddressStreet',
@@ -33,11 +33,11 @@
             a.creator 'creator'
         FROM group_purchase a
        WHERE 1 = 1
-            <if test="groupPurchaseId != null"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
+            <if test="groupPurchaseId != null and groupPurchaseId != 0"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
             <if test="groupPurchaseTitle != null"> AND UPPER(a.group_purchase_title) LIKE CONCAT('%', UPPER(#{groupPurchaseTitle}), '%') </if>
             <if test="groupPurchaseSubtitle != null"> AND UPPER(a.group_purchase_subtitle) LIKE CONCAT('%', UPPER(#{groupPurchaseSubtitle}), '%') </if>
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
-            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.orderingStartDt, '%Y-%m-%d') </if>
+            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.ordering_start_dt, '%Y-%m-%d') </if>
             <if test="orderingEndDt != null"> AND str_to_date(#{orderingEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.ordering_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
@@ -64,11 +64,11 @@
         SELECT COUNT(*)
         FROM group_purchase a
         WHERE 1 = 1
-            <if test="groupPurchaseId != null"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
+            <if test="groupPurchaseId != null and groupPurchaseId != 0"> AND UPPER(a.group_purchase_id) = UPPER(#{groupPurchaseId}) </if>
             <if test="groupPurchaseTitle != null"> AND UPPER(a.group_purchase_title) LIKE CONCAT('%', UPPER(#{groupPurchaseTitle}), '%') </if>
             <if test="groupPurchaseSubtitle != null"> AND UPPER(a.group_purchase_subtitle) LIKE CONCAT('%', UPPER(#{groupPurchaseSubtitle}), '%') </if>
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
-            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.orderingStartDt, '%Y-%m-%d') </if>
+            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.ordering_start_dt, '%Y-%m-%d') </if>
             <if test="orderingEndDt != null"> AND str_to_date(#{orderingEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.ordering_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
@@ -92,7 +92,7 @@
     <insert id="insertGroupPurchase" parameterType="GroupPurchase">
         /* QUERY ID : insertGroupPurchase */
         INSERT INTO group_purchase (
-            ,group_purchase_title
+            group_purchase_title
             ,group_purchase_subtitle
             ,purchase_organizer
             ,ordering_start_dt
@@ -111,13 +111,13 @@
             ,group_purchase_notice
             ,mall_master_checked
             ,use_yn
-            ,creator
+            ,creator)
         VALUES (
             TRIM(#{groupPurchaseTitle}),
             TRIM(#{groupPurchaseSubtitle}),
             TRIM(#{purchaseOrganizer}),
-            STR_TO_DATE(TRIM(#{orderingStartDt}), '%Y%m%d %r')
-            STR_TO_DATE(TRIM(#{orderingEndDt}), '%Y%m%d %r')
+            STR_TO_DATE(#{orderingStartDt}, '%Y-%m-%d %h:%i %p'),
+            STR_TO_DATE(#{orderingEndDt}, '%Y-%m-%d %h:%i %p'),
             TRIM(#{stopSelling}),
             TRIM(#{stopSellingReason}),
             TRIM(#{marketAddressStreet}),
@@ -132,7 +132,7 @@
             TRIM(#{groupPurchaseNotice}),
             TRIM(#{mallMasterChecked}),
             TRIM(#{useYn}),
-            TRIM(#{creator})
+            TRIM(#{creator}))
     </insert>
 
     <update id="modifyGroupPurchase" parameterType="GroupPurchase">
@@ -143,8 +143,8 @@
             ,group_purchase_title = TRIM(#{groupPurchaseTitle})
             ,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle})
             ,purchase_organizer = TRIM(#{purchaseOrganizer})
-            ,ordering_start_dt = STR_TO_DATE(TRIM(#{orderingStartDt}), '%Y%m%d %r')
-            ,ordering_end_dt = STR_TO_DATE(TRIM(#{orderingEndDt}), '%Y%m%d %r')
+            ,ordering_start_dt = STR_TO_DATE(#{orderingStartDt}, '%Y-%m-%d %h:%i %p')
+            ,ordering_end_dt = STR_TO_DATE(#{orderingEndDt}, '%Y-%m-%d %h:%i %p')
             ,stop_selling = TRIM(#{stopSelling})
             ,stop_selling_reason = TRIM(#{stopSellingReason})
             ,market_address_street = TRIM(#{marketAddressStreet})
@@ -171,8 +171,8 @@
             <if test="label != null">,group_purchase_title = TRIM(#{groupPurchaseTitle}) </if>
             <if test="label != null">,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle}) </if>
             <if test="label != null">,purchase_organizer = TRIM(#{purchaseOrganizer}) </if>
-            <if test="label != null">,ordering_start_dt = STR_TO_DATE(TRIM(#{orderingStartDt}), '%Y%m%d %r')</if>
-            <if test="label != null">,ordering_end_dt = STR_TO_DATE(TRIM(#{orderingEndDt}), '%Y%m%d %r')</if>
+            <if test="label != null">,ordering_start_dt = STR_TO_DATE(#{orderingStartDt}, '%Y-%m-%d %h:%i %p')</if>
+            <if test="label != null">,ordering_end_dt = STR_TO_DATE(#{orderingEndDt}, '%Y-%m-%d %h:%i %p')</if>
             <if test="label != null">,stop_selling = TRIM(#{stopSelling}) </if>
             <if test="label != null">,stop_selling_reason = TRIM(#{stopSellingReason}) </if>
             <if test="label != null">,market_address_street = TRIM(#{marketAddressStreet}) </if>

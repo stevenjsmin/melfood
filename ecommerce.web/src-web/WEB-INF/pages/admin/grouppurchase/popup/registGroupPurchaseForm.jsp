@@ -57,7 +57,7 @@
                     <td class="value" colspan="3"><input class="form-control" type="text" id="groupPurchaseTitle" name="groupPurchaseTitle" value='' placeholder="공동구매 제목"/></td>
                 </tr>
                 <tr>
-                    <td class="label"><span class="required">* </span>Subtitle :</td>
+                    <td class="label">Subtitle :</td>
                     <td class="value" colspan="2"><input class="form-control" type="text" id="groupPurchaseSubtitle" name="groupPurchaseSubtitle" value='' placeholder="부제목"/></td>
                     <td></td>
                 </tr>
@@ -85,9 +85,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="label">공동구매 시작일시 :</td>
+                    <td class="label"><span class="required">* </span>공동구매 시작일시 :</td>
                     <td class="value"><input id="orderingStartDt" name="orderingStartDt" value=""></input></td>
-                    <td class="label">공동구매 종료일시 :</td>
+                    <td class="label"><span class="required">* </span>공동구매 종료일시 :</td>
                     <td class="value"><input id="orderingEndDt" name="orderingEndDt" value=""></input></td>
                 </tr>
                 <tr>
@@ -97,7 +97,7 @@
                 </tr>
                 <tr>
                     <td class="label">공동구매 정지이유 :</td>
-                    <td class="value_end" colspan="2"><input class="form-control" type="text" id="stopSellingReason" name="stopSellingReason" value='' placeholder="공동 구매가 정지된 이유"/></td>
+                    <td class="value" colspan="2"><input class="form-control" type="text" id="stopSellingReason" name="stopSellingReason" value='' placeholder="공동 구매가 정지된 이유"/></td>
                     <td></td>
                 </tr>
                 <tr>
