@@ -8,6 +8,7 @@ import melfood.framework.common.dto.BaseDto;
 public class GroupPurchaseProduct extends BaseDto {
     private int groupPurchaseId;
     private int productId;
+    private String productName;
     private String stopSelling;
     private String stopSellingReason;
 
@@ -54,5 +55,13 @@ public class GroupPurchaseProduct extends BaseDto {
 
     public void setStopSellingReason(String stopSellingReason) {
         this.stopSellingReason = stopSellingReason;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }

@@ -15,5 +15,9 @@
 		<put-attribute name="title" value="Create Group Purchase" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/registGroupPurchaseForm.jsp" />
 	</definition>
-
+	<definition name="tiles/admin/grouppurchase/groupPurchaseDetailModifyForm" extends="tiles/admin/root">
+		<put-attribute name="title" value="Group Purchase detail modify" />
+		<put-attribute name="navigation" value="Admin > Group Purchase > detail modify" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/groupPurchaseDetailModifyForm.jsp" />
+	</definition>
 </tiles-definitions>

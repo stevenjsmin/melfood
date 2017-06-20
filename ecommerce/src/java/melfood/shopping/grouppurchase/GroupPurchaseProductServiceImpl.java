@@ -27,6 +27,14 @@ public class GroupPurchaseProductServiceImpl implements GroupPurchaseProductServ
     }
 
     @Override
+    public List<GroupPurchaseProduct> getGroupPurchaseProducts(int groupPurchaseId) throws Exception {
+        GroupPurchaseProduct purchaseProduct = new GroupPurchaseProduct();
+        purchaseProduct.setGroupPurchaseId(groupPurchaseId);
+
+        return this.getGroupPurchaseProducts(purchaseProduct);
+    }
+
+    @Override
     public List<GroupPurchaseProduct> getGroupPurchaseProducts(GroupPurchaseProduct purchaseProduct) throws Exception {
         return groupPurchaseProductDao.getGroupPurchaseProducts(purchaseProduct);
     }

@@ -104,12 +104,9 @@ $(document).ready(function () {
     
     $("#grid_panel_main").dblclick(function(e) {
     	var dataItem = KENDO_SELECTED_RECORD;
-    	
-        var category = dataItem.category;
-        var type = dataItem.type;
-        var value = dataItem.value;
-        
-        goDetailInfo(category, type, value);
+        var groupPurchaseId = dataItem.groupPurchaseId;
+
+        goDetailInfoForModify(groupPurchaseId);
     });
     
     function onChange(e) {

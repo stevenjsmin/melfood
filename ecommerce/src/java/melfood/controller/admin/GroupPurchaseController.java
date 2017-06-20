@@ -74,6 +74,19 @@ public class GroupPurchaseController extends BaseController {
         return mav;
     }
 
+    @RequestMapping("/groupPurchaseDetailModifyForm")
+    public ModelAndView groupPurchaseDetailModifyForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/groupPurchaseDetailModifyForm");
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+        List<GroupPurchaseProduct> purchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(Integer.parseInt(groupPurchaseId));
+
+        mav.addObject("groupPurchase", groupPurchase);
+        mav.addObject("groupPurchaseProducts", purchaseProducts);
+
+        return mav;
+    }
 
     @RequestMapping(value = "/getGroupPurchases", produces = "application/json")
     @ResponseBody
