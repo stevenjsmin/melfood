@@ -106,7 +106,7 @@ $(document).ready(function () {
     	var dataItem = KENDO_SELECTED_RECORD;
         var groupPurchaseId = dataItem.groupPurchaseId;
 
-        goDetailInfoForModify(groupPurchaseId);
+        goDetailInfo(groupPurchaseId);
     });
     
     function onChange(e) {

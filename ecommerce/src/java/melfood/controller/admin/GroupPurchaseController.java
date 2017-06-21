@@ -161,9 +161,9 @@ public class GroupPurchaseController extends BaseController {
         return mav;
     }
 
-    @RequestMapping("/modifyGroupPurchaseForm")
-    public ModelAndView modifyGroupPurchaseForm(HttpServletRequest request) throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/modify");
+    @RequestMapping("/groupPurchaseDetailInfo")
+    public ModelAndView groupPurchaseDetailInfo(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/detail");
 
         String groupPurchaseId = request.getParameter("groupPurchaseId");
         GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));

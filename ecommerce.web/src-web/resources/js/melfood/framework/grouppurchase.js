@@ -44,8 +44,8 @@ $(document).ready(function() {
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
 
-function goDetailInfoForModify(groupPurchaseId){
-	document.location.href = "/admin/grouppurchase/groupPurchaseDetailModifyForm.yum?groupPurchaseId=" + groupPurchaseId;
+function goDetailInfo(groupPurchaseId){
+	document.location.href = "/admin/grouppurchase/groupPurchaseDetailInfo.yum?groupPurchaseId=" + groupPurchaseId;
 }
 
 function goList() {
