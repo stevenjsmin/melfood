@@ -25,4 +25,9 @@ public interface GroupPurchaseDAO {
     public Integer insertGroupPurchaseImage(ProductImage productImage) throws Exception;
 
     public Integer insertGroupPurchaseImages(List<ProductImage> productImages, int groupPurchaseId) throws Exception;
+
+    public List<ProductImage> getProductImages(ProductImage productImage) throws Exception;
+    public Integer getTotalCntForProductImages(ProductImage productImage);
+
+    public Integer deleteProductImage(ProductImage productImage) throws Exception;
 }

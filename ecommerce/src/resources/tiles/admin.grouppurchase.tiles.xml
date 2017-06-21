@@ -20,4 +20,9 @@
 		<put-attribute name="navigation" value="Admin > Group Purchase > detail modify" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/groupPurchaseDetailModifyForm.jsp" />
 	</definition>
+	<!-- Product > Image > Image Viewer -->
+	<definition name="tiles/admin/product/productmgt/image/imageViewer" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Image Viewer" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/productImageViewer.jsp" />
+	</definition>
 </tiles-definitions>

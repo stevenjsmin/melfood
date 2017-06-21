@@ -13,11 +13,13 @@
     <script src="/resources/js/melfood/framework/grouppurchase.js?ver=<%=Ctx.releaseVersion%>"></script>
 
     <script type="text/javascript">
+        var KENDO_SELECTED_RECORD = null;
         $(document).ready(function () {
+            $.ajaxSetup({cache: false});
 
             $("#fileUpload").kendoUpload({
                 async: {
-                    saveUrl: "/admin/grouppurchase/image/uploadFile.yum?prodId=",
+                    saveUrl: "/admin/grouppurchase/image/uploadFile.yum?groupPurchaseId=${groupPurchase.groupPurchaseId}",
                     removeUrl: "/admin/grouppurchase/image/removeFile.yum",
                     removeField: "removeFile",
                     autoUpload: true,
@@ -35,6 +37,7 @@
             function onComplete(e) {
                 search();
             }
+
             function onError(e) {
                 var files = e.files;
                 if (e.operation == "upload") {
@@ -43,8 +46,7 @@
             }
 
 
-
-            // DEFINE DATASOURCE
+            // DEFINE DATASOURCE FOR IMAGE LIST
             // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             var dataSource = new kendo.data.DataSource({
                 pageSize: 20,
@@ -52,26 +54,26 @@
                 serverFiltering: true,
                 transport: {
                     read: {
-                        url: "/admin/productmgt/image/productImages.yum",
+                        url: "/admin/grouppurchase/image/productImages.yum",
                         dataType: "json",
                         type: "POST"
                     },
                     destroy: {
-                        url: "/admin/productmgt/image/deleteProductImage.yum",
+                        url: "/admin/grouppurchase/image/deleteProductImage.yum",
                         dataType: "jsonp",
                         type: "POST"
                     },
-                    parameterMap: function(options, operation) {
+                    parameterMap: function (options, operation) {
                         if (operation == "read") {
                             return {
-                                page : options.page,
-                                pageSize : options.pageSize,
-                                prodId : $("#prodId").val()
+                                page: options.page,
+                                pageSize: options.pageSize,
+                                groupPurchaseId: ${groupPurchase.groupPurchaseId}
                             };
                         } else if (operation == "destroy") {
                             return {
-                                prodId : options.prodId,
-                                imageSeq : options.imageSeq
+                                groupPurchaseId: options.prodId,
+                                imageSeq: options.imageSeq
                             };
                         }
                     }
@@ -80,11 +82,11 @@
                     model: {
                         id: "prodId",
                         fields: {
-                            prodId : { type: "string"},
-                            imageSeq : { type: "string"}
+                            prodId: {type: "string"},
+                            imageSeq: {type: "string"}
                         }
                     },
-                    data: function(response) {
+                    data: function (response) {
                         return response.list;
                     },
                     total: function (response) {
@@ -101,10 +103,10 @@
                 sortable: true,
                 editable: false,
                 change: onChange,
-                filterable : {
-                    extra:false,
+                filterable: {
+                    extra: false,
                     operators: {
-                        string:{ contains: "Contains"}
+                        string: {contains: "Contains"}
                     }
                 },
                 pageable: {
@@ -119,94 +121,98 @@
                     }
                 },
                 columns: [
-                    { hidden : true, field: 'prodId'},
-                    { hidden : true, field: 'imageSeq'},
-                    { title : 'File Id', field: 'imageFileId', width: 30, filterable: false, attributes: {style: "color: D6D6D6;text-align: center;" }},
-                    { title : 'Order', field: 'displayOrder', width: 30, filterable: false, attributes: {style: "color: 1A717B;text-align: center;" }},
-                    { title : 'W * H', width: 50, template: kendo.template($("#size-template").html()), filterable: false, attributes: {style: "text-align: center;" }},
-                    { title : 'Desciption', field: 'imageDescription', width: 250},
-                    { command: [ {text : "Delete", name: "destory", click: deleteItem} ], width: 100}
+                    {hidden: true, field: 'prodId'},
+                    {hidden: true, field: 'imageSeq'},
+                    {title: 'W * H', width: 150, template: kendo.template($("#size-template").html()), filterable: true, attributes: {style: "text-align: center;"}},
+                    {title: 'File Name', field: 'fileName'},
+                    {command: [{text: "Delete", name: "destory", click: deleteItem}], width: 100}
 
                 ] // End of Columns
             }); // End of GRID
-
-            $("#grid_panel_main").dblclick(function(e) {
-                var dataItem = KENDO_SELECTED_RECORD;
-                var prodId = dataItem.prodId;
-                var imageSeq = dataItem.imageSeq;
-
-                $("#productImagePopup").kendoWindow({
-                    content: "/admin/productmgt/image/modifyProductImageForm.yum?prodId=" + prodId + "&imageSeq=" + imageSeq,
-                    actions: [ "Minimize", "Maximize","Close" ],
-                    title: "Modify Product image",
-                    modal: true,
-                    iframe: true
-                });
-
-                var popup_dialog = $("#productImagePopup").data("kendoWindow");
-                popup_dialog.setOptions({
-                    width: 800,
-                    height: 750
-                });
-                popup_dialog.center();
-
-                $("#productImagePopup").data("kendoWindow").open();
-
-            });
-
-            function onChange(e) {
-                var gridRecord = e.sender;
-                KENDO_SELECTED_RECORD = gridRecord.dataItem(gridRecord.select());
-            }
-
-            function deleteItem(e) {
-                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-                BootstrapDialog.confirm({
-                    title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
-                    message: '정말 삭제하시겠습니까?',
-                    type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-                    closable: true, // <-- Default value is false
-                    draggable: true, // <-- Default value is false
-                    btnCancelLabel: 'Cancel', // <-- Default value is 'Cancel',
-                    btnOKLabel: 'OK', // <-- Default value is 'OK',
-                    btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
-                    callback: function(result) {
-                        if(result) {
-                            var grid = $("#grid_panel_main").data("kendoGrid");
-                            grid.dataSource.remove(dataItem);
-                            grid.dataSource.sync();
-                            grid.refresh();
-                        }
-                    }
-                });
-            }
-
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+        function onChange(e) {
+            var gridRecord = e.sender;
+            KENDO_SELECTED_RECORD = gridRecord.dataItem(gridRecord.select());
+        }
+
+        function deleteItem(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            console.log(dataItem);
+
+            BootstrapDialog.confirm({
+                title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
+                message: '정말 삭제하시겠습니까?',
+                type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
+                closable: true, // Default value is false
+                draggable: true, // Default value is false
+                btnCancelLabel: 'Cancel', // Default value is 'Cancel',
+                btnOKLabel: 'OK', // Default value is 'OK',
+                btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
+                callback: function (result) {
+                    if (result) {
+                        var grid = $("#grid_panel_main").data("kendoGrid");
+                        grid.dataSource.remove(dataItem);
+                        grid.dataSource.sync();
+                        grid.refresh();
+                    }
+                }
+            });
+        }
+
     </script>
 
+    <script id="size-template" type="text/x-kendo-template">
+        #= ( (width != null && height != null) ? (width + ' X ' + height) : '-')  #
+    </script>
+    <script type="text/javascript">
+        function openImageViwer() {
+
+            $("#productImagePopup").kendoWindow({
+                content: "/admin/grouppurchase/image/productImageViewer.yum?groupPurchaseId=" + "${groupPurchase.groupPurchaseId}",
+                actions: ["Minimize", "Maximize", "Close"],
+                title: "Product images",
+                modal: true,
+                iframe: true
+            });
+
+            var popup_dialog = $("#productImagePopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                width: 900,
+                height: 430
+            });
+            popup_dialog.center();
+
+            $("#productImagePopup").data("kendoWindow").open();
+        }
+        function closeImageWindow() {
+            var win_dialog = $("#productImagePopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
     <style>
     </style>
 </head>
 
 
 <body>
-
+<div id="productImagePopup"></div>
 <table>
     <tr>
         <td valign="top">
             <table class="detail_table">
                 <colgroup>
-                    <col width="200px" />
-                    <col width="300px" />
-                    <col width="200px" />
-                    <col width="300px" />
+                    <col width="200px"/>
+                    <col width="300px"/>
+                    <col width="200px"/>
+                    <col width="300px"/>
                 </colgroup>
 
 
                 <tr>
                     <td colspan="4">
-                        <span class="subtitle"> 동동구매 상품이미지</span>
+                        <span class="subtitle"> 공동구매 상품이미지</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
@@ -219,7 +225,7 @@
                                         <tr>
                                             <td class="label" style="width: 250px;">File Upload</td>
                                             <td class="value" style="width: 500px;"><input type="file" name="files" id="fileUpload"/></td>
-                                            <td class="value" style="width: 70px;"><img onclick="openImageViwer();" src="/resources/image/imgviewer.png" style="height: 30px; width: 30px;"></td>
+                                            <td class="value" style="width: 70px;"><img onclick="openImageViwer();" src="/resources/image/imgviewer.png" style="height: 30px; width: 30px;cursor: hand;"></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -232,13 +238,12 @@
 
                 <tr>
                     <td colspan="4">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <span class="subtitle"> 공동구매 기본정보</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
-
 
 
                 <tr>
@@ -254,29 +259,47 @@
                     <td class="label">공동구매 주관자 :</td>
                     <td class="value">${groupPurchase.purchaseOrganizer}</td>
                     <td class="label">최소 참여금액 :</td>
-                    <td class="value">${groupPurchase.minimumPurchaseAmount}</td>
+                    <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.discountRateValue}"/></td>
                 </tr>
-                <tr>
-                    <td class="label">할인비율/금액 :</td>
-                    <td class="value">${groupPurchase.discountMethod}</td>
-                    <td class="label">비율/금액 :</td>
-                    <td class="value">${groupPurchase.discountFixedAmount}/${groupPurchase.discountRateValue}</td>
-                </tr>
-
-
                 <tr>
                     <td class="label"><span class="required">* </span>공동구매 기간 :</td>
-                    <td class="value" colspan="3">${groupPurchase.orderingStartDt} ~ ${groupPurchase.orderingEndDt}</td>
+                    <td class="value">${groupPurchase.orderingStartDt} ~ ${groupPurchase.orderingEndDt}</td>
+                    <td class="label">할인 비율/금액 :</td>
+                    <td class="value">
+                        <c:choose>
+                            <c:when test="${groupPurchase.discountMethod == 'RATE'}">
+                                <fmt:formatNumber type="percent" minFractionDigits="0" value="${groupPurchase.discountRateValue}"/>
+                            </c:when>
+                            <c:when test="${groupPurchase.discountMethod == 'FIXED'}">
+                                $ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.discountFixedAmount}"/>
+                            </c:when>
+                        </c:choose>
+                    </td>
                 </tr>
+
                 <tr>
                     <td class="label">상태 :</td>
-                    <td class="value">${groupPurchase.stopSelling}</td>
+                    <td class="value">
+                        <c:choose>
+                            <c:when test="${groupPurchase.stopSelling == 'Y'}">
+                                공동구매 개시
+                            </c:when>
+                            <c:when test="${groupPurchase.stopSelling == 'N'}">
+                                공동구매 정지
+                            </c:when>
+                        </c:choose>
+
+                    </td>
                 </tr>
-                <tr>
-                    <td class="label">공동구매 정지이유 :</td>
-                    <td class="value" colspan="2">${groupPurchase.stopSellingReason}</td>
-                    <td></td>
-                </tr>
+                <c:choose>
+                    <c:when test="${groupPurchase.stopSelling == 'N'}">
+                        <tr>
+                            <td class="label">공동구매 정지이유 :</td>
+                            <td class="value" colspan="2">${groupPurchase.stopSellingReason}</td>
+                            <td></td>
+                        </tr>
+                    </c:when>
+                </c:choose>
 
                 <tr>
                     <td class="label">장소</td>
@@ -287,28 +310,43 @@
                     <td class="value" colspan="3">${groupPurchase.marketAddressComment}</td>
                     <td></td>
                 </tr>
+                <tr>
+                    <td class="label">기타공지 메모</td>
+                    <td class="value" colspan="3">${groupPurchase.groupPurchaseNotice}</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <table class="action_button_table" width="100%">
+                            <tr>
+                                <td>
+                                    <a href="javascript:save();" class="btn btn-default btn-sm">기본정보수정</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
 
                 <tr>
                     <td colspan="4">
                         <br/>
-                        <span class="subtitle"> 기타공지 메모</span>
-                        <hr class="subtitle"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="value" colspan="4">${groupPurchase.groupPurchaseNotice}</td>
-                </tr>
-
-
-
-                <tr>
-                    <td colspan="4">
-                        <br />
-                        <br />
+                        <br/>
                         <span class="subtitle"> 공동구매 상품목록</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="4">
+                        <table class="action_button_table" width="100%">
+                            <tr>
+                                <td>
+                                    <a href="javascript:save();" class="btn btn-default btn-sm">공동구매 상품등록</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
 
                 <tr>
                     <td colspan="4">&nbsp;</td>

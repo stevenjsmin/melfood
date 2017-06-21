@@ -91,11 +91,11 @@ function callbackRemoveItem(data) {
             title: '알림  :: 호주가 즐거운 이유, 쿠빵!!',
             message: data.message,
             type: BootstrapDialog.TYPE_INFO, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-            closable: true, // <-- Default value is false
-            draggable: true, // <-- Default value is false
-            btnCancelLabel: 'Cancel', // <-- Default value is 'Cancel',
-            btnOKLabel: 'OK', // <-- Default value is 'OK',
-            btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+            closable: true, // Default value is false
+            draggable: true, // Default value is false
+            btnCancelLabel: 'Cancel', // Default value is 'Cancel',
+            btnOKLabel: 'OK', // Default value is 'OK',
+            btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
             callback: function(result) {
 			    location.reload();
             }
@@ -229,11 +229,11 @@ function cancelChooseDeliveryDate(){
 	            title: '알림  :: 호주가 즐거운 이유, 쿠빵!!',
 	            message: '고객님께서 상품수령 또는 픽업일자를 선택하지 않으셨습니다.<br/> "상품수령 또는 픽업일자"를 선택하지 않는 경우 주문 완료 후 확인 전화드리도록 하겠습니다.<br/><br/> 계속하시겠습니까?',
 	            type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-	            closable: true, // <-- Default value is false
-	            draggable: true, // <-- Default value is false
-	            btnCancelLabel: '취소', // <-- Default value is 'Cancel',
-	            btnOKLabel: '네, 주문확인합니다.', // <-- Default value is 'OK',
-	            btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+	            closable: true, // Default value is false
+	            draggable: true, // Default value is false
+	            btnCancelLabel: '취소', // Default value is 'Cancel',
+	            btnOKLabel: '네, 주문확인합니다.', // Default value is 'OK',
+	            btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
 	            callback: function(result) {
 	                if(result) {
 	                	doOrder();

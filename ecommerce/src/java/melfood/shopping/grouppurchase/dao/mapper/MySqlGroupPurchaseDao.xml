@@ -205,7 +205,8 @@
 
     <insert id="insertGroupPurchaseImage" parameterType="ProductImage">
         /* QUERY ID : insertGroupPurchaseImage */
-        INSERT INTO group_purchase_product_image(group_purchase_id
+        INSERT INTO group_purchase_product_image(
+        group_purchase_id
         ,image_seq
         ,image_file_id
         ,image_description,
@@ -230,5 +231,56 @@
             ( #{item.prodId}, #{item.imageSeq}, #{item.imageFileId}, #{item.imageDescription}, #{item.width}, #{item.height}, #{item.displayOrder}, #{item.creator} )
         </foreach>
     </insert>
+
+
+    <select id="getProductImages" parameterType="ProductImage" resultType="ProductImage">
+        /* QUERY ID : getProductImages */
+        SELECT a.group_purchase_id 'prodId'
+            ,a.image_seq 'imageSeq'
+            ,a.image_file_id 'imageFileId'
+            ,a.image_description 'imageDescription'
+            ,(SELECT file_name FROM cmm_attachment_file WHERE file_id = a.image_file_id) 'fileName'
+            ,a.width 'width'
+            ,a.height 'height'
+            ,a.display_order 'displayOrder'
+            ,b.file_id 'attachFile.fileId'
+            ,b.file_name 'attachFile.fileName'
+            ,b.saved_file_name 'attachFile.savedFileName'
+            ,b.sub_directory 'attachFile.subDirectory'
+            ,b.file_type 'attachFile.fileType'
+            ,b.file_size 'attachFile.fileSize'
+            ,b.file_description 'attachFile.fileDescription'
+         FROM group_purchase_product_image a LEFT OUTER JOIN cmm_attachment_file b ON b.file_id = a.image_file_id
+        WHERE 1 = 1
+            <if test="prodId != null and prodId != 0"> AND a.group_purchase_id = #{prodId} </if>
+            <if test="imageSeq != null and imageSeq != 0"> AND a.image_seq = #{imageSeq} </if>
+            <if test="imageFileId != null and imageFileId != 0"> AND a.image_file_id = #{imageFileId} </if>
+            <if test="imageDescription != null"> AND UPPER(a.image_description) LIKE CONCAT('%', UPPER(#{imageDescription}), '%') </if>
+            <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+        ORDER BY a.group_purchase_id ASC, a.image_seq ASC
+        LIMIT #{pagenationPage}, #{pagenationPageSize}
+    </select>
+    <select id="getTotalCntForProductImages" parameterType="ProductImage" resultType="java.lang.Integer">
+        /* QUERY ID : getTotalCntForProductImages */
+        SELECT COUNT(*)
+        FROM group_purchase_product_image a LEFT OUTER JOIN cmm_attachment_file b ON b.file_id = a.image_file_id
+        WHERE 1 = 1
+        <if test="prodId != null and prodId != 0"> AND a.group_purchase_id = #{prodId} </if>
+        <if test="imageSeq != null and imageSeq != 0"> AND a.image_seq = #{imageSeq} </if>
+        <if test="imageFileId != null and imageFileId != 0"> AND a.image_file_id = #{imageFileId} </if>
+        <if test="imageDescription != null"> AND UPPER(a.image_description) LIKE CONCAT('%', UPPER(#{imageDescription}), '%') </if>
+        <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+    </select>
+
+    <select id="getNextProductImageSeq" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        /* QUERY ID : getNextProductImageSeq */
+        SELECT CASE WHEN max(image_seq) IS NULL THEN 1 ELSE (max(image_seq) + 1) END FROM group_purchase_product_image WHERE group_purchase_id = #{groupPurchaseId}
+    </select>
+
+
+    <delete id="deleteProductImage" parameterType="ProductImage">
+        /* QUERY ID : deleteProductImage */
+        DELETE FROM group_purchase_product_image WHERE group_purchase_id = #{prodId} <if test="imageSeq != null and imageSeq != 0"> AND image_seq = #{imageSeq}; </if>
+    </delete>
 
 </mapper>

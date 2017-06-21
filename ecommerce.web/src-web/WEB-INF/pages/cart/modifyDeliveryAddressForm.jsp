@@ -48,11 +48,11 @@ function callbackModifyDeliveryAddress(data) {
             title: '알림  :: 호주가 즐거운 이유, 쿠빵!!',
             message: data.message,
             type: BootstrapDialog.TYPE_INFO, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-            closable: true, // <-- Default value is false
-            draggable: true, // <-- Default value is false
-            btnCancelLabel: 'Cancel', // <-- Default value is 'Cancel',
-            btnOKLabel: 'OK', // <-- Default value is 'OK',
-            btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+            closable: true, // Default value is false
+            draggable: true, // Default value is false
+            btnCancelLabel: 'Cancel', // Default value is 'Cancel',
+            btnOKLabel: 'OK', // Default value is 'OK',
+            btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
             callback: function(result) {
                 if(result) {
 			    	parent.location.reload();

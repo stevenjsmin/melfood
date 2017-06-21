@@ -1,6 +1,7 @@
 package melfood.shopping.grouppurchase;
 
 import melfood.framework.Ctx;
+import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.attachement.AttachmentFileService;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.user.UserService;
@@ -172,4 +173,45 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
         }
         return retValue;
     }
+
+    @Override
+    public ProductImage getProductImage(ProductImage productImage) throws Exception {
+        List<ProductImage> productOptions = this.getProductImages(productImage);
+        if (productOptions != null && productOptions.size() > 0) {
+            return productOptions.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<ProductImage> getProductImages(ProductImage productImage) throws Exception {
+        List<ProductImage> images = null;
+        try {
+            images = groupPurchaseDAO.getProductImages(productImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return images;
+    }
+
+    @Override
+    public Integer getTotalCntForProductImages(ProductImage productImage) {
+        return groupPurchaseDAO.getTotalCntForProductImages(productImage);
+    }
+
+    @Override
+    public Integer deleteProductImage(int groupPurchaseId, int imageSeq) throws Exception {
+        ProductImage productImage = new ProductImage(groupPurchaseId, imageSeq);
+
+        ProductImage prodImg = this.getProductImage(productImage);
+        int updateCnt = groupPurchaseDAO.deleteProductImage(productImage);
+
+        // 물리적인 위치의 파일을 삭제하고, 첨부파일을 관리하는 테이블에서 또한 삭제해 준다.
+        attachmentFileService.deleteAttachmentFile(new AttachmentFile(prodImg.getImageFileId()));
+
+        return updateCnt;
+    }
+
 }

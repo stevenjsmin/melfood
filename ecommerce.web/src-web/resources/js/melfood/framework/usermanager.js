@@ -295,11 +295,11 @@ function deleteInfo(){
         title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
         message: '정말 삭제하시겠습니까?',
         type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-        closable: true, // <-- Default value is false
-        draggable: true, // <-- Default value is false
-        btnCancelLabel: 'Cancel', // <-- Default value is 'Cancel',
-        btnOKLabel: 'OK', // <-- Default value is 'OK',
-        btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+        closable: true, // Default value is false
+        draggable: true, // Default value is false
+        btnCancelLabel: 'Cancel', // Default value is 'Cancel',
+        btnOKLabel: 'OK', // Default value is 'OK',
+        btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
         callback: function(result) {
             if(result) {
 			      $.ajax({

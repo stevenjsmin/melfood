@@ -59,4 +59,18 @@ public class GroupPurchaseDAOImpl extends BaseDAO implements GroupPurchaseDAO {
         }
         return sqlSession.insert("mySqlGroupPurchaseDao.insertGroupPurchaseImages", productImages);
     }
+
+    @Override
+    public List<ProductImage> getProductImages(ProductImage productImage) throws Exception {
+        return sqlSession.selectList("mySqlGroupPurchaseDao.getProductImages", productImage);
+    }
+
+    @Override
+    public Integer getTotalCntForProductImages(ProductImage productImage) {
+        return sqlSession.selectOne("mySqlGroupPurchaseDao.getTotalCntForProductImages", productImage);
+    }
+
+    public Integer deleteProductImage(ProductImage productImage) throws Exception {
+        return sqlSession.delete("mySqlGroupPurchaseDao.deleteProductImage", productImage);
+    }
 }

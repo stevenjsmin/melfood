@@ -34,4 +34,10 @@ public interface GroupPurchaseService {
 
     public List<ProductImage> transferFileToAttachementFileDb(int groupPurchaseId, String creator) throws Exception;
 
+    public ProductImage getProductImage(ProductImage productImage) throws Exception;
+    public List<ProductImage> getProductImages(ProductImage productImage) throws Exception;
+
+    public Integer getTotalCntForProductImages(ProductImage productImage);
+
+    public Integer deleteProductImage(int prodId, int imageSeq) throws Exception;
 }
