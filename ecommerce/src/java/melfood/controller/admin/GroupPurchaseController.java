@@ -312,10 +312,21 @@ public class GroupPurchaseController extends BaseController {
             throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
         }
 
-        // TODO : 소속된 상품과 이미지정보를 모두 삭제한다(물리적인 파일도 모두 삭제해야한다)
+        try {
+            ProductImage productImage = new ProductImage(groupPurchaseId);
+            productImage.setPagenationPage(0);
+            productImage.setPagenationPageSize(99999);
+            List<ProductImage> imageList = groupPurchaseService.getProductImages(productImage);
+
+            for (ProductImage image : imageList) {
+                groupPurchaseService.deleteProductImage(Integer.parseInt(groupPurchaseId), image.getImageSeq());
+            }
+        } catch (Exception e) {
+            logger.warn("공동구매에 소속된 이미지를 삭제하는데 문제가 발생하였습니다[groupPurchaseId:" + groupPurchaseId + "]" + e.getMessage());
+            e.printStackTrace();
+        }
 
         groupPurchaseService.deleteGroupPurchase(new GroupPurchase(groupPurchaseId));
-
 
         return model;
     }
