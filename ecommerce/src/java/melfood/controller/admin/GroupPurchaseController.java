@@ -312,6 +312,8 @@ public class GroupPurchaseController extends BaseController {
             throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
         }
 
+        // TODO : 소속된 상품과 이미지정보를 모두 삭제한다(물리적인 파일도 모두 삭제해야한다)
+
         groupPurchaseService.deleteGroupPurchase(new GroupPurchase(groupPurchaseId));
 
 

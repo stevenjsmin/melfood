@@ -260,8 +260,8 @@ function callbackSave(data) {
       if (resultCode != "0") {
            warningPopup(data.message);
       } else {
-    	  //goDetailInfo(data.userId);
-    	  //goList();
+          parent.search();
+          parent.closeGroupPurchaseRegistPopup();
       }
 }
 
