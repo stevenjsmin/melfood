@@ -1,6 +1,7 @@
 package melfood.shopping.grouppurchase.dao;
 
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
+import melfood.shopping.product.ProductImage;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface GroupPurchaseDAO {
 
     public Integer modifyGroupPurchaseForNotNull(GroupPurchase groupPurchase) throws Exception;
 
+    public Integer insertGroupPurchaseImage(ProductImage productImage) throws Exception;
+
+    public Integer insertGroupPurchaseImages(List<ProductImage> productImages, int groupPurchaseId) throws Exception;
 }

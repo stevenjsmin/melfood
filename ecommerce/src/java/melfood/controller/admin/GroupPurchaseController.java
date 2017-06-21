@@ -1,15 +1,18 @@
 package melfood.controller.admin;
 
+import melfood.framework.Ctx;
 import melfood.framework.MelfoodConstants;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
-import melfood.framework.uitl.html.*;
+import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
 import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.product.Product;
+import melfood.shopping.product.ProductImage;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -339,5 +342,232 @@ public class GroupPurchaseController extends BaseController {
         }
 
         return model;
+    }
+
+
+    @RequestMapping(value = "/image/uploadFile", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> uploadFile(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        String subDirectory = Ctx.getVar("GRPPURCHASE.PRODUCTIMAGE.TEMP.UPLOAD.DIR");
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        try {
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory); // 기존의 파일들을 지워준다.
+            attachmentFileService.uploadFile(request, subDirectory);
+
+            List<ProductImage> productImages = new ArrayList<ProductImage>();
+            productImages = groupPurchaseService.transferFileToAttachementFileDb(Integer.parseInt(groupPurchaseId), sessionUser.getUser().getUserId());
+
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory); // 기존의 파일들을 (다시한번)지워준다.
+
+            model.put("productImages", productImages);
+            model.put("resultCode", "0");
+            model.put("message", "File uploaded successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.put("productImages", null);
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+        return model;
+
+    }
+
+    @RequestMapping(value = "/image/removeFile", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> removeFile(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String subDirectory = Ctx.getVar("GRPPURCHASE.PRODUCTIMAGE.TEMP.UPLOAD.DIR");
+
+        try {
+            attachmentFileService.removeFile(request, subDirectory);
+
+            model.put("resultCode", "0");
+            model.put("message", "File removed successfully");
+
+        } catch (Exception e) {
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+        return model;
+    }
+
+    @RequestMapping(value = "/image/productImages", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> productOptions(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        ProductImage productImage = new ProductImage(groupPurchaseId);
+
+        // For Pagination
+        productImage.setPagenationPage(0);
+        productImage.setPagenationPageSize(99999);
+
+        Integer totalCount = 0;
+        List<ProductImage> list = groupPurchaseService.getProductImages(productImage);
+        totalCount = groupPurchaseService.getTotalCntForProductImages(productImage);
+
+        model.put("totalCount", totalCount);
+        model.put("list", list);
+
+        return model;
+    }
+
+    @RequestMapping("/image/productImageInfo")
+    @ResponseBody
+    public Map<String, Object> productImageInfo(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String imageSeq = request.getParameter("imageSeq");
+
+        if (StringUtils.isBlank(groupPurchaseId)) throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
+
+        ProductImage productImage = groupPurchaseService.getProductImage(new ProductImage(groupPurchaseId, imageSeq));
+
+        model.put("productImage", productImage);
+
+        return model;
+    }
+
+    @RequestMapping(value = "/image/saveProductImageInfo", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> saveProductImageInfo(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        int updateCnt = 0;
+
+        String actionMode = request.getParameter("actionMode");
+        if (StringUtils.isBlank(actionMode)) actionMode = MelfoodConstants.ACTION_MODE_MODIFY;
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String imageSeq = request.getParameter("imageSeq");
+        String displayOrder = request.getParameter("displayOrder");
+        String imageDescription = request.getParameter("imageDescription");
+        String width = request.getParameter("width");
+        String height = request.getParameter("height");
+
+        List<ProductImage> productImages = new ArrayList<ProductImage>();
+        try {
+
+            if (StringUtils.isBlank(groupPurchaseId)) {
+                throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
+            }
+
+            ProductImage productImage = new ProductImage(groupPurchaseId);
+            productImage.setCreator(sessionUser.getUser().getUserId());
+
+            if (StringUtils.isNotBlank(groupPurchaseId)) productImage.setProdId(Integer.parseInt(groupPurchaseId));
+            if (StringUtils.isNotBlank(imageSeq)) productImage.setImageSeq(Integer.parseInt(imageSeq));
+            if (StringUtils.isNotBlank(displayOrder)) productImage.setDisplayOrder(Integer.parseInt(displayOrder));
+            if (StringUtils.isNotBlank(width)) productImage.setWidth(width);
+            if (StringUtils.isNotBlank(height)) productImage.setHeight(height);
+            if (StringUtils.isNotBlank(imageDescription)) productImage.setImageDescription(imageDescription);
+
+            if (StringUtils.equalsIgnoreCase(actionMode, MelfoodConstants.ACTION_MODE_ADD)) {
+                // updateCnt = contractInfoService.insertContractInfo(contractInfo);
+
+            } else {
+                if (StringUtils.isBlank(groupPurchaseId) || StringUtils.isBlank(imageSeq)) {
+                    throw new Exception("[groupPurchaseId | 이미지 SEQ]  이항목(들)은 빈 값이 될 수 없습니다.");
+                }
+                updateCnt = groupPurchaseService.modifyProductImageForNotNull(productImage);
+            }
+
+            model.put("resultCode", "0");
+            model.put("productImages", productImages);
+            model.put("message", updateCnt + "  의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("productImages", null);
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+    @RequestMapping("/image/modifyProductImageForm")
+    public ModelAndView modifyProductImageForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/product/productmgt/image/modifyForm");
+        String prodId = request.getParameter("prodId");
+        String imageSeq = request.getParameter("imageSeq");
+
+        if (StringUtils.isBlank(prodId) || StringUtils.isBlank(imageSeq)) {
+            throw new Exception("[제품ID | 이미지 SEQ]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        Product product = groupPurchaseService.getProduct(new Product(prodId));
+
+        ProductImage productImage = new ProductImage(prodId, imageSeq);
+
+        mav.addObject("product", product);
+        mav.addObject("productImage", groupPurchaseService.getProductImage(productImage));
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/image/deleteProductImage", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> deleteProductImage(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        int updateCnt = 0;
+
+        String prodId = request.getParameter("prodId");
+        String imageSeq = request.getParameter("imageSeq");
+
+        if (StringUtils.isBlank(prodId) || StringUtils.isBlank(imageSeq)) {
+            throw new Exception("[제품ID | 이미지 SEQ]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        try {
+            updateCnt = groupPurchaseService.deleteProductImage(Integer.parseInt(prodId), Integer.parseInt(imageSeq));
+
+            model.put("resultCode", "0");
+            model.put("message", updateCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+    @RequestMapping("/image/productImageViewer")
+    public ModelAndView productImageViewer(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/product/productmgt/image/imageViewer");
+        String prodId = request.getParameter("prodId");
+
+        if (StringUtils.isBlank(prodId)) {
+            throw new Exception("[제품ID]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        Product product = groupPurchaseService.getProduct(new Product(prodId));
+
+        ProductImage productImage = new ProductImage(prodId);
+
+        // For Pagination
+        productImage.setPagenationPage(0);
+        productImage.setPagenationPageSize(99999);
+
+        List<ProductImage> list = groupPurchaseService.getProductImages(productImage);
+
+        mav.addObject("product", product);
+        mav.addObject("imageList", list);
+
+        return mav;
     }
 }

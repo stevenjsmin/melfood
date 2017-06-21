@@ -197,4 +197,38 @@
         WHERE group_purchase_id = #{groupPurchaseId}
     </delete>
 
+
+    <select id="getNextPurchaseGroupImageSeq" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        /* QUERY ID : getNextPurchaseGroupImageSeq */
+        SELECT CASE WHEN max(image_seq) IS NULL THEN 1 ELSE (max(image_seq) + 1) END FROM group_purchase_product_image WHERE group_purchase_id = #{groupPurchaseId}
+    </select>
+
+    <insert id="insertGroupPurchaseImage" parameterType="ProductImage">
+        /* QUERY ID : insertGroupPurchaseImage */
+        INSERT INTO group_purchase_product_image(group_purchase_id
+        ,image_seq
+        ,image_file_id
+        ,image_description,
+        ,width
+        ,height
+        ,display_order
+        ,creator)
+        VALUES ( #{prodId}
+        ,#{imageSeq}
+        ,#{imageFileId}
+        ,#{imageDescription}
+        ,#{width}
+        ,#{height}
+        ,#{displayOrder}
+        ,#{creator})
+    </insert>
+
+    <insert id="insertGroupPurchaseImages" parameterType="java.util.List">
+        /* QUERY ID : insertGroupPurchaseImages */
+        INSERT INTO group_purchase_product_image (group_purchase_id, image_seq, image_file_id, image_description, width, height, display_order, creator) VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            ( #{item.prodId}, #{item.imageSeq}, #{item.imageFileId}, #{item.imageDescription}, #{item.width}, #{item.height}, #{item.displayOrder}, #{item.creator} )
+        </foreach>
+    </insert>
+
 </mapper>

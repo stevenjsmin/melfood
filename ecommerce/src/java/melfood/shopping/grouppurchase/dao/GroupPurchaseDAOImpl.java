@@ -2,6 +2,7 @@ package melfood.shopping.grouppurchase.dao;
 
 import melfood.framework.core.BaseDAO;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
+import melfood.shopping.product.ProductImage;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,5 +41,22 @@ public class GroupPurchaseDAOImpl extends BaseDAO implements GroupPurchaseDAO {
     @Override
     public Integer modifyGroupPurchaseForNotNull(GroupPurchase groupPurchase) throws Exception {
         return sqlSession.update("mySqlGroupPurchaseDao.modifyGroupPurchaseForNotNull", groupPurchase);
+    }
+
+    @Override
+    public Integer insertGroupPurchaseImage(ProductImage productImage) throws Exception {
+        int nextSeq = sqlSession.selectOne("mySqlGroupPurchaseDao.getNextPurchaseGroupImageSeq", productImage.getProdId());
+        productImage.setImageSeq(nextSeq);
+        return sqlSession.delete("mySqlGroupPurchaseDao.insertGroupPurchaseImage", productImage);
+    }
+
+    @Override
+    public Integer insertGroupPurchaseImages(List<ProductImage> productImages, int groupPurchaseId) throws Exception {
+        int nextSeq = sqlSession.selectOne("mySqlGroupPurchaseDao.getNextPurchaseGroupImageSeq", groupPurchaseId);
+        for (int i = 0; i < productImages.size(); i++) {
+            productImages.get(i).setImageSeq(nextSeq);
+            nextSeq++;
+        }
+        return sqlSession.insert("mySqlGroupPurchaseDao.insertGroupPurchaseImages", productImages);
     }
 }

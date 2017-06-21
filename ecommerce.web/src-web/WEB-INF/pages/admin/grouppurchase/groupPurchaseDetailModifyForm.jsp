@@ -17,8 +17,8 @@
 
             $("#fileUpload").kendoUpload({
                 async: {
-                    saveUrl: "/admin/productmgt/image/uploadFile.yum?prodId=",
-                    removeUrl: "/admin/productmgt/image/removeFile.yum",
+                    saveUrl: "/admin/grouppurchase/image/uploadFile.yum?prodId=",
+                    removeUrl: "/admin/grouppurchase/image/removeFile.yum",
                     removeField: "removeFile",
                     autoUpload: true,
                     batch: true,
@@ -40,6 +40,146 @@
                 if (e.operation == "upload") {
                     warningPopup("Failed to upload : " + files[0].name);
                 }
+            }
+
+
+
+            // DEFINE DATASOURCE
+            // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            var dataSource = new kendo.data.DataSource({
+                pageSize: 20,
+                serverPaging: true,
+                serverFiltering: true,
+                transport: {
+                    read: {
+                        url: "/admin/productmgt/image/productImages.yum",
+                        dataType: "json",
+                        type: "POST"
+                    },
+                    destroy: {
+                        url: "/admin/productmgt/image/deleteProductImage.yum",
+                        dataType: "jsonp",
+                        type: "POST"
+                    },
+                    parameterMap: function(options, operation) {
+                        if (operation == "read") {
+                            return {
+                                page : options.page,
+                                pageSize : options.pageSize,
+                                prodId : $("#prodId").val()
+                            };
+                        } else if (operation == "destroy") {
+                            return {
+                                prodId : options.prodId,
+                                imageSeq : options.imageSeq
+                            };
+                        }
+                    }
+                },
+                schema: {
+                    model: {
+                        id: "prodId",
+                        fields: {
+                            prodId : { type: "string"},
+                            imageSeq : { type: "string"}
+                        }
+                    },
+                    data: function(response) {
+                        return response.list;
+                    },
+                    total: function (response) {
+                        return response.totalCount;
+                    }
+                }
+            }); // End of DATASOURCE
+
+            // DEFINE GRID TABLE
+            // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            $("#grid_panel_main").kendoGrid({
+                dataSource: dataSource,
+                selectable: true,
+                sortable: true,
+                editable: false,
+                change: onChange,
+                filterable : {
+                    extra:false,
+                    operators: {
+                        string:{ contains: "Contains"}
+                    }
+                },
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5,
+                    page: 1,
+                    pageSizes: [10, 20, 30],
+                    messages: {
+                        itemsPerPage: "",
+                        display: "{0} - {1} / {2}"
+                    }
+                },
+                columns: [
+                    { hidden : true, field: 'prodId'},
+                    { hidden : true, field: 'imageSeq'},
+                    { title : 'File Id', field: 'imageFileId', width: 30, filterable: false, attributes: {style: "color: D6D6D6;text-align: center;" }},
+                    { title : 'Order', field: 'displayOrder', width: 30, filterable: false, attributes: {style: "color: 1A717B;text-align: center;" }},
+                    { title : 'W * H', width: 50, template: kendo.template($("#size-template").html()), filterable: false, attributes: {style: "text-align: center;" }},
+                    { title : 'Desciption', field: 'imageDescription', width: 250},
+                    { command: [ {text : "Delete", name: "destory", click: deleteItem} ], width: 100}
+
+                ] // End of Columns
+            }); // End of GRID
+
+            $("#grid_panel_main").dblclick(function(e) {
+                var dataItem = KENDO_SELECTED_RECORD;
+                var prodId = dataItem.prodId;
+                var imageSeq = dataItem.imageSeq;
+
+                $("#productImagePopup").kendoWindow({
+                    content: "/admin/productmgt/image/modifyProductImageForm.yum?prodId=" + prodId + "&imageSeq=" + imageSeq,
+                    actions: [ "Minimize", "Maximize","Close" ],
+                    title: "Modify Product image",
+                    modal: true,
+                    iframe: true
+                });
+
+                var popup_dialog = $("#productImagePopup").data("kendoWindow");
+                popup_dialog.setOptions({
+                    width: 800,
+                    height: 750
+                });
+                popup_dialog.center();
+
+                $("#productImagePopup").data("kendoWindow").open();
+
+            });
+
+            function onChange(e) {
+                var gridRecord = e.sender;
+                KENDO_SELECTED_RECORD = gridRecord.dataItem(gridRecord.select());
+            }
+
+            function deleteItem(e) {
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                BootstrapDialog.confirm({
+                    title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
+                    message: '정말 삭제하시겠습니까?',
+                    type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
+                    closable: true, // <-- Default value is false
+                    draggable: true, // <-- Default value is false
+                    btnCancelLabel: 'Cancel', // <-- Default value is 'Cancel',
+                    btnOKLabel: 'OK', // <-- Default value is 'OK',
+                    btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+                    callback: function(result) {
+                        if(result) {
+                            var grid = $("#grid_panel_main").data("kendoGrid");
+                            grid.dataSource.remove(dataItem);
+                            grid.dataSource.sync();
+                            grid.refresh();
+                        }
+                    }
+                });
             }
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

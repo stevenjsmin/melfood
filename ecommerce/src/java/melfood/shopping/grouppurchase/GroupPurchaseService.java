@@ -2,6 +2,7 @@ package melfood.shopping.grouppurchase;
 
 import melfood.framework.uitl.html.Option;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
+import melfood.shopping.product.ProductImage;
 
 import java.util.List;
 
@@ -28,5 +29,9 @@ public interface GroupPurchaseService {
     public List<Option> getMarketSuburbs()throws Exception;
     public List<Option> getDiscountMethods()throws Exception;
     public List<Option> getStopSellingOptions()throws Exception;
+
+    public List<ProductImage> transferFileToAttachementFileDb(int groupPurchaseId) throws Exception;
+
+    public List<ProductImage> transferFileToAttachementFileDb(int groupPurchaseId, String creator) throws Exception;
 
 }

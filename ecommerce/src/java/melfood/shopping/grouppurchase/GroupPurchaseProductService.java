@@ -24,4 +24,5 @@ public interface GroupPurchaseProductService {
     public Integer modifyGroupPurchaseProduct(GroupPurchaseProduct purchaseProduct) throws Exception;
 
     public Integer modifyGroupPurchaseProductForNotNull(GroupPurchaseProduct purchaseProduct) throws Exception;
+
 }
