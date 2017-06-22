@@ -12,7 +12,9 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.product.Product;
 import melfood.shopping.product.ProductImage;
+import melfood.shopping.product.ProductService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,9 @@ public class GroupPurchaseController extends BaseController {
 
     @Autowired
     private ContractInfoService contractInfoService;
+
+    @Autowired
+    private ProductService productService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -586,10 +591,10 @@ public class GroupPurchaseController extends BaseController {
         return model;
     }
 
-    @RequestMapping("/product/searchProductForRegist")
+    @RequestMapping("/product/searchProductPopup")
     public ModelAndView searchProductForRegist(HttpServletRequest request) throws Exception {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
-        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/searchProductForRegist");
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/product/searchProductPopup");
         Properties htmlProperty = new Properties();
 
         String groupPurchaseId = request.getParameter("groupPurchaseId");
@@ -600,5 +605,35 @@ public class GroupPurchaseController extends BaseController {
         mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
 
         return mav;
+    }
+
+    @RequestMapping(value = "/product/searchProduct", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> getCategories(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        Map<String, Object> model = new HashMap<String, Object>();
+        Product product = new Product();
+
+        // For Pagination
+        product.setPagenationPage(getPage(request));
+        product.setPagenationPageSize(getPageSize(request));
+
+        String name = request.getParameter("name");
+        String seller = request.getParameter("seller");
+        if (StringUtils.isNotBlank(name)) product.setName(name);
+        if (StringUtils.isNotBlank(seller)) {
+            product.setSeller(seller);
+        } else {
+            product.setSeller(sessionUser.getUser().getUserId());
+        }
+
+        Integer totalCount = 0;
+        List<Product> list = productService.getProducts(product);
+        totalCount = productService.getTotalCntForProducts(product);
+
+        model.put("totalCount", totalCount);
+        model.put("list", list);
+
+        return model;
     }
 }

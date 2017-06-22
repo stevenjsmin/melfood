@@ -28,8 +28,8 @@
 		<put-attribute name="title" value="Product Image Viewer" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/productImageViewer.jsp" />
 	</definition>
-	<definition name="tiles/admin/grouppurchase/searchProductForRegist" extends="layout/panel_100">
+	<definition name="tiles/admin/grouppurchase/product/searchProductPopup" extends="layout/panel_100">
 		<put-attribute name="title" value="Search product" />
-		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/searchProductForRegist.jsp" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/searchProduct.jsp" />
 	</definition>
 </tiles-definitions>

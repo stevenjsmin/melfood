@@ -18,18 +18,13 @@
             // DEFINE DATASOURCE
             // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             var dataSource = new kendo.data.DataSource({
-                pageSize: 20,
+                pageSize: 10,
                 serverPaging: true,
                 serverFiltering: true,
                 transport: {
                     read: {
-                        url: "/admin/grouppurchase/getGroupPurchases.yum",
+                        url: "/admin/grouppurchase/product/searchProduct.yum",
                         dataType: "json",
-                        type: "POST"
-                    },
-                    destroy: {
-                        url: "/admin/grouppurchase/deleteGroupPurchase.yum",
-                        dataType: "jsonp",
                         type: "POST"
                     },
                     parameterMap: function(options, operation) {
@@ -37,23 +32,17 @@
                             return {
                                 page : options.page,
                                 pageSize : options.pageSize,
-                                purchaseOrganizer : $("#purchaseOrganizer").val(),
-                                orderStartDt : $("#orderStartDt").val(),
-                                orderEndDt : $("#orderEndDt").val()
-                            };
-                        } else if (operation == "destroy") {
-                            console.log(options);
-                            return {
-                                groupPurchaseId : options.groupPurchaseId
+                                seller : $("#seller").val(),
+                                name : $("#name").val()
                             };
                         }
                     }
                 },
                 schema: {
                     model: {
-                        id: "groupPurchaseId",
+                        id: "seller",
                         fields: {
-                            groupPurchaseId : { type: "string" }
+                            seller : { type: "string" }
                         }
                     },
                     data: function(response) {
@@ -84,20 +73,18 @@
                     pageSizes: true,
                     buttonCount: 5,
                     page: 1,
-                    pageSizes: [10, 20, 30],
+                    pageSizes: [5,10],
                     messages: {
                         itemsPerPage: "",
                         display: "{0} - {1} / {2}"
                     }
                 },
                 columns: [
-                    { hidden : true, field: 'groupPurchaseId'},
-                    { title : 'Organizer', template: kendo.template($("#purchaseOrganizer-template").html()), width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }},
-                    { title : 'Title', field: 'groupPurchaseTitle', attributes: {style: "color: 939300; font-weight: bolder;" }},
-                    { title : 'Order Start', field: 'orderStartDt', width: 150, attributes: {style: "text-align: left;" }},
-                    { title : 'Order End', field: 'orderEndDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
-                    { title : 'Market Address', template: kendo.template($("#marketAddress-template").html()), attributes: {style: "text-align: left;" }},
-                    { command: [ {text : "Delete", name: "destory", click: deleteItem}], width: 140}
+                    { hidden : true, field: 'prodId'},
+                    { title : 'Product Name', field: 'name', attributes: {style: "text-align: left;color: 606000; font-weight: bolder;" }},
+                    { title : 'Product Owner', template: kendo.template($("#seller-template").html()), attributes: {style: "text-align: left;" }},
+                    { title : 'Unit Price($)', field: 'unitPrice', width: 150, attributes: {style: "text-align: right;" }, format: "{0:c}"},
+                    { command: [ {text : "Add", click: addItem}], width: 90}
 
                 ] // End of Columns
             }); // End of GRID
@@ -114,7 +101,7 @@
                 KENDO_SELECTED_RECORD_1 = gridRecord.dataItem(gridRecord.select());
             }
 
-            function deleteItem(e) {
+            function addItem(e) {
                 var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
                 BootstrapDialog.confirm({
@@ -137,7 +124,6 @@
                 });
             }
 
-            search();
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
 
@@ -155,11 +141,8 @@
         }
     </script>
 
-    <script id="marketAddress-template" type="text/x-kendo-template">
-        #= marketAddressState + ' / ' + marketAddressSuburb #
-    </script>
-    <script id="purchaseOrganizer-template" type="text/x-kendo-template">
-        #= purchaseOrganizer + ' / ' + purchaseOrganizerName #
+    <script id="seller-template" type="text/x-kendo-template">
+        #= seller + ' / ' + sellerName #
     </script>
 
 </head>
@@ -174,7 +157,9 @@
     <table class="search_table">
         <tr>
             <td class="label">Product Owner : </td>
-            <td class="value_end"><c:out value="${cbxSeller}" escapeXml="false"/></td>
+            <td class="value"><c:out value="${cbxSeller}" escapeXml="false"/></td>
+            <td class="label">Product Name :  </td>
+            <td class="value_end"><input class="form-control" id="name" name="name"></input></td>
             <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
 
         </tr>
@@ -193,7 +178,7 @@
 <table class="action_button_table">
     <tr>
         <td>
-            <button type="button" class="btn btn-primary" onclick="openRegistGroupPurchasePopup();">Add Item</button>
+            <button type="button" class="btn btn-primary" onclick="parent.closeSearchProductPopup();">Close</button>
         </td>
     </tr>
 </table>

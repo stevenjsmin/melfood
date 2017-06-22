@@ -430,11 +430,11 @@ function changeDiscountMethod(obj) {
     }
 }
 
-function addGroupPurchaseProduct(groupPurchaseId){
+function searchProductPopup(groupPurchaseId){
     $("#groupPurchasePopup").kendoWindow({
-        content: "/admin/grouppurchase/product/searchProductForRegist.yum?groupPurchaseId=" + groupPurchaseId,
+        content: "/admin/grouppurchase/product/searchProductPopup.yum?groupPurchaseId=" + groupPurchaseId,
         actions: [ "Minimize", "Maximize","Close" ],
-        title: "Regist Group Purchase",
+        title: "Regist Group Purchase Product",
         modal: true,
         iframe: true
     });
@@ -442,14 +442,14 @@ function addGroupPurchaseProduct(groupPurchaseId){
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 500
+        height: 570
     });
     popup_dialog.center();
 
     $("#groupPurchasePopup").data("kendoWindow").open();
 }
 
-function closeAddGroupPurchaseProduct() {
+function closeSearchProductPopup() {
     var win_dialog = $("#groupPurchasePopup").data("kendoWindow");
     win_dialog.close();
 }
