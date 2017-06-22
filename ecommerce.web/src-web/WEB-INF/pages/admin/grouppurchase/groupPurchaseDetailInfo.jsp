@@ -198,6 +198,7 @@
 
 <body>
 <div id="productImagePopup"></div>
+<div id="updateGroupPurchasePopup"></div>
 <table>
     <tr>
         <td valign="top">
@@ -319,7 +320,7 @@
                         <table class="action_button_table" width="100%">
                             <tr>
                                 <td>
-                                    <a href="javascript:save();" class="btn btn-default btn-sm">기본정보수정</a>
+                                    <a href="javascript:openUpdateGroupPurchasePopup('${groupPurchase.groupPurchaseId}');" class="btn btn-default btn-sm">기본정보수정</a>
                                 </td>
                             </tr>
                         </table>

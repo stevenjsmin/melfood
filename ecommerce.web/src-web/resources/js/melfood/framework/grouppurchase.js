@@ -344,6 +344,29 @@ function closeGroupPurchaseRegistPopup() {
     win_dialog.close();
 }
 
+function openUpdateGroupPurchasePopup(groupPurchaseId){
+    $("#updateGroupPurchasePopup").kendoWindow({
+        content: "/admin/grouppurchase/updateGroupPurchaseForm.yum?groupPurchaseId=" + groupPurchaseId,
+        actions: [ "Minimize", "Maximize","Close" ],
+        title: "Regist Group Purchase",
+        modal: true,
+        iframe: true
+    });
+
+    var popup_dialog = $("#updateGroupPurchasePopup").data("kendoWindow");
+    popup_dialog.setOptions({
+        width: 800,
+        height: 700
+    });
+    popup_dialog.center();
+
+    $("#updateGroupPurchasePopup").data("kendoWindow").open();
+}
+
+function closeGroupPurchaseUpdatePopup() {
+    var win_dialog = $("#updateGroupPurchasePopup").data("kendoWindow");
+    win_dialog.close();
+}
 
 function changeDiscountMethod(obj) {
     var discountMethod = obj.value;

@@ -76,20 +76,6 @@ public class GroupPurchaseController extends BaseController {
         return mav;
     }
 
-    @RequestMapping("/groupPurchaseDetailModifyForm")
-    public ModelAndView groupPurchaseDetailModifyForm(HttpServletRequest request) throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/groupPurchaseDetailModifyForm");
-
-        String groupPurchaseId = request.getParameter("groupPurchaseId");
-        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
-        List<GroupPurchaseProduct> purchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(Integer.parseInt(groupPurchaseId));
-
-        mav.addObject("groupPurchase", groupPurchase);
-        mav.addObject("groupPurchaseProducts", purchaseProducts);
-
-        return mav;
-    }
-
     @RequestMapping(value = "/getGroupPurchases", produces = "application/json")
     @ResponseBody
     public Map<String, Object> getDeliveryCalendars(HttpServletRequest request) throws Exception {
@@ -157,6 +143,41 @@ public class GroupPurchaseController extends BaseController {
         htmlProperty.setCssClass("form-control");
         htmlProperty.setOnchange("changeDiscountMethod(this)");
         mav.addObject("cbxDiscountMethod", codeService.generateCmbx(discountMethodOptions, htmlProperty));
+
+        return mav;
+    }
+
+    @RequestMapping("/updateGroupPurchaseForm")
+    public ModelAndView updateGroupPurchaseForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/update");
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+
+        // 공동구매 주관자 설정
+        List<Option> purchaseOrganizerOptions = groupPurchaseService.getOrganizers(groupPurchase.getPurchaseOrganizer());
+        String htmlForOrganizerCbx = HtmlCodeGenerator.generateComboboxForOptions("purchaseOrganizer", purchaseOrganizerOptions);
+        mav.addObject("cbxPurchaseOrganizer", htmlForOrganizerCbx);
+
+        // 공동구매 정지여부 : 기본값 : N
+        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", groupPurchase.getStopSelling());
+        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
+        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
+
+        // 공동구매 장소를 위한 State 설정 콤보박스 : 기본값-빅토리아
+        List<Option> addressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", groupPurchase.getMarketAddressState());
+        String htmlForMarketAddressStateCbx = HtmlCodeGenerator.generateComboboxForOptions("marketAddressState", addressStateOptions);
+        mav.addObject("cbxAddressState", htmlForMarketAddressStateCbx);
+
+        // 할인방법 콤보박스 설정 : 기본값 : %
+        List<Option> discountMethodOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DISCOUNT_METHOD", groupPurchase.getDiscountMethod());
+        Properties htmlProperty = new Properties();
+        htmlProperty = new Properties("discountMethod");
+        htmlProperty.setCssClass("form-control");
+        htmlProperty.setOnchange("changeDiscountMethod(this)");
+        mav.addObject("cbxDiscountMethod", codeService.generateCmbx(discountMethodOptions, htmlProperty));
+
+        mav.addObject("groupPurchase", groupPurchase);
 
         return mav;
     }
@@ -389,6 +410,13 @@ public class GroupPurchaseController extends BaseController {
 
     }
 
+    /**
+     * 파일을 업로드후 임시디렉토리의 파일을 삭제하는데 사용된다
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/image/removeFile", produces = "application/json")
     @ResponseBody
     public Map<String, Object> removeFile(HttpServletRequest request) throws Exception {

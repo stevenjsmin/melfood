@@ -82,12 +82,20 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
 
     @Override
     public List<Option> getOrganizers() throws Exception {
-        return userService.getUsersByRoleId("GROUP_PURCHASER");
+        return this.getOrganizers(null);
     }
 
     @Override
     public List<Option> getOrganizers(String selectedUserId) throws Exception {
-        return null;
+        List<Option> options = userService.getUsersByRoleId("GROUP_PURCHASER");
+        for (int i = 0; i < options.size(); i++) {
+            if (StringUtils.equalsIgnoreCase(selectedUserId, options.get(i).getValue())) {
+                options.get(i).setSelected(true);
+            } else {
+                options.get(i).setSelected(false);
+            }
+        }
+        return options;
     }
 
     @Override
@@ -104,6 +112,7 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
     public List<Option> getStopSellingOptions() throws Exception {
         return null;
     }
+
 
     @Override
     public List<ProductImage> transferFileToAttachementFileDb(int groupPurchaseId) throws Exception {
