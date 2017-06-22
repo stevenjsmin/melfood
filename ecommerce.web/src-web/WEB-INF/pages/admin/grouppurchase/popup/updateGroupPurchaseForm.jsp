@@ -164,8 +164,8 @@
             <table class="action_button_table" width="100%">
                 <tr>
                     <td>
-                        <a href="javascript:parent.closeGroupPurchaseRegistPopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
-                        <a href="javascript:save();" class="btn btn-primary">Save</a>
+                        <a href="javascript:parent.closeGroupPurchaseUpdatePopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
+                        <a href="javascript:modify();" class="btn btn-primary">Modify</a>
                     </td>
                 </tr>
             </table>
