@@ -86,9 +86,9 @@
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>공동구매 시작일시 :</td>
-                    <td class="value"><input id="orderingStartDt" name="orderingStartDt" value="${groupPurchase.orderingStartDt}"></input></td>
+                    <td class="value"><input id="orderStartDt" name="orderStartDt" value="${groupPurchase.orderStartDt}"></input></td>
                     <td class="label"><span class="required">* </span>공동구매 종료일시 :</td>
-                    <td class="value"><input id="orderingEndDt" name="orderingEndDt" value="${groupPurchase.orderingEndDt}"></input></td>
+                    <td class="value"><input id="orderEndDt" name="orderEndDt" value="${groupPurchase.orderEndDt}"></input></td>
                 </tr>
                 <tr>
                     <td class="label">상태 :</td>
@@ -165,7 +165,7 @@
                 <tr>
                     <td>
                         <a href="javascript:parent.closeGroupPurchaseUpdatePopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
-                        <a href="javascript:modify();" class="btn btn-primary">Modify</a>
+                        <a href="javascript:save();" class="btn btn-primary">Modify</a>
                     </td>
                 </tr>
             </table>
@@ -175,6 +175,7 @@
 </table>
 
 <script type="text/javascript">
+    var GROUP_PURCHASE_ID = "${groupPurchase.groupPurchaseId}";
     var ACTION_MODE = "MODIFY";
 </script>
 </body>

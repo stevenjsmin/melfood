@@ -198,7 +198,7 @@
 
 <body>
 <div id="productImagePopup"></div>
-<div id="updateGroupPurchasePopup"></div>
+<div id="groupPurchasePopup"></div>
 <table>
     <tr>
         <td valign="top">
@@ -264,7 +264,7 @@
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>공동구매 기간 :</td>
-                    <td class="value">${groupPurchase.orderingStartDt} ~ ${groupPurchase.orderingEndDt}</td>
+                    <td class="value">${groupPurchase.orderStartDt} ~ ${groupPurchase.orderEndDt}</td>
                     <td class="label">할인 비율/금액 :</td>
                     <td class="value">
                         <c:choose>
@@ -369,7 +369,8 @@
 </table>
 
 <script type="text/javascript">
-    var ACTION_MODE = "ADD";
+    var GROUP_PURCHASE_ID = "${groupPurchase.groupPurchaseId}";
+    var ACTION_MODE = "MODIFY";
 </script>
 </body>
 </html>

@@ -2,21 +2,21 @@ var checkObject = [];
 
 $(document).ready(function() {
 
-    $("#orderingStartDt").kendoDateTimePicker({
+    $("#orderStartDt").kendoDateTimePicker({
         format: "yyyy-MM-dd hh:mm tt",
         start: "year"
     });
-    var datepicker1 = $("#orderingStartDt").data("kendoDateTimePicker");
-    $("#orderingStartDt").click(function() {
+    var datepicker1 = $("#orderStartDt").data("kendoDateTimePicker");
+    $("#orderStartDt").click(function() {
         datepicker1.open();
     });
 
-    $("#orderingEndDt").kendoDateTimePicker({
+    $("#orderEndDt").kendoDateTimePicker({
         format: "yyyy-MM-dd hh:mm tt",
         start: "year"
     });
-    var datepicker2 = $("#orderingEndDt").data("kendoDateTimePicker");
-    $("#orderingEndDt").click(function() {
+    var datepicker2 = $("#orderEndDt").data("kendoDateTimePicker");
+    $("#orderEndDt").click(function() {
         datepicker2.open();
     });
 
@@ -52,13 +52,6 @@ function goList() {
 	document.location.href = "/admin/grouppurchase/Main.yum";
 }
 
-function goModify(){
-	document.location.href = "/framework/usermanager/modifyUserForm.yum?userId=" + _USERID;
-}
-
-
-
-
 function search(){
   	$('#grid_panel_main').data('kendoGrid').dataSource.read();
    	$('#grid_panel_main').data('kendoGrid').refresh();
@@ -86,8 +79,8 @@ function validateForm(){
     var discountMethod = $('#discountMethod').val();
     var discountRateValue = $('#discountRateValue').val();
     var discountFixedAmount = $('#discountFixedAmount').val();
-    var orderingStartDt = $('#orderingStartDt').val();
-    var orderingEndDt = $('#orderingEndDt').val();
+    var orderStartDt = $('#orderStartDt').val();
+    var orderEndDt = $('#orderEndDt').val();
     var stopSelling = $('#stopSelling').val();
     var stopSellingReason = $('#stopSellingReason').val();
     var marketAddressState = $('#marketAddressState').val();
@@ -146,17 +139,17 @@ function validateForm(){
 
     }
 
-    var parsedOrderingStartDt = kendo.parseDate(orderingStartDt, "yyyy-MM-dd hh:mm tt");
+    var parsedOrderingStartDt = kendo.parseDate(orderStartDt, "yyyy-MM-dd hh:mm tt");
     if (!parsedOrderingStartDt) {
         message = message + prefix + "올바른 공동구매 시작일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
-        checkObject[checkObject.length] = "orderingStartDt";
+        checkObject[checkObject.length] = "orderStartDt";
         validation = false;
     }
 
-    var parsedOrderingEndDt = kendo.parseDate(orderingEndDt, "yyyy-MM-dd hh:mm tt");
+    var parsedOrderingEndDt = kendo.parseDate(orderEndDt, "yyyy-MM-dd hh:mm tt");
     if (!parsedOrderingEndDt) {
         message = message + prefix + "올바른 공동구매 종료일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
-        checkObject[checkObject.length] = "orderingEndDt";
+        checkObject[checkObject.length] = "orderEndDt";
         validation = false;
     }
 
@@ -214,8 +207,8 @@ function save(){
     var discountMethod = $('#discountMethod').val();
     var discountRateValue = $('#discountRateValue').val();
     var discountFixedAmount = $('#discountFixedAmount').val();
-    var orderingStartDt = $('#orderingStartDt').val();
-    var orderingEndDt = $('#orderingEndDt').val();
+    var orderStartDt = $('#orderStartDt').val();
+    var orderEndDt = $('#orderEndDt').val();
     var stopSelling = $('#stopSelling').val();
     var stopSellingReason = $('#stopSellingReason').val();
     var marketAddressState = $('#marketAddressState').val();
@@ -237,8 +230,8 @@ function save(){
                discountMethod : discountMethod,
                discountRateValue : discountRateValue,
                discountFixedAmount : discountFixedAmount,
-               orderingStartDt : orderingStartDt,
-               orderingEndDt : orderingEndDt,
+               orderStartDt : orderStartDt,
+               orderEndDt : orderEndDt,
                stopSelling : stopSelling,
                stopSellingReason : stopSellingReason,
                marketAddressState : marketAddressState,
@@ -247,6 +240,7 @@ function save(){
                marketAddressSuburb : marketAddressSuburb,
                marketAddressComment : marketAddressComment,
                groupPurchaseNotice : groupPurchaseNotice,
+               groupPurchaseId : GROUP_PURCHASE_ID,
                actionMode : ACTION_MODE
            },
            success : callbackSave
@@ -260,8 +254,7 @@ function callbackSave(data) {
       if (resultCode != "0") {
            warningPopup(data.message);
       } else {
-          parent.search();
-          parent.closeGroupPurchaseRegistPopup();
+          parent.closeGroupPurchasePopup();
       }
 }
 
@@ -321,7 +314,7 @@ function callbackDeleteInfo(data) {
 
 
 function openRegistGroupPurchasePopup(){
-    $("#registGroupPurchasePopup").kendoWindow({
+    $("#groupPurchasePopup").kendoWindow({
         content: "/admin/grouppurchase/registGroupPurchaseForm.yum",
         actions: [ "Minimize", "Maximize","Close" ],
         title: "Regist Group Purchase",
@@ -329,23 +322,19 @@ function openRegistGroupPurchasePopup(){
         iframe: true
     });
 
-    var popup_dialog = $("#registGroupPurchasePopup").data("kendoWindow");
+    var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
         height: 700
     });
     popup_dialog.center();
 
-    $("#registGroupPurchasePopup").data("kendoWindow").open();
+    $("#groupPurchasePopup").data("kendoWindow").open();
 }
 
-function closeGroupPurchaseRegistPopup() {
-    var win_dialog = $("#registGroupPurchasePopup").data("kendoWindow");
-    win_dialog.close();
-}
 
 function openUpdateGroupPurchasePopup(groupPurchaseId){
-    $("#updateGroupPurchasePopup").kendoWindow({
+    $("#groupPurchasePopup").kendoWindow({
         content: "/admin/grouppurchase/updateGroupPurchaseForm.yum?groupPurchaseId=" + groupPurchaseId,
         actions: [ "Minimize", "Maximize","Close" ],
         title: "Regist Group Purchase",
@@ -353,18 +342,25 @@ function openUpdateGroupPurchasePopup(groupPurchaseId){
         iframe: true
     });
 
-    var popup_dialog = $("#updateGroupPurchasePopup").data("kendoWindow");
+    var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
         height: 700
     });
     popup_dialog.center();
 
-    $("#updateGroupPurchasePopup").data("kendoWindow").open();
+    $("#groupPurchasePopup").data("kendoWindow").open();
 }
 
-function closeGroupPurchaseUpdatePopup() {
-    var win_dialog = $("#updateGroupPurchasePopup").data("kendoWindow");
+function closeGroupPurchasePopup() {
+
+    if(ACTION_MODE == 'ADD'){
+        parent.search();
+    } else if(ACTION_MODE == 'MODIFY') {
+        parent.goDetailInfo(GROUP_PURCHASE_ID);
+    }
+
+    var win_dialog = $("#groupPurchasePopup").data("kendoWindow");
     win_dialog.close();
 }
 

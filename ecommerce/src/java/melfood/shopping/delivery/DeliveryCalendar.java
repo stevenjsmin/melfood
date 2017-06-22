@@ -35,8 +35,8 @@ public class DeliveryCalendar extends BaseDto {
 	private String btwnToHhmm;
 	private String amPm;
 
-	private String orderingStartDt; // 주문 받을 일시
-	private String orderingEndDt; // 주문을 더이상 받지 않을 일시
+	private String orderStartDt; // 주문 받을 일시
+	private String orderEndDt; // 주문을 더이상 받지 않을 일시
 
 	private Postcode postcode;
 	private User seller;
@@ -191,18 +191,18 @@ public class DeliveryCalendar extends BaseDto {
 	}
 
 	public String getOrderingStartDt() {
-		return orderingStartDt;
+		return orderStartDt;
 	}
 
-	public void setOrderingStartDt(String orderingStartDt) {
-		this.orderingStartDt = orderingStartDt;
+	public void setOrderingStartDt(String orderStartDt) {
+		this.orderStartDt = orderStartDt;
 	}
 
 	public String getOrderingEndDt() {
-		return orderingEndDt;
+		return orderEndDt;
 	}
 
-	public void setOrderingEndDt(String orderingEndDt) {
-		this.orderingEndDt = orderingEndDt;
+	public void setOrderingEndDt(String orderEndDt) {
+		this.orderEndDt = orderEndDt;
 	}
 }

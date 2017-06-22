@@ -14,8 +14,8 @@ public class GroupPurchase extends BaseDto {
     private String groupPurchaseSubtitle;
     private String purchaseOrganizer;
     private String purchaseOrganizerName;
-    private String orderingStartDt;
-    private String orderingEndDt;
+    private String orderStartDt;
+    private String orderEndDt;
     private String stopSelling;
     private String stopSellingReason;
     private String marketAddressStreet;
@@ -23,6 +23,8 @@ public class GroupPurchase extends BaseDto {
     private String marketAddressState;
     private String marketAddressPostcode;
     private String marketAddressComment;
+    private String marketOpenStartDt;
+    private String marketOpenEndDt;
     private String minimumPurchaseAmount;
     private String discountMethod;
     private Float discountFixedAmount;
@@ -75,20 +77,20 @@ public class GroupPurchase extends BaseDto {
         this.purchaseOrganizer = purchaseOrganizer;
     }
 
-    public String getOrderingStartDt() {
-        return orderingStartDt;
+    public String getOrderStartDt() {
+        return orderStartDt;
     }
 
-    public void setOrderingStartDt(String orderingStartDt) {
-        this.orderingStartDt = orderingStartDt;
+    public void setOrderStartDt(String orderStartDt) {
+        this.orderStartDt = orderStartDt;
     }
 
-    public String getOrderingEndDt() {
-        return orderingEndDt;
+    public String getOrderEndDt() {
+        return orderEndDt;
     }
 
-    public void setOrderingEndDt(String orderingEndDt) {
-        this.orderingEndDt = orderingEndDt;
+    public void setOrderEndDt(String orderEndDt) {
+        this.orderEndDt = orderEndDt;
     }
 
     public String getStopSelling() {
@@ -209,5 +211,21 @@ public class GroupPurchase extends BaseDto {
 
     public void setPurchaseOrganizerName(String purchaseOrganizerName) {
         this.purchaseOrganizerName = purchaseOrganizerName;
+    }
+
+    public String getMarketOpenStartDt() {
+        return marketOpenStartDt;
+    }
+
+    public void setMarketOpenStartDt(String marketOpenStartDt) {
+        this.marketOpenStartDt = marketOpenStartDt;
+    }
+
+    public String getMarketOpenEndDt() {
+        return marketOpenEndDt;
+    }
+
+    public void setMarketOpenEndDt(String marketOpenEndDt) {
+        this.marketOpenEndDt = marketOpenEndDt;
     }
 }

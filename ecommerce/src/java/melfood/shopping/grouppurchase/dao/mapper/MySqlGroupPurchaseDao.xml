@@ -13,8 +13,8 @@
             a.group_purchase_subtitle 'groupPurchaseSubtitle',
             a.purchase_organizer 'purchaseOrganizer',
             (SELECT CONCAT(user_name) FROM cmm_user WHERE user_id = a.purchase_organizer) 'purchaseOrganizerName',
-            DATE_FORMAT(a.ordering_start_dt,'%Y-%m-%d %h:%i %p') 'orderingStartDt',
-            DATE_FORMAT(a.ordering_end_dt,'%Y-%m-%d %h:%i %p') 'orderingEndDt',
+            DATE_FORMAT(a.order_start_dt,'%Y-%m-%d %h:%i %p') 'orderStartDt',
+            DATE_FORMAT(a.order_end_dt,'%Y-%m-%d %h:%i %p') 'orderEndDt',
             a.stop_selling 'stopSelling',
             a.stop_selling_reason 'stopSellingReason',
             a.market_address_street 'marketAddressStreet',
@@ -22,6 +22,8 @@
             a.market_address_state 'marketAddressState',
             a.market_address_postcode 'marketAddressPostcode',
             a.market_address_comment 'marketAddressComment',
+            DATE_FORMAT(a.market_open_start_dt,'%Y-%m-%d %h:%i %p') 'marketOpenStartDt',
+            DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d %h:%i %p') 'marketOpenEndDt',
             a.minimum_purchase_amount 'minimumPurchaseAmount',
             a.discount_method 'discountMethod',
             a.discount_fixed_amount 'discountFixedAmount',
@@ -38,14 +40,16 @@
             <if test="groupPurchaseTitle != null"> AND UPPER(a.group_purchase_title) LIKE CONCAT('%', UPPER(#{groupPurchaseTitle}), '%') </if>
             <if test="groupPurchaseSubtitle != null"> AND UPPER(a.group_purchase_subtitle) LIKE CONCAT('%', UPPER(#{groupPurchaseSubtitle}), '%') </if>
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
-            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.ordering_start_dt, '%Y-%m-%d') </if>
-            <if test="orderingEndDt != null"> AND str_to_date(#{orderingEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.ordering_end_dt, '%Y-%m-%d') </if>
+            <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
+            <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
             <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
             <if test="marketAddressSuburb != null"> AND UPPER(a.market_address_suburb) LIKE CONCAT('%', UPPER(#{marketAddressSuburb}), '%') </if>
             <if test="marketAddressState != null"> AND UPPER(a.market_address_state) LIKE CONCAT('%', UPPER(#{marketAddressState}), '%') </if>
             <if test="marketAddressPostcode != null"> AND UPPER(a.market_address_postcode) LIKE CONCAT('%', UPPER(#{marketAddressPostcode}), '%') </if>
+            <if test="marketOpenStartDt != null"> AND str_to_date(#{marketOpenStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_start_dt, '%Y-%m-%d') </if>
+            <if test="marketOpenEndDt != null"> AND str_to_date(#{marketOpenEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d') </if>
             <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
             <if test="minimumPurchaseAmount != null"> AND UPPER(a.minimum_purchase_amount) = UPPER(#{groupPurchaseId}) </if>
             <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
@@ -69,8 +73,8 @@
             <if test="groupPurchaseTitle != null"> AND UPPER(a.group_purchase_title) LIKE CONCAT('%', UPPER(#{groupPurchaseTitle}), '%') </if>
             <if test="groupPurchaseSubtitle != null"> AND UPPER(a.group_purchase_subtitle) LIKE CONCAT('%', UPPER(#{groupPurchaseSubtitle}), '%') </if>
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
-            <if test="orderingStartDt != null"> AND str_to_date(#{orderingStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.ordering_start_dt, '%Y-%m-%d') </if>
-            <if test="orderingEndDt != null"> AND str_to_date(#{orderingEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.ordering_end_dt, '%Y-%m-%d') </if>
+            <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
+            <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
             <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
@@ -78,6 +82,8 @@
             <if test="marketAddressState != null"> AND UPPER(a.market_address_state) LIKE CONCAT('%', UPPER(#{marketAddressState}), '%') </if>
             <if test="marketAddressPostcode != null"> AND UPPER(a.market_address_postcode) LIKE CONCAT('%', UPPER(#{marketAddressPostcode}), '%') </if>
             <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
+            <if test="marketOpenStartDt != null"> AND str_to_date(#{marketOpenStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_start_dt, '%Y-%m-%d') </if>
+            <if test="marketOpenEndDt != null"> AND str_to_date(#{marketOpenEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d') </if>
             <if test="minimumPurchaseAmount != null"> AND UPPER(a.minimum_purchase_amount) = UPPER(#{groupPurchaseId}) </if>
             <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
             <if test="discountFixedAmount != null"> AND UPPER(a.discount_fixed_amount) = UPPER(#{discountFixedAmount}) </if>
@@ -96,8 +102,8 @@
             group_purchase_title
             ,group_purchase_subtitle
             ,purchase_organizer
-            ,ordering_start_dt
-            ,ordering_end_dt
+            ,order_start_dt
+            ,order_end_dt
             ,stop_selling
             ,stop_selling_reason
             ,market_address_street
@@ -105,6 +111,8 @@
             ,market_address_state
             ,market_address_postcode
             ,market_address_comment
+            ,market_open_start_dt
+            ,market_open_end_dt
             ,minimum_purchase_amount
             ,discount_method
             ,discount_fixed_amount
@@ -117,8 +125,8 @@
             TRIM(#{groupPurchaseTitle}),
             TRIM(#{groupPurchaseSubtitle}),
             TRIM(#{purchaseOrganizer}),
-            STR_TO_DATE(#{orderingStartDt}, '%Y-%m-%d %h:%i %p'),
-            STR_TO_DATE(#{orderingEndDt}, '%Y-%m-%d %h:%i %p'),
+            STR_TO_DATE(#{orderStartDt}, '%Y-%m-%d %h:%i %p'),
+            STR_TO_DATE(#{orderEndDt}, '%Y-%m-%d %h:%i %p'),
             TRIM(#{stopSelling}),
             TRIM(#{stopSellingReason}),
             TRIM(#{marketAddressStreet}),
@@ -126,6 +134,8 @@
             TRIM(#{marketAddressState}),
             TRIM(#{marketAddressPostcode}),
             TRIM(#{marketAddressComment}),
+            STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p'),
+            STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p'),
             TRIM(#{minimumPurchaseAmount}),
             TRIM(#{discountMethod}),
             TRIM(#{discountFixedAmount}),
@@ -144,8 +154,8 @@
             ,group_purchase_title = TRIM(#{groupPurchaseTitle})
             ,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle})
             ,purchase_organizer = TRIM(#{purchaseOrganizer})
-            ,ordering_start_dt = STR_TO_DATE(#{orderingStartDt}, '%Y-%m-%d %h:%i %p')
-            ,ordering_end_dt = STR_TO_DATE(#{orderingEndDt}, '%Y-%m-%d %h:%i %p')
+            ,order_start_dt = STR_TO_DATE(#{orderStartDt}, '%Y-%m-%d %h:%i %p')
+            ,order_end_dt = STR_TO_DATE(#{orderEndDt}, '%Y-%m-%d %h:%i %p')
             ,stop_selling = TRIM(#{stopSelling})
             ,stop_selling_reason = TRIM(#{stopSellingReason})
             ,market_address_street = TRIM(#{marketAddressStreet})
@@ -153,6 +163,8 @@
             ,market_address_state = TRIM(#{marketAddressState})
             ,market_address_postcode = TRIM(#{marketAddressPostcode})
             ,market_address_comment = TRIM(#{marketAddressComment})
+            ,market_open_start_dt = STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p')
+            ,market_open_end_dt = STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p')
             ,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount})
             ,discount_method = TRIM(#{discountMethod})
             ,discount_fixed_amount = TRIM(#{discountFixedAmount})
@@ -168,27 +180,29 @@
         /* QUERY ID : modifyGroupPurchaseForNotNull */
         UPDATE group_purchase SET
             modify_datetime = CURRENT_TIMESTAMP
-            <if test="label != null">,group_purchase_id = TRIM(#{groupPurchaseId}) </if>
-            <if test="label != null">,group_purchase_title = TRIM(#{groupPurchaseTitle}) </if>
-            <if test="label != null">,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle}) </if>
-            <if test="label != null">,purchase_organizer = TRIM(#{purchaseOrganizer}) </if>
-            <if test="label != null">,ordering_start_dt = STR_TO_DATE(#{orderingStartDt}, '%Y-%m-%d %h:%i %p')</if>
-            <if test="label != null">,ordering_end_dt = STR_TO_DATE(#{orderingEndDt}, '%Y-%m-%d %h:%i %p')</if>
-            <if test="label != null">,stop_selling = TRIM(#{stopSelling}) </if>
-            <if test="label != null">,stop_selling_reason = TRIM(#{stopSellingReason}) </if>
-            <if test="label != null">,market_address_street = TRIM(#{marketAddressStreet}) </if>
-            <if test="label != null">,market_address_suburb = TRIM(#{marketAddressSuburb}) </if>
-            <if test="label != null">,market_address_state = TRIM(#{marketAddressState}) </if>
-            <if test="label != null">,market_address_postcode = TRIM(#{marketAddressPostcode}) </if>
-            <if test="label != null">,market_address_comment = TRIM(#{marketAddressComment}) </if>
-            <if test="label != null">,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount}) </if>
-            <if test="label != null">,discount_method = TRIM(#{discountMethod}) </if>
-            <if test="label != null">,discount_fixed_amount = TRIM(#{discountFixedAmount}) </if>
-            <if test="label != null">,discount_rate_value = TRIM(#{discountRateValue}) </if>
-            <if test="label != null">,group_purchase_notice = TRIM(#{groupPurchaseNotice}) </if>
-            <if test="label != null">,mall_master_checked = TRIM(#{mallMasterChecked}) </if>
-            <if test="label != null">,use_yn = TRIM(#{useYn}) </if>
-            <if test="label != null">,creator = TRIM(#{creator}) </if>
+            <if test="groupPurchaseId != null and groupPurchaseId != 0">,group_purchase_id = TRIM(#{groupPurchaseId}) </if>
+            <if test="groupPurchaseTitle != null">,group_purchase_title = TRIM(#{groupPurchaseTitle}) </if>
+            <if test="groupPurchaseSubtitle != null">,group_purchase_subtitle = TRIM(#{groupPurchaseSubtitle}) </if>
+            <if test="purchaseOrganizer != null">,purchase_organizer = TRIM(#{purchaseOrganizer}) </if>
+            <if test="orderStartDt != null">,order_start_dt = STR_TO_DATE(#{orderStartDt}, '%Y-%m-%d %h:%i %p')</if>
+            <if test="orderEndDt != null">,order_end_dt = STR_TO_DATE(#{orderEndDt}, '%Y-%m-%d %h:%i %p')</if>
+            <if test="stopSelling != null">,stop_selling = TRIM(#{stopSelling}) </if>
+            <if test="stopSellingReason != null">,stop_selling_reason = TRIM(#{stopSellingReason}) </if>
+            <if test="marketAddressStreet != null">,market_address_street = TRIM(#{marketAddressStreet}) </if>
+            <if test="marketAddressSuburb != null">,market_address_suburb = TRIM(#{marketAddressSuburb}) </if>
+            <if test="marketAddressState != null">,market_address_state = TRIM(#{marketAddressState}) </if>
+            <if test="marketAddressPostcode != null">,market_address_postcode = TRIM(#{marketAddressPostcode}) </if>
+            <if test="marketAddressComment != null">,market_address_comment = TRIM(#{marketAddressComment}) </if>
+            <if test="marketOpenStartDt != null">,market_open_start_dt = STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p')</if>
+            <if test="marketOpenEndDt != null">,market_open_end_dt = STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p')</if>
+            <if test="minimumPurchaseAmount != null">,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount}) </if>
+            <if test="discountMethod != null">,discount_method = TRIM(#{discountMethod}) </if>
+            <if test="discountFixedAmount != null">,discount_fixed_amount = TRIM(#{discountFixedAmount}) </if>
+            <if test="discountRateValue != null">,discount_rate_value = TRIM(#{discountRateValue}) </if>
+            <if test="groupPurchaseNotice != null">,group_purchase_notice = TRIM(#{groupPurchaseNotice}) </if>
+            <if test="mallMasterChecked != null">,mall_master_checked = TRIM(#{mallMasterChecked}) </if>
+            <if test="useYn != null">,use_yn = TRIM(#{useYn}) </if>
+            <if test="creator != null">,creator = TRIM(#{creator}) </if>
         WHERE group_purchase_id = #{groupPurchaseId}
     </update>
 
@@ -206,23 +220,24 @@
 
     <insert id="insertGroupPurchaseImage" parameterType="ProductImage">
         /* QUERY ID : insertGroupPurchaseImage */
-        INSERT INTO group_purchase_product_image(
-        group_purchase_id
-        ,image_seq
-        ,image_file_id
-        ,image_description,
-        ,width
-        ,height
-        ,display_order
-        ,creator)
-        VALUES ( #{prodId}
-        ,#{imageSeq}
-        ,#{imageFileId}
-        ,#{imageDescription}
-        ,#{width}
-        ,#{height}
-        ,#{displayOrder}
-        ,#{creator})
+        INSERT INTO group_purchase_product_image (
+            group_purchase_id
+            ,image_seq
+            ,image_file_id
+            ,image_description,
+            ,width
+            ,height
+            ,display_order
+            ,creator)
+        VALUES (
+             #{prodId}
+            ,#{imageSeq}
+            ,#{imageFileId}
+            ,#{imageDescription}
+            ,#{width}
+            ,#{height}
+            ,#{displayOrder}
+            ,#{creator})
     </insert>
 
     <insert id="insertGroupPurchaseImages" parameterType="java.util.List">
@@ -264,13 +279,13 @@
     <select id="getTotalCntForProductImages" parameterType="ProductImage" resultType="java.lang.Integer">
         /* QUERY ID : getTotalCntForProductImages */
         SELECT COUNT(*)
-        FROM group_purchase_product_image a LEFT OUTER JOIN cmm_attachment_file b ON b.file_id = a.image_file_id
-        WHERE 1 = 1
-        <if test="prodId != null and prodId != 0"> AND a.group_purchase_id = #{prodId} </if>
-        <if test="imageSeq != null and imageSeq != 0"> AND a.image_seq = #{imageSeq} </if>
-        <if test="imageFileId != null and imageFileId != 0"> AND a.image_file_id = #{imageFileId} </if>
-        <if test="imageDescription != null"> AND UPPER(a.image_description) LIKE CONCAT('%', UPPER(#{imageDescription}), '%') </if>
-        <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+          FROM group_purchase_product_image a LEFT OUTER JOIN cmm_attachment_file b ON b.file_id = a.image_file_id
+         WHERE 1 = 1
+            <if test="prodId != null and prodId != 0"> AND a.group_purchase_id = #{prodId} </if>
+            <if test="imageSeq != null and imageSeq != 0"> AND a.image_seq = #{imageSeq} </if>
+            <if test="imageFileId != null and imageFileId != 0"> AND a.image_file_id = #{imageFileId} </if>
+            <if test="imageDescription != null"> AND UPPER(a.image_description) LIKE CONCAT('%', UPPER(#{imageDescription}), '%') </if>
+            <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
     </select>
 
     <select id="getNextProductImageSeq" parameterType="java.lang.Integer" resultType="java.lang.Integer">

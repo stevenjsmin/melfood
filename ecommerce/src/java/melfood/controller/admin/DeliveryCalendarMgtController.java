@@ -247,8 +247,8 @@ public class DeliveryCalendarMgtController extends BaseController {
 		String isPickup = request.getParameter("isPickup");
 		String btwnFromHhmm = request.getParameter("btwnFromHhmm");
 		String btwnToHhmm = request.getParameter("btwnToHhmm");
-		String orderingStartDt = request.getParameter("orderingStartDt");
-		String orderingEndDt = request.getParameter("orderingEndDt");
+		String orderStartDt = request.getParameter("orderStartDt");
+		String orderEndDt = request.getParameter("orderEndDt");
 
 		try {
 			if (StringUtils.isBlank(sellerId) || StringUtils.isBlank(yyyyMmDd) || StringUtils.isBlank(addressPostcode) || StringUtils.isBlank(addressSuburb) || StringUtils.isBlank(isPickup))
@@ -259,8 +259,8 @@ public class DeliveryCalendarMgtController extends BaseController {
 			deliveryCalendar.setIsPickup(isPickup);
 			if (StringUtils.isNotBlank(btwnFromHhmm)) deliveryCalendar.setBtwnFromHhmm(btwnFromHhmm);
 			if (StringUtils.isNotBlank(btwnToHhmm)) deliveryCalendar.setBtwnToHhmm(btwnToHhmm);
-			if (StringUtils.isNotBlank(orderingStartDt)) deliveryCalendar.setOrderingStartDt(orderingStartDt);
-			if (StringUtils.isNotBlank(orderingEndDt)) deliveryCalendar.setOrderingEndDt(orderingEndDt);
+			if (StringUtils.isNotBlank(orderStartDt)) deliveryCalendar.setOrderingStartDt(orderStartDt);
+			if (StringUtils.isNotBlank(orderEndDt)) deliveryCalendar.setOrderingEndDt(orderEndDt);
 
 			if (StringUtils.equalsIgnoreCase(isPickup, "Y")) {
 				if (StringUtils.isBlank(addressPostcode) || StringUtils.isBlank(addressState) || StringUtils.isBlank(addressSuburb) || StringUtils.isBlank(addressStreet)) {

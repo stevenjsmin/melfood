@@ -86,9 +86,9 @@
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>공동구매 시작일시 :</td>
-                    <td class="value"><input id="orderingStartDt" name="orderingStartDt" value=""></input></td>
+                    <td class="value"><input id="orderStartDt" name="orderStartDt" value=""></input></td>
                     <td class="label"><span class="required">* </span>공동구매 종료일시 :</td>
-                    <td class="value"><input id="orderingEndDt" name="orderingEndDt" value=""></input></td>
+                    <td class="value"><input id="orderEndDt" name="orderEndDt" value=""></input></td>
                 </tr>
                 <tr>
                     <td class="label">상태 :</td>
@@ -175,6 +175,7 @@
 </table>
 
 <script type="text/javascript">
+    var GROUP_PURCHASE_ID = "";
     var ACTION_MODE = "ADD";
 </script>
 </body>

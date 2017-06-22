@@ -71,7 +71,7 @@ public class GroupPurchaseController extends BaseController {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         String to_yyyymmdd = df.format(cal.getTime());
-        mav.addObject("orderingStartDt", (to_yyyymmdd + " 12:00 AM"));
+        mav.addObject("orderStartDt", (to_yyyymmdd + " 12:00 AM"));
 
         return mav;
     }
@@ -88,20 +88,20 @@ public class GroupPurchaseController extends BaseController {
         groupPurchase.setPagenationPageSize(getPageSize(request));
 
         String purchaseOrganizer = request.getParameter("purchaseOrganizer");
-        String orderingStartDt = request.getParameter("orderingStartDt");
-        String orderingEndDt = request.getParameter("orderingEndDt");
+        String orderStartDt = request.getParameter("orderStartDt");
+        String orderEndDt = request.getParameter("orderEndDt");
         String stopSelling = request.getParameter("stopSelling");
         String marketAddressSuburb = request.getParameter("marketAddressSuburb");
 
         // 검색시작년월일이 존재하지 않을경우 현재날짜 기준으로 앞으로 예정된 일짜에 해당하는 목록만 가저오게한다.
-        if (StringUtils.isBlank(orderingStartDt)) {
+        if (StringUtils.isBlank(orderStartDt)) {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            orderingStartDt = df.format(cal.getTime());
+            orderStartDt = df.format(cal.getTime());
         }
-        groupPurchase.setOrderingStartDt(orderingStartDt);
-        if (StringUtils.isNotBlank(orderingEndDt)) groupPurchase.setOrderingEndDt(orderingEndDt);
+        groupPurchase.setOrderStartDt(orderStartDt);
+        if (StringUtils.isNotBlank(orderEndDt)) groupPurchase.setOrderEndDt(orderEndDt);
 
         if (StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
         if (StringUtils.isNotBlank(stopSelling)) groupPurchase.setStopSelling(stopSelling);
@@ -229,8 +229,8 @@ public class GroupPurchaseController extends BaseController {
         String groupPurchaseTitle = request.getParameter("groupPurchaseTitle");
         String groupPurchaseSubtitle = request.getParameter("groupPurchaseSubtitle");
         String purchaseOrganizer = request.getParameter("purchaseOrganizer");
-        String orderingStartDt = request.getParameter("orderingStartDt");
-        String orderingEndDt = request.getParameter("orderingEndDt");
+        String orderStartDt = request.getParameter("orderStartDt");
+        String orderEndDt = request.getParameter("orderEndDt");
         String stopSelling = request.getParameter("stopSelling");
         String stopSellingReason = request.getParameter("stopSellingReason");
         String marketAddressStreet = request.getParameter("marketAddressStreet");
@@ -268,8 +268,8 @@ public class GroupPurchaseController extends BaseController {
             if (StringUtils.isNotBlank(groupPurchaseSubtitle))
                 groupPurchase.setGroupPurchaseSubtitle(groupPurchaseSubtitle);
             if (StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
-            if (StringUtils.isNotBlank(orderingStartDt)) groupPurchase.setOrderingStartDt(orderingStartDt);
-            if (StringUtils.isNotBlank(orderingEndDt)) groupPurchase.setOrderingEndDt(orderingEndDt);
+            if (StringUtils.isNotBlank(orderStartDt)) groupPurchase.setOrderStartDt(orderStartDt);
+            if (StringUtils.isNotBlank(orderEndDt)) groupPurchase.setOrderEndDt(orderEndDt);
             if (StringUtils.isNotBlank(stopSelling)) groupPurchase.setStopSelling(stopSelling);
             if (StringUtils.isNotBlank(stopSellingReason)) groupPurchase.setStopSellingReason(stopSellingReason);
             if (StringUtils.isNotBlank(marketAddressStreet)) groupPurchase.setMarketAddressStreet(marketAddressStreet);

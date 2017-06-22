@@ -24,12 +24,12 @@
                 datepicker1.open();
             })
 
-            $("#orderingStartDtPicker").kendoDateTimePicker({
+            $("#orderStartDtPicker").kendoDateTimePicker({
                 format: "yyyy-MM-dd hh:mm tt",
                 value: new Date()
             });
 
-            $("#orderingEndDtPicker").kendoDateTimePicker({
+            $("#orderEndDtPicker").kendoDateTimePicker({
                 format: "yyyy-MM-dd hh:mm tt",
                 value: new Date((new Date().getTime() + 518400000)) // 6 days = 6*24*60*60*1000 = 518400000
             });
@@ -460,12 +460,12 @@
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>주문시작일시</td>
-                    <td class="value" colspan="2"><input id="orderingStartDtPicker" title="datetimepicker" style="width: 100%;" /></td>
+                    <td class="value" colspan="2"><input id="orderStartDtPicker" title="datetimepicker" style="width: 100%;" /></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>주문종료일시</td>
-                    <td class="value" colspan="2"><input id="orderingEndDtPicker" title="datetimepicker" style="width: 100%;" /></td>
+                    <td class="value" colspan="2"><input id="orderEndDtPicker" title="datetimepicker" style="width: 100%;" /></td>
                     <td></td>
                 </tr>
 

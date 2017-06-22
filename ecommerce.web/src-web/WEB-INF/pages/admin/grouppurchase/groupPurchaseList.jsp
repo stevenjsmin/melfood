@@ -38,8 +38,8 @@ $(document).ready(function () {
                             page : options.page,
                             pageSize : options.pageSize,
                             purchaseOrganizer : $("#purchaseOrganizer").val(),
-                            orderingStartDt : $("#orderingStartDt").val(),
-                            orderingEndDt : $("#orderingEndDt").val()
+                            orderStartDt : $("#orderStartDt").val(),
+                            orderEndDt : $("#orderEndDt").val()
                         };
                     } else if (operation == "destroy") {
                         console.log(options);
@@ -94,8 +94,8 @@ $(document).ready(function () {
                   { hidden : true, field: 'groupPurchaseId'},
 		          { title : 'Organizer', template: kendo.template($("#purchaseOrganizer-template").html()), width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }},
 		          { title : 'Title', field: 'groupPurchaseTitle', attributes: {style: "color: 939300; font-weight: bolder;" }},
-		          { title : 'Start', field: 'orderingStartDt', width: 150, attributes: {style: "text-align: left;" }},
-		          { title : 'End', field: 'orderingEndDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
+		          { title : 'Start', field: 'orderStartDt', width: 150, attributes: {style: "text-align: left;" }},
+		          { title : 'End', field: 'orderEndDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
 		          { title : 'Market Address', template: kendo.template($("#marketAddress-template").html()), attributes: {style: "text-align: left;" }},
 		          { command: [ {text : "Delete", name: "destory", click: deleteItem}], width: 140}
 
@@ -165,7 +165,7 @@ $(document).ready(function () {
 </head>
 <body>
 
-    <div id="registGroupPurchasePopup"></div>
+    <div id="groupPurchasePopup"></div>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Search -->
@@ -176,9 +176,9 @@ $(document).ready(function () {
     	 		<td class="label">Organizer : </td>
     	 		<td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
                 <td class="label">공동구매 시작일 :  </td>
-                <td class="value"><input id="orderingStartDt" name="orderingStartDt" value="${orderingStartDt}"></input></td>
+                <td class="value"><input id="orderStartDt" name="orderStartDt" value="${orderStartDt}"></input></td>
                 <td class="label">공동구매 종료일 :  </td>
-                <td class="value_end"><input id="orderingEndDt" name="orderingEndDt" value=""></input></td>
+                <td class="value_end"><input id="orderEndDt" name="orderEndDt" value=""></input></td>
                 <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
 
     	 	</tr>
@@ -202,5 +202,9 @@ $(document).ready(function () {
          </tr>
      </table>
 
+    <script type="text/javascript">
+        var GROUP_PURCHASE_ID = "";
+        var ACTION_MODE = "ADD";
+    </script>
 </body>
 </html>
