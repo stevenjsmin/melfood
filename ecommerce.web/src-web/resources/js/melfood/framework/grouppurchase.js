@@ -429,3 +429,29 @@ function changeDiscountMethod(obj) {
 
     }
 }
+
+function addGroupPurchaseProduct(){
+    $("#groupPurchasePopup").kendoWindow({
+        content: "/admin/grouppurchase/updateGroupPurchaseForm.yum?groupPurchaseId=" + groupPurchaseId,
+        actions: [ "Minimize", "Maximize","Close" ],
+        title: "Regist Group Purchase",
+        modal: true,
+        iframe: true
+    });
+
+    var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
+    popup_dialog.setOptions({
+        width: 800,
+        height: 760
+    });
+    popup_dialog.center();
+
+    $("#groupPurchasePopup").data("kendoWindow").open();
+}
+
+function closeAddGroupPurchaseProduct() {
+    var win_dialog = $("#groupPurchasePopup").data("kendoWindow");
+    win_dialog.close();
+}
+
+

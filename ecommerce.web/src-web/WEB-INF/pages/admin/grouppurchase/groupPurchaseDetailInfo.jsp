@@ -494,7 +494,7 @@
                         <table class="action_button_table" width="100%">
                             <tr>
                                 <td>
-                                    <a href="javascript:save();" class="btn btn-default btn-sm">공동구매 상품등록</a>
+                                    <a href="javascript:addGroupPurchaseProduct();" class="btn btn-default btn-sm">공동구매 상품등록</a>
                                 </td>
                             </tr>
                         </table>

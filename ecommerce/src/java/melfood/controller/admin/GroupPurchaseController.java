@@ -7,6 +7,7 @@ import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
+import melfood.shopping.contract.ContractInfoService;
 import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
@@ -41,6 +42,9 @@ public class GroupPurchaseController extends BaseController {
 
     @Autowired
     GroupPurchaseProductService groupPurchaseProductService;
+
+    @Autowired
+    private ContractInfoService contractInfoService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -582,4 +586,18 @@ public class GroupPurchaseController extends BaseController {
         return model;
     }
 
+    @RequestMapping("/product/searchProductForRegist")
+    public ModelAndView searchProductForRegist(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/searchProductForRegist");
+        Properties htmlProperty = new Properties();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        List<Option> contractorOptions = contractInfoService.getAllSellers();
+        htmlProperty = new Properties("seller");
+        htmlProperty.setCssClass("form-control");
+        mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
+
+        return mav;
+    }
 }
