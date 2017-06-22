@@ -28,13 +28,14 @@ public class GroupPurchaseProductDAOImpl extends BaseDAO implements GroupPurchas
     }
 
     @Override
-    public Integer deleteGroupPurchaseProducts(List<GroupPurchaseProduct> purchaseProducts) throws Exception {
-        return sqlSession.delete("mySqlGroupPurchaseProductDao.deleteGroupPurchaseProducts", purchaseProducts);
+    public Integer deleteGroupPurchaseProducts(int groupPurchaseId) throws Exception {
+        return sqlSession.delete("mySqlGroupPurchaseProductDao.deleteGroupPurchaseProducts", groupPurchaseId);
     }
 
+
     @Override
-    public Integer insertGroupPurchaseProduct(GroupPurchaseProduct purchaseProduct) throws Exception {
-        return sqlSession.insert("mySqlGroupPurchaseProductDao.insertGroupPurchaseProduct", purchaseProduct);
+    public Integer insertGroupPurchaseProduct(List<GroupPurchaseProduct> purchaseProducts) throws Exception {
+        return sqlSession.insert("mySqlGroupPurchaseProductDao.insertGroupPurchaseProducts", purchaseProducts);
     }
 
     @Override
@@ -46,4 +47,5 @@ public class GroupPurchaseProductDAOImpl extends BaseDAO implements GroupPurchas
     public Integer modifyGroupPurchaseProductForNotNull(GroupPurchaseProduct purchaseProduct) throws Exception {
         return sqlSession.update("mySqlGroupPurchaseProductDao.modifyGroupPurchaseProductForNotNull", purchaseProduct);
     }
+
 }

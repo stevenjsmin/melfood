@@ -11,6 +11,7 @@
 		  	a.group_purchase_id "groupPurchaseId"
 			,a.product_id "productId"
 		    ,(SELECT name FROM product WHERE prod_id = a.product_id) "productName"
+			,(SELECT user_name FROM cmm_user WHERE user_id = (SELECT seller FROM product WHERE prod_id = a.product_id)) "productOwner"
 			,a.stop_selling "stopSelling"
 			,a.stop_selling_reason "stopSellingReason"
 			,a.use_yn "useYn"
@@ -30,7 +31,7 @@
 	   ORDER BY a.group_purchase_id ASC, a.product_id ASC
 			LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
-	<select id="getTotalCntGroupPurchaseProducts" parameterType="Code" resultType="java.lang.Integer">
+	<select id="getTotalCntGroupPurchaseProducts" parameterType="GroupPurchaseProduct" resultType="java.lang.Integer">
 		/* QUERY ID : getTotalCntGroupPurchaseProducts */
 		SELECT COUNT(*)
 		  FROM group_purchase_product a
@@ -45,25 +46,7 @@
 			<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 	</select>
 
-	<insert id="insertGroupPurchaseProduct" parameterType="GroupPurchaseProduct">
-		/* QUERY ID : insertGroupPurchaseProduct */
-		INSERT INTO group_purchase_product (
-		  	 group_purchase_id
-			,product_id
-			,stop_selling
-			,stop_selling_reason
-			,use_yn
-			,creator
-		VALUES (
-			#{groupPurchaseId}
-			,#{productId}
-			TRIM(#{stopSelling}),
-			TRIM(#{stopSellingReason}),
-			TRIM(#{useYn}),
-			TRIM(#{creator})
-	</insert>
-
-	<insert id="insertGroupPurchaseProducts" parameterType="java.lang.String">
+	<insert id="insertGroupPurchaseProducts" parameterType="java.util.List">
 		/* QUERY ID : insertGroupPurchaseProducts */
 		INSERT INTO group_purchase_product (group_purchase_id, product_id, stop_selling, stop_selling_reason, use_yn, creator) VALUES
 		<foreach collection="list" index="index" item="item">
@@ -97,8 +80,13 @@
 
 	<delete id="deleteGroupPurchaseProduct" parameterType="GroupPurchaseProduct">
 		/* QUERY ID : deleteGroupPurchaseProduct */
-		DELETE FROM group_purchase_product
-		 WHERE group_purchase_id = #{groupPurchaseId} AND product_id = #{productId}
+		DELETE FROM group_purchase_product WHERE group_purchase_id = #{groupPurchaseId} AND product_id = #{productId}
 	</delete>
+
+	<delete id="deleteGroupPurchaseProducts" parameterType="java.lang.Integer">
+		/* QUERY ID : deleteGroupPurchaseProducts */
+		DELETE FROM group_purchase_product WHERE group_purchase_id = #{groupPurchaseId}
+	</delete>
+
 
 </mapper>

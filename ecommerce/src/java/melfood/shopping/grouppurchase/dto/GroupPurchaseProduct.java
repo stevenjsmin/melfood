@@ -9,10 +9,19 @@ public class GroupPurchaseProduct extends BaseDto {
     private int groupPurchaseId;
     private int productId;
     private String productName;
+    private String productOwner;
     private String stopSelling;
     private String stopSellingReason;
 
     public GroupPurchaseProduct() {
+    }
+
+    public GroupPurchaseProduct(int groupPurchaseId) {
+        this.groupPurchaseId = groupPurchaseId;
+    }
+
+    public GroupPurchaseProduct(String groupPurchaseId) {
+        this.groupPurchaseId = Integer.parseInt(groupPurchaseId);
     }
 
     public GroupPurchaseProduct(int groupPurchaseId, int productId) {
@@ -63,5 +72,13 @@ public class GroupPurchaseProduct extends BaseDto {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getProductOwner() {
+        return productOwner;
+    }
+
+    public void setProductOwner(String productOwner) {
+        this.productOwner = productOwner;
     }
 }

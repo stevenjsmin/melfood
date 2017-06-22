@@ -12,7 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script src="/resources/js/melfood/framework/grouppurchase.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script type="text/javascript">
-var KENDO_SELECTED_RECORD = null;
+var KENDO_SELECTED_RECORD_1 = null;
 $(document).ready(function () {
 
     // DEFINE DATASOURCE
@@ -67,7 +67,7 @@ $(document).ready(function () {
     
     // DEFINE GRID TABLE
     // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    $("#grid_panel_main").kendoGrid({
+    $("#grid_panel_main_1").kendoGrid({
         dataSource: dataSource,
         selectable: true,
         sortable: true,
@@ -102,8 +102,8 @@ $(document).ready(function () {
 		 ] // End of Columns
     }); // End of GRID
     
-    $("#grid_panel_main").dblclick(function(e) {
-    	var dataItem = KENDO_SELECTED_RECORD;
+    $("#grid_panel_main_1").dblclick(function(e) {
+    	var dataItem = KENDO_SELECTED_RECORD_1;
         var groupPurchaseId = dataItem.groupPurchaseId;
 
         goDetailInfo(groupPurchaseId);
@@ -111,7 +111,7 @@ $(document).ready(function () {
     
     function onChange(e) {
          var gridRecord = e.sender;
-         KENDO_SELECTED_RECORD = gridRecord.dataItem(gridRecord.select());
+        KENDO_SELECTED_RECORD_1 = gridRecord.dataItem(gridRecord.select());
     }
     
     function deleteItem(e) {
@@ -128,7 +128,7 @@ $(document).ready(function () {
             btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
             callback: function(result) {
                 if(result) {
-                	var grid = $("#grid_panel_main").data("kendoGrid");
+                	var grid = $("#grid_panel_main_1").data("kendoGrid");
                 	grid.dataSource.remove(dataItem);
                 	grid.dataSource.sync();
                		grid.refresh();
@@ -188,7 +188,7 @@ $(document).ready(function () {
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- Table List -->
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-    <div id="grid_panel_main"></div>
+    <div id="grid_panel_main_1"></div>
 
     <br/>
     <!-- ++++++++++++++++++++++++++++++++++++++++++ -->

@@ -100,10 +100,11 @@
                     <td class="value" colspan="2"><input class="form-control" type="text" id="stopSellingReason" name="stopSellingReason" value='${groupPurchase.stopSellingReason}' placeholder="공동 구매가 정지된 이유"/></td>
                     <td></td>
                 </tr>
+
                 <tr>
                     <td colspan="4">
                         <br/>
-                        <span class="subtitle"> 공동구매 장소/주소</span>
+                        <span class="subtitle"> 공동구매 장소.주소/시간</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
@@ -170,7 +171,7 @@
             <table class="action_button_table" width="100%">
                 <tr>
                     <td>
-                        <a href="javascript:parent.closeGroupPurchasePopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
+                        <a href="javascript:parent.closeGroupPurchasePopupWithoutRefresh();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
                         <a href="javascript:save();" class="btn btn-primary">Modify</a>
                     </td>
                 </tr>

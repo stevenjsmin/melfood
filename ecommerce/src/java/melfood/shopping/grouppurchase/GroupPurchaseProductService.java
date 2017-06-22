@@ -15,8 +15,9 @@ public interface GroupPurchaseProductService {
 
     public Integer getTotalCntForGroupPurchaseProducts(GroupPurchaseProduct purchaseProduct);
 
+    public Integer deleteGroupPurchaseProducts(int groupPurchaseId) throws Exception;
+    public Integer deleteGroupPurchaseProduct(int groupPurchaseId, int productId) throws Exception;
     public Integer deleteGroupPurchaseProduct(GroupPurchaseProduct purchaseProduct) throws Exception;
-
     public Integer deleteGroupPurchaseProducts(List<GroupPurchaseProduct> purchaseProducts) throws Exception;
 
     public Integer insertGroupPurchaseProduct(GroupPurchaseProduct purchaseProduct) throws Exception;

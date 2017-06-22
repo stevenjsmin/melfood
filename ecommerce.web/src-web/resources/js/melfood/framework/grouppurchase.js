@@ -73,8 +73,8 @@ function goList() {
 }
 
 function search(){
-  	$('#grid_panel_main').data('kendoGrid').dataSource.read();
-   	$('#grid_panel_main').data('kendoGrid').refresh();
+  	$('#grid_panel_main_1').data('kendoGrid').dataSource.read();
+   	$('#grid_panel_main_1').data('kendoGrid').refresh();
 }
 
 function validateForm(){
@@ -108,6 +108,8 @@ function validateForm(){
     var marketAddressStreet = $('#marketAddressStreet').val();
     var marketAddressSuburb = $('#marketAddressSuburb').val();
     var marketAddressComment = $('#marketAddressComment').val();
+    var marketOpenEndDt = $('#marketOpenEndDt').val();
+    var marketOpenStartDt = $('#marketOpenStartDt').val();
     var groupPurchaseNotice = $('#groupPurchaseNotice').val();
 
  	if(groupPurchaseTitle == "") {
@@ -159,16 +161,16 @@ function validateForm(){
 
     }
 
-    var parsedOrderingStartDt = kendo.parseDate(orderStartDt, "yyyy-MM-dd hh:mm tt");
-    if (!parsedOrderingStartDt) {
-        message = message + prefix + "올바른 공동구매 시작일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
+    var parsedOrderStartDt = kendo.parseDate(orderStartDt, "yyyy-MM-dd hh:mm tt");
+    if (!parsedOrderStartDt) {
+        message = message + prefix + "올바른 공동구매 주문시작일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
         checkObject[checkObject.length] = "orderStartDt";
         validation = false;
     }
 
-    var parsedOrderingEndDt = kendo.parseDate(orderEndDt, "yyyy-MM-dd hh:mm tt");
-    if (!parsedOrderingEndDt) {
-        message = message + prefix + "올바른 공동구매 종료일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
+    var parsedOrderEndDt = kendo.parseDate(orderEndDt, "yyyy-MM-dd hh:mm tt");
+    if (!parsedOrderEndDt) {
+        message = message + prefix + "올바른 공동구매 주문종료일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
         checkObject[checkObject.length] = "orderEndDt";
         validation = false;
     }
@@ -205,6 +207,22 @@ function validateForm(){
         validation = false;
     }
 
+    var parsedMarketOpenStartDt = kendo.parseDate(marketOpenStartDt, "yyyy-MM-dd hh:mm tt");
+    if (!parsedMarketOpenStartDt) {
+        message = message + prefix + "올바른 공동구매 시작일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
+        checkObject[checkObject.length] = "marketOpenStartDt";
+        validation = false;
+    }
+
+    var parsedMarketOpenEndDt = kendo.parseDate(marketOpenEndDt, "yyyy-MM-dd hh:mm tt");
+    if (!parsedMarketOpenEndDt) {
+        message = message + prefix + "올바른 공동구매 종료일시 형식이 아닙니다. [YYYY-MM-DD hh:mm AM/PM] 형식으로 입력해주세요<br>";
+        checkObject[checkObject.length] = "marketOpenEndDt";
+        validation = false;
+    }
+
+
+
  	// 검증된 필드들을 마킹한다.
 	for(count=0; count < checkObject.length; count++ ){
 		elementObj = "#" + checkObject[count];
@@ -236,6 +254,8 @@ function save(){
     var marketAddressStreet = $('#marketAddressStreet').val();
     var marketAddressSuburb = $('#marketAddressSuburb').val();
     var marketAddressComment = $('#marketAddressComment').val();
+    var marketOpenStartDt = $('#marketOpenStartDt').val();
+    var marketOpenEndDt = $('#marketOpenEndDt').val();
     var groupPurchaseNotice = $('#groupPurchaseNotice').val();
 
     if(validateForm() == false) return;
@@ -259,6 +279,8 @@ function save(){
                marketAddressStreet : marketAddressStreet,
                marketAddressSuburb : marketAddressSuburb,
                marketAddressComment : marketAddressComment,
+               marketOpenStartDt    : marketOpenStartDt,
+               marketOpenEndDt    : marketOpenEndDt,
                groupPurchaseNotice : groupPurchaseNotice,
                groupPurchaseId : GROUP_PURCHASE_ID,
                actionMode : ACTION_MODE
@@ -380,6 +402,10 @@ function closeGroupPurchasePopup() {
         parent.goDetailInfo(GROUP_PURCHASE_ID);
     }
 
+    var win_dialog = $("#groupPurchasePopup").data("kendoWindow");
+    win_dialog.close();
+}
+function closeGroupPurchasePopupWithoutRefresh() {
     var win_dialog = $("#groupPurchasePopup").data("kendoWindow");
     win_dialog.close();
 }

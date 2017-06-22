@@ -238,6 +238,8 @@ public class GroupPurchaseController extends BaseController {
         String marketAddressPostcode = request.getParameter("marketAddressPostcode");
         String marketAddressState = request.getParameter("marketAddressState");
         String marketAddressComment = request.getParameter("marketAddressComment");
+        String marketOpenStartDt = request.getParameter("marketOpenStartDt");
+        String marketOpenEndDt = request.getParameter("marketOpenEndDt");
         String minimumPurchaseAmount = request.getParameter("minimumPurchaseAmount");
         String discountMethod = request.getParameter("discountMethod");
         String discountFixedAmount = request.getParameter("discountFixedAmount");
@@ -265,8 +267,7 @@ public class GroupPurchaseController extends BaseController {
             }
 
             if (StringUtils.isNotBlank(groupPurchaseTitle)) groupPurchase.setGroupPurchaseTitle(groupPurchaseTitle);
-            if (StringUtils.isNotBlank(groupPurchaseSubtitle))
-                groupPurchase.setGroupPurchaseSubtitle(groupPurchaseSubtitle);
+            if (StringUtils.isNotBlank(groupPurchaseSubtitle)) groupPurchase.setGroupPurchaseSubtitle(groupPurchaseSubtitle);
             if (StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
             if (StringUtils.isNotBlank(orderStartDt)) groupPurchase.setOrderStartDt(orderStartDt);
             if (StringUtils.isNotBlank(orderEndDt)) groupPurchase.setOrderEndDt(orderEndDt);
@@ -277,6 +278,8 @@ public class GroupPurchaseController extends BaseController {
             if (StringUtils.isNotBlank(marketAddressPostcode)) groupPurchase.setMarketAddressPostcode(marketAddressPostcode);
             if (StringUtils.isNotBlank(marketAddressState)) groupPurchase.setMarketAddressState(marketAddressState);
             if (StringUtils.isNotBlank(marketAddressComment)) groupPurchase.setMarketAddressComment(marketAddressComment);
+            if (StringUtils.isNotBlank(marketOpenStartDt)) groupPurchase.setMarketOpenStartDt(marketOpenStartDt);
+            if (StringUtils.isNotBlank(marketOpenEndDt)) groupPurchase.setMarketOpenEndDt(marketOpenEndDt);
             if (StringUtils.isNotBlank(minimumPurchaseAmount)) groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
 
@@ -334,6 +337,7 @@ public class GroupPurchaseController extends BaseController {
         }
 
         try {
+            // 공동구매 마스터정보, 등록된 상품정보, 등록된 이미지정보(물리적파일포함을 모두 삭제한다.
             ProductImage productImage = new ProductImage(groupPurchaseId);
             productImage.setPagenationPage(0);
             productImage.setPagenationPageSize(99999);
@@ -351,32 +355,6 @@ public class GroupPurchaseController extends BaseController {
 
         return model;
     }
-
-
-    @RequestMapping(value = "/deleteGroupPurchaseProducts", produces = "application/json")
-    @ResponseBody
-    public Map<String, Object> deleteGroupPurchaseProducts(HttpServletRequest request) throws Exception {
-
-        Map<String, Object> model = new HashMap<String, Object>();
-
-        String groupPurchaseId = request.getParameter("groupPurchaseId");
-        if (StringUtils.isBlank(groupPurchaseId)) {
-            throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
-        }
-
-        String[] productIds = request.getParameterValues("productId");
-        List<GroupPurchaseProduct> purchaseProducts = new ArrayList<GroupPurchaseProduct>();
-        for (String prodId : productIds) {
-            purchaseProducts.add(new GroupPurchaseProduct(groupPurchaseId, prodId));
-        }
-
-        if (purchaseProducts.size() > 0) {
-            groupPurchaseProductService.deleteGroupPurchaseProducts(purchaseProducts);
-        }
-
-        return model;
-    }
-
 
     @RequestMapping(value = "/image/uploadFile", produces = "application/json")
     @ResponseBody
@@ -512,4 +490,96 @@ public class GroupPurchaseController extends BaseController {
 
         return model;
     }
+
+    @RequestMapping(value = "/product/addProduct", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> addGroupPurchaseProduct(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String productId = request.getParameter("productId");
+
+        if (StringUtils.isBlank(groupPurchaseId) || StringUtils.isBlank(productId)) {
+            throw new Exception("[groupPurchaseId || productId ]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        int updateCnt = 0;
+        updateCnt = groupPurchaseProductService.deleteGroupPurchaseProduct(Integer.parseInt(groupPurchaseId), Integer.parseInt(productId));
+
+        return model;
+    }
+
+
+    @RequestMapping(value = "/product/getProducts", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> getGroupPurchaseProducts(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        GroupPurchase groupPurchase = new GroupPurchase();
+
+        // For Pagination
+        groupPurchase.setPagenationPage(getPage(request));
+        groupPurchase.setPagenationPageSize(getPageSize(request));
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        if (StringUtils.isBlank(groupPurchaseId)) {
+            throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+        GroupPurchaseProduct purchaseProduct = new GroupPurchaseProduct(groupPurchaseId);
+
+        Integer totalCount = 0;
+        List<GroupPurchaseProduct> list = groupPurchaseProductService.getGroupPurchaseProducts(purchaseProduct);
+        totalCount = groupPurchaseProductService.getTotalCntForGroupPurchaseProducts(purchaseProduct);
+
+        model.put("totalCount", totalCount);
+        model.put("list", list);
+
+        return model;
+    }
+
+    @RequestMapping(value = "/product/deleteProduct", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> deleteGroupPurchaseProduct(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String productId = request.getParameter("productId");
+
+        if (StringUtils.isBlank(groupPurchaseId) || StringUtils.isBlank(productId)) {
+            throw new Exception("[groupPurchaseId || productIdproductId ]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        int updateCnt = 0;
+        updateCnt = groupPurchaseProductService.deleteGroupPurchaseProduct(Integer.parseInt(groupPurchaseId), Integer.parseInt(productId));
+
+        return model;
+    }
+
+    @RequestMapping(value = "/product/deleteProducts", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> deleteGroupPurchaseProducts(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        if (StringUtils.isBlank(groupPurchaseId)) {
+            throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        String[] productIds = request.getParameterValues("productId");
+        List<GroupPurchaseProduct> purchaseProducts = new ArrayList<GroupPurchaseProduct>();
+        for (String prodId : productIds) {
+            purchaseProducts.add(new GroupPurchaseProduct(groupPurchaseId, prodId));
+        }
+
+        if (purchaseProducts.size() > 0) {
+            groupPurchaseProductService.deleteGroupPurchaseProducts(purchaseProducts);
+        }
+
+        return model;
+    }
+
 }

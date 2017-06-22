@@ -169,7 +169,7 @@
             <table class="action_button_table" width="100%">
                 <tr>
                     <td>
-                        <a href="javascript:parent.closeGroupPurchasePopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
+                        <a href="javascript:parent.closeGroupPurchasePopupWithoutRefresh();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
                         <a href="javascript:save();" class="btn btn-primary">Save</a>
                     </td>
                 </tr>
