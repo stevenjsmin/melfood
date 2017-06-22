@@ -430,9 +430,9 @@ function changeDiscountMethod(obj) {
     }
 }
 
-function addGroupPurchaseProduct(){
+function addGroupPurchaseProduct(groupPurchaseId){
     $("#groupPurchasePopup").kendoWindow({
-        content: "/admin/grouppurchase/updateGroupPurchaseForm.yum?groupPurchaseId=" + groupPurchaseId,
+        content: "/admin/grouppurchase/product/searchProductForRegist.yum?groupPurchaseId=" + groupPurchaseId,
         actions: [ "Minimize", "Maximize","Close" ],
         title: "Regist Group Purchase",
         modal: true,
@@ -442,7 +442,7 @@ function addGroupPurchaseProduct(){
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 760
+        height: 500
     });
     popup_dialog.center();
 

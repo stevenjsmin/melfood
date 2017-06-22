@@ -588,12 +588,13 @@ public class GroupPurchaseController extends BaseController {
 
     @RequestMapping("/product/searchProductForRegist")
     public ModelAndView searchProductForRegist(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
         ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/searchProductForRegist");
         Properties htmlProperty = new Properties();
 
         String groupPurchaseId = request.getParameter("groupPurchaseId");
 
-        List<Option> contractorOptions = contractInfoService.getAllSellers();
+        List<Option> contractorOptions = contractInfoService.getAllSellers(sessionUser.getUser().getUserId());
         htmlProperty = new Properties("seller");
         htmlProperty.setCssClass("form-control");
         mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
