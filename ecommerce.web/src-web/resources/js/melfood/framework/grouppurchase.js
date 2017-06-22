@@ -49,7 +49,7 @@ function goDetailInfo(groupPurchaseId){
 }
 
 function goList() {
-	document.location.href = "/framework/usermanager/Main.yum";
+	document.location.href = "/admin/grouppurchase/Main.yum";
 }
 
 function goModify(){

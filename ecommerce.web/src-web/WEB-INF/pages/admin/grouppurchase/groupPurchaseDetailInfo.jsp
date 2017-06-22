@@ -357,7 +357,7 @@
                         <table class="action_button_table" width="100%">
                             <tr>
                                 <td>
-                                    <a href="javascript:save();" class="btn btn-primary">Go BACK</a>
+                                    <a href="javascript:goList();" class="btn btn-primary">LIST</a>
                                 </td>
                             </tr>
                         </table>
