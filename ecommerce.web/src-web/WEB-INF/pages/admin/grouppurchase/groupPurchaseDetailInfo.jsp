@@ -258,7 +258,7 @@
                 </tr>
                 <tr>
                     <td class="label">공동구매 주관자 :</td>
-                    <td class="value">${groupPurchase.purchaseOrganizer}</td>
+                    <td class="value">${groupPurchase.purchaseOrganizerName} (ID : ${groupPurchase.purchaseOrganizer})</td>
                     <td class="label">최소 참여금액 :</td>
                     <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.discountRateValue}"/></td>
                 </tr>

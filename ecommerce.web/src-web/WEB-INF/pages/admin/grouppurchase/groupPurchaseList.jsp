@@ -92,7 +92,7 @@ $(document).ready(function () {
         },         
 		columns: [
                   { hidden : true, field: 'groupPurchaseId'},
-		          { title : 'Organizer', field: 'purchaseOrganizer', width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }, filterable: false},
+		          { title : 'Organizer', template: kendo.template($("#purchaseOrganizer-template").html()), width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }},
 		          { title : 'Title', field: 'groupPurchaseTitle', attributes: {style: "color: 939300; font-weight: bolder;" }},
 		          { title : 'Start', field: 'orderingStartDt', width: 150, attributes: {style: "text-align: left;" }},
 		          { title : 'End', field: 'orderingEndDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
@@ -156,7 +156,10 @@ $(document).ready(function () {
 </script>
 
 <script id="marketAddress-template" type="text/x-kendo-template">
-    #= marketAddressState + '/' + marketAddressSuburb #
+    #= marketAddressState + ' / ' + marketAddressSuburb #
+</script>
+<script id="purchaseOrganizer-template" type="text/x-kendo-template">
+    #= purchaseOrganizer + ' / ' + purchaseOrganizerName #
 </script>
 
 </head>

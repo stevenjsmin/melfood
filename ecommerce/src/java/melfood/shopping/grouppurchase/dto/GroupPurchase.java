@@ -13,6 +13,7 @@ public class GroupPurchase extends BaseDto {
     private String groupPurchaseTitle;
     private String groupPurchaseSubtitle;
     private String purchaseOrganizer;
+    private String purchaseOrganizerName;
     private String orderingStartDt;
     private String orderingEndDt;
     private String stopSelling;
@@ -200,5 +201,13 @@ public class GroupPurchase extends BaseDto {
 
     public void setPurchaseProducts(List<GroupPurchaseProduct> purchaseProducts) {
         this.purchaseProducts = purchaseProducts;
+    }
+
+    public String getPurchaseOrganizerName() {
+        return purchaseOrganizerName;
+    }
+
+    public void setPurchaseOrganizerName(String purchaseOrganizerName) {
+        this.purchaseOrganizerName = purchaseOrganizerName;
     }
 }
