@@ -85,9 +85,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="label"><span class="required">* </span>공동구매 시작일시 :</td>
+                    <td class="label"><span class="required">* </span>주문 시작일시 :</td>
                     <td class="value"><input id="orderStartDt" name="orderStartDt" value="${groupPurchase.orderStartDt}"></input></td>
-                    <td class="label"><span class="required">* </span>공동구매 종료일시 :</td>
+                    <td class="label"><span class="required">* </span>주문 종료일시 :</td>
                     <td class="value"><input id="orderEndDt" name="orderEndDt" value="${groupPurchase.orderEndDt}"></input></td>
                 </tr>
                 <tr>
@@ -108,6 +108,12 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="label"><span class="required">* </span>마켓오픈 시작일시 :</td>
+                    <td class="value"><input id="marketOpenStartDt" name="marketOpenStartDt" value="${groupPurchase.marketOpenStartDt}"></input></td>
+                    <td class="label"><span class="required">* </span>마켓오픈 시작일시 :</td>
+                    <td class="value"><input id="marketOpenEndDt" name="marketOpenEndDt" value="${groupPurchase.marketOpenEndDt}"></input></td>
+                </tr>
                 <tr>
                     <td class="label">State</td>
                     <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
@@ -164,7 +170,7 @@
             <table class="action_button_table" width="100%">
                 <tr>
                     <td>
-                        <a href="javascript:parent.closeGroupPurchaseUpdatePopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
+                        <a href="javascript:parent.closeGroupPurchasePopup();" class="btn btn-info">&nbsp;&nbsp; Close &nbsp;&nbsp;</a>
                         <a href="javascript:save();" class="btn btn-primary">Modify</a>
                     </td>
                 </tr>

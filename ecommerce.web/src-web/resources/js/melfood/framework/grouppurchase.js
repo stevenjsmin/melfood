@@ -20,6 +20,26 @@ $(document).ready(function() {
         datepicker2.open();
     });
 
+
+    $("#marketOpenStartDt").kendoDateTimePicker({
+        format: "yyyy-MM-dd hh:mm tt",
+        start: "year"
+    });
+    var datepicker3 = $("#marketOpenStartDt").data("kendoDateTimePicker");
+    $("#marketOpenStartDt").click(function() {
+        datepicker3.open();
+    });
+
+    $("#marketOpenEndDt").kendoDateTimePicker({
+        format: "yyyy-MM-dd hh:mm tt",
+        start: "year"
+    });
+    var datepicker4 = $("#marketOpenEndDt").data("kendoDateTimePicker");
+    $("#marketOpenEndDt").click(function() {
+        datepicker4.open();
+    });
+
+
     $("#minimumPurchaseAmount").kendoNumericTextBox({
         max: 99999,
         min: 0.00,
@@ -325,7 +345,7 @@ function openRegistGroupPurchasePopup(){
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 700
+        height: 760
     });
     popup_dialog.center();
 
@@ -345,7 +365,7 @@ function openUpdateGroupPurchasePopup(groupPurchaseId){
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 700
+        height: 760
     });
     popup_dialog.center();
 

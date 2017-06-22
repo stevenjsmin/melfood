@@ -263,7 +263,7 @@
                     <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.discountRateValue}"/></td>
                 </tr>
                 <tr>
-                    <td class="label"><span class="required">* </span>공동구매 기간 :</td>
+                    <td class="label">주문받는 기간 :</td>
                     <td class="value">${groupPurchase.orderStartDt} ~ ${groupPurchase.orderEndDt}</td>
                     <td class="label">할인 비율/금액 :</td>
                     <td class="value">
