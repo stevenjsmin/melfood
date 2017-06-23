@@ -24,7 +24,7 @@
 		<put-attribute name="navigation" value="Admin > Group Purchase > detail info" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/groupPurchaseDetailInfo.jsp" />
 	</definition>
-	<definition name="tiles/admin/product/productmgt/image/imageViewer" extends="layout/panel_100">
+	<definition name="tiles/admin/grouppurchase/image/imageViewer" extends="layout/panel_100">
 		<put-attribute name="title" value="Product Image Viewer" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/productImageViewer.jsp" />
 	</definition>
@@ -32,10 +32,15 @@
 		<put-attribute name="title" value="Search product" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/searchProduct.jsp" />
 	</definition>
-	<!-- Product > MasterInfo > Overview -->
 	<definition name="tiles/admin/grouppurchase/product/overviewProductInfo" extends="layout/panel_100">
 		<put-attribute name="title" value="Product overview" />
 		<put-attribute name="navigation" value="Group Purchase > Product overview" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOverview.jsp" />
 	</definition>
+	<definition name="tiles/admin/grouppurchase/product/stopSellingForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Product Group purchase stop selling" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/stopSellingForm.jsp" />
+	</definition>
+
+
 </tiles-definitions>

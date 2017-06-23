@@ -453,7 +453,7 @@ public class GroupPurchaseController extends BaseController {
 
     @RequestMapping("/image/productImageViewer")
     public ModelAndView productImageViewer(HttpServletRequest request) throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/admin/product/productmgt/image/imageViewer");
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/image/imageViewer");
         String groupPurchaseId = request.getParameter("groupPurchaseId");
 
         if (StringUtils.isBlank(groupPurchaseId)) {
@@ -673,6 +673,24 @@ public class GroupPurchaseController extends BaseController {
         productImage.setPagenationPageSize(99999);
         List<ProductImage> productImages = productImageService.getProductImages(productImage);
         mav.addObject("productImages", productImages);
+
+        return mav;
+    }
+
+    @RequestMapping("/product/stopSellingForm")
+    public ModelAndView stopSellingForm(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/product/stopSellingForm");
+        Properties htmlProperty = new Properties();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        List<Option> contractorOptions = contractInfoService.getAllSellers(sessionUser.getUser().getUserId());
+        htmlProperty = new Properties("seller");
+        htmlProperty.setCssClass("form-control");
+        mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
+
+        mav.addObject("groupPurchaseId", groupPurchaseId);
 
         return mav;
     }

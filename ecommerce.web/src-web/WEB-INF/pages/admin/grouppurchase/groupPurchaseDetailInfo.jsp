@@ -334,7 +334,7 @@
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
             $("#productStopSellingPopup").kendoWindow({
-                content: "/admin/grouppurchase/product/overviewProductInfo.yum?groupPurchaseId=" + dataItem.groupPurchaseId + "&productId=" + dataItem.productId,
+                content: "/admin/grouppurchase/product/stopSellingForm.yum?groupPurchaseId=" + dataItem.groupPurchaseId + "&productId=" + dataItem.productId,
                 actions: ["Minimize", "Maximize", "Close"],
                 title: "Stop selling",
                 modal: true,
