@@ -48,4 +48,8 @@ public class GroupPurchaseProductDAOImpl extends BaseDAO implements GroupPurchas
         return sqlSession.update("mySqlGroupPurchaseProductDao.modifyGroupPurchaseProductForNotNull", purchaseProduct);
     }
 
+    @Override
+    public Integer modifyGroupPurchaseStopSelling(GroupPurchaseProduct purchaseProduct) throws Exception {
+        return sqlSession.update("mySqlGroupPurchaseProductDao.modifyGroupPurchaseStopSelling", purchaseProduct);
+    }
 }

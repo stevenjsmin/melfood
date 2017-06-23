@@ -12,208 +12,174 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script src="/resources/js/melfood/framework/grouppurchase.js?ver=<%=Ctx.releaseVersion%>"></script>
     <script type="text/javascript">
-        var KENDO_SELECTED_RECORD_1 = null;
         $(document).ready(function () {
-
-            // DEFINE DATASOURCE
-            // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            var dataSource = new kendo.data.DataSource({
-                pageSize: 10,
-                serverPaging: true,
-                serverFiltering: true,
-                transport: {
-                    read: {
-                        url: "/admin/grouppurchase/product/searchProduct.yum",
-                        dataType: "json",
-                        type: "POST"
-                    },
-                    parameterMap: function(options, operation) {
-                        if (operation == "read") {
-                            return {
-                                page : options.page,
-                                pageSize : options.pageSize,
-                                seller : $("#seller").val(),
-                                name : $("#name").val()
-                            };
-                        }
-                    }
-                },
-                schema: {
-                    model: {
-                        id: "seller",
-                        fields: {
-                            seller : { type: "string" }
-                        }
-                    },
-                    data: function(response) {
-                        return response.list;
-                    },
-                    total: function (response) {
-                        return response.totalCount;
-                    }
-                }
-            }); // End of DATASOURCE
-
-            // DEFINE GRID TABLE
-            // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            $("#grid_panel_main_1").kendoGrid({
-                dataSource: dataSource,
-                selectable: true,
-                sortable: true,
-                editable: false,
-                change: onChange,
-                filterable : {
-                    extra:false,
-                    operators: {
-                        string:{ contains: "Contains"}
-                    }
-                },
-                pageable: {
-                    refresh: true,
-                    pageSizes: true,
-                    buttonCount: 5,
-                    page: 1,
-                    pageSizes: [5,10],
-                    messages: {
-                        itemsPerPage: "",
-                        display: "{0} - {1} / {2}"
-                    }
-                },
-                columns: [
-                    { hidden : true, field: 'prodId'},
-                    { title : 'Product Name', field: 'name', attributes: {style: "text-align: left;color: 606000; font-weight: bolder;" }},
-                    { title : 'Product Owner', template: kendo.template($("#seller-template").html()), attributes: {style: "text-align: left;" }},
-                    { title : 'Price($)', field: 'unitPrice', width: 150, attributes: {style: "text-align: right;" }, format: "{0:c}"},
-                    { command: [ {text : "Add", click: addGroupPurchaseProduct}], width: 90}
-
-                ] // End of Columns
-            }); // End of GRID
-
-            $("#grid_panel_main_1").dblclick(function(e) {
-                var dataItem = KENDO_SELECTED_RECORD_1;
-                var groupPurchaseId = dataItem.groupPurchaseId;
-
-                goDetailInfo(groupPurchaseId);
-            });
-
-            function onChange(e) {
-                var gridRecord = e.sender;
-                KENDO_SELECTED_RECORD_1 = gridRecord.dataItem(gridRecord.select());
-            }
-
-            function addItem(e) {
-                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-                BootstrapDialog.confirm({
-                    title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
-                    message: '정말 삭제하시겠습니까?',
-                    type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-                    closable: true, // Default value is false
-                    draggable: true, // Default value is false
-                    btnCancelLabel: 'Cancel', // Default value is 'Cancel',
-                    btnOKLabel: 'OK', // Default value is 'OK',
-                    btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
-                    callback: function(result) {
-                        if(result) {
-                            var grid = $("#grid_panel_main_1").data("kendoGrid");
-                            grid.dataSource.remove(dataItem);
-                            grid.dataSource.sync();
-                            grid.refresh();
-                        }
-                    }
-                });
-            }
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
 
     <script type="text/javascript">
-        function changeType(category) {
-            $.ajax({
-                url : "/framework/codemanager/types.yum",
-                data : "category=" + category,
-                success : callbackChangeType,
-            });
-        }
-        function callbackChangeType(data) {
-            $('#typeCbx').empty();
-            $('#typeCbx').html(data.cbxTypes);
-        }
-    </script>
+        function validateFormStopSelling(){
 
-    <script id="seller-template" type="text/x-kendo-template">
-        #= seller + ' / ' + sellerName #
-    </script>
+            var count;
+            var elementObj = "";
+            var validation = true;
 
-    <script type="text/javascript">
-            function addGroupPurchaseProduct(e) {
-                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+            // Initialize
+            for(count=0; count < checkObject.length; count++ ){
+                elementObj = "#" + checkObject[count];
+                $(elementObj).css({'background':'#ECF5FF','border-color':'#DFDFDF'});
+            }
+            checkObject = [];
+            var prefix = "- &nbsp;&nbsp;";
+            var message = "";
 
-                var productId = dataItem.prodId;
+            var groupPurchaseId = ${product.groupPurchaseId};
+            var productId = ${product.productId};
+            var stopSelling = $('#stopSelling').val();
+            var stopSellingReason = $('#stopSellingReason').val();
 
-                $.ajax({
-                    url: "/admin/grouppurchase/product/addProduct.yum",
-                    data: {
-                        productId: productId,
-                        groupPurchaseId: ${groupPurchaseId}
-                    },
-                    success: callbackAddGroupPurchaseProduct
-                });
 
+            if(groupPurchaseId == "") {
+                message = message + prefix + "공동구매ID는 필수 항목입니다.<br>";
+                checkObject[checkObject.length] = "groupPurchaseId";
+                validation = false;
             }
 
-            function callbackAddGroupPurchaseProduct(data) {
-                var message = data.message;
-                var resultCode = data.resultCode;
+            if(productId == "") {
+                message = message + prefix + "상품ID는 필수 항목입니다.<br>";
+                checkObject[checkObject.length] = "productId";
+                validation = false;
+            }
 
-                if (resultCode != "0") {
-                    warningPopup(data.message);
-                } else {
-                    parent.refreshForProductList();
+            if(stopSelling == "Y") {
+                if(stopSellingReason == "" || stopSellingReason == null ) {
+                    message = message + prefix + "판매 중지로 설정된 경우 설정된 이유를 입력하셔야합니다.<br>";
+                    checkObject[checkObject.length] = "stopSellingReason";
+                    validation = false;
                 }
             }
+
+            // 검증된 필드들을 마킹한다.
+            for(count=0; count < checkObject.length; count++ ){
+                elementObj = "#" + checkObject[count];
+                $(elementObj).css({'background':'#fffacd','border-color':'#DF0000','border' : '1px solid #f00'});
+            }
+            if(validation == false){
+                // 오류가 있는 경우 경고 창을 보여준다.
+                warningPopup(message);
+            }
+
+            return validation;
+        }
+
+        function stopSellingUpdate(){
+            var groupPurchaseId = ${product.groupPurchaseId};
+            var productId = ${product.productId};
+            var stopSelling = $('#stopSelling').val();
+            var stopSellingReason = $('#stopSellingReason').val();
+
+            if(validateFormStopSelling() == false) return;
+
+            if(stopSelling == "N" || stopSelling == '' || stopSelling == null) {
+                stopSelling = "N";
+                stopSellingReason = "";
+            } else {
+                stopSelling = "Y";
+            }
+
+
+            $.ajax({
+                url  : "/admin/grouppurchase/product/stopSellingUpdate.yum",
+                data : {
+                    groupPurchaseId : ${product.groupPurchaseId},
+                    productId : ${product.productId},
+                    stopSelling : stopSelling,
+                    stopSellingReason : stopSellingReason
+                },
+                success : callbackStopSellingUpdate
+            });
+        }
+
+        function callbackStopSellingUpdate(data) {
+            var message = data.message;
+            var resultCode = data.resultCode;
+
+            if (resultCode != "0") {
+                warningPopup(data.message);
+            } else {
+                parent.refreshForProductList();
+                parent.closeStopSelling();
+            }
+        }
+
     </script>
 </head>
 <body>
 
-<div id="groupPurchasePopup"></div>
+<span class="subtitle"> 상품 기본정보</span>
+<hr class="subtitle"/>
+<table>
+    <tr>
+        <td valign="top">
+            <table class="detail_table">
+                <colgroup>
+                    <col width="200px" />
+                    <col width="250px" />
+                    <col width="200px" />
+                    <col width="300px" />
+                </colgroup>
+                <tr>
+                    <td class="label">상품명</td>
+                    <td class="value">${product.productName}</td>
+                    <td class="label">상품ID</td>
+                    <td class="value">${product.productId}</td>
+                </tr>
+                <tr>
+                    <td class="label">판매자</td>
+                    <td class="value">${product.productOwner}</td>
+                    <td class="label">단가</td>
+                    <td class="value">$ ${product.unitPrice}</td>
+                </tr>
 
-<!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-<!-- Search -->
-<!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-<div class="well">
-    <table class="search_table">
-        <tr>
-            <td class="label">Product Owner : </td>
-            <td class="value"><c:out value="${cbxSeller}" escapeXml="false"/></td>
-            <td class="label">Product Name :  </td>
-            <td class="value_end"><input class="form-control" id="name" name="name"></input></td>
-            <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
+                <tr>
+                    <td colspan="4">
+                        <br/>
+                        <br/>
+                        <span class="subtitle"> 판매정지 설정</span>
+                        <hr class="subtitle"/>
+                    </td>
+                </tr>
 
-        </tr>
-    </table>
-</div>
+                <tr>
+                    <td class="label">상태 :</td>
+                    <td class="value"><c:out value="${cbxStopSelling}" escapeXml="false"/></td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td class="label">공동구매 정지이유 :</td>
+                    <td class="value" colspan="2"><input class="form-control" type="text" id="stopSellingReason" name="stopSellingReason" value='${product.stopSellingReason}' placeholder="공동 구매가 정지된 이유"/></td>
+                    <td></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
-<!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-<!-- Table List -->
-<!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-<div id="grid_panel_main_1"></div>
-
-<br/>
 <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
 <!-- Extra buttons -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
 <table class="action_button_table">
     <tr>
         <td>
-            <button type="button" class="btn btn-primary" onclick="parent.closeSearchProductPopup();">Close</button>
+            <button type="button" class="btn btn-default" onclick="parent.closeStopSelling();">Cancel</button>&nbsp;
+            <button type="button" class="btn btn-primary" onclick="stopSellingUpdate();">Update</button>
         </td>
     </tr>
 </table>
 
 <script type="text/javascript">
     var GROUP_PURCHASE_ID = "";
-    var ACTION_MODE = "ADD";
+    var ACTION_MODE = "MODIFY";
 </script>
 </body>
 </html>

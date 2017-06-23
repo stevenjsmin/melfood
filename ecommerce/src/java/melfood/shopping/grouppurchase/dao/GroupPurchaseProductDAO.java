@@ -37,4 +37,6 @@ public interface GroupPurchaseProductDAO {
 
     public Integer modifyGroupPurchaseProductForNotNull(GroupPurchaseProduct purchaseProduct) throws Exception;
 
+    public Integer modifyGroupPurchaseStopSelling(GroupPurchaseProduct purchaseProduct) throws Exception;
+
 }

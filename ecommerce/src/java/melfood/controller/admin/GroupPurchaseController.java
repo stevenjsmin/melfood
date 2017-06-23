@@ -438,8 +438,8 @@ public class GroupPurchaseController extends BaseController {
         ProductImage productImage = new ProductImage(groupPurchaseId);
 
         // For Pagination
-        productImage.setPagenationPage(0);
-        productImage.setPagenationPageSize(99999);
+        productImage.setPagenationPage(getPage(request));
+        productImage.setPagenationPageSize(getPageSize(request));
 
         Integer totalCount = 0;
         List<ProductImage> list = groupPurchaseService.getProductImages(productImage);
@@ -539,11 +539,6 @@ public class GroupPurchaseController extends BaseController {
     public Map<String, Object> getGroupPurchaseProducts(HttpServletRequest request) throws Exception {
 
         Map<String, Object> model = new HashMap<String, Object>();
-        GroupPurchase groupPurchase = new GroupPurchase();
-
-        // For Pagination
-        groupPurchase.setPagenationPage(getPage(request));
-        groupPurchase.setPagenationPageSize(getPageSize(request));
 
         String groupPurchaseId = request.getParameter("groupPurchaseId");
 
@@ -551,6 +546,10 @@ public class GroupPurchaseController extends BaseController {
             throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
         }
         GroupPurchaseProduct purchaseProduct = new GroupPurchaseProduct(groupPurchaseId);
+
+        // For Pagination
+        purchaseProduct.setPagenationPage(getPage(request));
+        purchaseProduct.setPagenationPageSize(getPageSize(request));
 
         Integer totalCount = 0;
         List<GroupPurchaseProduct> list = groupPurchaseProductService.getGroupPurchaseProducts(purchaseProduct);
@@ -684,14 +683,73 @@ public class GroupPurchaseController extends BaseController {
         Properties htmlProperty = new Properties();
 
         String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String productId = request.getParameter("productId");
 
-        List<Option> contractorOptions = contractInfoService.getAllSellers(sessionUser.getUser().getUserId());
-        htmlProperty = new Properties("seller");
-        htmlProperty.setCssClass("form-control");
-        mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
+        if (StringUtils.isBlank(groupPurchaseId) || StringUtils.isBlank(productId)) {
+            throw new Exception("[groupPurchaseId || productId ]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
 
-        mav.addObject("groupPurchaseId", groupPurchaseId);
+        GroupPurchaseProduct product = groupPurchaseProductService.getGroupPurchaseProduct(groupPurchaseId, productId);
+
+        // 공동구매 정지여부 : 기본값 : N
+        String isStopSelling = "N";
+        if(StringUtils.isBlank(product.getStopSelling()) || StringUtils.equalsIgnoreCase(product.getStopSelling(), "N")){
+            isStopSelling = "N";
+        } else {
+            isStopSelling = "Y";
+        }
+        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", isStopSelling);
+        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
+        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
+
+        mav.addObject("product", product);
 
         return mav;
     }
+
+    @RequestMapping(value = "/product/stopSellingUpdate", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> stopSellingUpdate(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String productId = request.getParameter("productId");
+        String stopSelling = request.getParameter("stopSelling");
+        String stopSellingReason = request.getParameter("stopSellingReason");
+
+        if (StringUtils.isBlank(groupPurchaseId) || StringUtils.isBlank(productId)) {
+            throw new Exception("[groupPurchaseId || productId ]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        GroupPurchaseProduct product = new GroupPurchaseProduct(groupPurchaseId, productId);
+
+        if (StringUtils.equalsIgnoreCase(stopSelling, "Y")) {
+            if (StringUtils.isBlank(stopSellingReason)) {
+                throw new Exception("상품이 판매될수 없는 이유가 없습니다");
+            } else {
+                product.setStopSelling("Y");
+                product.setStopSellingReason(stopSellingReason);
+            }
+        } else {
+            product.setStopSelling("N");
+            product.setStopSellingReason(null);
+        }
+
+        int updateCnt = 0;
+        try {
+            updateCnt = groupPurchaseProductService.modifyGroupPurchaseStopSelling(product);
+
+            model.put("resultCode", "0");
+            model.put("message", updateCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", StringUtils.abbreviate(e.getMessage(), 100));
+        }
+
+        return model;
+    }
+
 }

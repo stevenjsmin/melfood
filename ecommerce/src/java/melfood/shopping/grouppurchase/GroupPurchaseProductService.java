@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface GroupPurchaseProductService {
 
+    public GroupPurchaseProduct getGroupPurchaseProduct(String groupPurchaseId, String productId) throws Exception;
     public GroupPurchaseProduct getGroupPurchaseProduct(int groupPurchaseId, int productId) throws Exception;
     public List<GroupPurchaseProduct> getGroupPurchaseProducts(GroupPurchaseProduct purchaseProduct) throws Exception;
     public List<GroupPurchaseProduct> getGroupPurchaseProducts(int groupPurchaseId) throws Exception;
@@ -25,5 +26,7 @@ public interface GroupPurchaseProductService {
     public Integer modifyGroupPurchaseProduct(GroupPurchaseProduct purchaseProduct) throws Exception;
 
     public Integer modifyGroupPurchaseProductForNotNull(GroupPurchaseProduct purchaseProduct) throws Exception;
+
+    public Integer modifyGroupPurchaseStopSelling(GroupPurchaseProduct purchaseProduct) throws Exception;
 
 }

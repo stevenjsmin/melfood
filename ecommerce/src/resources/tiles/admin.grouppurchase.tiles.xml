@@ -38,7 +38,7 @@
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOverview.jsp" />
 	</definition>
 	<definition name="tiles/admin/grouppurchase/product/stopSellingForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Product Group purchase stop selling" />
+		<put-attribute name="title" value="상품 판매정지 설정" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/stopSellingForm.jsp" />
 	</definition>
 

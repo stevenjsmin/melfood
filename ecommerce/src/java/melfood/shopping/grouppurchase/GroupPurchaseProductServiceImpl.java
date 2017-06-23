@@ -18,6 +18,11 @@ public class GroupPurchaseProductServiceImpl implements GroupPurchaseProductServ
     GroupPurchaseProductDAO groupPurchaseProductDao;
 
     @Override
+    public GroupPurchaseProduct getGroupPurchaseProduct(String groupPurchaseId, String productId) throws Exception {
+        return this.getGroupPurchaseProduct(Integer.parseInt(groupPurchaseId), Integer.parseInt(productId));
+    }
+
+    @Override
     public GroupPurchaseProduct getGroupPurchaseProduct(int groupPurchaseId, int productId) throws Exception {
         List<GroupPurchaseProduct> groupPurchaseProducts = this.getGroupPurchaseProducts(new GroupPurchaseProduct(groupPurchaseId, productId));
         if (groupPurchaseProducts != null & groupPurchaseProducts.size() > 0) {
@@ -96,4 +101,8 @@ public class GroupPurchaseProductServiceImpl implements GroupPurchaseProductServ
         return groupPurchaseProductDao.modifyGroupPurchaseProductForNotNull(purchaseProduct);
     }
 
+    @Override
+    public Integer modifyGroupPurchaseStopSelling(GroupPurchaseProduct purchaseProduct) throws Exception {
+        return groupPurchaseProductDao.modifyGroupPurchaseStopSelling(purchaseProduct);
+    }
 }

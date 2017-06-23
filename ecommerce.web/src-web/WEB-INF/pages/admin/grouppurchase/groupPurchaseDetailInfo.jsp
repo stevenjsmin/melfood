@@ -50,7 +50,7 @@
             // Define datasource for IMAGE list
             // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             var dataSource_1 = new kendo.data.DataSource({
-                pageSize: 20,
+                pageSize: 5,
                 serverPaging: true,
                 serverFiltering: true,
                 transport: {
@@ -115,7 +115,7 @@
                     pageSizes: true,
                     buttonCount: 5,
                     page: 1,
-                    pageSizes: [10, 20, 30],
+                    pageSizes: [5, 10],
                     messages: {
                         itemsPerPage: "",
                         display: "{0} - {1} / {2}"
@@ -135,7 +135,7 @@
             // Define datasource for PRODUCT list
             // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             var dataSource_2 = new kendo.data.DataSource({
-                pageSize: 20,
+                pageSize: 10,
                 serverPaging: true,
                 serverFiltering: true,
                 transport: {
@@ -283,7 +283,8 @@
                 actions: ["Minimize", "Maximize", "Close"],
                 title: "Product images",
                 modal: true,
-                iframe: true
+                iframe: true,
+                position:{ top:"200", left:"25%"}
             });
 
             var popup_dialog = $("#productImagePopup").data("kendoWindow");
@@ -291,7 +292,7 @@
                 width: 900,
                 height: 430
             });
-            popup_dialog.center();
+            // popup_dialog.center();
 
             $("#productImagePopup").data("kendoWindow").open();
         }
@@ -310,7 +311,8 @@
                 actions: ["Minimize", "Maximize", "Close"],
                 title: "Product detail",
                 modal: true,
-                iframe: true
+                iframe: true,
+                position:{ top:"200", left:"25%"}
             });
 
             var popup_dialog = $("#productOverviewPopup").data("kendoWindow");
@@ -338,15 +340,16 @@
                 actions: ["Minimize", "Maximize", "Close"],
                 title: "Stop selling",
                 modal: true,
-                iframe: true
+                iframe: true,
+                position:{ top:"200", left:"25%"}
             });
 
             var popup_dialog = $("#productStopSellingPopup").data("kendoWindow");
             popup_dialog.setOptions({
-                width: 900,
-                height: 500
+                width: 700,
+                height: 300
             });
-            // popup_dialog.center();
+            //popup_dialog.center();
 
             $("#productStopSellingPopup").data("kendoWindow").open();
         }
@@ -559,17 +562,7 @@
                 <tr>
                     <td colspan="4">&nbsp;</td>
                 </tr>
-                <tr>
-                    <td colspan="4">
-                        <table class="action_button_table" width="100%">
-                            <tr>
-                                <td>
-                                    <a href="javascript:goList();" class="btn btn-primary">LIST</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+
             </table>
         </td>
     </tr>
