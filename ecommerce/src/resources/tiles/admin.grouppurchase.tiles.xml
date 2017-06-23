@@ -32,4 +32,10 @@
 		<put-attribute name="title" value="Search product" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/searchProduct.jsp" />
 	</definition>
+	<!-- Product > MasterInfo > Overview -->
+	<definition name="tiles/admin/grouppurchase/product/overviewProductInfo" extends="layout/panel_100">
+		<put-attribute name="title" value="Product overview" />
+		<put-attribute name="navigation" value="Group Purchase > Product overview" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOverview.jsp" />
+	</definition>
 </tiles-definitions>

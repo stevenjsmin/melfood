@@ -13,6 +13,12 @@ public class GroupPurchaseProduct extends BaseDto {
     private String stopSelling;
     private String stopSellingReason;
 
+    // For additional info of product
+    private String unitPrice;
+    private String checkBeforeBuy;
+    private String productDescription;
+
+
     public GroupPurchaseProduct() {
     }
 
@@ -80,5 +86,29 @@ public class GroupPurchaseProduct extends BaseDto {
 
     public void setProductOwner(String productOwner) {
         this.productOwner = productOwner;
+    }
+
+    public String getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public String getCheckBeforeBuy() {
+        return checkBeforeBuy;
+    }
+
+    public void setCheckBeforeBuy(String checkBeforeBuy) {
+        this.checkBeforeBuy = checkBeforeBuy;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 }

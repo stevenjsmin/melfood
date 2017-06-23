@@ -12,9 +12,7 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
-import melfood.shopping.product.Product;
-import melfood.shopping.product.ProductImage;
-import melfood.shopping.product.ProductService;
+import melfood.shopping.product.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +48,12 @@ public class GroupPurchaseController extends BaseController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProductOptionService productOptionService;
+
+    @Autowired
+    private ProductImageService productImageService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -514,7 +518,17 @@ public class GroupPurchaseController extends BaseController {
         }
 
         int updateCnt = 0;
-        updateCnt = groupPurchaseProductService.deleteGroupPurchaseProduct(Integer.parseInt(groupPurchaseId), Integer.parseInt(productId));
+        try {
+            updateCnt = groupPurchaseProductService.insertGroupPurchaseProduct(new GroupPurchaseProduct(groupPurchaseId, productId));
+
+            model.put("resultCode", "0");
+            model.put("message", updateCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", ("이미 등록된 상품인지 확인해주세요 : <br> " + StringUtils.abbreviate(e.getMessage(), 50)));
+        }
 
         return model;
     }
@@ -547,6 +561,7 @@ public class GroupPurchaseController extends BaseController {
 
         return model;
     }
+
 
     @RequestMapping(value = "/product/deleteProduct", produces = "application/json")
     @ResponseBody
@@ -604,6 +619,8 @@ public class GroupPurchaseController extends BaseController {
         htmlProperty.setCssClass("form-control");
         mav.addObject("cbxSeller", contractInfoService.generateCmbx(contractorOptions, htmlProperty, true));
 
+        mav.addObject("groupPurchaseId", groupPurchaseId);
+
         return mav;
     }
 
@@ -635,5 +652,28 @@ public class GroupPurchaseController extends BaseController {
         model.put("list", list);
 
         return model;
+    }
+
+    @RequestMapping("/product/overviewProductInfo")
+    public ModelAndView overviewProductInfo(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/product/overviewProductInfo");
+
+        String productId = request.getParameter("productId");
+
+        if (StringUtils.isBlank(productId)) throw new Exception("[제품ID]  이항목(들)은 빈 값이 될 수 없습니다.");
+
+        Product product = productService.getProduct(new Product(productId));
+
+        Properties htmlProperty = new Properties();
+        mav.addObject("productOptions", productOptionService.generateCmbxForOptionAndValue(htmlProperty, Integer.parseInt(productId)));
+        mav.addObject("product", product);
+
+        ProductImage productImage = new ProductImage(productId);
+        productImage.setPagenationPage(0);
+        productImage.setPagenationPageSize(99999);
+        List<ProductImage> productImages = productImageService.getProductImages(productImage);
+        mav.addObject("productImages", productImages);
+
+        return mav;
     }
 }

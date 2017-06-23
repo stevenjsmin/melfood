@@ -23,23 +23,33 @@
 		<put-attribute name="main" value="/WEB-INF/pages/common/empty.jsp" />
 	</definition>
 
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<!-- Layout Define -->
-	<!-- 
-	     - layout/admin/root/panel_200 : Header + Contents + Footer 
-	     - layout/admin/root/panel_300 : Header + Contents(left menu, navigation, page title) + Footer
+
+	<!-- layout/panel_100
+		 설명          : 주로 Popup화면에서 단순 컨텐츠만 보여주는 경우 사용된다
+		 레이아웃설명     : 상단에 페이지 제목과, 하단에는 컨텐츠를 보여준다
 	-->
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<definition name="layout/panel_100" extends="root" template="/WEB-INF/pages/_layout/panel_100.jsp">
 		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
-	</definition>	
+	</definition>
+
+	<!-- layout/panel_200
+		 설명          : 주로 좌측에 메뉴 네비게이션이 없는 메인 화면에서 사용된다.
+		 레이아웃설명     : 상단에 페이지 제목과, 중간에는 컨텐츠, 하단에는 Footer가 자리잡는다
+	-->
 	<definition name="layout/panel_200" extends="root" template="/WEB-INF/pages/_layout/panel_200.jsp">
 		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
 	</definition>
+
+	<!-- layout/panel_300
+		 설명          : panel_200과 동일하지만 좌측에 메뉴 네비게이션이 있는 메인 화면에서 사용된다.
+		 레이아웃설명     : 상단에 페이지 제목과, 중간에는 좌측에 메인메뉴 네비게이션(트리)와 컨텐츠, 하단에는 Footer가 자리잡는다
+	-->
 	<definition name="layout/panel_300" extends="root" template="/WEB-INF/pages/_layout/panel_300.jsp">
 		<put-attribute name="left-menu" value="/WEB-INF/pages/common/empty.jsp" />
 		<put-attribute name="body" value="/WEB-INF/pages/common/empty.jsp" />
 	</definition>
+
+
 	<definition name="layout/panel_500" extends="root" template="/WEB-INF/pages/_layout/panel_500.jsp">
 	</definition>
 	<definition name="layout/panel_600" extends="root" template="/WEB-INF/pages/_layout/panel_600.jsp">

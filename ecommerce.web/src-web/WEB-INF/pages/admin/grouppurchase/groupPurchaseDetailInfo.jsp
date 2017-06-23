@@ -210,8 +210,12 @@
                 columns: [
                     {hidden: true, field: 'groupPurchaseId'},
                     {hidden: true, field: 'productId'},
-                    {title: 'Product Name', width: 150, field: 'productName', filterable: true, attributes: {style: "text-align: center;"}},
-                    {title: 'Product Owner', field: 'productOwner', filterable: true},
+                    {title: 'Name', width: 200, field: 'productName', filterable: true,  attributes: {style: "text-align: left;color: 606000; font-weight: bolder;" }},
+                    {title: 'Owner', field: 'productOwner', filterable: true},
+                    {title: 'Price($)', field: 'unitPrice', filterable: true, width: 100},
+                    { title : 'Status', template: kendo.template($("#stopSelling-template").html()), width: 200},
+                    {command: [{text: "Stop", click: stopSelling}], width: 100},
+                    {command: [{text: "Info", click: detailInfoProduct}], width: 100},
                     {command: [{text: "Delete", name: "destory", click: deleteItemProduct}], width: 100}
 
                 ] // End of Columns
@@ -221,6 +225,10 @@
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+        function refreshForProductList(){
+            $('#grid_panel_main_2').data('kendoGrid').dataSource.read();
+            $('#grid_panel_main_2').data('kendoGrid').refresh();
+        }
 
         function onChange(e) {
             var gridRecord = e.sender;
@@ -259,32 +267,14 @@
 
         function deleteItemProduct(e) {
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-            BootstrapDialog.confirm({
-                title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
-                message: '정말 삭제하시겠습니까?',
-                type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-                closable: true, // Default value is false
-                draggable: true, // Default value is false
-                btnCancelLabel: 'Cancel', // Default value is 'Cancel',
-                btnOKLabel: 'OK', // Default value is 'OK',
-                btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
-                callback: function (result) {
-                    if (result) {
-                        var grid = $("#grid_panel_main_2").data("kendoGrid");
-                        grid.dataSource.remove(dataItem);
-                        grid.dataSource.sync();
-                        grid.refresh();
-                    }
-                }
-            });
+            var grid = $("#grid_panel_main_2").data("kendoGrid");
+            grid.dataSource.remove(dataItem);
+            grid.dataSource.sync();
+            grid.refresh();
         }
 
     </script>
 
-    <script id="size-template" type="text/x-kendo-template">
-        #= ( (width != null && height != null) ? (width + ' X ' + height) : '-')  #
-    </script>
     <script type="text/javascript">
         function openImageViwer() {
 
@@ -310,14 +300,81 @@
             win_dialog.close();
         }
     </script>
-    <style>
-    </style>
+
+    <script type="text/javascript">
+        function detailInfoProduct(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#productOverviewPopup").kendoWindow({
+                content: "/admin/grouppurchase/product/overviewProductInfo.yum?productId=" + dataItem.productId,
+                actions: ["Minimize", "Maximize", "Close"],
+                title: "Product detail",
+                modal: true,
+                iframe: true
+            });
+
+            var popup_dialog = $("#productOverviewPopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                width: 900,
+                height: 500
+            });
+            // popup_dialog.center();
+
+            $("#productOverviewPopup").data("kendoWindow").open();
+        }
+        function closeDetailInfoProduct() {
+            var win_dialog = $("#productOverviewPopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function stopSelling(e) {
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+            $("#productStopSellingPopup").kendoWindow({
+                content: "/admin/grouppurchase/product/overviewProductInfo.yum?groupPurchaseId=" + dataItem.groupPurchaseId + "&productId=" + dataItem.productId,
+                actions: ["Minimize", "Maximize", "Close"],
+                title: "Stop selling",
+                modal: true,
+                iframe: true
+            });
+
+            var popup_dialog = $("#productStopSellingPopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                width: 900,
+                height: 500
+            });
+            // popup_dialog.center();
+
+            $("#productStopSellingPopup").data("kendoWindow").open();
+        }
+        function closeStopSelling() {
+            var win_dialog = $("#productStopSellingPopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
+
+
+    <script id="size-template" type="text/x-kendo-template">
+        #= ( (width != null && height != null) ? (width + ' X ' + height) : '-')  #
+    </script>
+    <script id="stopSelling-template" type="text/x-kendo-template">
+        # if (stopSelling === 'Y') { #
+            #= '<span style="color: F9B583;">판매정지 :' + abbreviate(stopSellingReason,10) + '</span>' #
+        # } else { #
+            판매중
+        # }#
+    </script>
 </head>
 
 
 <body>
 <div id="productImagePopup"></div>
 <div id="groupPurchasePopup"></div>
+<div id="productOverviewPopup"></div>
+<div id="productStopSellingPopup"></div>
 <table>
     <tr>
         <td valign="top">
@@ -400,7 +457,6 @@
                 <tr>
                     <td colspan="4">
                         <br/>
-                        <span class="subtitle"> 공동구매 상태정보</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
@@ -431,7 +487,6 @@
                 <tr>
                     <td colspan="4">
                         <br/>
-                        <span class="subtitle"> 공동구매 장소.주소/시간</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
@@ -453,7 +508,6 @@
                 <tr>
                     <td colspan="4">
                         <br/>
-                        <span class="subtitle"> 기타공지 메모</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>

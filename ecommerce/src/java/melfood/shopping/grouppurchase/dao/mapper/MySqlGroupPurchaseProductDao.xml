@@ -11,6 +11,9 @@
 		  	a.group_purchase_id "groupPurchaseId"
 			,a.product_id "productId"
 		    ,(SELECT name FROM product WHERE prod_id = a.product_id) "productName"
+		    ,(SELECT unit_price FROM product WHERE prod_id = a.product_id) "unitPrice"
+		    ,(SELECT check_before_buy FROM product WHERE prod_id = a.product_id) "checkBeforeBuy"
+		    ,(SELECT description FROM product WHERE prod_id = a.product_id) "productDescription"
 			,(SELECT user_name FROM cmm_user WHERE user_id = (SELECT seller FROM product WHERE prod_id = a.product_id)) "productOwner"
 			,a.stop_selling "stopSelling"
 			,a.stop_selling_reason "stopSellingReason"
@@ -31,8 +34,8 @@
 	   ORDER BY a.group_purchase_id ASC, a.product_id ASC
 			LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
-	<select id="getTotalCntGroupPurchaseProducts" parameterType="GroupPurchaseProduct" resultType="java.lang.Integer">
-		/* QUERY ID : getTotalCntGroupPurchaseProducts */
+	<select id="getTotalCntForGroupPurchaseProducts" parameterType="GroupPurchaseProduct" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForGroupPurchaseProducts */
 		SELECT COUNT(*)
 		  FROM group_purchase_product a
 		 WHERE 1 = 1

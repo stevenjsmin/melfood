@@ -83,8 +83,8 @@
                     { hidden : true, field: 'prodId'},
                     { title : 'Product Name', field: 'name', attributes: {style: "text-align: left;color: 606000; font-weight: bolder;" }},
                     { title : 'Product Owner', template: kendo.template($("#seller-template").html()), attributes: {style: "text-align: left;" }},
-                    { title : 'Unit Price($)', field: 'unitPrice', width: 150, attributes: {style: "text-align: right;" }, format: "{0:c}"},
-                    { command: [ {text : "Add", click: addItem}], width: 90}
+                    { title : 'Price($)', field: 'unitPrice', width: 150, attributes: {style: "text-align: right;" }, format: "{0:c}"},
+                    { command: [ {text : "Add", click: addGroupPurchaseProduct}], width: 90}
 
                 ] // End of Columns
             }); // End of GRID
@@ -145,6 +145,34 @@
         #= seller + ' / ' + sellerName #
     </script>
 
+    <script type="text/javascript">
+            function addGroupPurchaseProduct(e) {
+                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+
+                var productId = dataItem.prodId;
+
+                $.ajax({
+                    url: "/admin/grouppurchase/product/addProduct.yum",
+                    data: {
+                        productId: productId,
+                        groupPurchaseId: ${groupPurchaseId}
+                    },
+                    success: callbackAddGroupPurchaseProduct
+                });
+
+            }
+
+            function callbackAddGroupPurchaseProduct(data) {
+                var message = data.message;
+                var resultCode = data.resultCode;
+
+                if (resultCode != "0") {
+                    warningPopup(data.message);
+                } else {
+                    parent.refreshForProductList();
+                }
+            }
+    </script>
 </head>
 <body>
 
