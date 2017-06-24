@@ -9,7 +9,7 @@
 	<!-- Layout Define -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<definition name="tiles/customer/mypage/root" extends="layout/panel_300">
-	    <put-attribute name="leftMenuName" value="CUSTOMER :: MY 빵" />
+	    <put-attribute name="leftMenuName" value="CUSTOMER :: MY 푸드" />
 		<put-attribute name="navigation" value="Customer > My Page" />
 		<put-attribute name="left-menu" value="/WEB-INF/pages/customer/customer_leftmain_menu.jsp" /> 
 	</definition>
