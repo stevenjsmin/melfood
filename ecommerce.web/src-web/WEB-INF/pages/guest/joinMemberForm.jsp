@@ -265,14 +265,15 @@
                 <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
                 <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다. 입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
             </tr>
+
+            <tr><td colspan="4" style="height: 10px;"></td></tr>
             <tr>
                 <td class="label">이메일</td>
-                <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소" value='' maxlength="50"/></td>
+                <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소 @" value='' maxlength="50"/></td>
                 <td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
             </tr>
-            <tr>
-                <td colspan="4" style="height: 20px;"></td>
-            </tr>
+
+            <tr><td colspan="4" style="height: 10px;"></td></tr>
             <tr>
                 <td class="label">State</td>
                 <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
