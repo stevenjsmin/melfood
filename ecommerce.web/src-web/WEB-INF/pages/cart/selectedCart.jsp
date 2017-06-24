@@ -88,7 +88,7 @@ function callbackRemoveItem(data) {
          warningPopup(data.message);
     } else {
 		BootstrapDialog.alert({
-            title: '알림  :: 호주가 즐거운 이유, 쿠빵!!',
+            title: '알림  :: 호주가 즐거운 이유, 멜푸드!!',
             message: data.message,
             type: BootstrapDialog.TYPE_INFO, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
             closable: true, // Default value is false
@@ -226,7 +226,7 @@ function cancelChooseDeliveryDate(){
 	    
 	    if(isPickup == '' || isPickup == null) {
 			BootstrapDialog.confirm({
-	            title: '알림  :: 호주가 즐거운 이유, 쿠빵!!',
+	            title: '알림  :: 호주가 즐거운 이유, 멜푸드!!',
 	            message: '고객님께서 상품수령 또는 픽업일자를 선택하지 않으셨습니다.<br/> "상품수령 또는 픽업일자"를 선택하지 않는 경우 주문 완료 후 확인 전화드리도록 하겠습니다.<br/><br/> 계속하시겠습니까?',
 	            type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
 	            closable: true, // Default value is false

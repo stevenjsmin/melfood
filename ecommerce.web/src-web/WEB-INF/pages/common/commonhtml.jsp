@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>호주가 즐거운 이유!! 쿠빵</title>
+<title>호주가 즐거운 이유!! 멜푸드</title>
 </head>
 <body>
 

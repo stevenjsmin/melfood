@@ -193,7 +193,7 @@
 									    		</tr>
 									    		<tr><td colspan="2" style="padding: 5px;color: #450C0E;height: 20px;font-weight: bolder;">${entry.name}</td></tr>
 									    		<tr>
-									    			<td style="height: 20px;padding: 5px;font-size: 20px;text-align: left;" colspan="2"><span style="color: #D2141C;font-size: 15px;font-weight: bold;">쿠빵가격 :</span> <b>$ ${entry.unitPrice}</b></td>
+									    			<td style="height: 20px;padding: 5px;font-size: 20px;text-align: left;" colspan="2"><span style="color: #D2141C;font-size: 15px;font-weight: bold;">멜푸드가격 :</span> <b>$ ${entry.unitPrice}</b></td>
 									    		</tr>
 									    		<tr>
 									    			<td style="height: 20px;text-align: right;padding-right: 10px;" colspan="2"><a href="javascript:openAddCartPopupWin('${entry.productImage.prodId}'); "><span style="font-size: 10px;">장바구니 담기</span></a></td>

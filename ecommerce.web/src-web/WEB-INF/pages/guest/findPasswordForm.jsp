@@ -125,7 +125,7 @@ function callbackFindMemberPassword(data) {
 	               <td colspan="3" class="value" style="padding-top: 5px;">
 						   <br/>
 						   안녕하세요.<br/>
-						   <b>쿠빵</b>몰에서는 <span style="color: #B0346B;">모바일(핸드폰) 번호</span>를 아이디로 사용합니다..<br/><br/>
+						   <b>멜푸드</b>몰에서는 <span style="color: #B0346B;">모바일(핸드폰) 번호</span>를 아이디로 사용합니다..<br/><br/>
 						   
 						   <span style="color: #BFBEC5;">
 						   아이디(모바일번호)를 입력하시고 오른쪽 하단에 있는 "비밀번호 찾기" 버튼을 클릭하시면 사용하시고 계신 비밀번호가 등록하신 메일로 발송됩니다.

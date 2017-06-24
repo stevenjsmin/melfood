@@ -385,7 +385,7 @@ function downloadFile(fileId){
 
 function doLoginPopup(){
 	BootstrapDialog.confirm({
-        title: '알림  :: 호주가 즐거운 이유, 쿠빵!!',
+        title: '알림  :: 호주가 즐거운 이유, 멜푸드!!',
         message: '요청하신 서비스는 로그인이 필요한 서비스입니다. 로그인 하시겠습니까?',
         type: BootstrapDialog.TYPE_INFO, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
         closable: true, // Default value is false

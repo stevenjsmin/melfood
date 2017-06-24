@@ -105,7 +105,7 @@ function callbackChangePassword(data) {
            warningPopup(data.message);
       } else {
 			BootstrapDialog.show({
-	            title: 'INFO  :: 호주가 즐거운 이유, 쿠빵!!',
+	            title: 'INFO  :: 호주가 즐거운 이유, 멜푸드!!',
 	            message: '정상적으로 비밀번호가 변경되었습니다. 감사합니다.',
 	            type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
 	            buttons: [{

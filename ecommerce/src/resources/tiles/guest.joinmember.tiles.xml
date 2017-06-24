@@ -8,7 +8,7 @@
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- LAYOUT DEFINE -->
 	<definition name="tiles/guest/root" extends="layout/panel_200">
-		<put-attribute name="navigation" value="쿠빵 > 손님" />
+		<put-attribute name="navigation" value="멜푸드 > 손님" />
 	</definition>
 	
 	<definition name="tiles/guest/joinmember/join" extends="tiles/guest/root">

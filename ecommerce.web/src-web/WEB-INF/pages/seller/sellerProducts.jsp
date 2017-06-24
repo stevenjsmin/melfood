@@ -113,7 +113,7 @@
 									    			<td>
 									    				<table style="width: 100%;height: 100%;" border="0">
 									    					<tr><td><span style="color: #450C0E;">${entry.name}</span></td></tr>
-									    					<tr><td style="padding-top: 10px;padding-bottom: 10px;"><span style="color: #D2141C;font-size: 20px;">쿠빵가격 :</span> <span style="font-size: 20px;font-weight: bold;">$ ${entry.unitPrice}</span></td></tr>
+									    					<tr><td style="padding-top: 10px;padding-bottom: 10px;"><span style="color: #D2141C;font-size: 20px;">멜푸드가격 :</span> <span style="font-size: 20px;font-weight: bold;">$ ${entry.unitPrice}</span></td></tr>
 									    					<tr>
 									    						<td style="padding-right: 5px;">
 									    							<table align="right">

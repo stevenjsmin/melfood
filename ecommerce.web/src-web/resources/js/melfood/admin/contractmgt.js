@@ -173,7 +173,7 @@ function callbackSave(data) {
            warningPopup(data.message);
       } else {
 			BootstrapDialog.show({
-	            title: 'INFO  :: 호주가 즐거운 이유, 쿠빵!!',
+	            title: 'INFO  :: 호주가 즐거운 이유, 멜푸드!!',
 	            message: '정상적으로 저장 되었습니다.',
 	            type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
 	            buttons: [{
@@ -190,7 +190,7 @@ function callbackSave(data) {
 function deleteInfo(userId, contractSeq){
 	
 	BootstrapDialog.confirm({
-        title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
+        title: 'WARNING  :: 호주가 즐거운 이유, 멜푸드!!',
         message: '정말 삭제하시겠습니까? 삭제하는 경우 모든 계약정보가 영구히 삭제됩니다.',
         type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
         closable: true, // Default value is false

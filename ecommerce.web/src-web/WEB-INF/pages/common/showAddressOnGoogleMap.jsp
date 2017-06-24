@@ -9,7 +9,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
         var CoupangGmap = new Object(); 
-        CoupangGmap.mapName = '쿠빵지도';
+        CoupangGmap.mapName = '멜푸드지도';
         CoupangGmap.mapStyleNo = 6;
         CoupangGmap.mapIsMultipleMark = '${mapIsMultipleMark}';
         CoupangGmap.mapZoomLevel = 13;

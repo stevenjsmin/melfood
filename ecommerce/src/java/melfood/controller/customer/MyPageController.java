@@ -86,7 +86,7 @@ public class MyPageController extends BaseController {
 
 				if (!StringUtils.isBlank(checkUser.getEmail())) {
 					EmailServices emailSvc = new EmailServices();
-					emailSvc.sendEmailUsingHtmlTemplate(checkUser.getEmail(), "[쿠빵] 고객님의 비밀번호가 변경되었습니다.", emailContents.toString(), "3");
+					emailSvc.sendEmailUsingHtmlTemplate(checkUser.getEmail(), "[멜푸드] 고객님의 비밀번호가 변경되었습니다.", emailContents.toString(), "3");
 				}
 			}
 
@@ -212,7 +212,7 @@ public class MyPageController extends BaseController {
 
 				if (!StringUtils.isBlank(user.getEmail())) {
 					EmailServices emailSvc = new EmailServices();
-					emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[쿠빵] 고객님의 개인정보가 변경되었습니다.", emailContents.toString(), "3");
+					emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[멜푸드] 고객님의 개인정보가 변경되었습니다.", emailContents.toString(), "3");
 				}
 			}
 

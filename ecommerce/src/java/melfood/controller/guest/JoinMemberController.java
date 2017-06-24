@@ -149,7 +149,7 @@ public class JoinMemberController extends BaseController {
 				emailContents.append("userAddress=" + userAddress + "^");
 
 				EmailServices emailSvc = new EmailServices();
-				emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[쿠빵] 쿠빵몰에 회원이 되셨습니다. 감사합니다.", emailContents.toString(), "1");
+				emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[멜푸드] 멜푸드몰에 회원이 되셨습니다. 감사합니다.", emailContents.toString(), "1");
 			}
 
 			model.put("user", userService.getUserInfo(userId));
@@ -199,7 +199,7 @@ public class JoinMemberController extends BaseController {
 
 				if (!StringUtils.isBlank(user.getEmail())) {
 					EmailServices email = new EmailServices();
-					email.sendEmailUsingHtmlTemplate(user.getEmail(), "[쿠빵] 요청하신 비밀번호입니다.", emailContents.toString(), "2");
+					email.sendEmailUsingHtmlTemplate(user.getEmail(), "[멜푸드] 요청하신 비밀번호입니다.", emailContents.toString(), "2");
 				}
 				// userService.initialUserAccount(user.getUserId());
 				model.put("message", "요청하신 사용자 비빌번호를 등록하신 이메일로 발송하였습니다.");

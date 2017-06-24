@@ -222,7 +222,7 @@
 			warningPopup(data.message);
 		} else {
 			BootstrapDialog.show({
-				title : 'INFO  :: 호주가 즐거운 이유, 쿠빵!!',
+				title : 'INFO  :: 호주가 즐거운 이유, 멜푸드!!',
 				message : '정상적으로 회원가입이 되었습니다. 감사합니다.',
 				type : BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
 				buttons : [ {
@@ -286,7 +286,7 @@
 					<td colspan="3" class="value" style="padding-top: 5px;"><span
 						style="font-weight: bold; color: #2251B0;">회원아이디 생성 규칙에 관한
 							안내</span><br />
-					<br /> <b>쿠빵</b>몰에서는 아이디를 사용하시는 <span
+					<br /> <b>멜푸드</b>몰에서는 아이디를 사용하시는 <span
 						style="color: #B0346B;">모바일(핸드폰) 번호</span>로만 받습니다.
 					<br /> <span style="color: #BFBEC5;"> ID를 모바일번호로 사용하시더라도 Mall관리자 또는 상판품 판매자와 같이 반드시
 							업무상 연락이 필요한 경우에만 공개됩니다.<br /><br />고객님의 개인정보 보호를 위하여 일반 웹싸이트 혹은 쇼핑몰처럼 아이디를 공개/노출 하는

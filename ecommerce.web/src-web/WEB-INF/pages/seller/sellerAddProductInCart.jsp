@@ -119,7 +119,7 @@ function calculateTotalPrice(e){
 	    } else {
 	    	 // infoPopup(data.message);
 			BootstrapDialog.alert({
-	            title: 'INFO  :: 호주가 즐거운 이유, 쿠빵!!',
+	            title: 'INFO  :: 호주가 즐거운 이유, 멜푸드!!',
 	            message: data.message,
 	            type: BootstrapDialog.TYPE_PRIMARY, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
 	            closable: true, // Default value is false

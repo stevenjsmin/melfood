@@ -22,7 +22,7 @@
 	function deleteAllProductInfo(){
 		
 		BootstrapDialog.confirm({
-	        title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
+	        title: 'WARNING  :: 호주가 즐거운 이유, 멜푸드!!',
 	        message: '정말 모든 상품정보를 영구히 삭제하시겠습니까?',
 	        type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
 	        closable: true, // Default value is false
