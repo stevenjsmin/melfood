@@ -38,7 +38,7 @@ $(document).ready(function() {
                               <td class="value"><c:out value="${cbxSex}" escapeXml="false"/></td>
                          </tr>                         
                          <tr>
-                              <td class="label"><span class="required">* </span>닉네임(Nickname) </td>
+                              <td class="label">닉네임(Nickname) </td>
                               <td class="value"><input class="form-control" type="text" id="userName" name="userName" value='${user.userName}'/></td>
                               <td class="label">실명 </td>
                               <td class="value"><input class="form-control" type="text" id="userNameReal" name="userNameReal" value='${user.userNameReal}'/></td>
@@ -53,13 +53,8 @@ $(document).ready(function() {
                          <tr style="height: 10px;"><td colspan="4"></td></tr>
                                                   
                          <tr>
-                              <td class="label"><span class="required">* </span>Email </td>
-                              <td class="value" colspan="2"><input class="form-control" type="text" id="email" name="email" value='${user.email}'/></td>
-                              <td></td>
-                         </tr>
-                         <tr>
-                              <td class="label">Mobile </td>
-                              <td class="value"><input class="form-control" type="text" id="mobile" name="mobile" value='${user.mobile}'/></td>
+                              <td class="label">Email </td>
+                              <td class="value"><input class="form-control" type="text" id="email" name="email" value='${user.email}'/></td>
                               <td class="label">Tel</td>
                               <td class="value"><input class="form-control" type="text" id="telephone" name="telephone" value='${user.telephone}'/></td>
                          </tr>
@@ -73,21 +68,21 @@ $(document).ready(function() {
                          <tr style="height: 10px;"><td colspan="4"></td></tr>
                          
                          <tr>
-                              <td class="label"><span class="required">* </span>State</td>
+                              <td class="label">State</td>
                               <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
                               <td></td>
                               <td></td>
                          </tr>
                          <tr>
-                              <td class="label"><span class="required">* </span>Postcode</td>
+                              <td class="label">Postcode</td>
                               <td class="value" style="padding-left: 3px;">
                                    <table><tr><td><input class="form-control" type="text" id="addressPostcode" name="addressPostcode" value='${user.addressPostcode}' style="width: 80px;" maxlength="4"/></td><td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="setSuburbCbx('addressPostcode', 'addressSuburb')"></td></tr></table>
                               </td>
-                              <td class="label"><span class="required">* </span>Suburb</td>
+                              <td class="label">Suburb</td>
                               <td class="value"><div id="cbx_addressSuburb"><input class="form-control" type="text" id="addressSuburb" name="addressSuburb" value='${user.addressSuburb}'/></div></td>
                          </tr>
                          <tr>
-                              <td class="label"><span class="required">* </span>Street</td>
+                              <td class="label">Street</td>
                               <td class="value" colspan="2"><input class="form-control" type="text" id="addressStreet" name="addressStreet" value='${user.addressStreet}'/></td>
                               <td></td>
                          </tr>

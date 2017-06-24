@@ -53,6 +53,7 @@ public class JoinMemberController extends BaseController {
         List<Option> addressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", "VIC");
         htmlProperty = new Properties("addressState");
         htmlProperty.setCssClass("form-control");
+        htmlProperty.setCssStyle("background-color: #FFFFFF;");
         mav.addObject("cbxAddressState", codeService.generateCmbx(addressStateOptions, htmlProperty));
 
         String userDefaultName = joinMemberService.getDefaultUserName();
@@ -118,14 +119,20 @@ public class JoinMemberController extends BaseController {
 
             User user = new User(userId, password);
 
-            if (!StringUtils.isEmpty(userName)) {
-                user.setUserName(userName);
+            if(StringUtils.isBlank(userName)){
+                user.setUserName(userId.substring(userId.length() - 3));
+                // user.setUserName(joinMemberService.getDefaultUserName());
             } else {
-                user.setUserName(joinMemberService.getDefaultUserName());
+                user.setUserName(userName);
             }
 
-            if (!StringUtils.isBlank(userName)) user.setUserName(userName);
-            if (!StringUtils.isBlank(userNameReal)) user.setUserNameReal(userNameReal);
+            if(StringUtils.isBlank(userNameReal)){
+                user.setUserNameReal(userId.substring(userId.length() - 3));
+                // user.setUserNameReal(joinMemberService.getDefaultUserName());
+            } else {
+                user.setUserNameReal(userNameReal);
+            }
+
             if (!StringUtils.isBlank(email)) user.setEmail(email);
             if (!StringUtils.isBlank(addressState)) user.setAddressState(addressState);
             if (!StringUtils.isBlank(addressPostcode)) user.setAddressPostcode(addressPostcode);
@@ -133,6 +140,9 @@ public class JoinMemberController extends BaseController {
             if (!StringUtils.isBlank(addressStreet)) user.setAddressStreet(addressStreet);
             user.setSellerIsMandatoryChooseDeliveryPickupDate("Y");
             String userAddress = addressStreet + " " + addressSuburb + " " + addressPostcode + " " + addressState;
+
+            // TODO : 모바일 인증
+            user.setMobileAuthFinished("Y");
 
             user.setUseYn("Y");
             user.setApplyStatus("COMPLETE");

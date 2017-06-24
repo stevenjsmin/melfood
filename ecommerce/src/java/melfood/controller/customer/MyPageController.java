@@ -174,7 +174,7 @@ public class MyPageController extends BaseController {
         String sex = request.getParameter("sex");
         String dob = request.getParameter("dob");
         String email = request.getParameter("email");
-        String mobile = request.getParameter("mobile");
+        // String mobile = request.getParameter("mobile");
         String telephone = request.getParameter("telephone");
         String useSocialMessenger = request.getParameter("useSocialMessenger");
         String useSocialMessengerId = request.getParameter("useSocialMessengerId");
@@ -188,11 +188,25 @@ public class MyPageController extends BaseController {
             if (StringUtils.isBlank(userId)) throw new Exception("[사용자 ID]  이항목(들)은 빈 값이 될 수 없습니다.");
             User user = new User(userId);
 
-            if (!StringUtils.isBlank(userName)) user.setUserName(userName);
-            if (!StringUtils.isBlank(userNameReal)) user.setUserNameReal(userNameReal);
+            if(StringUtils.isBlank(userName)){
+                user.setUserName(userId.substring(userId.length() - 3));
+                // user.setUserName(joinMemberService.getDefaultUserName());
+            } else {
+                user.setUserName(userName);
+            }
+
+            if(StringUtils.isBlank(userNameReal)){
+                user.setUserNameReal(userId.substring(userId.length() - 3));
+                // user.setUserNameReal(joinMemberService.getDefaultUserName());
+            } else {
+                user.setUserNameReal(userNameReal);
+            }
+
+            user.setMobileAuthFinished("Y");
+
             if (!StringUtils.isBlank(sex)) user.setSex(sex);
             if (!StringUtils.isBlank(dob)) user.setDob(dob);
-            if (!StringUtils.isBlank(mobile)) user.setMobile(mobile);
+            // if (!StringUtils.isBlank(mobile)) user.setMobile(mobile);
             if (!StringUtils.isBlank(telephone)) user.setTelephone(telephone);
             if (!StringUtils.isBlank(email)) user.setEmail(email);
             if (!StringUtils.isBlank(useSocialMessenger)) user.setUseSocialMessenger(useSocialMessenger);
@@ -221,6 +235,9 @@ public class MyPageController extends BaseController {
                     emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[멜푸드] 고객님의 개인정보가 변경되었습니다.", emailContents.toString(), "3");
                 }
             }
+
+            // 현재 세션의 이름 설정
+            sessionUser.getUser().setUserName(user.getUserName());
 
             model.put("resultCode", "0");
             model.put("message", updateUserId + " 의 정보가 저장/변경 되었습니다.");

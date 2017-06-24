@@ -49,23 +49,14 @@ function validateForm(){
     var addressStreet = $('#addressStreet').val();
     
     
- 	if(userName == "") {
- 		message = message + prefix + "사용자 이름은 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "userName";
- 		validation = false;
- 	}
+    if(email != "") {
+        if (!validateEmail(email)) {
+            message = message + prefix + "입력하신 이메일 주소 형식이 올바르지 않습니다.<br>";
+            checkObject[checkObject.length] = "email";
+            validation = false;
+        }
+    }
 
- 	if(email == "") {
- 		message = message + prefix + "사용자 이메일주소 입력은 필수입니다.<br>";
- 		checkObject[checkObject.length] = "email";
- 		validation = false;
- 	} else {
- 		if (!validateEmail(email)) {
- 	 		message = message + prefix + "입력하신 이메일 주소 형식이 올바르지 않습니다.<br>";
- 	 		checkObject[checkObject.length] = "email";
- 	 		validation = false;
- 		}
- 	}
  	
     if(dob != ""){
         var parsedDate = kendo.parseDate(dob, "yyyy-MM-dd");
@@ -86,37 +77,14 @@ function validateForm(){
  		checkObject[checkObject.length] = "useSocialMessenger";
  		validation = false;
  	}
- 	
- 	if(addressState == "") {
- 		message = message + prefix + "사용자 주소:State 지정은 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "addressState";
- 		validation = false;
- 	} 	
- 	if(addressPostcode == "") {
- 		message = message + prefix + "사용자 주소:우편번호 지정은 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "addressPostcode";
- 		validation = false;
- 	} else {
- 	 	if(!validatePostcode(addressPostcode)) {
- 	 		message = message + prefix + "우편번호가 올바른 형식이 아닙니다.<br>";
- 	 		checkObject[checkObject.length] = "addressPostcode";
- 	 		validation = false;
- 	 	}
- 	} 	
- 	
-    if(addressSuburb == ""){
- 		message = message + prefix + "사용자 주소:Surburb 지정은 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "addressSuburb";
- 		validation = false;
-    } 	
-    
-    if(addressStreet == "" || addressStreet.length < 5){
-    	message = message + prefix + "올바른 사용자 주소:Street 를 입력해주세요.<br>";
-    	checkObject[checkObject.length] = "addressStreet";
-    	validation = false;
-    } 	
- 	
- 	
+
+    if(addressPostcode != "") {
+        if(!validatePostcode(addressPostcode)) {
+            message = message + prefix + "우편번호가 올바른 형식이 아닙니다.<br>";
+            checkObject[checkObject.length] = "addressPostcode";
+            validation = false;
+        }
+    }
 
  	// 검증된 필드들을 마킹한다.
 	for(count=0; count < checkObject.length; count++ ){
@@ -135,11 +103,9 @@ function validateForm(){
 function save(){
       var userName = $('#userName').val();
       var userNameReal = $('#userNameReal').val();
-      if(userNameReal == '') userNameReal = userName;      
       var sex = $('#sex').val();
       var dob = $('#dob').val();
       var email = $('#email').val();
-      var mobile = $('#mobile').val();
       var telephone = $('#telephone').val();
       var useSocialMessenger = $('#useSocialMessenger').val();
       var useSocialMessengerId = $('#useSocialMessengerId').val();
@@ -159,7 +125,6 @@ function save(){
              sex : sex,
              dob : dob,
              email : email,
-             mobile : mobile,
              telephone : telephone,
              useSocialMessenger : useSocialMessenger,
              useSocialMessengerId : useSocialMessengerId,

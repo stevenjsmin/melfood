@@ -49,12 +49,6 @@
                          <tr>
                               <td class="label">Email </td>
                               <td class="value">${user.email}</td>
-                              <td></td>
-                              <td></td>
-                         </tr>
-                         <tr>
-                              <td class="label">Mobile </td>
-                              <td class="value">${user.mobile}</td>
                               <td class="label">Tel</td>
                               <td class="value">${user.telephone}</td>
                          </tr>
