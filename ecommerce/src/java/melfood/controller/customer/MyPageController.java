@@ -279,6 +279,7 @@ public class MyPageController extends BaseController {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
+            cal.add(Calendar.MONTH, -1);
             searchDateFrom = df.format(cal.getTime());
         }
 
@@ -292,7 +293,11 @@ public class MyPageController extends BaseController {
             noticeDiscuss.setSearchDateTo(searchDateTo);
             mav.addObject("searchDateTo", searchDateTo);
         } else {
-            mav.addObject("searchDateTo", "");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            searchDateTo = df.format(cal.getTime());
+            mav.addObject("searchDateTo", searchDateTo);
         }
 
         // For Pagination
