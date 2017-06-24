@@ -71,6 +71,7 @@ function validateForm(){
     var dob = $('#dob').val();
     var email = $('#email').val();
     var mobile = $('#mobile').val();
+    var mobileAuthFinished = $('#mobileAuthFinished').val();
     var useSocialMessenger = $('#useSocialMessenger').val();
     var useSocialMessengerId = $('#useSocialMessengerId').val();
     var useYn = $('#useYn').val();
@@ -104,6 +105,11 @@ function validateForm(){
  		checkObject[checkObject.length] = "mobile";
  		validation = false;
  	}
+    if(mobileAuthFinished == "") {
+        message = message + prefix + "모바일 인증여부는 필수 선택 항목입니다.<br>";
+        checkObject[checkObject.length] = "mobileAuthFinished";
+        validation = false;
+    }
  	if(useSocialMessenger != "" && useSocialMessengerId == "") {
  		message = message + prefix + "메신저 종류가 설정되었으면 메신지 아이디는 필수 항목입니다.<br>";
  		checkObject[checkObject.length] = "useSocialMessengerId";
@@ -148,6 +154,7 @@ function save(){
       var dob = $('#dob').val();
       var email = $('#email').val();
       var mobile = $('#mobile').val();
+      var mobileAuthFinished = $('#mobileAuthFinished').val();
       var telephone = $('#telephone').val();
       var useSocialMessenger = $('#useSocialMessenger').val();
       var useSocialMessengerId = $('#useSocialMessengerId').val();
@@ -196,6 +203,7 @@ function save(){
              dob : dob,
              email : email,
              mobile : mobile,
+             mobileAuthFinished : mobileAuthFinished,
              telephone : telephone,
              useSocialMessenger : useSocialMessenger,
              useSocialMessengerId : useSocialMessengerId,

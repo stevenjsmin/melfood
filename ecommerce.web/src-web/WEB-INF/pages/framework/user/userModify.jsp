@@ -18,7 +18,9 @@ $(document).ready(function() {
     allowedRoles.value(<c:out value="${allRoles}" escapeXml="false"/>);		
     
     $("#sellerIntroduction").kendoEditor({
-  		encoded: false
+        tools :["bold","italic","underline","justifyLeft","justifyCenter","justifyRight","insertUnorderedList","insertOrderedList","createLink","unlink","insertImage","createTable","formatting","fontSize","foreColor"],
+        messages: {fontSizeInherit: "Default"},
+        encoded: false
 	});
     
 	$("#sellerMinimumPaymentForDeliver").kendoNumericTextBox({
@@ -87,6 +89,12 @@ $(document).ready(function() {
                               <td class="value"><input class="form-control" type="text" id="mobile" name="mobile" value='${user.mobile}'/></td>
                               <td class="label">Tel</td>
                               <td class="value"><input class="form-control" type="text" id="telephone" name="telephone" value='${user.telephone}'/></td>
+                         </tr>
+                         <tr>
+                              <td class="label"><span class="required">* </span>Mobile authentication </td>
+                              <td class="value"><c:out value="${cbxMobileAuthFinished}" escapeXml="false"/></td>
+                              <td></td>
+                              <td></td>
                          </tr>
                          <tr>
                               <td class="label">Messenger </td>

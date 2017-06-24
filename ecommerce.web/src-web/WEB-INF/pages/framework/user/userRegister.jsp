@@ -83,6 +83,12 @@ $(document).ready(function() {
                               <td class="value"><input class="form-control" type="text" id="telephone" name="telephone" value=''/></td>
                          </tr>
                          <tr>
+                              <td class="label"><span class="required">* </span>Mobile authentication </td>
+                              <td class="value"><c:out value="${cbxMobileAuthFinished}" escapeXml="false"/></td>
+                              <td></td>
+                              <td></td>
+                         </tr>
+                         <tr>
                               <td class="label">Messenger </td>
                               <td class="value"><c:out value="${cbxUseSocialMessenger}" escapeXml="false"/></td>
                               <td class="label">Messenger ID</td>

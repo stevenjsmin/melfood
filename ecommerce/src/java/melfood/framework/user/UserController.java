@@ -9,13 +9,15 @@
 
 package melfood.framework.user;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.framework.Ctx;
+import melfood.framework.MelfoodConstants;
+import melfood.framework.attachement.AttachmentFile;
+import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.email.EmailServices;
+import melfood.framework.role.Role;
+import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +26,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.MelfoodConstants;
-import melfood.framework.Ctx;
-import melfood.framework.attachement.AttachmentFile;
-import melfood.framework.auth.SessionUserInfo;
-import melfood.framework.email.EmailServices;
-import melfood.framework.role.Role;
-import melfood.framework.system.BaseController;
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 사용자 관리 Controll <br>
@@ -81,6 +79,11 @@ public class UserController extends BaseController {
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxAddressState", codeService.generateCmbx(addressStateOptions, htmlProperty));
 
+		List<Option> mobileAuthFinishedOptions = codeService.getValueCmbxOptions("USER_MGT", "MOBILE_AUTH");
+		htmlProperty = new Properties("mobileAuthFinished");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxMobileAuthFinished", codeService.generateCmbx(mobileAuthFinishedOptions, htmlProperty));
+
 		return mav;
 	}
 
@@ -94,6 +97,7 @@ public class UserController extends BaseController {
 		String userName = request.getParameter("userName");
 		String userNameReal = request.getParameter("userNameReal");
 		String email = request.getParameter("email");
+		String mobileAuthFinished = request.getParameter("mobileAuthFinished");
 		String dob = request.getParameter("dob");
 		String sex = request.getParameter("sex");
 		String applyStatus = request.getParameter("applyStatus");
@@ -115,6 +119,7 @@ public class UserController extends BaseController {
 		if (StringUtils.isNotBlank(userName)) user.setUserName(userName);
 		if (StringUtils.isNotBlank(userNameReal)) user.setUserNameReal(userNameReal);
 		if (StringUtils.isNotBlank(email)) user.setEmail(email);
+		if (StringUtils.isNotBlank(mobileAuthFinished)) user.setMobileAuthFinished(mobileAuthFinished);
 		if (StringUtils.isNotBlank(dob)) user.setDob(dob);
 		if (StringUtils.isNotBlank(sex)) user.setSex(sex);
 		if (StringUtils.isNotBlank(applyStatus)) user.setApplyStatus(applyStatus);
@@ -206,6 +211,11 @@ public class UserController extends BaseController {
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxSellerIsMandatoryChooseDeliveryPickupDate", codeService.generateCmbx(sellerIsMandatoryChooseDeliveryPickupDateOptions, htmlProperty));
 
+		List<Option> mobileAuthFinishedOptions = codeService.getValueCmbxOptions("USER_MGT", "MOBILE_AUTH", "N");
+		htmlProperty = new Properties("mobileAuthFinished");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxMobileAuthFinished", codeService.generateCmbx(mobileAuthFinishedOptions, htmlProperty));
+
 		return mav;
 	}
 
@@ -285,6 +295,11 @@ public class UserController extends BaseController {
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxSellerIsMandatoryChooseDeliveryPickupDate", codeService.generateCmbx(sellerIsMandatoryChooseDeliveryPickupDateOptions, htmlProperty));
 
+		List<Option> mobileAuthFinishedOptions = codeService.getValueCmbxOptions("USER_MGT", "MOBILE_AUTH", user.getMobileAuthFinished());
+		htmlProperty = new Properties("mobileAuthFinished");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxMobileAuthFinished", codeService.generateCmbx(mobileAuthFinishedOptions, htmlProperty));
+
 		mav.addObject("user", user);
 
 		return mav;
@@ -345,6 +360,11 @@ public class UserController extends BaseController {
 		htmlProperty = new Properties("useSocialMessenger");
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxUseSocialMessenger", codeService.generateCmbx(useSocialMessengerOptions, htmlProperty));
+
+		List<Option> mobileAuthFinishedOptions = codeService.getValueCmbxOptions("USER_MGT", "MOBILE_AUTH", user.getMobileAuthFinished());
+		htmlProperty = new Properties("mobileAuthFinished");
+		htmlProperty.setCssClass("form-control");
+		mav.addObject("cbxMobileAuthFinished", codeService.generateCmbx(mobileAuthFinishedOptions, htmlProperty));
 
 		mav.addObject("user", user);
 
@@ -407,6 +427,7 @@ public class UserController extends BaseController {
 		String dob = request.getParameter("dob");
 		String email = request.getParameter("email");
 		String mobile = request.getParameter("mobile");
+		String mobileAuthFinished = request.getParameter("mobileAuthFinished");
 		String telephone = request.getParameter("telephone");
 		String useSocialMessenger = request.getParameter("useSocialMessenger");
 		String useSocialMessengerId = request.getParameter("useSocialMessengerId");
@@ -465,6 +486,7 @@ public class UserController extends BaseController {
 			if (!StringUtils.isBlank(sex)) user.setSex(sex);
 			if (!StringUtils.isBlank(dob)) user.setDob(dob);
 			if (!StringUtils.isBlank(mobile)) user.setMobile(mobile);
+			if (!StringUtils.isBlank(mobileAuthFinished)) user.setMobileAuthFinished(mobileAuthFinished);
 			if (!StringUtils.isBlank(telephone)) user.setTelephone(telephone);
 			if (!StringUtils.isBlank(email)) user.setEmail(email);
 			if (!StringUtils.isBlank(useSocialMessenger)) user.setUseSocialMessenger(useSocialMessenger);

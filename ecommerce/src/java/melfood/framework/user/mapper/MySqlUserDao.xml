@@ -14,6 +14,7 @@
 		       ,(SELECT label FROM cmm_code WHERE category = 'USER_MGT' AND type = 'SEX' AND value = a.sex ) 'sexLabel'
 		       ,a.dob              'dob'
 		       ,a.mobile           'mobile'
+		       ,a.mobile_auth_finished	'mobileAuthFinished'
 		       ,a.telephone        'telephone'
 		       ,a.address_street   'addressStreet'
 		       ,a.address_suburb   'addressSuburb'
@@ -98,7 +99,8 @@
          	<if test="addressBusinessState != null">  AND UPPER(a.address_business_state) = UPPER(#{addressBusinessState}) </if>
          	<if test="addressBusinessPostcode != null"> AND a.address_business_postcode LIKE CONCAT('%', #{addressBusinessPostcode}, '%') </if>
          	<if test="password != null">  AND a.password = #{password} </if>
-         	<if test="email != null"> AND UPPER(a.email) LIKE CONCAT('%', UPPER(#{email}), '%') </if>
+	    	<if test="mobileAuthFinished != null">  AND UPPER(a.mobile_auth_finished) = UPPER(#{mobileAuthFinished}) </if>
+	    	<if test="email != null"> AND UPPER(a.email) LIKE CONCAT('%', UPPER(#{email}), '%') </if>
          	<if test="useYn != null">  AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
          	<if test="applyStatus != null">  AND UPPER(a.apply_status) = UPPER(#{applyStatus}) </if>
          	<if test="roleId != null"> AND UPPER(b.role_id) LIKE CONCAT('%', UPPER(#{roleId}), '%') </if>
@@ -133,6 +135,7 @@
          	<if test="addressBusinessState != null">  AND UPPER(a.address_business_state) = UPPER(#{addressBusinessState}) </if>
          	<if test="addressBusinessPostcode != null"> AND a.address_business_postcode LIKE CONCAT('%', #{addressBusinessPostcode}, '%') </if>
          	<if test="password != null">  AND a.password = #{password} </if>
+	        <if test="mobileAuthFinished != null">  AND UPPER(a.mobile_auth_finished) = UPPER(#{mobileAuthFinished}) </if>
          	<if test="email != null"> AND UPPER(a.email) LIKE CONCAT('%', UPPER(#{email}), '%') </if>
          	<if test="useYn != null">  AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
          	<if test="applyStatus != null">  AND UPPER(a.apply_status) = UPPER(#{applyStatus}) </if>
@@ -161,6 +164,7 @@
 		                 password_failure_cnt,
 		                 password_update_date,
 		                 email,
+		                 mobile_auth_finished,
 		                 apply_status,
 						 seller_delivery_address_street,  
 						 seller_delivery_address_suburb,  
@@ -198,6 +202,7 @@
 		        0,
 		        DATE_FORMAT(CURRENT_TIMESTAMP, '%Y-%m-%d'),
 		        #{email},
+		        #{mobileAuthFinished},
 		        UPPER(#{applyStatus}),
 				#{sellerDeliveryAddressStreet},      
 				#{sellerDeliveryAddressSuburb},
@@ -270,7 +275,8 @@
 			        ,sex = #{sex}
 			        ,dob = #{dob} 
 			        ,mobile = #{mobile} 
-			        ,telephone = #{telephone} 
+			        ,mobile_auth_finished = #{mobileAuthFinished}
+			        ,telephone = #{telephone}
 			        ,use_social_messenger = #{useSocialMessenger} 
 			        ,use_social_messenger_id = #{useSocialMessengerId} 
 					,address_street = #{addressStreet} 
@@ -317,6 +323,7 @@
 			        <if test="sex != null">,sex = #{sex} </if>
 			        <if test="dob != null">,dob = #{dob} </if>
 			        <if test="mobile != null">,mobile = #{mobile} </if>
+			        <if test="mobileAuthFinished != null">,mobile_auth_finished = #{mobileAuthFinished} </if>
 			        <if test="telephone != null">,telephone = #{telephone} </if>
 			        <if test="useSocialMessenger != null">,use_social_messenger = #{useSocialMessenger} </if>
 			        <if test="useSocialMessengerId != null">,use_social_messenger_id = #{useSocialMessengerId} </if>

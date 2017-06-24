@@ -62,8 +62,18 @@
                               <td></td>
                          </tr>
                          <tr>
-                              <td class="label">Mobile </td>
-                              <td class="value">${user.mobile}</td>
+                              <td class="label">Mobile / Authentication</td>
+                              <td class="value">
+                                   ${user.userId} /
+                                        <c:choose>
+                                             <c:when test="${user.mobileAuthFinished == 'Y'}">
+                                                  인증 완료
+                                             </c:when>
+                                             <c:otherwise>
+                                                  인증 미완료
+                                             </c:otherwise>
+                                        </c:choose>
+                              </td>
                               <td class="label">Tel</td>
                               <td class="value">${user.telephone}</td>
                          </tr>
