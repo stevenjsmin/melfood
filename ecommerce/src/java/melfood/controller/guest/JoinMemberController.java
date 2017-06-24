@@ -9,12 +9,13 @@
 
 package melfood.controller.guest;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.framework.Ctx;
+import melfood.framework.email.EmailServices;
+import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import melfood.framework.user.User;
+import melfood.shopping.guest.JoinMemberService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.email.EmailServices;
-import melfood.framework.system.BaseController;
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
-import melfood.framework.user.User;
-import melfood.shopping.guest.JoinMemberService;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 회원가입에 필요한 콘트롤러들을 정의한다.
@@ -141,14 +140,14 @@ public class JoinMemberController extends BaseController {
 			user.setMobile(userId); // 아이디가 모바일번호이므로 그냥 설정해준다.
 			userService.addUser(user);
 
-			StringBuffer emailContents = new StringBuffer("");
-			emailContents.append("dearWhom=" + userName + "^");
-			emailContents.append("userId=" + userId + "^");
-			emailContents.append("userName=" + userName + "^");
-			emailContents.append("email=" + email + "^");
-			emailContents.append("userAddress=" + userAddress + "^");
+			if (!StringUtils.isBlank(email) && StringUtils.equalsIgnoreCase(Ctx.getVar("EMAIL.AFTR.REGIST.MEMBER"), "Y") ) {
+				StringBuffer emailContents = new StringBuffer("");
+				emailContents.append("dearWhom=" + userName + "^");
+				emailContents.append("userId=" + userId + "^");
+				emailContents.append("userName=" + userName + "^");
+				emailContents.append("email=" + email + "^");
+				emailContents.append("userAddress=" + userAddress + "^");
 
-			if (!StringUtils.isBlank(email)) {
 				EmailServices emailSvc = new EmailServices();
 				emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[쿠빵] 쿠빵몰에 회원이 되셨습니다. 감사합니다.", emailContents.toString(), "1");
 			}

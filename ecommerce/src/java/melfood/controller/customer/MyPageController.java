@@ -9,16 +9,13 @@
 
 package melfood.controller.customer;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.framework.Ctx;
+import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.email.EmailServices;
+import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import melfood.framework.user.User;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.auth.SessionUserInfo;
-import melfood.framework.email.EmailServices;
-import melfood.framework.system.BaseController;
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
-import melfood.framework.user.User;
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 마이페이지 <br>
@@ -79,7 +74,7 @@ public class MyPageController extends BaseController {
 
 			// 사용자 정보가 변경되었다는 이메일 발송
 			String userEmail = checkUser.getEmail();
-			if (!StringUtils.isBlank(userEmail)) {
+			if (!StringUtils.isBlank(userEmail) && StringUtils.equalsIgnoreCase(Ctx.getVar("EMAIL.AFTR.CHANGE.PWD"), "Y")) {
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(new Date());
@@ -203,7 +198,7 @@ public class MyPageController extends BaseController {
 
 			updateUserId = userService.modifyUserForNotNull(user);
 
-			if (!StringUtils.isBlank(user.getEmail())) {
+			if (!StringUtils.isBlank(user.getEmail()) && StringUtils.equalsIgnoreCase(Ctx.getVar("EMAIL.AFTR.CHANGE.MYINFO"), "Y")) {
 
 				// 사용자 정보가 변경되었다는 이메일 발송
 				DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
