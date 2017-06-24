@@ -90,38 +90,15 @@
             }); // End of GRID
 
             $("#grid_panel_main_1").dblclick(function(e) {
-                var dataItem = KENDO_SELECTED_RECORD_1;
-                var groupPurchaseId = dataItem.groupPurchaseId;
+                // var dataItem = KENDO_SELECTED_RECORD_1;
+                // var groupPurchaseId = dataItem.groupPurchaseId;
 
-                goDetailInfo(groupPurchaseId);
+                // goDetailInfo(groupPurchaseId);
             });
 
             function onChange(e) {
                 var gridRecord = e.sender;
                 KENDO_SELECTED_RECORD_1 = gridRecord.dataItem(gridRecord.select());
-            }
-
-            function addItem(e) {
-                var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-                BootstrapDialog.confirm({
-                    title: 'WARNING  :: 호주가 즐거운 이유, 쿠빵!!',
-                    message: '정말 삭제하시겠습니까?',
-                    type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-                    closable: true, // Default value is false
-                    draggable: true, // Default value is false
-                    btnCancelLabel: 'Cancel', // Default value is 'Cancel',
-                    btnOKLabel: 'OK', // Default value is 'OK',
-                    btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
-                    callback: function(result) {
-                        if(result) {
-                            var grid = $("#grid_panel_main_1").data("kendoGrid");
-                            grid.dataSource.remove(dataItem);
-                            grid.dataSource.sync();
-                            grid.refresh();
-                        }
-                    }
-                });
             }
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

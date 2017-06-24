@@ -99,9 +99,9 @@ $(document).ready(function () {
     }); // End of GRID
     
     $("#grid_panel_main").dblclick(function(e) {
-    	var dataItem = KENDO_SELECTED_RECORD;
-        var userId = dataItem.userId;
-        goDetailInfo(userId);
+    	// var dataItem = KENDO_SELECTED_RECORD;
+        // var userId = dataItem.userId;
+        // goDetailInfo(userId);
     });
     
     function onChange(e) {
