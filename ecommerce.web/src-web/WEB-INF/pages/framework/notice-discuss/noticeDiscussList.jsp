@@ -98,7 +98,7 @@ $(document).ready(function () {
 		columns: [
 				  { hidden : true, field: 'id'},
 		          { title : 'Subject', field: 'subject',attributes: {style: "color: e37200; font-weight: bolder;" }},
-		          { title : 'Date', width: 130, template: "#= kendo.toString(kendo.parseDate(createDatetime), 'yyyy-dd-MM hh:mm') #"},
+		          { title : 'Date', width: 130, template: "#= kendo.toString(kendo.parseDate(createDatetime), 'yyyy-MM-dd hh:mm') #"},
 		          { title : 'From', width: 200, template: kendo.template($("#writeFrom-template").html()), filterable: false},
 		          { title : 'To', width: 200, template: kendo.template($("#writeTo-template").html()), filterable: false},
 		          { title : 'For All Seller', template: kendo.template($("#forSeller-template").html()), width: 130},
