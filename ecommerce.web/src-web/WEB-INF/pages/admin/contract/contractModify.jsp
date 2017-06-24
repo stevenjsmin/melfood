@@ -43,7 +43,7 @@ $(document).ready(function() {
                               <td></td>
                          </tr>                         
                          <tr>
-                              <td class="label"><span class="required">* </span>Period :</td>
+                              <td class="label"><span class="required">* </span>계약유효기간 :</td>
                               <td class="value" colspan="3" style="padding-left: 3px;">
                                    <table>
                                         <tr>

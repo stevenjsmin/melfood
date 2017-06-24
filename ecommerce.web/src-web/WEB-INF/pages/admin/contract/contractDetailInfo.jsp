@@ -192,7 +192,7 @@ $(document).ready(function () {
                               <td></td>
                          </tr>
                          <tr>
-                              <td class="label">Contract period</td>
+                              <td class="label">계약유효기간</td>
                               <td class="value" colspan="3">
                                    <table>
                                         <tr>

@@ -468,10 +468,10 @@
                     <td class="value">
                         <c:choose>
                             <c:when test="${groupPurchase.stopSelling == 'Y'}">
-                                공동구매 개시
+                                판매 중
                             </c:when>
                             <c:when test="${groupPurchase.stopSelling == 'N'}">
-                                공동구매 정지
+                                판매 정지
                             </c:when>
                         </c:choose>
 

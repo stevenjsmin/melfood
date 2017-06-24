@@ -21,7 +21,9 @@ $(document).ready(function() {
 	$('#spanCommissionRate').val('');
     
     $("#description").kendoEditor({
-  		encoded: true
+        tools :["bold","italic","underline","justifyLeft","justifyCenter","justifyRight","insertUnorderedList","insertOrderedList","createLink","unlink","insertImage","createTable","formatting","fontSize","foreColor"],
+        messages: {fontSizeInherit: "Default"},
+        encoded: false
 	});
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
