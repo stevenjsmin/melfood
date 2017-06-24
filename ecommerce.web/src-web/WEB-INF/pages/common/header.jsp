@@ -113,7 +113,7 @@ $(document).ready(function() {
                          <td>
                               <a href="javascript:logout();">로그아웃</a>  &nbsp;|&nbsp;
                               <a href="javascript:goPayment();">장바구니 <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp;|&nbsp;
-                              <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');">MY 빵</a> &nbsp; |&nbsp;
+                              <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');">My 푸드</a> &nbsp; |&nbsp;
                               <a href="#"> QnA</a>
                          </td>
                     </tr>
