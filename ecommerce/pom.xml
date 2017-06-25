@@ -22,6 +22,7 @@
         <slf4j-ver>1.7.10</slf4j-ver>
         <org.apache.tiles-ver>2.2.2</org.apache.tiles-ver>
         <google.maps.services-ver>0.1.9</google.maps.services-ver>
+        <aws-sdk-ver>1.11.154</aws-sdk-ver>
     </properties>
 
 
@@ -267,6 +268,12 @@
             <groupId>com.google.maps</groupId>
             <artifactId>google-maps-services</artifactId>
             <version>${google.maps.services-ver}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sns</artifactId>
+            <version>${aws-sdk-ver}</version>
         </dependency>
     </dependencies>
 

@@ -66,4 +66,16 @@ public interface UserDAO {
 
     public List<User> getUsersByRoleIds(String[] userRoles) throws Exception;
 
+
+    /**
+     * 모바일 인증정보를 갱신한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    public int updateMobileValidCheckCode(User user) throws Exception;
+
+
+
 }

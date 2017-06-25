@@ -34,7 +34,6 @@ import java.util.Map;
  * 회원가입에 필요한 콘트롤러들을 정의한다.
  *
  * @author steven.min
- *
  */
 @Controller
 @RequestMapping("/guest/joinmember")
@@ -119,14 +118,14 @@ public class JoinMemberController extends BaseController {
 
             User user = new User(userId, password);
 
-            if(StringUtils.isBlank(userName)){
+            if (StringUtils.isBlank(userName)) {
                 user.setUserName(userId.substring(userId.length() - 3));
                 // user.setUserName(joinMemberService.getDefaultUserName());
             } else {
                 user.setUserName(userName);
             }
 
-            if(StringUtils.isBlank(userNameReal)){
+            if (StringUtils.isBlank(userNameReal)) {
                 user.setUserNameReal(userId.substring(userId.length() - 3));
                 // user.setUserNameReal(joinMemberService.getDefaultUserName());
             } else {
@@ -141,12 +140,10 @@ public class JoinMemberController extends BaseController {
             user.setSellerIsMandatoryChooseDeliveryPickupDate("Y");
             String userAddress = addressStreet + " " + addressSuburb + " " + addressPostcode + " " + addressState;
 
-            // TODO : 모바일 인증
-            user.setMobileAuthFinished("Y");
-
+            user.setMobileAuthFinished("N");
             user.setUseYn("Y");
-            user.setApplyStatus("COMPLETE");
-            user.setMobile(userId); // 아이디가 모바일번호이므로 그냥 설정해준다.
+            user.setApplyStatus("APPLY");
+            user.setMobile(userId); // 아이디가 모바일번호이므로 아이디로 설정해준다.
             userService.addUser(user);
 
             if (!StringUtils.isBlank(email) && StringUtils.equalsIgnoreCase(Ctx.getVar("EMAIL.AFTR.REGIST.MEMBER"), "Y")) {
@@ -160,6 +157,9 @@ public class JoinMemberController extends BaseController {
                 EmailServices emailSvc = new EmailServices();
                 emailSvc.sendEmailUsingHtmlTemplate(user.getEmail(), "[멜푸드] 멜푸드몰에 회원이 되셨습니다. 감사합니다.", emailContents.toString(), "1");
             }
+
+            // SMS로 인증코드를 보내고, 인증코드를 사용자테이블에 업데이트 한다.
+            // userService.updateMobileValidCheckCode(user);
 
             model.put("user", userService.getUserInfo(userId));
             model.put("resultCode", "0");
@@ -228,6 +228,54 @@ public class JoinMemberController extends BaseController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+
+    @RequestMapping(value = "/checkMobileValidCode", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> checkMobileValidCode(HttpServletRequest request) throws Exception {
+
+        HashMap<String, String> param = new HashMap<String, String>();
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String userId = request.getParameter("userId");
+        String mobileValidCheckCode = request.getParameter("mobileValidCheckCode");
+
+
+        param.put("userId", userId);
+
+        User user = null;
+        String savedValidCode = null;
+        try {
+            user = userService.getUserInfo(userId);
+            savedValidCode = user.getMobileValidCheckCode();
+
+            if (StringUtils.equals(mobileValidCheckCode, savedValidCode)) {
+                // 인증성공
+                User newUser = new User(userId);
+                newUser.setMobileAuthFinished("Y");
+                newUser.setApplyStatus("COMPLETE");
+                userService.updateMobileValidCheckCode(newUser);
+
+                model.put("resultCode", "0");
+                model.put("message", "모바일번호 인증이 성공되었습니다.");
+
+            } else {
+                model.put("resultCode", "-1");
+                model.put("message", "모바일번호 인증번호가 일치하지 않습니다.");
+            }
+
+            user = userService.getUserInfo(userId);
+            model.put("user", user);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
             model.put("resultCode", "-1");
             model.put("message", e.getMessage());
         }

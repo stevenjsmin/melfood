@@ -33,6 +33,8 @@ public class User extends BaseDto {
     private String email;
     private String mobile;
     private String mobileAuthFinished;
+    private String mobileValidCheckCode;
+    private String mobileValidCodeIssueDate;
     private String telephone;
     private String useSocialMessenger;
     private String useSocialMessengerId;
@@ -528,5 +530,21 @@ public class User extends BaseDto {
 
     public void setMobileAuthFinished(String mobileAuthFinished) {
         this.mobileAuthFinished = mobileAuthFinished;
+    }
+
+    public String getMobileValidCheckCode() {
+        return mobileValidCheckCode;
+    }
+
+    public void setMobileValidCheckCode(String mobileValidCheckCode) {
+        this.mobileValidCheckCode = mobileValidCheckCode;
+    }
+
+    public String getMobileValidCodeIssueDate() {
+        return mobileValidCodeIssueDate;
+    }
+
+    public void setMobileValidCodeIssueDate(String mobileValidCodeIssueDate) {
+        this.mobileValidCodeIssueDate = mobileValidCodeIssueDate;
     }
 }

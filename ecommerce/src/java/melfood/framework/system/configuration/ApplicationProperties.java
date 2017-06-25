@@ -9,26 +9,21 @@
 
 package melfood.framework.system.configuration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
+import melfood.framework.Ctx;
+import melfood.framework.uitl.FileUtils;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import melfood.framework.Ctx;
-import melfood.framework.uitl.FileUtils;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This class used when appliction startup for initialized system properties
@@ -59,7 +54,7 @@ public class ApplicationProperties {
 
 		Map<String, String> appPropMap = new HashMap<String, String>();
 
-		// SMTP Server Setting
+		// SMTP Service Setting
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.SVR.ADDR", melfood.getString("EMAIL.SMTP.SVR.ADDR"));
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.SVR.PORT", melfood.getString("EMAIL.SMTP.SVR.PORT"));
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.AUTH", melfood.getString("EMAIL.SMTP.AUTH"));
@@ -67,7 +62,11 @@ public class ApplicationProperties {
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.IAM.USERNAME", melfood.getString("EMAIL.SMTP.IAM.USERNAME"));
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.USERNAME", melfood.getString("EMAIL.SMTP.USERNAME"));
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.PASSWORD", melfood.getString("EMAIL.SMTP.PASSWORD"));
-		
+
+		// SNS Service setting
+		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::SNS.SMS.ACCESS_KEY", melfood.getString("SNS.SMS.ACCESS_KEY"));
+		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::SNS.SMS.SECRET_KEY", melfood.getString("SNS.SMS.SECRET_KEY"));
+
 		Properties prop = new Properties();
 		InputStream input = new FileInputStream(propFile);
 

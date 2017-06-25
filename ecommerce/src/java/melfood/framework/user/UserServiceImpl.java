@@ -13,8 +13,11 @@ import melfood.framework.Ctx;
 import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.attachement.AttachmentFileService;
 import melfood.framework.role.Role;
+import melfood.framework.system.AwsSNSUtils;
 import melfood.framework.uitl.html.Option;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,8 @@ import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserDAO userDAO;
@@ -372,4 +377,39 @@ public class UserServiceImpl implements UserService {
         }
         return options;
     }
+
+    /**
+     * 모바일 인증정보를 갱신한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int updateMobileValidCheckCode(User user) throws Exception {
+
+        // 인증코드를 위한 4자리 Random코드 생성
+        // SMS로 인증코드를 보낸다.
+        String randomNumber = this.randomNumber(4);
+        String smsResult = AwsSNSUtils.sendMessage("Melfood 회원가입인증코드 : " + randomNumber, user.getUserId());
+        logger.info("SMS Send result :" + smsResult);
+
+        // 인증코드를 사용자테이블에 업데이트 한다.
+        User newUser = new User(user.getUserId());
+        newUser.setMobileValidCheckCode(randomNumber);
+
+        return userDAO.updateMobileValidCheckCode(newUser);
+    }
+
+    private String randomNumber(int len) {
+
+        String AB = "0123456789";
+        Random rnd = new Random();
+
+        StringBuilder sb = new StringBuilder(len);
+        for (int i = 0; i < len; i++)
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        return sb.toString();
+    }
+
 }

@@ -216,4 +216,13 @@ public interface UserService {
      */
     public List<Option> getUsersByRoleIds(String userRoles[], String defaultSelectedValue) throws Exception;
 
+    /**
+     * 모바일 인증정보를 갱신한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    public int updateMobileValidCheckCode(User user) throws Exception;
+
 }
