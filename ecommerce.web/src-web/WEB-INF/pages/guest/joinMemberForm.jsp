@@ -217,7 +217,6 @@
     function validateMobileNumber() {
         var userId = $('#_userId').val();
         var mobileValidCheckCode = $('#mobileValidCheckCode').val();
-        alert(userId + "/" + mobileValidCheckCode);
 
         if (validateForm() == false) return;
         progress(true);
