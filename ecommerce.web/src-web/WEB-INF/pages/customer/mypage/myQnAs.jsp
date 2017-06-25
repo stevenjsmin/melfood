@@ -88,7 +88,7 @@
                <c:forEach var="entry" items="${noticeDiscussList}" varStatus="count" begin="0">
                     <c:choose>
                          <c:when test="${sessionUserId == entry.writeFrom}">
-                              <table>
+                              <table style="width: 600px;">
                                    <tr>
                                         <td>
                                              <div class="chat-dialogbox">
@@ -110,7 +110,7 @@
                          </c:when>
 
                          <c:otherwise>
-                              <table>
+                              <table style="width: 600px;">
                                    <tr>
                                         <td style="width: 150px;">&nbsp;</td>
                                         <td>

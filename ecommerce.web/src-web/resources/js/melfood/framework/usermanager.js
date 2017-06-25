@@ -99,12 +99,12 @@ function validateForm(){
         }
     }
  	
- 	if(email == "" && mobile == "") {
- 		message = message + prefix + "Email, 모바일 번호중 하나는 필수 항목입니다.<br>";
- 		checkObject[checkObject.length] = "email";
- 		checkObject[checkObject.length] = "mobile";
- 		validation = false;
- 	}
+ 	//if(email == "" && mobile == "") {
+ 	//	message = message + prefix + "Email, 모바일 번호중 하나는 필수 항목입니다.<br>";
+ 	//	checkObject[checkObject.length] = "email";
+ 	//	checkObject[checkObject.length] = "mobile";
+ 	//	validation = false;
+ 	//}
     if(mobileAuthFinished == "") {
         message = message + prefix + "모바일 인증여부는 필수 선택 항목입니다.<br>";
         checkObject[checkObject.length] = "mobileAuthFinished";

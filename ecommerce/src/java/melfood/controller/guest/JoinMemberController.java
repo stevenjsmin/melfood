@@ -117,6 +117,7 @@ public class JoinMemberController extends BaseController {
             if (existUer) throw new Exception("등록하려는 아이디는 이미 등록된 사용자의  ID 입니다.");
 
             User user = new User(userId, password);
+            user.setMobile(userId);
 
             if (StringUtils.isBlank(userName)) {
                 user.setUserName(userId.substring(userId.length() - 3));

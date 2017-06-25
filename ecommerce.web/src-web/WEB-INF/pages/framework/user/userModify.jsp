@@ -78,24 +78,21 @@ $(document).ready(function() {
                          </tr>
                          
                          <tr style="height: 10px;"><td colspan="4"></td></tr>
-                                                  
-                         <tr>
-                              <td class="label">Email </td>
-                              <td class="value" colspan="2"><input class="form-control" type="text" id="email" name="email" value='${user.email}'/></td>
-                              <td></td>
-                         </tr>
-                         <tr>
-                              <td class="label">Mobile </td>
-                              <td class="value"><input class="form-control" type="text" id="mobile" name="mobile" value='${user.mobile}'/></td>
-                              <td class="label">Tel</td>
-                              <td class="value"><input class="form-control" type="text" id="telephone" name="telephone" value='${user.telephone}'/></td>
-                         </tr>
+
                          <tr>
                               <td class="label"><span class="required">* </span>Mobile authentication </td>
                               <td class="value"><c:out value="${cbxMobileAuthFinished}" escapeXml="false"/></td>
                               <td></td>
                               <td></td>
                          </tr>
+                         <tr>
+                              <td class="label">Email </td>
+                              <td class="value"><input class="form-control" type="text" id="email" name="email" value='${user.email}'/></td>
+                              <td class="label">Tel</td>
+                              <td class="value"><input class="form-control" type="text" id="telephone" name="telephone" value='${user.telephone}'/></td>
+                         </tr>
+                         <input type="hidden" id="mobile" name="mobile" value='${user.mobile}'/>
+
                          <tr>
                               <td class="label">Messenger </td>
                               <td class="value"><c:out value="${cbxUseSocialMessenger}" escapeXml="false"/></td>
