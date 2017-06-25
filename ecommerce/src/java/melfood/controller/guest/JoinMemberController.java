@@ -246,9 +246,6 @@ public class JoinMemberController extends BaseController {
         String userId = request.getParameter("userId");
         String mobileValidCheckCode = request.getParameter("mobileValidCheckCode");
 
-
-        param.put("userId", userId);
-
         User user = null;
         String savedValidCode = null;
         try {
@@ -260,7 +257,7 @@ public class JoinMemberController extends BaseController {
                 User newUser = new User(userId);
                 newUser.setMobileAuthFinished("Y");
                 newUser.setApplyStatus("COMPLETE");
-                userService.updateMobileValidCheckCode(newUser);
+                userService.validateMobileCheck(newUser);
 
                 model.put("resultCode", "0");
                 model.put("message", "모바일번호 인증이 성공되었습니다.");

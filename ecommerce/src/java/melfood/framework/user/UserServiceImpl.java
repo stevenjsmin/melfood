@@ -379,7 +379,8 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 모바일 인증정보를 갱신한다.
+     * 모바일 인증정보를 갱신한다.<br>
+     * 인증코드를 SMS로 발송하고, 인증코드를 사용자테이블에 저장한다.
      *
      * @param user
      * @return
@@ -412,4 +413,15 @@ public class UserServiceImpl implements UserService {
         return sb.toString();
     }
 
+    /**
+     * 모바일 번호가 인증된경우 인증된 정보를 갱신한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int validateMobileCheck(User user) throws Exception {
+        return userDAO.updateMobileValidCheckCode(user);
+    }
 }

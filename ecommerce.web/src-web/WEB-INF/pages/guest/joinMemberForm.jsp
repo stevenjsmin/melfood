@@ -14,6 +14,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script type="text/javascript">
         $(document).ready(function () {
+              // Member join form
+            $("#joinMemberForm").collapse('show');
+            $("#mobileValidateCheckForm").collapse();
+            $("#mobileValidateCheckForm").addClass("hide");
+
+            // Mobile validation
+            //$("#mobileValidateCheckForm").collapse('show');
+            //$("#joinMemberForm").collapse();
+            //$("#joinMemberForm").addClass("hide");
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
@@ -176,17 +185,13 @@
         if (resultCode != "0") {
             warningPopup(data.message);
         } else {
-            BootstrapDialog.show({
-                title: 'INFO  :: 호주가 즐거운 이유, 멜푸드!!',
-                message: '정상적으로 회원가입이 되었습니다. 감사합니다.',
-                type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
-                buttons: [{
-                    label: '확인',
-                    action: function (dialog) {
-                        goHome();
-                    }
-                }]
-            });
+            // goHome();
+            $("#mobileValidateCheckForm").collapse('show');
+            $("#mobileValidateCheckForm").addClass('show');
+            $("#joinMemberForm").collapse();
+            $("#joinMemberForm").addClass("hide");
+            $('#_userId').val();
+            $('#mobileNumber').html($('#_userId').val());
         }
     }
 
@@ -208,118 +213,221 @@
     }
 </script>
 
+<script type="text/javascript">
+    function validateMobileNumber() {
+        var userId = $('#_userId').val();
+        var mobileValidCheckCode = $('#mobileValidCheckCode').val();
+        alert(userId + "/" + mobileValidCheckCode);
+
+        if (validateForm() == false) return;
+        progress(true);
+
+        $.ajax({
+            url: "/guest/joinmember/checkMobileValidCode.yum",
+            data: {
+                userId: userId,
+                mobileValidCheckCode: mobileValidCheckCode
+            },
+            success: callbackValidateMobileNumber
+        });
+    }
+
+    function callbackValidateMobileNumber(data) {
+        var message = data.message;
+        var resultCode = data.resultCode;
+
+        progress(false);
+        if (resultCode != "0") {
+            warningPopup(data.message);
+        } else {
+            BootstrapDialog.show({
+                title: 'INFO  :: 호주가 즐거운 이유, 멜푸드!!',
+                message: '정상적으로 회원가입이 되었습니다. 감사합니다.',
+                type: BootstrapDialog.TYPE_SUCCESS, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
+                buttons: [{
+                    label: '확인',
+                    action: function (dialog) {
+                        goHome();
+                    }
+                }]
+            });
+        }
+    }
+</script>
+
 
 <body>
 
-<div id="agreementStmtPopup"></div>
-<div class="row">
-    <div class="col-sm-8">
-        <table class="detail_table">
-            <colgroup>
-                <col width="200px"/>
-                <col width="250px"/>
-                <col width="200px"/>
-                <col width="250px"/>
-            </colgroup>
-            <tr>
-                <td colspan="4"><span class="subtitle">회원가입 신청</span>
-                    <hr class="subtitle"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="label"><span class="required">* </span>아이디 (모바일번호)</td>
-                <td class="value"><input class="form-control" type="text" id="_userId" name="_userId" placeholder="Mobile 번호" value='' maxlength="10"/></td>
-                <td><span style="color: #BFBEC5;">공백없는 숫자로 구성된 모바일번호</span></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="3" class="value" style="padding-top: 5px;">
-                    <b>멜푸드</b>몰에서는 아이디를 사용하시는 <span style="color: #B0346B;">모바일(핸드폰) 번호</span>로만 받습니다.
-                    <br/><span style="color: #BFBEC5;">고객님의 개인정보 보호를 위하여 고객님의 ID(모바일번호)는 공개/노출되지 않습니다. </span></td>
-            </tr>
-            <tr>
-                <td class="label"><span class="required">* </span>비밀번호</td>
-                <td class="value"><input class="form-control" type="password" id="_password" name="_password" placeholder="비밀번호" value='' maxlength="20"/></td>
-                <td class="label"><span class="required">* </span>비밀번호 재확인</td>
-                <td class="value"><input class="form-control" type="password" id="_password2" name="_password2" placeholder="입력하신 비밀번호를 다시한번 입력해주세요" value='' maxlength="20"/></td>
-            </tr>
+<div class="collapse" id="joinMemberForm">
+
+    <div id="agreementStmtPopup"></div>
+    <div class="row">
+        <div class="col-sm-8">
+            <table class="detail_table">
+                <colgroup>
+                    <col width="200px"/>
+                    <col width="250px"/>
+                    <col width="200px"/>
+                    <col width="250px"/>
+                </colgroup>
+                <tr>
+                    <td colspan="4"><span class="subtitle">회원가입 신청</span>
+                        <hr class="subtitle"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><span class="required">* </span>아이디 (모바일번호)</td>
+                    <td class="value"><input class="form-control" type="text" id="_userId" name="_userId" placeholder="Mobile 번호" value='' maxlength="10"/></td>
+                    <td><span style="color: #BFBEC5;">공백없는 숫자로 구성된 모바일번호</span></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3" class="value" style="padding-top: 5px;">
+                        <b>멜푸드</b>몰에서는 아이디를 사용하시는 <span style="color: #B0346B;">모바일(핸드폰) 번호</span>로만 받습니다.
+                        <br/><span style="color: #BFBEC5;">고객님의 개인정보 보호를 위하여 고객님의 ID(모바일번호)는 공개/노출되지 않습니다. </span></td>
+                </tr>
+                <tr>
+                    <td class="label"><span class="required">* </span>비밀번호</td>
+                    <td class="value"><input class="form-control" type="password" id="_password" name="_password" placeholder="비밀번호" value='' maxlength="20"/></td>
+                    <td class="label"><span class="required">* </span>비밀번호 재확인</td>
+                    <td class="value"><input class="form-control" type="password" id="_password2" name="_password2" placeholder="입력하신 비밀번호를 다시한번 입력해주세요" value='' maxlength="20"/></td>
+                </tr>
 
 
-            <tr>
-                <td colspan="4">
-                    <br/>
-                    <br/>
-                    <br/>
-                    <span class="subtitle">선택 사항</span>
-                    <hr class="subtitle"/>
-                </td>
-            </tr>
-            <tr>
-                <td class="label">닉네임</td>
-                <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30"/></td>
-                <td colspan="2"><span style="color: #BFBEC5;">입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
-            </tr>
-            <tr>
-                <td class="label">실명</td>
-                <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
-                <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다. 입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
-            </tr>
+                <tr>
+                    <td colspan="4">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <span class="subtitle">선택 사항</span>
+                        <hr class="subtitle"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">닉네임</td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30"/></td>
+                    <td colspan="2"><span style="color: #BFBEC5;">입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
+                </tr>
+                <tr>
+                    <td class="label">실명</td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
+                    <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다. 입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
+                </tr>
 
-            <tr><td colspan="4" style="height: 10px;"></td></tr>
-            <tr>
-                <td class="label">이메일</td>
-                <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소 @" value='' maxlength="50"/></td>
-                <td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
-            </tr>
+                <tr><td colspan="4" style="height: 10px;"></td></tr>
+                <tr>
+                    <td class="label">이메일</td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소 @" value='' maxlength="50"/></td>
+                    <td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
+                </tr>
 
-            <tr><td colspan="4" style="height: 10px;"></td></tr>
-            <tr>
-                <td class="label">State</td>
-                <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="label">Postcode</td>
-                <td class="value" style="padding-left: 3px;">
-                    <table>
-                        <tr>
-                            <td><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressPostcode" name="addressPostcode" value='${user.addressPostcode}' style="width: 80px;" maxlength="4"/></td>
-                            <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="setSuburbCbx('addressPostcode', 'addressSuburb')"></td>
-                        </tr>
-                    </table>
-                </td>
-                <td class="label">Suburb</td>
-                <td class="value">
-                    <div id="cbx_addressSuburb">
-                        <input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressSuburb" name="addressSuburb" value=''/>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td class="label">Street</td>
-                <td class="value" colspan="2"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressStreet" name="addressStreet" value=''/></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="3" class="value" style="padding-top: 5px;"><span style="color: #BFBEC5;">고객님께 상품을 배달해 드려야하는 경우 사용됩니다.</span></td>
-            </tr>
-            <tr>
-                <td colspan="4" style="height: 20px;"></td>
-            </tr>
-            <tr>
-                <td colspan="4">
-                    <table class="action_button_table" width="100%">
-                        <tr>
-                            <td><a href="javascript:openMemberAgreementStmt();" class="btn btn-default">회원가입 및 관리규정에관한 약관</a> <a href="javascript:registerMember();" class="btn btn-primary">회원가입</a> </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <br/> <br/> <br/>
+                <tr><td colspan="4" style="height: 10px;"></td></tr>
+                <tr>
+                    <td class="label">State</td>
+                    <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label">Postcode</td>
+                    <td class="value" style="padding-left: 3px;">
+                        <table>
+                            <tr>
+                                <td><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressPostcode" name="addressPostcode" value='${user.addressPostcode}' style="width: 80px;" maxlength="4"/></td>
+                                <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="setSuburbCbx('addressPostcode', 'addressSuburb')"></td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="label">Suburb</td>
+                    <td class="value">
+                        <div id="cbx_addressSuburb">
+                            <input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressSuburb" name="addressSuburb" value=''/>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">Street</td>
+                    <td class="value" colspan="2"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressStreet" name="addressStreet" value=''/></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3" class="value" style="padding-top: 5px;"><span style="color: #BFBEC5;">고객님께 상품을 배달해 드려야하는 경우 사용됩니다.</span></td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="height: 20px;"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <table class="action_button_table" width="100%">
+                            <tr>
+                                <td><a href="javascript:openMemberAgreementStmt();" class="btn btn-default">회원가입 및 관리규정에관한 약관</a> <a href="javascript:registerMember();" class="btn btn-primary">회원가입</a> </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br/> <br/> <br/>
+        </div>
+    </div>
+</div>
+
+
+<div class="collapse" id="mobileValidateCheckForm">
+    <div class="row">
+        <div class="col-sm-8">
+            <table class="detail_table">
+                <colgroup>
+                    <col width="200px"/>
+                    <col width="250px"/>
+                    <col width="200px"/>
+                    <col width="250px"/>
+                </colgroup>
+
+                <tr>
+                    <td colspan="4">
+                        <div class="panel panel-success">
+                            <div class="panel-heading"><b>모바일 번호 인증</b></div>
+                            <div class="panel-body">
+                                회원으로 가입해주셔서 감사합니다. <br/><br/>
+                                <b>Melfood</b> 에서는 건전하고 투명한 거래를 위하여 등록하신 모바일번호(사용자ID)에 대해서 간단한 인증절차가 필요합니다.<br/><br/>
+                                감사합니다.
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <br/>
+                        <br/>
+                        <span class="subtitle">Mobile 번호 인증</span>
+                        <hr class="subtitle"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">아이디 (모바일번호)</td>
+                    <td class="value" style="font-weight:bold;"><span id="mobileNumber" style="font-weight: bold;color: #870636;"></span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label">인증코드(숫자 4자리)</td>
+                    <td class="value"><input class="form-control" type="text" id="mobileValidCheckCode" name="mobileValidCheckCode" placeholder="인증코드" value='' maxlength="4"/></td>
+                    <td class="value" colspan="2"><span style="color: #BFBEC5;">위 모바일 번호로 보내드린 인증코드 숫자 4자리를 입력해주세요.</span></td>
+                </tr>
+
+                <tr>
+                    <td colspan="4" style="height: 20px;"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="padding-left: 5px;"><a href="javascript:validateMobileNumber();" class="btn btn-primary">모바일 번호인증</a></td>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+            <br/> <br/> <br/>
+        </div>
     </div>
 </div>
 
