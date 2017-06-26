@@ -54,7 +54,7 @@ public class GuestCommonController extends BaseController {
                 throw new Exception("고객의 모바일번호 또는 Email주소 중 한가지는 입력해주셔야합니다.");
             }
             if (StringUtils.isBlank(customerQuestion)) {
-                throw new Exception("고객으 문의내용이 비어있습니다. 문의내용을 다시 확인해주세요.");
+                throw new Exception("고객의 문의내용이 비어있습니다. 문의내용을 다시 확인해주세요.");
             }
             QnA qnA = new QnA(customerMobile, customerEmail, customerQuestion, "NOT OPEN");
 

@@ -1,5 +1,8 @@
 package melfood.framework.qna;
 
+import melfood.framework.Ctx;
+import melfood.framework.system.AwsSNSUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +43,24 @@ public class QnAServiceImpl implements QnAService {
         // 2. 관리자에게 SMS로 문의사항이 도착했음을 알린다
         int cntUpdate = qnADAO.registQnA(qnA);
 
-        //if (cntUpdate > 0) {
-        //    String customerSupportMobile = Ctx.xmlConfig.getString("contact-info/default-customer-service/mobile");
-        //    String smsResult = AwsSNSUtils.sendMessage("고객문의사항 : " + StringUtils.abbreviate(qnA.getCustomerQuestion(), 50), customerSupportMobile);
-        //    logger.info("SMS Send result :" + smsResult);
-        //}
+        if (cntUpdate > 0) {
+            StringBuffer message = new StringBuffer("");
+            String customerSupportMobile = Ctx.xmlConfig.getString("contact-info/default-customer-service/mobile");
+            message.append("[");
+            if(StringUtils.isNotBlank(qnA.getCustomerMobile())) message.append(qnA.getCustomerMobile());
+            if(StringUtils.isNotBlank(qnA.getCustomerEmail())) {
+                if(StringUtils.isNotBlank(qnA.getCustomerMobile())) {
+                    message.append("/" + qnA.getCustomerEmail());
+                } else {
+                    message.append(qnA.getCustomerEmail());
+                }
+            }
+            message.append("] 문의사항 : " + StringUtils.abbreviate(qnA.getCustomerQuestion(), 50));
+
+            String smsResult = AwsSNSUtils.sendMessage(message.toString(), customerSupportMobile);
+
+            logger.info("SMS Send result :" + smsResult);
+        }
 
         return cntUpdate;
     }
