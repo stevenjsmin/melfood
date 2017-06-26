@@ -23,6 +23,8 @@
 		        <if test="customerQuestion != null"> AND UPPER(a.customer_question) LIKE CONCAT('%', UPPER(#{customerQuestion}), '%') </if>
 	    		<if test="qnaStatus != null"> AND UPPER(a.qna_status) = UPPER(#{qnaStatus}) </if>
 		        <if test="creator != null"> AND a.creator = #{creator} </if>
+			    <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+			    <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 		      ORDER BY a.id DESC
 		  LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
@@ -38,6 +40,8 @@
 			    <if test="customerQuestion != null"> AND UPPER(a.customer_question) LIKE CONCAT('%', UPPER(#{customerQuestion}), '%') </if>
 	    		<if test="qnaStatus != null"> AND UPPER(a.qna_status) = UPPER(#{qnaStatus}) </if>
 			    <if test="creator != null"> AND a.creator = #{creator} </if>
+			    <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+			    <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
     </select>
 
 
@@ -69,7 +73,7 @@
 		   SET create_datetime = CURRENT_TIMESTAMP
 		   	   , customer_mobile = #{customerMobile}
 		   	   , customer_email = TRIM(#{customerEmail})
-		   	   , contcustomer_questionent = TRIM(#{customerQuestion})
+		   	   , customer_question = TRIM(#{customerQuestion})
 		   	   , qna_status = TRIM(#{qnaStatus})
 		   	   , creator = #{creator}
         WHERE id =  #{id} 	       

@@ -47,9 +47,9 @@ public class QnAServiceImpl implements QnAService {
             StringBuffer message = new StringBuffer("");
             String customerSupportMobile = Ctx.xmlConfig.getString("contact-info/default-customer-service/mobile");
             message.append("[");
-            if(StringUtils.isNotBlank(qnA.getCustomerMobile())) message.append(qnA.getCustomerMobile());
-            if(StringUtils.isNotBlank(qnA.getCustomerEmail())) {
-                if(StringUtils.isNotBlank(qnA.getCustomerMobile())) {
+            if (StringUtils.isNotBlank(qnA.getCustomerMobile())) message.append(qnA.getCustomerMobile());
+            if (StringUtils.isNotBlank(qnA.getCustomerEmail())) {
+                if (StringUtils.isNotBlank(qnA.getCustomerMobile())) {
                     message.append("/" + qnA.getCustomerEmail());
                 } else {
                     message.append(qnA.getCustomerEmail());
@@ -73,5 +73,20 @@ public class QnAServiceImpl implements QnAService {
     @Override
     public Integer modifyQnAForNotNull(QnA qnA) throws Exception {
         return qnADAO.modifyQnAForNotNull(qnA);
+    }
+
+    @Override
+    public QnA getQnA(String id) throws Exception {
+        return this.getQnA(Integer.parseInt(id));
+    }
+
+    @Override
+    public QnA getQnA(int id) throws Exception {
+        List<QnA> qnAs = this.getQnAList(new QnA(id));
+        if (qnAs.size() > 0) {
+            return qnAs.get(0);
+        } else {
+            return null;
+        }
     }
 }

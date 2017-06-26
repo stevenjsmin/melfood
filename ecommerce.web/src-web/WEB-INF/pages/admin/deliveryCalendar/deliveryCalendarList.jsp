@@ -207,7 +207,7 @@ $(document).ready(function () {
 <script id="time-template" type="text/x-kendo-template">
     # if (isPickup == 'Y') { #
           <span style="color: E57014;">
-    # } else if (isPickup == 'N') { # 
+    # } else if (isPickup == 'N') { #
           <span style="color: 7768E5;">
     # } else { #
           <span>

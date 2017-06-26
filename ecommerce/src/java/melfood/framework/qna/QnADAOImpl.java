@@ -22,7 +22,7 @@ public class QnADAOImpl extends BaseDAO implements QnADAO {
 
     @Override
     public Integer deleteQnA(QnA qnA) throws Exception {
-        return sqlSession.delete("mySqlQnADao.deleteQnA", qnA);
+        return sqlSession.delete("mySqlQnADao.deleteQnA", qnA.getId());
     }
 
     @Override
