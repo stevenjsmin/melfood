@@ -117,41 +117,36 @@
                     <span style="font-size: 13px;color: #BCBCBC;">Melfood </span>@ 우와한 가족들의 협동조합
                 </td>
             </tr>
-            <tr><td style="height: 30px;"></td></tr>
-            <tr>
-                <td><img src="/resources/image/logo_melfood_2.png" width="120px;"></td>
-            </tr>
             <tr><td style="height: 20px;"></td></tr>
             <tr>
                 <td style="color: #A2A4A4;font-size: 13px">
                     4 Torresdale Road, South Morang VIC 3752, Australia<br/>
                     ABN : 1234 54 5554 333<br/><br/>
                     <table style="color: #A2A4A4;font-size: 13px">
-                        <tr><td style="width: 30px;text-align: right;">(t) &nbsp;</td><td>1300 599 888 (Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</td></tr>
-                        <tr><td style="width: 30px;text-align: right;">(m) &nbsp;</td><td>0422 육삼이 삼삼팔</td></tr>
+                        <tr><td>1300 599 888 (Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</td></tr>
+                        <tr><td>0422 육삼이 삼삼팔</td></tr>
                     </table>
                 </td>
             </tr>
-            <tr><td style="height: 20px;"></td></tr>
             <tr>
                 <td style="padding-top: 20px;color: #A2A4A4;">Copyright © 2017 우와한 가족들의 협동조합</td>
             </tr>
         </table>
-
 
     </div>
     <div class="col-sm-5">
         <!-- 문의사항 -->
         <table style="width: 100%;">
             <colgroup>
-                <col width="50px"/>
+                <col width="30px"/>
                 <col width="*"/>
             </colgroup>
             <tr>
                 <td colspan="2">
-                    <span style="font-size: 13px;color: #A2A4A4;font-weight: bold;">문의 . Question ? </span>
+                    <span style="font-size: 13px;color: #A2A4A4;font-weight: bold;">Contact Us | Leave your message </span>
                 </td>
             </tr>
+            <tr><td style="height: 20px;" colspan="2"></td></tr>
             <tr>
                     <td></td>
                     <td style="padding: 5px;"><input class="form-control" type="text" id="customerMobile" name="customerMobile" value='' placeholder="모바일 번호" maxlength="10" style="width: 200px;background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;"/></td>
@@ -167,7 +162,6 @@
             <tr>
                 <td colspan="2" style="text-align: right;padding: 5px;"><button type="submit" class="btn btn-default" style="background-color: #7E7C7F;border-color: #5e5e5e;" onclick="sendQuestionMessage();">SEND MESSAGE</button></td>
             </tr>
-
         </table>
     </div>
 </div>

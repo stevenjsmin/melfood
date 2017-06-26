@@ -8,6 +8,7 @@
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- LAYOUT DEFINE -->
 	<definition name="tiles/admin/root" extends="layout/panel_300">
+		<put-attribute name="footer" value="/WEB-INF/pages/common/footer_backoffice.jsp" />
 		<put-attribute name="leftMenuName" value="ADMIN" />
 		<put-attribute name="navigation" value="Melfood.com.au > Admin" />
 		<put-attribute name="left-menu" value="/WEB-INF/pages/admin/admin_leftmain_menu.jsp" /> 
