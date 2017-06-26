@@ -12,24 +12,22 @@
             </tr>
             <tr><td style="height: 30px;"></td></tr>
             <tr>
-                <td>
-                    <img src="/resources/image/logo_melfood_2.png" width="120px;">
-
-                </td>
+                <td><img src="/resources/image/logo_melfood_2.png" width="120px;"></td>
             </tr>
             <tr><td style="height: 20px;"></td></tr>
             <tr>
                 <td style="color: #A2A4A4;font-size: 13px">
                     4 Torresdale Road, South Morang VIC 3752, Australia<br/>
                     ABN : 1234 54 5554 333<br/><br/>
-                    1300 599 888 / (Monday to Friday 8.30am to 5:30pm (AEST/AEDT)
+                    <table style="color: #A2A4A4;font-size: 13px">
+                        <tr><td style="width: 30px;text-align: right;">(t) &nbsp;</td><td>1300 599 888 (Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</td></tr>
+                        <tr><td style="width: 30px;text-align: right;">(m) &nbsp;</td><td>0422 육삼이 삼삼팔</td></tr>
+                    </table>
                 </td>
             </tr>
             <tr><td style="height: 20px;"></td></tr>
             <tr>
-                <td style="padding-top: 20px;color: #A2A4A4;">
-                        Copyright © 2017 우와한 가족들의 협동조합
-                </td>
+                <td style="padding-top: 20px;color: #A2A4A4;">Copyright © 2017 우와한 가족들의 협동조합</td>
             </tr>
         </table>
 

@@ -31,8 +31,21 @@
 
 <div class="row">
      <div class="col-sm-12">
-
-          <h2>Your foods coming soon...</h2>
+          <br/>
+          <table style="width: 100%;">
+               <tr>
+                    <td style="text-align: center;">
+                         <table align="center">
+                              <tr>
+                                   <td><h2>Your foods coming</h2></td>
+                                   <td><img src="/resources/image/rocket-shipping.gif" style="width: 70px;"></td>
+                                   <td><h2>soon...</h2></td>
+                              </tr>
+                         </table>
+                    </td>
+               </tr>
+          </table>
+          <br/>
      </div>
 </div>
 <br/>
