@@ -160,7 +160,7 @@ public class JoinMemberController extends BaseController {
             }
 
             // SMS로 인증코드를 보내고, 인증코드를 사용자테이블에 업데이트 한다.
-            // userService.updateMobileValidCheckCode(user);
+            userService.updateMobileValidCheckCode(user);
 
             model.put("user", userService.getUserInfo(userId));
             model.put("resultCode", "0");

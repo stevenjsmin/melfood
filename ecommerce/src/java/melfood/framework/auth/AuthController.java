@@ -9,13 +9,11 @@
 
 package melfood.framework.auth;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import melfood.framework.Ctx;
+import melfood.framework.MelfoodConstants;
+import melfood.framework.role.Role;
+import melfood.framework.system.BaseController;
+import melfood.framework.user.User;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.MelfoodConstants;
-import melfood.framework.Ctx;
-import melfood.framework.role.Role;
-import melfood.framework.system.BaseController;
-import melfood.framework.user.User;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Authorization controller
@@ -163,14 +161,21 @@ public class AuthController extends BaseController {
 
 					} else {
 						status = MelfoodConstants.LOGIN_AUTH_STATUS_FAILURE;
-						message = "현재 사용자께서는 등록절차가 아직 마무리 되지 않았습니다. : STATUS[" + user.getApplyStatus() + "]. 자세한 문의 사항은 " + Ctx.xmlConfig.getString("contact-info/customer-service/name") + " 에게 문의해주세요.";
+						message = "현재 사용자께서는 등록절차가 아직 마무리 되지 않았습니다. : STATUS[" + user.getApplyStatus() + "]. 자세한 문의 사항은 "
+								+ "<br/><br/><ul>"
+								+ "<li><b>" + Ctx.xmlConfig.getString("contact-info/default-customer-service/name") + "</b> [" + Ctx.xmlConfig.getString("contact-info/default-customer-service/email") + "]</li>"
+								+ "<li>" + Ctx.xmlConfig.getString("contact-info/default-customer-service/phone") + "</li>"
+								+ "</ul>"
+								+ " 에게 문의해주세요.";
 					}
 
 				} else {
 					// 사용자 ID에 해당하는 사용자는 존재하지만 비밀번호가 잘 못된경우.
 					boolean isLocked = userService.loginFailureIncrease(user);
 					if (isLocked) {
-						message = "로그인 실패 : 현재 고객님의 계정은 잠김 상태입니다. 자세한 사항은 " + Ctx.xmlConfig.getString("contact-info/customer-service/name") + " 에게 문의해주세요";
+						message = "로그인 실패 : 현재 고객님의 계정은 잠김 상태입니다. 자세한 사항은 "
+								+ Ctx.xmlConfig.getString("contact-info/customer-service/name")
+								+ " 에게 문의해주세요";
 					} else {
 						message = "로그인 실패 : " + (user.getPasswordFailureCnt() + 1) + "/" + Ctx.xmlConfig.getInt("system-config/login-fail-allow-cnt") + ". 로그인이 실패 횟수가 " + Ctx.xmlConfig.getInt("system-config/login-fail-allow-cnt") + "이상인 경우 계정이 잠길 수 있습니다.";
 					}
@@ -182,7 +187,12 @@ public class AuthController extends BaseController {
 				// 사용자 정보도 존재하지만 사용상태가 N 인경우
 				// Password change period check.
 				status = MelfoodConstants.LOGIN_AUTH_STATUS_FAILURE;
-				message = "로그인 실패 : " + user.getPasswordFailureCnt() + "/" + Ctx.xmlConfig.getInt("system-config/login-fail-allow-cnt") + ". 현재 고객님의 계정은 잠겨있는 상태입니다. " + "자세한 문의는" + Ctx.xmlConfig.getString("contact-info/customer-service/name")
+				message = "로그인 실패 : "
+						+ "현재 고객님의 계정은 잠겨있는 상태입니다. 자세한 문의는"
+						+ "<br/><br/><ul>"
+						+ "<li><b>" + Ctx.xmlConfig.getString("contact-info/default-customer-service/name") + "</b> [" + Ctx.xmlConfig.getString("contact-info/default-customer-service/email") + "]</li>"
+						+ "<li>" + Ctx.xmlConfig.getString("contact-info/default-customer-service/phone") + "</li>"
+						+ "</ul>"
 						+ " 으로 문의하여 주시기 바랍니다.";
 
 			} else {

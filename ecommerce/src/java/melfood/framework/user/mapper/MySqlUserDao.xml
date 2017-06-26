@@ -85,8 +85,11 @@
 	          ) b ON b.user_id = a.user_id		  
 		 WHERE 1 = 1
          	<if test="userId != null">  AND a.user_id = #{userId} </if>
-         	<if test="userName != null"> AND UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%') </if>
-         	<if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
+         	<if test="userName != null">
+	            AND (    UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%')
+            		  OR UPPER(a.user_id) LIKE CONCAT('%', UPPER(#{userName}), '%')   )
+            </if>
+	        <if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
          	<if test="sex != null">  AND UPPER(a.sex) = UPPER(#{sex}) </if>
          	<if test="dob != null">  AND a.dob = #{dob} </if>
          	<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
@@ -121,7 +124,10 @@
 	          ) b ON b.user_id = a.user_id		
 	          WHERE 1 = 1
          	<if test="userId != null">  AND a.user_id = #{userId} </if>
-         	<if test="userName != null"> AND UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%') </if>
+		    <if test="userName != null">
+			    AND (    UPPER(a.user_name) LIKE CONCAT('%', UPPER(#{userName}), '%')
+			          OR UPPER(a.user_id) LIKE CONCAT('%', UPPER(#{userName}), '%')  )
+		    </if>
          	<if test="userNameReal != null"> AND UPPER(a.user_name_real) LIKE CONCAT('%', UPPER(#{userNameReal}), '%') </if>
          	<if test="sex != null">  AND UPPER(a.sex) = UPPER(#{sex}) </if>
          	<if test="dob != null">  AND a.dob = #{dob} </if>

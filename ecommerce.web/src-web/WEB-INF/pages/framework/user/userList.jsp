@@ -200,9 +200,9 @@ $(document).ready(function () {
     	 		<td class="value"><c:out value="${cbxApplyStatus}" escapeXml="false"/></td>
     	 		<td class="label" style="color: ">User type : </td>
     	 		<td class="value"><c:out value="${cbxUserType}" escapeXml="false"/></td>
-    	 		<td class="label" style="color: ">Sex : </td>
-    	 		<td class="value"><c:out value="${cbxSex}" escapeXml="false"/></td>
-    	 		<td class="label">Name :  </td>
+                <td class="label" style="color: ">User : </td>
+                <td class="value"><c:out value="${cbxSex}" escapeXml="false"/></td>
+                <td class="label">Name/ID :  </td>
     	 		<td class="value_end"><input class="form-control" id="userName" name="userName"></input></td>
                 <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
     	 	</tr>

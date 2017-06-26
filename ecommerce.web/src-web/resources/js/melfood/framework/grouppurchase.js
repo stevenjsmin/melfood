@@ -175,7 +175,7 @@ function validateForm(){
         validation = false;
     }
 
-    if(stopSelling != "" && stopSelling == "N"){
+    if(stopSelling == "Y"){
         if(stopSellingReason == "" || stopSellingReason == null){
             message = message + prefix + "공동구매 정지일경우 공동구매 정지이유는 필수입력 항목입니다<br>";
             checkObject[checkObject.length] = "stopSellingReason";
@@ -247,8 +247,16 @@ function save(){
     var discountFixedAmount = $('#discountFixedAmount').val();
     var orderStartDt = $('#orderStartDt').val();
     var orderEndDt = $('#orderEndDt').val();
+
+    var stopSellingReason = null;
     var stopSelling = $('#stopSelling').val();
-    var stopSellingReason = $('#stopSellingReason').val();
+    if(stopSelling == "N") {
+        // 판매중인 경우 판매정지이유가 필요없음.
+        stopSellingReason = "";
+    } else {
+        stopSellingReason = $('#stopSellingReason').val();
+    }
+
     var marketAddressState = $('#marketAddressState').val();
     var marketAddressPostcode = $('#marketAddressPostcode').val();
     var marketAddressStreet = $('#marketAddressStreet').val();
