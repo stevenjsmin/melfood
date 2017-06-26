@@ -56,7 +56,7 @@ public class GuestCommonController extends BaseController {
             if (StringUtils.isBlank(customerQuestion)) {
                 throw new Exception("고객의 문의내용이 비어있습니다. 문의내용을 다시 확인해주세요.");
             }
-            QnA qnA = new QnA(customerMobile, customerEmail, customerQuestion, "NOT OPEN");
+            QnA qnA = new QnA(customerMobile, customerEmail, customerQuestion, "NOT_OPEN");
 
             updateCnt = qnAServie.registQnA(qnA);
 
