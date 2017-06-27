@@ -1,6 +1,7 @@
 package melfood.framework.qna;
 
 import melfood.framework.Ctx;
+import melfood.framework.email.EmailServices;
 import melfood.framework.system.AwsSNSUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -8,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,22 +49,49 @@ public class QnAServiceImpl implements QnAService {
         int cntUpdate = qnADAO.registQnA(qnA);
 
         if (cntUpdate > 0) {
-            StringBuffer message = new StringBuffer("");
+
             String customerSupportMobile = Ctx.xmlConfig.getString("contact-info/default-customer-service/mobile");
-            message.append("[");
-            if (StringUtils.isNotBlank(qnA.getCustomerMobile())) message.append(qnA.getCustomerMobile());
-            if (StringUtils.isNotBlank(qnA.getCustomerEmail())) {
-                if (StringUtils.isNotBlank(qnA.getCustomerMobile())) {
-                    message.append("/" + qnA.getCustomerEmail());
-                } else {
-                    message.append(qnA.getCustomerEmail());
+            String customerSupportEmail = Ctx.xmlConfig.getString("contact-info/default-customer-service/email");
+
+            StringBuffer message = new StringBuffer("");
+
+
+            String nitifyResult = null;
+            if (StringUtils.isNotBlank(customerSupportEmail)) {
+                StringBuffer emailContents = new StringBuffer("");
+                emailContents.append("customerMobile=" + qnA.getCustomerMobile() + "^");
+                emailContents.append("customerEmail=" + qnA.getCustomerEmail() + "^");
+                emailContents.append("customerQuestion=" + qnA.getCustomerQuestion() + "^");
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(new Date());
+                emailContents.append("createDatetime=" + df.format(cal.getTime()) + "^");
+
+                EmailServices emailSvc = new EmailServices();
+                emailSvc.sendEmailUsingHtmlTemplate(customerSupportEmail, "[고객문의 사항] 고객의 문의사항이 접수되었습니다.", emailContents.toString(), "4");
+
+                nitifyResult = "이메일 발송완료";
+
+            } else if (StringUtils.isNotBlank(customerSupportMobile)) {
+                message.append("[");
+                if (StringUtils.isNotBlank(qnA.getCustomerMobile())) message.append(qnA.getCustomerMobile());
+                if (StringUtils.isNotBlank(qnA.getCustomerEmail())) {
+                    if (StringUtils.isNotBlank(qnA.getCustomerMobile())) {
+                        message.append("/" + qnA.getCustomerEmail());
+                    } else {
+                        message.append(qnA.getCustomerEmail());
+                    }
                 }
+
+                message.append("] 문의사항 : " + StringUtils.abbreviate(qnA.getCustomerQuestion(), 80));
+                nitifyResult = AwsSNSUtils.sendMessage(message.toString(), customerSupportMobile);
+                nitifyResult = "SMS of AWS SNS 발송 :" + nitifyResult;
+            } else {
+                nitifyResult = "모바일번호도 없고, 이메일도 없기때문에 알림메시지를 관리자에게 보내지 못하였습니다.";
             }
-            message.append("] 문의사항 : " + StringUtils.abbreviate(qnA.getCustomerQuestion(), 50));
 
-            String smsResult = AwsSNSUtils.sendMessage(message.toString(), customerSupportMobile);
-
-            logger.info("SMS Send result :" + smsResult);
+            logger.info("SMS Send result :" + nitifyResult);
         }
 
         return cntUpdate;

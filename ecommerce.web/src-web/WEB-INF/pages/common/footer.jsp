@@ -154,7 +154,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td style="padding: 5px;"><textarea class="form-control" rows="3" id="customerQuestion" name="customerQuestion" style="background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;"></textarea></td>
+                <td style="padding: 5px;"><textarea class="form-control" rows="3" id="customerQuestion" name="customerQuestion" style="background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;" maxlength="250"></textarea></td>
             </tr>
             <tr>
                 <td colspan="2" style="text-align: right;padding: 5px;"><button type="submit" class="btn btn-default" style="background-color: #7E7C7F;border-color: #5e5e5e;" onclick="sendQuestionMessage();">SEND MESSAGE</button></td>
