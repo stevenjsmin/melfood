@@ -78,9 +78,9 @@
      <div class="col-sm-12" align="right">
           <table>
                <tr>
-                    <td><i class="fa fa-step-backward" aria-hidden="true"></i></td>
+                    <td><a href="#"><i class="fa fa-step-backward" aria-hidden="true"></i></a></td>
                     <td style="padding-left: 10px;padding-right: 10px;">공구일정</td>
-                    <td><i class="fa fa-step-forward" aria-hidden="true"></i></td>
+                    <td><a href="#"><i class="fa fa-step-forward" aria-hidden="true"></i></a></td>
                </tr>
           </table>
      </div>
@@ -157,8 +157,8 @@
                     <td style="font-weight: bold;height: 25px;">Ringwood 3652</td>
                     <td rowspan="4">
                          <table style="width: 100%;">
-                              <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
-                              <tr><td style="text-align: right;padding-top: 5px;"><a href="#">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"></a></td></tr>
+                              <tr><td><img src="/resources/image/close-order.png" style="width: 90px;"></td></tr>
+                              <tr><td style="text-align: right;padding-top: 5px;color: #606060;">감사합니다. 마감되었습니다.</td></tr>
                          </table>
 
                     </td>
@@ -202,16 +202,22 @@
 
 </div>
 
-<div class="row" align="center" style="background-color: #1E1E1E;margin-top: 40px;">
+<div class="row" align="center" style="background-color: #1E1E1E;margin-top: 40px;padding-top: 10px;padding-bottom: 10px;">
      <div class="col-sm-12">
-          <table>
+          <table style="width: 100%;">
                <tr>
-                    <td style="text-align: center;vertical-align: top;color: #A2A4A4;padding-top: 5px;">협동조합 파트너스</td>
-                    <td style="text-align: center;" id="mousefollow"><img class="circular-square" title="로즈 베이커리" src="/resources/image/sample/partner_1.jpg"/></td>
-                    <td style="width: 10px;">&nbsp;</td>
-                    <td style="text-align: center"><img class="circular-square" title="조선김치" src="/resources/image/sample/partner_2.jpg" /></td>
-                    <td style="width: 10px;">&nbsp;</td>
-                    <td style="text-align: center"><img class="circular-square" title="족과의 동침" src="/resources/image/sample/partner_3.jpg" /></td>
+                    <td style="text-align: left;vertical-align: top;color: #797979;padding-top: 5px;width: 120px;">협동조합 파트너스</td>
+                    <td>
+                         <table align="center">
+                              <tr>
+                                   <td style="text-align: center;" id="mousefollow"><img class="circular-square" title="로즈 베이커리" src="/resources/image/sample/partner_1.jpg"/></td>
+                                   <td style="width: 10px;">&nbsp;</td>
+                                   <td style="text-align: center"><img class="circular-square" title="조선김치" src="/resources/image/sample/partner_2.jpg" /></td>
+                                   <td style="width: 10px;">&nbsp;</td>
+                                   <td style="text-align: center"><img class="circular-square" title="족과의 동침" src="/resources/image/sample/partner_3.jpg" /></td>
+                              </tr>
+                         </table>
+                    </td>
                </tr>
           </table>
      </div>
