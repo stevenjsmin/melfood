@@ -114,7 +114,7 @@
         <table style="width: 100%;">
             <tr>
                 <td style="font-size: 13px;font-weight: bold;color: #A2A4A4;">
-                    <span style="font-size: 13px;color: #BCBCBC;">Melfood </span>@ 우와한 가족들의 협동조합
+                    Copyright © 2017 <span style="font-size: 13px;color: #BCBCBC;">Melfood </span>@ 우와한 가족들의 협동조합
                 </td>
             </tr>
             <tr><td style="height: 20px;"></td></tr>
@@ -128,9 +128,6 @@
                     </table>
                 </td>
             </tr>
-            <tr>
-                <td style="padding-top: 20px;color: #A2A4A4;">Copyright © 2017 우와한 가족들의 협동조합</td>
-            </tr>
         </table>
 
     </div>
@@ -143,7 +140,7 @@
             </colgroup>
             <tr>
                 <td colspan="2">
-                    <span style="font-size: 13px;color: #A2A4A4;font-weight: bold;">Contact Us | Leave your message </span>
+                    <span style="font-size: 13px;color: #A2A4A4;font-weight: bold;">Contact Us | Question | Leave your message </span>
                 </td>
             </tr>
             <tr><td style="height: 20px;" colspan="2"></td></tr>

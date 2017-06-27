@@ -18,6 +18,7 @@
 <link href="/resources/css/melfood-bootstrap.css?ver=<%=Ctx.releaseVersion%>" rel="stylesheet" media="screen">
 <link href="/resources/css/melfood-kendo.css?ver=<%=Ctx.releaseVersion%>" rel="stylesheet" media="screen">
 <link href="/resources/css/melfood.css?ver=<%=Ctx.releaseVersion%>" rel="stylesheet" media="screen">
+<link href="/resources/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" >
 
 <link rel="icon" type="image/png" href="/resources/image/favicon.png" />
 
