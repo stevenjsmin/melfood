@@ -39,6 +39,25 @@ $(document).ready(function() {
         datepicker4.open();
     });
 
+    $("#searchDateFrom").kendoDateTimePicker({
+        format: "yyyy-MM-dd hh:mm tt",
+        start: "year"
+    });
+    var datepicker5 = $("#searchDateFrom").data("kendoDateTimePicker");
+    $("#searchDateFrom").click(function() {
+        datepicker5.open();
+    });
+
+    $("#searchDateTo").kendoDateTimePicker({
+        format: "yyyy-MM-dd hh:mm tt",
+        start: "year"
+    });
+    var datepicker6 = $("#searchDateTo").data("kendoDateTimePicker");
+    $("#searchDateTo").click(function() {
+        datepicker6.open();
+    });
+
+
 
     $("#minimumPurchaseAmount").kendoNumericTextBox({
         max: 99999,

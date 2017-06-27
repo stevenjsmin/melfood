@@ -36,7 +36,6 @@ public class GroupPurchaseController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(GroupPurchaseController.class);
 
-
     @Autowired
     GroupPurchaseService groupPurchaseService;
 
@@ -65,9 +64,9 @@ public class GroupPurchaseController extends BaseController {
         mav.addObject("cbxPurchaseOrganizer", htmlForOrganizerCbx);
 
         // 공동구매 정지여부 : 기본값 : N
-//        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING", "Y");
-//        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
-//        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
+        List<Option> stopSellingOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "IS_STOP_SELLING");
+        String htmlForStopSellingCbx = HtmlCodeGenerator.generateComboboxForOptions("stopSelling", stopSellingOptions);
+        mav.addObject("cbxStopSelling", htmlForStopSellingCbx);
 
         // 공동구매 장소를 위한 State 설정 콤보박스 : 기본값-빅토리아
         List<Option> marketAddressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", "VIC");
@@ -101,20 +100,20 @@ public class GroupPurchaseController extends BaseController {
         groupPurchase.setPagenationPageSize(getPageSize(request));
 
         String purchaseOrganizer = request.getParameter("purchaseOrganizer");
-        String orderStartDt = request.getParameter("orderStartDt");
-        String orderEndDt = request.getParameter("orderEndDt");
+        String searchDateFrom = request.getParameter("searchDateFrom");
+        String searchDateTo = request.getParameter("searchDateTo");
         String stopSelling = request.getParameter("stopSelling");
         String marketAddressSuburb = request.getParameter("marketAddressSuburb");
 
         // 검색시작년월일이 존재하지 않을경우 현재날짜 기준으로 앞으로 예정된 일짜에 해당하는 목록만 가저오게한다.
-        if (StringUtils.isBlank(orderStartDt)) {
+        if (StringUtils.isBlank(searchDateFrom)) {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Calendar cal = Calendar.getInstance();
             cal.setTime(new Date());
-            orderStartDt = df.format(cal.getTime());
+            searchDateFrom = df.format(cal.getTime());
         }
-        groupPurchase.setOrderStartDt(orderStartDt);
-        if (StringUtils.isNotBlank(orderEndDt)) groupPurchase.setOrderEndDt(orderEndDt);
+        groupPurchase.setSearchDateFrom(searchDateFrom);
+        if (StringUtils.isNotBlank(searchDateTo)) groupPurchase.setOrderEndDt(searchDateTo);
 
         if (StringUtils.isNotBlank(purchaseOrganizer)) groupPurchase.setPurchaseOrganizer(purchaseOrganizer);
         if (StringUtils.isNotBlank(stopSelling)) groupPurchase.setStopSelling(stopSelling);

@@ -30,4 +30,22 @@ public interface GroupPurchaseDAO {
     public Integer getTotalCntForProductImages(ProductImage productImage);
 
     public Integer deleteProductImage(ProductImage productImage) throws Exception;
+
+    /**
+     * 몰 프론트페이지게 보여줄 공구 리스트를 가져온다
+     *
+     * @param groupPurchase
+     * @return
+     * @throws Exception
+     */
+    public List<GroupPurchase> getGroupPurchaseForMallFront(GroupPurchase groupPurchase) throws Exception;
+
+    /**
+     * 몰 프론트페이지게 보여줄 공구 리스트를 가져오기위한 카운트
+     *
+     * @param groupPurchase
+     * @return
+     */
+    public Integer getTotalCntGroupPurchaseForMallFront(GroupPurchase groupPurchase);
+
 }

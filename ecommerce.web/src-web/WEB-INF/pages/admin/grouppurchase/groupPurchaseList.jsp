@@ -38,8 +38,9 @@ $(document).ready(function () {
                             page : options.page,
                             pageSize : options.pageSize,
                             purchaseOrganizer : $("#purchaseOrganizer").val(),
-                            orderStartDt : $("#orderStartDt").val(),
-                            orderEndDt : $("#orderEndDt").val()
+                            stopSelling : $("#stopSelling").val(),
+                            searchDateFrom : $("#searchDateFrom").val(),
+                            searchDateTo : $("#searchDateTo").val()
                         };
                     } else if (operation == "destroy") {
                         console.log(options);
@@ -92,11 +93,13 @@ $(document).ready(function () {
         },         
 		columns: [
                   { hidden : true, field: 'groupPurchaseId'},
-		          { title : 'Organizer', template: kendo.template($("#purchaseOrganizer-template").html()), width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }},
+		          { title : '공구 게시자', template: kendo.template($("#purchaseOrganizer-template").html()), width: 200, attributes: {style: "color: 606000; font-weight: bolder;" }},
 		          { title : 'Title', field: 'groupPurchaseTitle', attributes: {style: "color: 939300; font-weight: bolder;" }},
-		          { title : 'Order Start', field: 'orderStartDt', width: 150, attributes: {style: "text-align: left;" }},
-		          { title : 'Order End', field: 'orderEndDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
-		          { title : 'Market Address', template: kendo.template($("#marketAddress-template").html()), attributes: {style: "text-align: left;" }},
+		          { title : '주문 시작일시', field: 'orderStartDt', width: 150, attributes: {style: "color: 128D15;text-align: left;" }},
+		          { title : '주문 종료일시', field: 'orderEndDt', width: 150, attributes: {style: "color: 128D15;text-align: left;" }},
+		          { title : '마켓오픈 일시', field: 'marketOpenStartDt', width: 150, attributes: {style: "color: e37200;font-weight: bolder;text-align: left;" }},
+		          { title : '마켓상태', template: kendo.template($("#stopSelling-template").html()), width: 200},
+		          { title : '마켓오픈 주소', template: kendo.template($("#marketAddress-template").html()), attributes: {style: "text-align: left;" }},
 		          { command: [ {text : "Delete", name: "destory", click: deleteItem}], width: 140}
 
 		 ] // End of Columns
@@ -161,7 +164,15 @@ $(document).ready(function () {
 <script id="purchaseOrganizer-template" type="text/x-kendo-template">
     #= purchaseOrganizer + ' / ' + purchaseOrganizerName #
 </script>
-
+<script id="stopSelling-template" type="text/x-kendo-template">
+    # if (stopSelling == 'Y') { #
+        <span style="color: d58512">판매정지</span>
+    # } else if (stopSelling == 'N') { #
+        판매중
+    # } else { #
+          -
+    # } #
+</script>
 </head>
 <body>
 
@@ -174,11 +185,13 @@ $(document).ready(function () {
     	 <table class="search_table">
     	 	<tr>
     	 		<td class="label">Organizer : </td>
-    	 		<td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
+                <td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
+                <td class="label">마켓상태 : </td>
+                <td class="value"><c:out value="${cbxStopSelling}" escapeXml="false"/></td>
                 <td class="label">주문 시작일시 :  </td>
-                <td class="value"><input id="orderStartDt" name="orderStartDt" value="${orderStartDt}"></input></td>
-                <td class="label">주문 종료일시 :  </td>
-                <td class="value_end"><input id="orderEndDt" name="orderEndDt" value=""></input></td>
+                <td class="value_end"><input id="searchDateFrom" name="searchDateFrom" value="${orderStartDt}"></input></td>
+                <td class="label"> ~ </td>
+                <td class="value_end"><input id="searchDateTo" name="searchDateTo" value=""></input></td>
                 <td class="find"><button type="button" class="btn btn-info" onclick="search();">Search</button></td>
 
     	 	</tr>

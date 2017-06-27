@@ -42,6 +42,8 @@
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
             <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
             <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
+            <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
+            <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
             <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
@@ -64,7 +66,7 @@
         ORDER BY a.group_purchase_id ASC
         LIMIT #{pagenationPage}, #{pagenationPageSize}
     </select>
-    <select id="getTotalCntGroupPurchase" parameterType="Code" resultType="java.lang.Integer">
+    <select id="getTotalCntGroupPurchase" parameterType="GroupPurchase" resultType="java.lang.Integer">
         /* QUERY ID : getTotalCntGroupPurchase */
         SELECT COUNT(*)
         FROM group_purchase a
@@ -75,6 +77,8 @@
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
             <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
             <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
+            <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
+            <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
             <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
@@ -293,10 +297,55 @@
         SELECT CASE WHEN max(image_seq) IS NULL THEN 1 ELSE (max(image_seq) + 1) END FROM group_purchase_product_image WHERE group_purchase_id = #{groupPurchaseId}
     </select>
 
-
     <delete id="deleteProductImage" parameterType="ProductImage">
         /* QUERY ID : deleteProductImage */
         DELETE FROM group_purchase_product_image WHERE group_purchase_id = #{prodId} <if test="imageSeq != null and imageSeq != 0"> AND image_seq = #{imageSeq}; </if>
     </delete>
+
+
+    <select id="getGroupPurchaseForMallFront" parameterType="GroupPurchase" resultType="GroupPurchase">
+        /* QUERY ID : getGroupPurchaseForMallFront */
+        SELECT
+            a.group_purchase_id 'groupPurchaseId',
+            a.group_purchase_title 'groupPurchaseTitle',
+            a.group_purchase_subtitle 'groupPurchaseSubtitle',
+            a.purchase_organizer 'purchaseOrganizer',
+            (SELECT CONCAT(user_name) FROM cmm_user WHERE user_id = a.purchase_organizer) 'purchaseOrganizerName',
+            DATE_FORMAT(a.order_start_dt,'%Y-%m-%d %h:%i %p') 'orderStartDt',
+            DATE_FORMAT(a.order_end_dt,'%Y-%m-%d %h:%i %p') 'orderEndDt',
+            a.stop_selling 'stopSelling',
+            a.stop_selling_reason 'stopSellingReason',
+            a.market_address_street 'marketAddressStreet',
+            a.market_address_suburb 'marketAddressSuburb',
+            a.market_address_state 'marketAddressState',
+            a.market_address_postcode 'marketAddressPostcode',
+            a.market_address_comment 'marketAddressComment',
+            DATE_FORMAT(a.market_open_start_dt,'%Y-%m-%d %h:%i %p') 'marketOpenStartDt',
+            DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d %h:%i %p') 'marketOpenEndDt',
+            a.minimum_purchase_amount 'minimumPurchaseAmount',
+            a.discount_method 'discountMethod',
+            a.discount_fixed_amount 'discountFixedAmount',
+            a.discount_rate_value 'discountRateValue',
+            a.group_purchase_notice 'groupPurchaseNotice',
+            a.mall_master_checked 'mallMasterChecked',
+            a.use_yn 'useYn',
+            a.create_datetime 'createDatetime',
+            a.modify_datetime 'modifyDatetime',
+            a.creator 'creator'
+        FROM group_purchase a
+        WHERE 1 = 1
+              AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d')
+        ORDER BY a.stop_selling ASC, a.group_purchase_id ASC;
+        LIMIT #{pagenationPage}, #{pagenationPageSize}
+    </select>
+    <select id="getTotalCntGroupPurchaseForMallFront" parameterType="GroupPurchase" resultType="java.lang.Integer">
+        /* QUERY ID : getTotalCntGroupPurchaseForMallFront */
+        SELECT COUNT(*)
+          FROM group_purchase a
+        WHERE 1 = 1
+        AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d')
+    </select>
+
+
 
 </mapper>

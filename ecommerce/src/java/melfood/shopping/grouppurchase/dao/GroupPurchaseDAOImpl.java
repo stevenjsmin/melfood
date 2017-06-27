@@ -73,4 +73,27 @@ public class GroupPurchaseDAOImpl extends BaseDAO implements GroupPurchaseDAO {
     public Integer deleteProductImage(ProductImage productImage) throws Exception {
         return sqlSession.delete("mySqlGroupPurchaseDao.deleteProductImage", productImage);
     }
+
+    /**
+     * 몰 프론트페이지게 보여줄 공구 리스트를 가져온다
+     *
+     * @param groupPurchase
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<GroupPurchase> getGroupPurchaseForMallFront(GroupPurchase groupPurchase) throws Exception {
+        return sqlSession.selectList("mySqlGroupPurchaseDao.getGroupPurchaseForMallFront", groupPurchase);
+    }
+
+    /**
+     * 몰 프론트페이지게 보여줄 공구 리스트를 가져오기위한 카운트
+     *
+     * @param groupPurchase
+     * @return
+     */
+    @Override
+    public Integer getTotalCntGroupPurchaseForMallFront(GroupPurchase groupPurchase) {
+        return sqlSession.selectOne("mySqlGroupPurchaseDao.getTotalCntGroupPurchaseForMallFront", groupPurchase);
+    }
 }

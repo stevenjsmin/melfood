@@ -223,4 +223,26 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
         return updateCnt;
     }
 
+    /**
+     * 몰 프론트페이지게 보여줄 공구 리스트를 가져온다
+     *
+     * @param groupPurchase
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<GroupPurchase> getGroupPurchaseForMallFront(GroupPurchase groupPurchase) throws Exception {
+        return groupPurchaseDAO.getGroupPurchaseForMallFront(groupPurchase);
+    }
+
+    /**
+     * 몰 프론트페이지게 보여줄 공구 리스트를 가져오기위한 카운트
+     *
+     * @param groupPurchase
+     * @return
+     */
+    @Override
+    public Integer getTotalCntGroupPurchaseForMallFront(GroupPurchase groupPurchase) {
+        return groupPurchaseDAO.getTotalCntGroupPurchaseForMallFront(groupPurchase);
+    }
 }
