@@ -97,7 +97,14 @@
                                                        <div class="chat-message">
                                                             <table style="width: 100%;">
                                                                  <tr><td style="font-size: 11px;color: #727272;">${entry.contents}</td></tr>
-                                                                 <tr><td style="text-align: right;font-size: 10px;">To : ${entry.writeToName}</td></tr>
+                                                                 <tr>
+                                                                      <td style="text-align: right;font-size: 10px;">To :
+                                                                           <c:choose>
+                                                                                <c:when test="${entry.writeToName == '' || entry.writeToName == null}">_(삭제된사용자)</c:when>
+                                                                                <c:otherwise>${entry.writeToName}</c:otherwise>
+                                                                           </c:choose>
+                                                                      </td>
+                                                                 </tr>
                                                                  <tr><td style="text-align: right;"><span style="color: #AEACAF; font-size: 10px;">${entry.createDatetime}</span></td></tr>
                                                             </table>
                                                        </div>
@@ -120,7 +127,14 @@
                                                        <div class="chat-message">
                                                             <table style="width: 100%;">
                                                                  <tr><td style="font-size: 11px;color: #727272;">${entry.contents}</td></tr>
-                                                                 <tr><td style="text-align: right;font-size: 10px;">From : ${entry.writeFromName}</td></tr>
+                                                                 <tr>
+                                                                      <td style="text-align: right;font-size: 10px;">From :
+                                                                           <c:choose>
+                                                                                <c:when test="${entry.writeFromName == '' || entry.writeFromName == null}">_(삭제된사용자)</c:when>
+                                                                                <c:otherwise>${entry.writeFromName}</c:otherwise>
+                                                                           </c:choose>
+                                                                      </td>
+                                                                 </tr>
                                                                  <tr><td style="text-align: right;"><span style="color: #AEACAF; font-size: 10px;"><fmt:formatDate pattern = "yyyy-MM-dd" value = "${now}" />${entry.createDatetime}</span></td></tr>
                                                             </table>
                                                        </div>

@@ -262,8 +262,7 @@ $(document).ready(function () {
     <input type="hidden" name="prodId"  id="prodId" value="${product.prodId}" />
 
     <script type="text/javascript">
-          var _PRODID = "<c:out value="${product.prodId}"/>";
-          
+
           $('.owl-carousel').owlCarousel({
         	    loop:false,
         	    margin:10,

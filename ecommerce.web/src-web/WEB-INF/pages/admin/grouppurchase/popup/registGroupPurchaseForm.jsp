@@ -93,6 +93,14 @@
                     <td class="value"><input id="orderEndDt" name="orderEndDt" value=""></input></td>
                 </tr>
                 <tr>
+                    <td class="label">배달가능여부 :</td>
+                    <td class="value"><c:out value="${cbxDeliverable}" escapeXml="false"/></td>
+                    <td class="label">배달비 / Km :</td>
+                    <td class="value"><input id="deliveryFeePerKm" name="deliveryFeePerKm" value=""></input></td>
+                </tr>
+
+
+                <tr>
                     <td class="label">상태 :</td>
                     <td class="value"><c:out value="${cbxStopSelling}" escapeXml="false"/></td>
                     <td colspan="2"></td>

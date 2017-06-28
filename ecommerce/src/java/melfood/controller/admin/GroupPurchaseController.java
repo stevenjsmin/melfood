@@ -82,6 +82,7 @@ public class GroupPurchaseController extends BaseController {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
+        cal.add(Calendar.DAY_OF_MONTH, -30);
         String to_yyyymmdd = df.format(cal.getTime());
         mav.addObject("orderStartDt", (to_yyyymmdd + " 12:00 AM"));
 
@@ -156,6 +157,12 @@ public class GroupPurchaseController extends BaseController {
         htmlProperty.setOnchange("changeDiscountMethod(this)");
         mav.addObject("cbxDiscountMethod", codeService.generateCmbx(discountMethodOptions, htmlProperty));
 
+        // 배달가능여부 : 기본값 : N
+        List<Option> deliverableOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DELIVERABLE", "N");
+        String htmlForDeliverableCbx = HtmlCodeGenerator.generateComboboxForOptions("deliverable", deliverableOptions);
+        mav.addObject("cbxDeliverable", htmlForDeliverableCbx);
+
+
         return mav;
     }
 
@@ -189,6 +196,12 @@ public class GroupPurchaseController extends BaseController {
         htmlProperty.setOnchange("changeDiscountMethod(this)");
         mav.addObject("cbxDiscountMethod", codeService.generateCmbx(discountMethodOptions, htmlProperty));
 
+        // 배달가능여부 : 기본값 : N
+        List<Option> deliverableOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DELIVERABLE", groupPurchase.getDeliverable());
+        String htmlForDeliverableCbx = HtmlCodeGenerator.generateComboboxForOptions("deliverable", deliverableOptions);
+        mav.addObject("cbxDeliverable", htmlForDeliverableCbx);
+
+
         mav.addObject("groupPurchase", groupPurchase);
 
         return mav;
@@ -220,6 +233,11 @@ public class GroupPurchaseController extends BaseController {
         List<Option> discountMethodOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DISCOUNT_METHOD", groupPurchase.getDiscountMethod());
         String htmlForDiscountMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("marketAddressState", addressStateOptions);
         mav.addObject("cbxDiscountMethod", htmlForDiscountMethodCbx);
+
+        // 배달가능여부 : 기본값 : N
+        List<Option> deliverableOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DELIVERABLE", groupPurchase.getDeliverable());
+        String htmlForDeliverableCbx = HtmlCodeGenerator.generateComboboxForOptions("deliverable", deliverableOptions);
+        mav.addObject("cbxDeliverable", htmlForDeliverableCbx);
 
         mav.addObject("groupPurchase", groupPurchase);
 
@@ -256,6 +274,8 @@ public class GroupPurchaseController extends BaseController {
         String discountMethod = request.getParameter("discountMethod");
         String discountFixedAmount = request.getParameter("discountFixedAmount");
         String discountRateValue = request.getParameter("discountRateValue");
+        String deliverable = request.getParameter("deliverable");
+        String deliveryFeePerKm = request.getParameter("deliveryFeePerKm");
         String groupPurchaseNotice = request.getParameter("groupPurchaseNotice");
         String creator = sessionUser.getUser().getUserId();
 
@@ -294,6 +314,18 @@ public class GroupPurchaseController extends BaseController {
             if (StringUtils.isNotBlank(marketOpenEndDt)) groupPurchase.setMarketOpenEndDt(marketOpenEndDt);
             if (StringUtils.isNotBlank(minimumPurchaseAmount)) groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
+
+            if (StringUtils.isBlank(deliverable) || StringUtils.equalsIgnoreCase(deliverable, "N")) {
+                groupPurchase.setDeliverable("N");
+                groupPurchase.setDeliveryFeePerKm(0.0f);
+            } else {
+                groupPurchase.setDeliverable("Y");
+                if (StringUtils.isBlank(deliveryFeePerKm)) {
+                    groupPurchase.setDeliveryFeePerKm(0.0f);
+                } else {
+                    groupPurchase.setDeliveryFeePerKm(Float.parseFloat(deliveryFeePerKm));
+                }
+            }
 
             if (StringUtils.isNotBlank(discountMethod)) {
                 if (StringUtils.equalsIgnoreCase(discountMethod, "FIXED")) {
@@ -692,7 +724,7 @@ public class GroupPurchaseController extends BaseController {
 
         // 공동구매 정지여부 : 기본값 : N
         String isStopSelling = "N";
-        if(StringUtils.isBlank(product.getStopSelling()) || StringUtils.equalsIgnoreCase(product.getStopSelling(), "N")){
+        if (StringUtils.isBlank(product.getStopSelling()) || StringUtils.equalsIgnoreCase(product.getStopSelling(), "N")) {
             isStopSelling = "N";
         } else {
             isStopSelling = "Y";

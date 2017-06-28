@@ -80,6 +80,13 @@ $(document).ready(function() {
         step: 0.01
     });
 
+    $("#deliveryFeePerKm").kendoNumericTextBox({
+        max: 99999,
+        min: 0.00,
+        step: 1.00,
+        format: "c2"
+    });
+
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
 
@@ -264,6 +271,8 @@ function save(){
     var discountMethod = $('#discountMethod').val();
     var discountRateValue = $('#discountRateValue').val();
     var discountFixedAmount = $('#discountFixedAmount').val();
+    var deliverable = $('#deliverable').val();
+    var deliveryFeePerKm = $('#deliveryFeePerKm').val();
     var orderStartDt = $('#orderStartDt').val();
     var orderEndDt = $('#orderEndDt').val();
 
@@ -297,6 +306,8 @@ function save(){
                discountMethod : discountMethod,
                discountRateValue : discountRateValue,
                discountFixedAmount : discountFixedAmount,
+               deliverable : deliverable                                ,
+               deliveryFeePerKm : deliveryFeePerKm,
                orderStartDt : orderStartDt,
                orderEndDt : orderEndDt,
                stopSelling : stopSelling,

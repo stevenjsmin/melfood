@@ -10,7 +10,8 @@
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 	<definition name="tiles/customer/welcome" extends="layout/panel_200">
-		<put-attribute name="body" value="/WEB-INF/pages/customer/customer_welcome.jsp" />
+		<!--<put-attribute name="body" value="/WEB-INF/pages/customer/customer_welcome.jsp" />-->
+		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
 	</definition>
 	
 	

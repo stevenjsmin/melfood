@@ -439,7 +439,7 @@
                     <td class="label">공동구매 주관자 :</td>
                     <td class="value">${groupPurchase.purchaseOrganizerName} (ID : ${groupPurchase.purchaseOrganizer})</td>
                     <td class="label">최소 참여금액 :</td>
-                    <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.discountRateValue}"/></td>
+                    <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.minimumPurchaseAmount}"/></td>
                 </tr>
                 <tr>
                     <td class="label">주문받는 기간 :</td>
@@ -456,6 +456,24 @@
                         </c:choose>
                     </td>
                 </tr>
+                <tr>
+                    <td class="label">배달가능여부 :</td>
+                    <td class="value">
+                            <c:choose>
+                                <c:when test="${groupPurchase.deliverable == 'Y'}">
+                                    배달가능
+                                </c:when>
+                                <c:when test="${groupPurchase.deliverable == 'N'}">
+                                    배달 서비스없음
+                                </c:when>
+                            </c:choose>
+                    </td>
+                    <td class="label">배달비 / Km :</td>
+                    <td class="value">
+                        $ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.deliveryFeePerKm}"/>
+                    </td>
+                </tr>
+
 
                 <tr>
                     <td colspan="4">

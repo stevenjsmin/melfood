@@ -232,7 +232,16 @@ public class GroupPurchaseServiceImpl implements GroupPurchaseService {
      */
     @Override
     public List<GroupPurchase> getGroupPurchaseForMallFront(GroupPurchase groupPurchase) throws Exception {
-        return groupPurchaseDAO.getGroupPurchaseForMallFront(groupPurchase);
+        List<GroupPurchase> list = groupPurchaseDAO.getGroupPurchaseForMallFront(groupPurchase);
+
+        // 각 공구항목의 대표 이미지목록을 설정한다.
+        int groupPurchaseId = 0;
+        for (int i = 0; i < list.size(); i++) {
+            groupPurchaseId = list.get(i).getGroupPurchaseId();
+            List<ProductImage> groupPurchaseImageList = this.getProductImages(new ProductImage(groupPurchaseId));
+            list.get(i).setGroupPurchaseImages(groupPurchaseImageList);
+        }
+        return list;
     }
 
     /**

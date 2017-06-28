@@ -1,6 +1,7 @@
 package melfood.shopping.grouppurchase.dto;
 
 import melfood.framework.common.dto.BaseDto;
+import melfood.shopping.product.ProductImage;
 
 import java.util.List;
 
@@ -29,10 +30,18 @@ public class GroupPurchase extends BaseDto {
     private String discountMethod;
     private Float discountFixedAmount;
     private Float discountRateValue;
+    private String deliverable;
+    private Float deliveryFeePerKm;
     private String groupPurchaseNotice;
     private String mallMasterChecked;
 
+    private String marketOpenStartDate;
+    private String marketOpenStartTime;
+    private String marketOpenEndDate;
+    private String marketOpenEndTime;
+
     private List<GroupPurchaseProduct> purchaseProducts;
+    private List<ProductImage> groupPurchaseImages;
 
     public GroupPurchase() {
     }
@@ -227,5 +236,61 @@ public class GroupPurchase extends BaseDto {
 
     public void setMarketOpenEndDt(String marketOpenEndDt) {
         this.marketOpenEndDt = marketOpenEndDt;
+    }
+
+    public List<ProductImage> getGroupPurchaseImages() {
+        return groupPurchaseImages;
+    }
+
+    public void setGroupPurchaseImages(List<ProductImage> groupPurchaseImages) {
+        this.groupPurchaseImages = groupPurchaseImages;
+    }
+
+    public String getDeliverable() {
+        return deliverable;
+    }
+
+    public void setDeliverable(String deliverable) {
+        this.deliverable = deliverable;
+    }
+
+    public Float getDeliveryFeePerKm() {
+        return deliveryFeePerKm;
+    }
+
+    public void setDeliveryFeePerKm(Float deliveryFeePerKm) {
+        this.deliveryFeePerKm = deliveryFeePerKm;
+    }
+
+    public String getMarketOpenStartDate() {
+        return marketOpenStartDate;
+    }
+
+    public void setMarketOpenStartDate(String marketOpenStartDate) {
+        this.marketOpenStartDate = marketOpenStartDate;
+    }
+
+    public String getMarketOpenStartTime() {
+        return marketOpenStartTime;
+    }
+
+    public void setMarketOpenStartTime(String marketOpenStartTime) {
+        this.marketOpenStartTime = marketOpenStartTime;
+    }
+
+    public String getMarketOpenEndDate() {
+        return marketOpenEndDate;
+    }
+
+    public void setMarketOpenEndDate(String marketOpenEndDate) {
+        this.marketOpenEndDate = marketOpenEndDate;
+    }
+
+    public String getMarketOpenEndTime() {
+        return marketOpenEndTime;
+    }
+
+    public void setMarketOpenEndTime(String marketOpenEndTime) {
+        this.marketOpenEndTime = marketOpenEndTime;
     }
 }

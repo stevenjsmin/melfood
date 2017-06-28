@@ -67,7 +67,7 @@
                     <td class="label"><span class="required">* </span>공동구매 주관자 :</td>
                     <td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
                     <td class="label">최소 참여금액 :</td>
-                    <td class="value"><input id="minimumPurchaseAmount" name="minimumPurchaseAmount" value="0.00"></input></td>
+                    <td class="value"><input id="minimumPurchaseAmount" name="minimumPurchaseAmount" value="${groupPurchase.minimumPurchaseAmount}"></input></td>
                 </tr>
                 <tr>
                     <td class="label">할인비율/금액 :</td>
@@ -77,6 +77,12 @@
                         <span id="spanDiscountRateValue" style="display: none;"><input id="discountRateValue" name="discountRateValue" value="${groupPurchase.discountRateValue}"></input></span>
                         <span id="spanDiscountFixedAmount" style="display: none;"><input id="discountFixedAmount" name="discountFixedAmount" value="${groupPurchase.discountFixedAmount}"></input></span>
                     </td>
+                </tr>
+                <tr>
+                    <td class="label">배달가능여부 :</td>
+                    <td class="value"><c:out value="${cbxDeliverable}" escapeXml="false"/></td>
+                    <td class="label">배달비 / Km :</td>
+                    <td class="value"><input id="deliveryFeePerKm" name="deliveryFeePerKm" value="${groupPurchase.deliveryFeePerKm}"></input></td>
                 </tr>
 
                 <tr>

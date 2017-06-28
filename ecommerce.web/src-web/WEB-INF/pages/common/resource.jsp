@@ -35,6 +35,12 @@
 <script src="/resources/js/bootstrap.min.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script src="/resources/js/bootstrap-dialog.min.js?ver=<%=Ctx.releaseVersion%>"></script>
 
+<!-- https://owlcarousel2.github.io/OwlCarousel2/docs/api-options.html -->
+<link href="/resources/owlcarousel/owl.carousel.min.css" rel="stylesheet" media="screen">
+<link href="/resources/owlcarousel/owl.theme.default.min.css" rel="stylesheet" media="screen">
+<script src="/resources/owlcarousel/owl.carousel.js"></script>
+<script src="/resources/jquery-mousewheel/jquery.mousewheel.min.js"></script>
+
 <!-- Uss RPC Framework Resources -->
 <script type="text/javascript" src="/resources/js/melfood_core.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script type="text/javascript" src="/resources/js/melfood_util.js?ver=<%=Ctx.releaseVersion%>"></script>
