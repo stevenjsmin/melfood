@@ -81,6 +81,9 @@
         function goChangePage(page){
             document.location.href = "/common/auth/welcome.yum?page=" + page;
         }
+        function goGroupPurchaseMain(groupPurchaseId){
+            document.location.href = "/grouppurchase/Main.yum?groupPurchaseId=" + groupPurchaseId;
+        }
     </script>
 
 </head>
@@ -137,7 +140,7 @@
                                 <c:when test="${groupPurchase.stopSelling == 'N'}">
                                     <table style="width: 100%;">
                                         <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
-                                        <tr><td style="text-align: right;padding-top: 5px;"><a href="goGroupPurchase('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
+                                        <tr><td style="text-align: right;padding-top: 5px;"><a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
                                     </table>
                                 </c:when>
                                 <c:when test="${groupPurchase.stopSelling == 'Y'}">

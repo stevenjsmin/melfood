@@ -11,6 +11,10 @@
 	<definition name="tiles/customer/grouppurchase/main" extends="layout/panel_200">
 		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/purchaseMain.jsp" />
 	</definition>
-	
-	
+
+	<definition name="tiles/customer/grouppurchase/purchaseOrganizerInfo" extends="layout/panel_100">
+		<put-attribute name="title" value="공구진행자 / 판매자정보" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/purchaseOrganizerInfo.jsp" />
+	</definition>
+
 </tiles-definitions>

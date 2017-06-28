@@ -17,6 +17,7 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.product.ProductImage;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,21 +63,41 @@ public class GroupPurchaseOrderMainController extends BaseController {
             // 공동구매 기본정보
             groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
             // 공동구매를 진행하는 사람의 상세정보
-            organizer = userService.getUserInfo(groupPurchase.getPurchaseOrganizer());
+            // organizer = userService.getUserInfo(groupPurchase.getPurchaseOrganizer());
             // 공동구매 상품정보(목록)
             groupPurchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(groupPurchaseId);
+
+            List<ProductImage> groupPurchaseImages = groupPurchaseService.getProductImages(new ProductImage(groupPurchase.getGroupPurchaseId()));
+            groupPurchase.setGroupPurchaseImages(groupPurchaseImages);
+            if (groupPurchaseImages.size() > 0 && groupPurchaseImages.get(0).getImageFileId() != 0) {
+                // 등록된 첫번째 이미지를 대표이미지로 사용한다.
+                mav.addObject("firstImageId", Integer.toString(groupPurchaseImages.get(0).getImageFileId()));
+            } else {
+                mav.addObject("firstImageId", null);
+            }
 
             // TODO : 배송이 가능한 경우, 배송가능 목록 조회
             String customerUserId = sessionUser.getUser().getUserId();
             User customerUser = userService.getUserInfo(customerUserId);
             // getSuburbs using customerUser;
 
-            mav.addObject("purchaseOrganizer", organizer);
+            //mav.addObject("purchaseOrganizer", organizer);
             mav.addObject("groupPurchase", groupPurchase);
             mav.addObject("groupPurchaseProducts", groupPurchaseProducts);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return mav;
+    }
+
+    @RequestMapping("/purchaseOrganizerInfo")
+    public ModelAndView detailUserForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/purchaseOrganizerInfo");
+
+        String purchaseOrganizer = request.getParameter("purchaseOrganizer");
+        User user = userService.getUserInfo(purchaseOrganizer);
+        mav.addObject("purchaseOrganizer", user);
 
         return mav;
     }
