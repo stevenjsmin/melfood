@@ -13,7 +13,11 @@
 		<tr>
 			<td style="vertical-align: middle;word-break:break-all">
 				<div class="alert alert-info" style="width: 100%;">
-					<b><font style="font-size: medium; color: #004080">Session Expired</font></b><br> <br>
+					<b><font style="font-size: medium; color: #004080;font-size: 10px;">Session Expired</font></b><br>
+					<br>
+					<span style="color: #2185E8;font-weight: bold;">현재 요청하신 서비스/페이지는 로그인이 필요한 서비스입니다. 계속하시기 위해서는 먼저 로그인을 하셔야합니다.</span>
+					<br>
+					<br>
 					<font style="font-size: small; color: #004080;"><div id="timer_div">You will be redirected to home page in 10 sec.</div></font>
 				</div>
 			</td>

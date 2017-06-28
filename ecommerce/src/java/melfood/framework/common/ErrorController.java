@@ -9,17 +9,15 @@
 
 package melfood.framework.common;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.framework.Ctx;
+import melfood.framework.system.BaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.Ctx;
-import melfood.framework.system.BaseController;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Role Management controller
@@ -46,9 +44,11 @@ public class ErrorController extends BaseController {
 
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		mav.addObject("errorTime",dt.format(new Date()).toString());
-		
+
 		mav.addObject("in_charge_of_person",
-				Ctx.xmlConfig.getString("contact-info/customer-service/name") + " | " + Ctx.xmlConfig.getString("contact-info/customer-service/phone") + " | " + Ctx.xmlConfig.getString("contact-info/customer-service/email"));
+				Ctx.xmlConfig.getString("contact-info/default-customer-service/name")
+						+ " | " + Ctx.xmlConfig.getString("contact-info/default-customer-service/phone")
+						+ " | " + Ctx.xmlConfig.getString("contact-info/default-customer-service/email"));
 		return mav;
 	}
 

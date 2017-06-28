@@ -54,6 +54,7 @@ public class GroupPurchase extends BaseDto {
         this.groupPurchaseId = Integer.parseInt(groupPurchaseId);
     }
 
+
     public int getGroupPurchaseId() {
         return groupPurchaseId;
     }

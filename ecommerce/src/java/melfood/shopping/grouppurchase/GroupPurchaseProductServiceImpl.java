@@ -33,6 +33,11 @@ public class GroupPurchaseProductServiceImpl implements GroupPurchaseProductServ
     }
 
     @Override
+    public List<GroupPurchaseProduct> getGroupPurchaseProducts(String groupPurchaseId) throws Exception {
+        return this.getGroupPurchaseProducts(Integer.parseInt(groupPurchaseId));
+    }
+
+    @Override
     public List<GroupPurchaseProduct> getGroupPurchaseProducts(int groupPurchaseId) throws Exception {
         GroupPurchaseProduct purchaseProduct = new GroupPurchaseProduct();
         purchaseProduct.setGroupPurchaseId(groupPurchaseId);
@@ -105,4 +110,5 @@ public class GroupPurchaseProductServiceImpl implements GroupPurchaseProductServ
     public Integer modifyGroupPurchaseStopSelling(GroupPurchaseProduct purchaseProduct) throws Exception {
         return groupPurchaseProductDao.modifyGroupPurchaseStopSelling(purchaseProduct);
     }
+
 }
