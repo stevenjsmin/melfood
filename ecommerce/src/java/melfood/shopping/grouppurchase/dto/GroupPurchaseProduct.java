@@ -1,6 +1,7 @@
 package melfood.shopping.grouppurchase.dto;
 
 import melfood.framework.common.dto.BaseDto;
+import melfood.shopping.product.Product;
 
 /**
  * Created by Steven on 13/6/17.
@@ -17,6 +18,8 @@ public class GroupPurchaseProduct extends BaseDto {
     private String unitPrice;
     private String checkBeforeBuy;
     private String productDescription;
+
+    private Product product;
 
 
     public GroupPurchaseProduct() {
@@ -110,5 +113,13 @@ public class GroupPurchaseProduct extends BaseDto {
 
     public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

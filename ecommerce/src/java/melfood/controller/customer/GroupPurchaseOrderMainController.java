@@ -12,12 +12,14 @@ package melfood.controller.customer;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
 import melfood.framework.user.User;
-import melfood.shopping.delivery.DeliveryCalendarService;
 import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.product.Product;
 import melfood.shopping.product.ProductImage;
+import melfood.shopping.product.ProductImageService;
+import melfood.shopping.product.ProductService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +41,10 @@ public class GroupPurchaseOrderMainController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(GroupPurchaseOrderMainController.class);
 
     @Autowired
-    private DeliveryCalendarService deliveryCalendarService;
+    private ProductService productService;
+
+    @Autowired
+    private ProductImageService productImageService;
 
     @Autowired
     private GroupPurchaseService groupPurchaseService;
@@ -60,12 +65,26 @@ public class GroupPurchaseOrderMainController extends BaseController {
         List<GroupPurchaseProduct> groupPurchaseProducts = null;
 
         try {
+            // GroupPurchase --> GroupPurchaseProduct/(s) --> Product/(s) --> ProductImage/(s)
             // 공동구매 기본정보
             groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
             // 공동구매를 진행하는 사람의 상세정보
             // organizer = userService.getUserInfo(groupPurchase.getPurchaseOrganizer());
             // 공동구매 상품정보(목록)
             groupPurchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(groupPurchaseId);
+
+            // GroupPurchase --> GroupPurchaseProduct/(s) --> Product/(s) --> ProductImage/(s)
+            List<ProductImage> productImages = null;
+            int prodId = 0;
+            Product product = null;
+            for (int i = 0; i < groupPurchaseProducts.size(); i++) {
+                prodId = groupPurchaseProducts.get(i).getProductId();
+                product = productService.getProduct(new Product(prodId));
+                productImages = productImageService.getProductImages(new ProductImage(product.getProdId()));
+                product.setProductionImages(productImages);
+                if(productImages.size() > 0) product.setProductImage(productImages.get(0)); // 첫번째 이미지를 대표이미지로 설정
+                groupPurchaseProducts.get(i).setProduct(product);
+            }
 
             List<ProductImage> groupPurchaseImages = groupPurchaseService.getProductImages(new ProductImage(groupPurchase.getGroupPurchaseId()));
             groupPurchase.setGroupPurchaseImages(groupPurchaseImages);
