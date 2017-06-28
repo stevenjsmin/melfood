@@ -190,57 +190,62 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width: 30%;"><i class="fa fa-gift fa-3x" aria-hidden="true"></i></td>
+                                <td style="width: 30%;padding-left: 20px;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#2185E8;"></i></td>
                                 <td style="width: 70%;"><span style="font-size: 15px;font-weight: bold;">공동구매 아이템</span></td>
                             </tr>
                         </table>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding-left: 20px;">
                         <p>${groupPurchase.groupPurchaseNotice}</p>
                     </div>
 
                     <!-- Table -->
                     <table class="table bootstrap-tbl">
-                        <colgroup>
-                            <col width="80"/>
-                            <col width="150"/>
-                            <col width="*"/>
-                        </colgroup>
                         <tr>
                         <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count1" begin="0">
                             <tr>
-                                <td style="vertical-align: top;text-align: center;width: 80px;">
+                                <td style="vertical-align: top;text-align: center;width: 120px;">
                                     <c:choose>
                                         <c:when test="${groupPurchaseProduct.product.productImage.imageFileId != 0 and groupPurchaseProduct.product.productImage.imageFileId != null}">
-                                            <img id="profilePhotoId" src="/img/?f=${groupPurchaseProduct.product.productImage.imageFileId}" style="width: 80px;" class="circular-square">
+                                            <img id="profilePhotoId" src="/img/?f=${groupPurchaseProduct.product.productImage.imageFileId}" style="width: 120px; height: 120px;" class="circular-square">
                                         </c:when>
                                         <c:otherwise>
-                                            <i class="fa fa-gift fa-4x" aria-hidden="true" style="color: #c7d0d2;"></i>
+                                            <i class="fa fa-gift fa-5x" aria-hidden="true" style="color: #c7d0d2;"></i>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td style="width: 150px;">
+                                <td style="vertical-align: middle;">
+
                                     <table style="width: 100%;">
-                                        <tr><td colspan="2" style="padding: 5px 5px;font-weight: bold;">${groupPurchaseProduct.product.name}</td></tr>
+                                        <tr><td colspan="2" style="height: 35px;font-weight: bold;font-size: 15px;color: #505050;">${groupPurchaseProduct.product.name}</td></tr>
                                         <tr>
-                                            <td style="color: #797979; text-align: right;">단가 :</td>
-                                            <td style="padding: 0px 5px;">$ ${groupPurchaseProduct.product.unitPrice}</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="color: #797979; text-align: right;">생산자 :</td>
-                                            <td style="padding: 0px 5px;">${groupPurchaseProduct.product.seller}</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td><input type="text" class="amountOfOrder" id="amountOfOrder$_{groupPurchaseProduct.product.prodId}" name="amountOfOrder$_{groupPurchaseProduct.product.prodId}" value='1'/></td>
-                                            <td>추가</td>
+                                            <td>
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="color: #797979; text-align: right;">단가 :</td>
+                                                        <td style="padding: 5px 5px;color: #900C3E;">$ ${groupPurchaseProduct.product.unitPrice}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="color: #797979; text-align: right;">생산자 :</td>
+                                                        <td style="padding: 5px 5px;">${groupPurchaseProduct.product.seller}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <table>
+                                                    <tr>
+                                                        <td style="padding-left: 40px;">
+                                                            <input type="text" class="amountOfOrder" id="amountOfOrder$_{groupPurchaseProduct.product.prodId}" name="amountOfOrder$_{groupPurchaseProduct.product.prodId}" value='1' maxlength="2" style="width: 100px;"/>
+                                                        </td>
+                                                        <td style="padding-left: 20px;"><i class="fa fa-cart-plus fa-2x" aria-hidden="true" style="color: #117899;"></i></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
                                         </tr>
                                     </table>
 
                                 </td>
+
                             </tr>
                         </c:forEach>
                     </table>
