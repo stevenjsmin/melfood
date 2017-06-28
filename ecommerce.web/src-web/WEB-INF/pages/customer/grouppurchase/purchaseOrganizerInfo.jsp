@@ -16,7 +16,7 @@
                color: #26273C;
           }
           .front-tbl-label {
-               background-color: #E5EFC7;
+               background-color: #F9FBE4;
                color: #3c3c3c;
                text-align: right;
           }
@@ -89,7 +89,13 @@
                     </tr>
                     <tr>
                          <td class="front-tbl-label">사업장주소</td>
-                         <td colspan="3"> 4 Torresdale Road, South Morang VIC 3752</td>
+                         <td colspan="3">
+                              ${purchaseOrganizer.addressStreet}
+                              ${purchaseOrganizer.addressSuburb}
+                              ${purchaseOrganizer.addressState}
+                              ${purchaseOrganizer.addressPostcode}
+
+                         </td>
                     </tr>
                </table>
           </div>
