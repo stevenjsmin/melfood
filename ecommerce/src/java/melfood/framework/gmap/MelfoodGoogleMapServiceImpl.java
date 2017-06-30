@@ -84,7 +84,7 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
      * @throws Exception
      */
     @Override
-    public int getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception {
+    public String getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception {
         return this.getLookupGmapDistance(originAddress, destinationAddress, false);
     }
 
@@ -98,7 +98,8 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
      * @throws Exception
      */
     @Override
-    public int getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception {
+    public String getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception {
+
         // Reference - https://developers.google.com/maps/documentation/distancematrix/
 
         StringBuffer options = new StringBuffer();
@@ -133,14 +134,23 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
         while ((line = reader.readLine()) != null) {
             outputString += line;
         }
+
         GMapResult mapLookupResult = new Gson().fromJson(outputString, GMapResult.class);
 
-        logger.info("Distance : " + mapLookupResult.getRows()[0].getElements()[0].getDistance().getValue());
-        logger.info("Duration : " + mapLookupResult.getRows()[0].getElements()[0].getDuration().getValue());
+        // Ref: https://developers.google.com/maps/documentation/distance-matrix/
+        //Top-level Status Codes : ["NOT_FOUND" | "OK" | "INVALID_REQUEST" | "MAX_ELEMENTS_EXCEEDED" | "OVER_QUERY_LIMIT" | "REQUEST_DENIED" | "UNKNOWN_ERROR" ]
+        //Element level status code : ["NOT_FOUND" | "OK" | "ZERO_RESULTS" | "MAX_ROUTE_LENGTH_EXCEEDED" ]
+        logger.info("Element Status : " + mapLookupResult.getRows()[0].getElements()[0].getStatus());
 
-        float distance = Float.parseFloat(mapLookupResult.getRows()[0].getElements()[0].getDistance().getValue()) / 1000;
 
-        return (int) distance;
+        logger.info("Distance : " + mapLookupResult.getRows()[0].getElements()[0].getDistance().getText());
+        logger.info("Duration : " + mapLookupResult.getRows()[0].getElements()[0].getDuration().getText());
+
+
+        // float distance = Float.parseFloat(mapLookupResult.getRows()[0].getElements()[0].getDistance().getValue()) / 1000;
+        String distance = mapLookupResult.getRows()[0].getElements()[0].getDistance().getText();
+
+        return distance;
     }
 
 }

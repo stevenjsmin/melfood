@@ -44,7 +44,7 @@ public interface MelfoodGoogleMapService {
      * @return
      * @throws Exception
      */
-    public int getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception;
+    public String getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception;
 
     /**
      * 두 지점사이의 거리를 얻어온다
@@ -55,7 +55,7 @@ public interface MelfoodGoogleMapService {
      * @return
      * @throws Exception
      */
-    public int getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception;
+    public String getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception;
 
 
 }

@@ -9,7 +9,6 @@
 
 package melfood.controller.customer;
 
-import com.google.maps.model.GeocodingResult;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
@@ -122,8 +121,8 @@ public class GroupPurchaseOrderMainController extends BaseController {
             mav.addObject("groupPurchase", groupPurchase);
             mav.addObject("groupPurchaseProducts", groupPurchaseProducts);
 
-            GeocodingResult mapResult = melfoodGoogleMapService.lookupGMap("4 Torresdale Road, South Morang VIC 3752");
-            logger.info(mapResult.toString());
+            String mapResult = melfoodGoogleMapService.getLookupGmapDistance("4 Torresdale Road, South Morang VIC 3752", "724 Waverley Rd, Glen Waverley VIC 3150");
+            logger.info(mapResult);
 
         } catch (Exception e) {
             e.printStackTrace();
