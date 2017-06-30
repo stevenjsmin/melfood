@@ -15,16 +15,19 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $('#spanDiscountRateValue').show();
-            $('#spanDiscountFixedAmount').hide();
-            $('#discountFixedAmount').val('0');
+            if('${groupPurchase.discountMethod}' == 'RATE') {
+                $('#spanDiscountRateValue').show();
+                $('#spanDiscountFixedAmount').hide();
+            } else {
+                $('#spanDiscountRateValue').hide();
+                $('#spanDiscountFixedAmount').show()
+            }
 
             $("#groupPurchaseNotice").kendoEditor({
                 tools :["bold","italic","underline","justifyLeft","justifyCenter","justifyRight","insertUnorderedList","insertOrderedList","createLink","unlink","insertImage","createTable","formatting","fontSize","foreColor"],
                 messages: {fontSizeInherit: "Default"},
                 encoded: false
             });
-
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
@@ -74,16 +77,31 @@
                     <td class="value"><c:out value="${cbxDiscountMethod}" escapeXml="false"/></td>
                     <td class="label">비율/금액 :</td>
                     <td class="value">
-                        <span id="spanDiscountRateValue" style="display: none;"><input id="discountRateValue" name="discountRateValue" value="${groupPurchase.discountRateValue}"></input></span>
-                        <span id="spanDiscountFixedAmount" style="display: none;"><input id="discountFixedAmount" name="discountFixedAmount" value="${groupPurchase.discountFixedAmount}"></input></span>
+                        <span id="spanDiscountRateValue"><input id="discountRateValue" name="discountRateValue" value="${groupPurchase.discountRateValue}"></input></span>
+                        <span id="spanDiscountFixedAmount"><input id="discountFixedAmount" name="discountFixedAmount" value="${groupPurchase.discountFixedAmount}"></input></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <br/>
+                        <span class="subtitle"> 배송서비스</span>
+                        <hr class="subtitle"/>
                     </td>
                 </tr>
                 <tr>
                     <td class="label">배달가능여부 :</td>
                     <td class="value"><c:out value="${cbxDeliverable}" escapeXml="false"/></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label">기본배달 서비스비 :</td>
+                    <td class="value"><input id="deliveryBasicFee" name="deliveryBasicFee" value="${groupPurchase.deliveryBasicFee}"></input></td>
                     <td class="label">배달비 / Km :</td>
                     <td class="value"><input id="deliveryFeePerKm" name="deliveryFeePerKm" value="${groupPurchase.deliveryFeePerKm}"></input></td>
                 </tr>
+
 
                 <tr>
                     <td colspan="4">

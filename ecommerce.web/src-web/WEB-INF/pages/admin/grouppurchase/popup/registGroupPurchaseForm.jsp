@@ -92,13 +92,26 @@
                     <td class="label"><span class="required">* </span>주문 종료일시 :</td>
                     <td class="value"><input id="orderEndDt" name="orderEndDt" value=""></input></td>
                 </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <br/>
+                        <span class="subtitle"> 배송서비스</span>
+                        <hr class="subtitle"/>
+                    </td>
+                </tr>
                 <tr>
                     <td class="label">배달가능여부 :</td>
                     <td class="value"><c:out value="${cbxDeliverable}" escapeXml="false"/></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label">기본배달 서비스비 :</td>
+                    <td class="value"><input id="deliveryBasicFee" name="deliveryBasicFee" value=""></input></td>
                     <td class="label">배달비 / Km :</td>
                     <td class="value"><input id="deliveryFeePerKm" name="deliveryFeePerKm" value=""></input></td>
                 </tr>
-
 
                 <tr>
                     <td class="label">상태 :</td>

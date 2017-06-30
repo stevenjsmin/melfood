@@ -153,11 +153,11 @@
 
                                             </td>
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
-                                            <td style="padding: 20px 20px;"><a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;">공구진행자 / 판매자정보</a></td>
+                                            <td style="padding: 20px 20px;"><a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;">공동구매 진행자정보</a></td>
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
                                                 <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;">
-                                        <span style="color: #606060;">Minimum order $ <fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.minimumPurchaseAmount}" />
+                                                     <span style="color: #606060;">Minimum order $ <fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.minimumPurchaseAmount}" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -182,7 +182,9 @@
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- 페이지 중간 [시작] :: 오른쪽:아이템목록 -->
-    <div class="col-sm-6">
+    <div class="col-sm-7">
+
+
         <div class="row">
             <div class="col-sm-12">
                 <div class="panel panel-default">
@@ -190,8 +192,8 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width: 30%;padding-left: 20px;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#2185E8;"></i></td>
-                                <td style="width: 70%;"><span style="font-size: 15px;font-weight: bold;">공동구매 아이템</span></td>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#505050;"></i></td>
+                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">공동구매 아이템</span></td>
                             </tr>
                         </table>
                     </div>
@@ -207,37 +209,47 @@
                                 <td style="vertical-align: top;text-align: center;width: 120px;">
                                     <c:choose>
                                         <c:when test="${groupPurchaseProduct.product.productImage.imageFileId != 0 and groupPurchaseProduct.product.productImage.imageFileId != null}">
-                                            <img id="profilePhotoId" src="/img/?f=${groupPurchaseProduct.product.productImage.imageFileId}" style="width: 120px; height: 120px;" class="circular-square">
+                                            <img id="profilePhotoId" src="/img/?f=${groupPurchaseProduct.product.productImage.imageFileId}" style="width: 120px;" class="circular-square">
                                         </c:when>
                                         <c:otherwise>
                                             <i class="fa fa-gift fa-5x" aria-hidden="true" style="color: #c7d0d2;"></i>
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td style="vertical-align: middle;">
+                                <td style="vertical-align: middle;padding-bottom: 10px;padding-top: 10px;">
 
                                     <table style="width: 100%;">
-                                        <tr><td colspan="2" style="height: 35px;font-weight: bold;font-size: 15px;color: #505050;">${groupPurchaseProduct.product.name}</td></tr>
+                                        <tr><td colspan="3" style="height: 25px;font-weight: bold;font-size: 15px;color: #BE0712;">${groupPurchaseProduct.product.name}</td></tr>
+                                        <c:choose>
+                                            <c:when test="${groupPurchaseProduct.product.productOptionGroups != null && fn:length(groupPurchaseProduct.product.productOptionGroups) gt 0 }">
+                                                <c:forEach var="productOptionGroup" items="${groupPurchaseProduct.product.productOptionGroups}" varStatus="count1" begin="0">
+                                                    <tr>
+                                                        <td style="color: #797979; text-align: right;">${productOptionGroup.optionLabel} : </td>
+                                                        <td style="padding: 5px 5px;color: #505050;"><c:out value="${productOptionGroup.optionCmbx}" escapeXml="false"/></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                        </c:choose>
                                         <tr>
-                                            <td>
-                                                <table style="width: 100%;">
-                                                    <tr>
-                                                        <td style="color: #797979; text-align: right;">단가 :</td>
-                                                        <td style="padding: 5px 5px;color: #900C3E;">$ ${groupPurchaseProduct.product.unitPrice}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="color: #797979; text-align: right;">생산자 :</td>
-                                                        <td style="padding: 5px 5px;">${groupPurchaseProduct.product.seller}</td>
-                                                    </tr>
-                                                </table>
-                                            </td>
+                                            <td style="color: #797979; text-align: right;width: 150px;">단가 :</td>
+                                            <td style="padding: 5px 5px;color: #505050;width: 200px;">$ ${groupPurchaseProduct.product.unitPrice}</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">생산자 :</td>
+                                            <td style="padding: 5px 5px;">${groupPurchaseProduct.product.sellerName}</td>
                                             <td>
                                                 <table>
                                                     <tr>
                                                         <td style="padding-left: 40px;">
-                                                            <input type="text" class="amountOfOrder" id="amountOfOrder$_{groupPurchaseProduct.product.prodId}" name="amountOfOrder$_{groupPurchaseProduct.product.prodId}" value='1' maxlength="2" style="width: 100px;"/>
+                                                            <input type="text" class="amountOfOrder" id="amountOfOrder$_{groupPurchaseProduct.product.prodId}" name="amountOfOrder$_{groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;"/>
                                                         </td>
-                                                        <td style="padding-left: 20px;"><i class="fa fa-cart-plus fa-2x" aria-hidden="true" style="color: #117899;"></i></td>
+                                                        <td style="padding-left: 20px;">
+                                                            <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;"></i>
+                                                            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;"></i>
+
+                                                        </td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -252,6 +264,38 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#505050;"></i></td>
+                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배달서비스</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body" style="padding-left: 20px;">
+                        <p>${groupPurchase.groupPurchaseNotice}</p>
+                    </div>
+배달서비스
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
     </div>
     <!-- 페이지 중간 [끝] :: 오른쪽:아이템목록 -->
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->

@@ -276,6 +276,7 @@ public class GroupPurchaseController extends BaseController {
         String discountRateValue = request.getParameter("discountRateValue");
         String deliverable = request.getParameter("deliverable");
         String deliveryFeePerKm = request.getParameter("deliveryFeePerKm");
+        String deliveryBasicFee = request.getParameter("deliveryBasicFee");
         String groupPurchaseNotice = request.getParameter("groupPurchaseNotice");
         String creator = sessionUser.getUser().getUserId();
 
@@ -315,17 +316,24 @@ public class GroupPurchaseController extends BaseController {
             if (StringUtils.isNotBlank(minimumPurchaseAmount)) groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
 
-            if (StringUtils.isBlank(deliverable) || StringUtils.equalsIgnoreCase(deliverable, "N")) {
-                groupPurchase.setDeliverable("N");
-                groupPurchase.setDeliveryFeePerKm(0.0f);
-            } else {
+            if (StringUtils.equalsIgnoreCase(deliverable, "Y")) {
                 groupPurchase.setDeliverable("Y");
                 if (StringUtils.isBlank(deliveryFeePerKm)) {
                     groupPurchase.setDeliveryFeePerKm(0.0f);
                 } else {
                     groupPurchase.setDeliveryFeePerKm(Float.parseFloat(deliveryFeePerKm));
                 }
+                if (StringUtils.isBlank(deliveryBasicFee)) {
+                    groupPurchase.setDeliveryBasicFee(0.0f);
+                } else {
+                    groupPurchase.setDeliveryBasicFee(Float.parseFloat(deliveryBasicFee));
+                }
+            } else {
+                groupPurchase.setDeliverable("N");
+                groupPurchase.setDeliveryFeePerKm(0.0f);
+                groupPurchase.setDeliveryBasicFee(0.0f);
             }
+
 
             if (StringUtils.isNotBlank(discountMethod)) {
                 if (StringUtils.equalsIgnoreCase(discountMethod, "FIXED")) {

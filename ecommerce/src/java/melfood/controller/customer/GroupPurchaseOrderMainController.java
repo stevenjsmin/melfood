@@ -11,15 +11,13 @@ package melfood.controller.customer;
 
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
 import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
-import melfood.shopping.product.Product;
-import melfood.shopping.product.ProductImage;
-import melfood.shopping.product.ProductImageService;
-import melfood.shopping.product.ProductService;
+import melfood.shopping.product.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +43,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private ProductOptionService productOptionService;
 
     @Autowired
     private GroupPurchaseService groupPurchaseService;
@@ -75,14 +76,26 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
             // GroupPurchase --> GroupPurchaseProduct/(s) --> Product/(s) --> ProductImage/(s)
             List<ProductImage> productImages = null;
+            List<ProductOptionGroup> productOptionGroups = null;
             int prodId = 0;
             Product product = null;
             for (int i = 0; i < groupPurchaseProducts.size(); i++) {
+
+                // 제품으 상세정보를 설정한다.
                 prodId = groupPurchaseProducts.get(i).getProductId();
                 product = productService.getProduct(new Product(prodId));
+
+                // 상품에 소속된 이미지를 가저와서 설정한다.
                 productImages = productImageService.getProductImages(new ProductImage(product.getProdId()));
                 product.setProductionImages(productImages);
-                if(productImages.size() > 0) product.setProductImage(productImages.get(0)); // 첫번째 이미지를 대표이미지로 설정
+
+                // 상품에 소속된 옵션정보를 가저오서 설정한다.
+                Properties htmlProperty = new Properties();
+                productOptionGroups = productOptionService.generateCmbxForOptionAndValue(htmlProperty, prodId, false);
+                product.setProductOptionGroups(productOptionGroups);
+
+                // 첫번째 이미지를 대표이미지로 설정
+                if(productImages.size() > 0) product.setProductImage(productImages.get(0));
                 groupPurchaseProducts.get(i).setProduct(product);
             }
 

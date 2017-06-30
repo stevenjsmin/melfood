@@ -6,6 +6,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%@ page import="java.io.*"%>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <script type="text/javascript">
     var status = "less";
@@ -32,7 +33,9 @@
                 <div class="alert alert-info" style="width: 100%;">
                     <br/>
                     <br/>
-                    <font style="color: #004080; font-size: small;"><b>죄송합니다. 요청하신 서비스를 수행하는 도중 문제가 발생하였습니다.</b></font><br><br>
+                    <font style="color: #004080; font-size: small;">
+                            <b>죄송합니다. 요청하신 서비스를 수행하는 도중 문제가 발생하였습니다.</b>
+                    </font><br><br>
                     <font style="font-size: x-small; color: #004080;">
                     <%
                         boolean handled = false; // Set to true after handling the error
@@ -65,19 +68,20 @@
 	                                out.println("<div id='textArea' style='display: none;width: 500px;'>");
 	                                if(exception != null){
 	                                	
-		                                out.println("<font style=\"font-size: small; color: #0000FF\"><span id='errorMessage'>" + exception.getMessage() +"</span></font>");
-
+		                                out.println("<font style=\"font-size: small; color: #0000FF\"><span id='errorMessage'>" + StringUtils.abbreviate(exception.getMessage().toLowerCase().replaceAll("(\r\n|\n)", "<br />"),150) +"</span></font>");
+                                        /**
 		                                out.println("<div style='height: 200px;overflow-y:scroll;width:160%'>");
-		                                out.println("<pre style='background-color: #D9EDF7;border-color: #D9EDF7; '><font style='font-size: x-small;'><span id='errorDetailMessage'>");
+		                                out.println("<font style='font-size: x-small;'><span id='errorDetailMessage'>");
 		                                StringWriter stringWriter = new StringWriter();
 		                                PrintWriter printWriter = new PrintWriter(stringWriter);
 		                                exception.printStackTrace(printWriter);
 		                                out.println(stringWriter);
 		                                printWriter.close();
 		                                stringWriter.close();
-		                                out.println("</span></font></pre>");
+		                                out.println("</span></font>");
 		                                out.println("</div>");
 		                                out.println("<br>");
+                                         */
 		                           } else {
 		                               out.println("<br/>오류 메시지: <span id='errorMessage'>Unknown</span>");
 		                               out.println("<br/>상세 메시지: <span id='errorDetailMessage'>Unknown</span>");

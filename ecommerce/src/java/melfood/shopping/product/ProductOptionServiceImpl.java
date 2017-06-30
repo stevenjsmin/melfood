@@ -8,15 +8,14 @@
 
 package melfood.shopping.product;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 제품 옵션 오퍼레이션 서비스 인터페이스 구현<br>
@@ -274,8 +273,8 @@ public class ProductOptionServiceImpl implements ProductOptionService {
 			// 02. 옵션항목에 속한 모든 옵션 값을 가저온다.
 			htmlOptionCmbx = new StringBuffer("");
 			htmlOptionCmbx.append("<select ");
-			htmlOptionCmbx.append("id='" + optionItem.getOptionItem() + "' ");
-			htmlOptionCmbx.append("name='" + optionItem.getOptionItem() + "' ");
+			htmlOptionCmbx.append("id='" + optionItem.getProdId() + "_" + optionItem.getOptionSeq() + "' ");
+			htmlOptionCmbx.append("name='" + optionItem.getProdId() + "_" + optionItem.getOptionSeq() + "' ");
 			if (StringUtils.isNotBlank(property.getCssClass())) htmlOptionCmbx.append("class='" + property.getCssClass() + "' ");
 			if (StringUtils.isNotBlank(property.getCssStyle())) htmlOptionCmbx.append("style='" + property.getCssStyle() + "' ");
 			if (StringUtils.equalsIgnoreCase(optionItem.getIsMandatory(), "Y")) {
@@ -293,7 +292,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
 			}
 			htmlOptionCmbx.append("</select><br />");
 
-			optionGroupArray.add(new ProductOptionGroup(htmlOption.toString(), htmlOptionCmbx.toString()));
+			optionGroupArray.add(new ProductOptionGroup(optionItem.getOptionItem(), htmlOptionCmbx.toString()));
 		}
 
 		return optionGroupArray;

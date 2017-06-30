@@ -32,6 +32,8 @@ public class GroupPurchase extends BaseDto {
     private Float discountRateValue;
     private String deliverable;
     private Float deliveryFeePerKm;
+    private Float deliveryBasicFee;
+
     private String groupPurchaseNotice;
     private String mallMasterChecked;
 
@@ -293,5 +295,13 @@ public class GroupPurchase extends BaseDto {
 
     public void setMarketOpenEndTime(String marketOpenEndTime) {
         this.marketOpenEndTime = marketOpenEndTime;
+    }
+
+    public Float getDeliveryBasicFee() {
+        return deliveryBasicFee;
+    }
+
+    public void setDeliveryBasicFee(Float deliveryBasicFee) {
+        this.deliveryBasicFee = deliveryBasicFee;
     }
 }

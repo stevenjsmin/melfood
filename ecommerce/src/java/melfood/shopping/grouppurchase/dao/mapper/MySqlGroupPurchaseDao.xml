@@ -34,6 +34,7 @@
             a.discount_rate_value 'discountRateValue',
             a.deliverable 'deliverable',
             a.delivery_fee_per_km 'deliveryFeePerKm',
+            a.delivery_basic_fee 'deliveryBasicFee',
             a.group_purchase_notice 'groupPurchaseNotice',
             a.mall_master_checked 'mallMasterChecked',
             a.use_yn 'useYn',
@@ -65,6 +66,7 @@
             <if test="discountRateValue != null"> AND UPPER(a.discount_rate_value) = UPPER(#{discountRateValue}) </if>
             <if test="deliverable != null"> AND UPPER(a.deliverable) = UPPER(#{deliverable}) </if>
             <if test="deliveryFeePerKm != null"> AND a.delivery_fee_per_km = #{deliveryFeePerKm} </if>
+            <if test="deliveryBasicFee != null"> AND a.delivery_basic_fee = #{deliveryBasicFee} </if>
             <if test="groupPurchaseNotice != null"> AND UPPER(a.group_purchase_notice) LIKE CONCAT('%', UPPER(#{groupPurchaseNotice}), '%') </if>
             <if test="mallMasterChecked != null"> AND UPPER(a.mall_master_checked) = UPPER(#{mallMasterChecked}) </if>
             <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
@@ -102,6 +104,7 @@
             <if test="discountRateValue != null"> AND UPPER(a.discount_rate_value) = UPPER(#{discountRateValue}) </if>
             <if test="deliverable != null"> AND UPPER(a.deliverable) = UPPER(#{deliverable}) </if>
             <if test="deliveryFeePerKm != null"> AND a.delivery_fee_per_km = #{deliveryFeePerKm} </if>
+            <if test="deliveryBasicFee != null"> AND a.delivery_basic_fee = #{deliveryBasicFee} </if>
             <if test="groupPurchaseNotice != null"> AND UPPER(a.group_purchase_notice) LIKE CONCAT('%', UPPER(#{groupPurchaseNotice}), '%') </if>
             <if test="mallMasterChecked != null"> AND UPPER(a.mall_master_checked) = UPPER(#{mallMasterChecked}) </if>
             <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
@@ -133,6 +136,7 @@
             ,discount_rate_value
             ,deliverable
             ,delivery_fee_per_km
+            ,delivery_basic_fee
             ,group_purchase_notice
             ,mall_master_checked
             ,use_yn
@@ -158,6 +162,7 @@
             TRIM(#{discountRateValue}),
             TRIM(#{deliverable}),
             TRIM(#{deliveryFeePerKm}),
+            TRIM(#{deliveryBasicFee}),
             TRIM(#{groupPurchaseNotice}),
             TRIM(#{mallMasterChecked}),
             TRIM(#{useYn}),
@@ -189,6 +194,7 @@
             ,discount_rate_value = TRIM(#{discountRateValue})
             ,deliverable = TRIM(#{deliverable})
             ,delivery_fee_per_km = TRIM(#{deliveryFeePerKm})
+            ,delivery_basic_fee = TRIM(#{deliveryBasicFee})
             ,group_purchase_notice = TRIM(#{groupPurchaseNotice})
             ,mall_master_checked = TRIM(#{mallMasterChecked})
             ,use_yn = TRIM(#{useYn})
@@ -221,6 +227,7 @@
             <if test="discountRateValue != null">,discount_rate_value = TRIM(#{discountRateValue}) </if>
             <if test="deliverable != null">,deliverable = TRIM(#{deliverable}) </if>
             <if test="deliveryFeePerKm != null">,delivery_fee_per_km = TRIM(#{deliveryFeePerKm}) </if>
+            <if test="deliveryBasicFee != null">,delivery_basic_fee = TRIM(#{deliveryBasicFee}) </if>
             <if test="groupPurchaseNotice != null">,group_purchase_notice = TRIM(#{groupPurchaseNotice}) </if>
             <if test="mallMasterChecked != null">,mall_master_checked = TRIM(#{mallMasterChecked}) </if>
             <if test="useYn != null">,use_yn = TRIM(#{useYn}) </if>
@@ -349,6 +356,8 @@
             a.discount_fixed_amount 'discountFixedAmount',
             a.discount_rate_value 'discountRateValue',
             a.deliverable 'deliverable',
+            a.delivery_fee_per_km 'deliveryFeePerKm',
+            a.delivery_basic_fee 'deliveryBasicFee',
             a.group_purchase_notice 'groupPurchaseNotice',
             a.mall_master_checked 'mallMasterChecked',
             a.use_yn 'useYn',

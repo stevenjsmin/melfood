@@ -312,7 +312,7 @@
                 title: "Product detail",
                 modal: true,
                 iframe: true,
-                position:{ top:"200", left:"25%"}
+                position:{ top:"100", left:"25%"}
             });
 
             var popup_dialog = $("#productOverviewPopup").data("kendoWindow");
@@ -341,7 +341,7 @@
                 title: "Stop selling",
                 modal: true,
                 iframe: true,
-                position:{ top:"200", left:"25%"}
+                position:{ top:"100", left:"25%"}
             });
 
             var popup_dialog = $("#productStopSellingPopup").data("kendoWindow");
@@ -456,6 +456,14 @@
                         </c:choose>
                     </td>
                 </tr>
+
+                <tr>
+                    <td colspan="4">
+                        <br/>
+                        <hr class="subtitle"/>
+                    </td>
+                </tr>
+
                 <tr>
                     <td class="label">배달가능여부 :</td>
                     <td class="value">
@@ -468,6 +476,15 @@
                                 </c:when>
                             </c:choose>
                     </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label">기본배달 서비스비 :</td>
+                    <td class="value">
+                        $ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.deliveryBasicFee}"/>
+                    </td>
+
                     <td class="label">배달비 / Km :</td>
                     <td class="value">
                         $ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.deliveryFeePerKm}"/>

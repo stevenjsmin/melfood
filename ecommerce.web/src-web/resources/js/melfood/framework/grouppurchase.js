@@ -87,6 +87,13 @@ $(document).ready(function() {
         format: "c2"
     });
 
+    $("#deliveryBasicFee").kendoNumericTextBox({
+        max: 99999,
+        min: 0.00,
+        step: 1.00,
+        format: "c2"
+    });
+
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
 
@@ -273,6 +280,7 @@ function save(){
     var discountFixedAmount = $('#discountFixedAmount').val();
     var deliverable = $('#deliverable').val();
     var deliveryFeePerKm = $('#deliveryFeePerKm').val();
+    var deliveryBasicFee = $('#deliveryBasicFee').val();
     var orderStartDt = $('#orderStartDt').val();
     var orderEndDt = $('#orderEndDt').val();
 
@@ -308,6 +316,7 @@ function save(){
                discountFixedAmount : discountFixedAmount,
                deliverable : deliverable                                ,
                deliveryFeePerKm : deliveryFeePerKm,
+               deliveryBasicFee : deliveryBasicFee,
                orderStartDt : orderStartDt,
                orderEndDt : orderEndDt,
                stopSelling : stopSelling,
@@ -399,7 +408,8 @@ function openRegistGroupPurchasePopup(){
         actions: [ "Minimize", "Maximize","Close" ],
         title: "Regist Group Purchase",
         modal: true,
-        iframe: true
+        iframe: true,
+        position:{ top:"50", left:"25%"}
     });
 
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
@@ -407,7 +417,7 @@ function openRegistGroupPurchasePopup(){
         width: 800,
         height: 760
     });
-    popup_dialog.center();
+    //popup_dialog.center();
 
     $("#groupPurchasePopup").data("kendoWindow").open();
 }
@@ -419,7 +429,8 @@ function openUpdateGroupPurchasePopup(groupPurchaseId){
         actions: [ "Minimize", "Maximize","Close" ],
         title: "Regist Group Purchase",
         modal: true,
-        iframe: true
+        iframe: true,
+        position:{ top:"50", left:"25%"}
     });
 
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
@@ -427,7 +438,7 @@ function openUpdateGroupPurchasePopup(groupPurchaseId){
         width: 800,
         height: 760
     });
-    popup_dialog.center();
+    //popup_dialog.center();
 
     $("#groupPurchasePopup").data("kendoWindow").open();
 }
@@ -453,19 +464,16 @@ function changeDiscountMethod(obj) {
     if(discountMethod == 'FIXED') {
         $('#spanDiscountFixedAmount').show();
         $('#spanDiscountRateValue').hide();
-        $('#discountRateValue').val('0.00');
     } else if(discountMethod == 'RATE') {
         $('#spanDiscountRateValue').show();
         $('#spanDiscountFixedAmount').hide();
-        $('#discountFixedAmount').val('0.00');
 
     } else {
         $('#spanDiscountFixedAmount').hide();
-        $('#spanDiscountRateValue').hide();
-        $('#discountFixedAmount').val('0.00');
-        $('#discountRateValue').val('0.00');
-
+        $('#spanDiscountRateValue').show();
     }
+    $('#discountRateValue').val('0.00');
+    $('#discountFixedAmount').val('0.00');
 }
 
 function searchProductPopup(groupPurchaseId){

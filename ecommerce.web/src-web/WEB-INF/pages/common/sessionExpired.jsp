@@ -18,7 +18,7 @@
 					<span style="color: #2185E8;font-weight: bold;">현재 요청하신 서비스/페이지는 로그인이 필요한 서비스입니다. 계속하시기 위해서는 먼저 <span style="color: #5974AB;font-weight: bold;">로그인</span>을 하셔야합니다.</span>
 					<br>
 					<br>
-					<font style="font-size: small; color: #004080;"><div id="timer_div">You will be redirected to home page in 20 sec.</div></font>
+					<font style="font-size: small; color: #004080;"><div id="timer_div">You will be redirected to home page in 30 sec.</div></font>
 				</div>
 			</td>
 		</tr>
@@ -34,7 +34,7 @@
 	    window.location="/common/auth/welcome.yum";
 	}
     
-    var seconds_left = 20;
+    var seconds_left = 30;
     var interval = setInterval(function() {
         document.getElementById('timer_div').innerHTML = 'You will be redirected to home page in ' +  (--seconds_left )  + " sec.";
         

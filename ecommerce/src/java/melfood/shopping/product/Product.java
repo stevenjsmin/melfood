@@ -8,11 +8,11 @@
 
 package melfood.shopping.product;
 
-import java.math.BigDecimal;
-import java.util.List;
-
 import melfood.framework.common.dto.BaseDto;
 import melfood.shopping.order.OrderProductOption;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * TODO: Class description
@@ -49,6 +49,7 @@ public class Product extends BaseDto {
 
 	private List<ProductOption> productionOptions;
 	private List<ProductImage> productionImages;
+	List<ProductOptionGroup> productOptionGroups;
 
 	private int orderItemId; // 이 값은 장바구니 단계에서 고유의 각 주문항목 ID 이다.
 	private List<OrderProductOption> productOrderedOptions; // 이 객체는 장바구니 및 주문단계에서 사용될 용도이다.
@@ -311,4 +312,11 @@ public class Product extends BaseDto {
 		this.tags = tags;
 	}
 
+	public List<ProductOptionGroup> getProductOptionGroups() {
+		return productOptionGroups;
+	}
+
+	public void setProductOptionGroups(List<ProductOptionGroup> productOptionGroups) {
+		this.productOptionGroups = productOptionGroups;
+	}
 }
