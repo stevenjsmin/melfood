@@ -192,7 +192,7 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#505050;"></i></td>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#FF5832;"></i></td>
                                 <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">공동구매 아이템</span></td>
                             </tr>
                         </table>
@@ -277,7 +277,7 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#505050;"></i></td>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#1AAF54;"></i></td>
                                 <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배달서비스</span></td>
                             </tr>
                         </table>

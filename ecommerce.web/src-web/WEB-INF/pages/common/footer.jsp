@@ -1,5 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="melfood.framework.Ctx" %>
+<%@ page import="melfood.framework.auth.SessionUserInfo" %>
+<%@ page import="melfood.framework.system.BeanHelper" %>
+<%@ page import="melfood.framework.role.Role"%>
+<%@ page import="melfood.framework.user.User"%>
+<%@ page import="melfood.framework.auth.AuthService"%>
+<%@ page import="melfood.framework.auth.AuthServiceImpl"%>
 
+<%
+    AuthService userService = new AuthServiceImpl();
+    SessionUserInfo sessionUser = BeanHelper.getSessionUser();
+
+    String customerMobile = "";
+    String customerEmail = "";
+    if(sessionUser != null) {
+        customerMobile = sessionUser.getUser().getMobile() != null ? sessionUser.getUser().getMobile() : "";
+        customerEmail = sessionUser.getUser().getEmail() != null ? sessionUser.getUser().getEmail() : "";
+        pageContext.setAttribute("customerEmail", customerEmail);
+        pageContext.setAttribute("customerMobile", customerMobile);
+    } else {
+        pageContext.setAttribute("customerEmail", "");
+        pageContext.setAttribute("customerMobile", "");
+    }
+
+%>
 
 <script type="text/javascript">
     var checkObject = [];
@@ -146,11 +170,11 @@
             <tr><td style="height: 20px;" colspan="2"></td></tr>
             <tr>
                     <td></td>
-                    <td style="padding: 5px;"><input class="form-control" type="text" id="customerMobile" name="customerMobile" value='' placeholder="모바일 번호" maxlength="10" style="width: 200px;background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;"/></td>
+                    <td style="padding: 5px;"><input class="form-control" type="text" id="customerMobile" name="customerMobile" value='${customerMobile}' placeholder="모바일 번호" maxlength="10" style="width: 200px;background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;"/></td>
             </tr>
             <tr>
                 <td></td>
-                <td style="padding: 5px;"><input class="form-control" type="text" id="customerEmail" name="customerEmail" value='' placeholder="이메일 주소" style="background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;"/></td>
+                <td style="padding: 5px;"><input class="form-control" type="text" id="customerEmail" name="customerEmail" value='${customerEmail}' placeholder="이메일 주소" style="background-color: #6e6e6e;color: #D4D4D4;border-color: #5e5e5e;"/></td>
             </tr>
             <tr>
                 <td></td>

@@ -9,7 +9,9 @@
 
 package melfood.controller.customer;
 
+import com.google.maps.model.GeocodingResult;
 import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
@@ -37,6 +39,9 @@ import java.util.List;
 public class GroupPurchaseOrderMainController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(GroupPurchaseOrderMainController.class);
+
+    @Autowired
+    private MelfoodGoogleMapService melfoodGoogleMapService;
 
     @Autowired
     private ProductService productService;
@@ -116,6 +121,10 @@ public class GroupPurchaseOrderMainController extends BaseController {
             //mav.addObject("purchaseOrganizer", organizer);
             mav.addObject("groupPurchase", groupPurchase);
             mav.addObject("groupPurchaseProducts", groupPurchaseProducts);
+
+            GeocodingResult mapResult = melfoodGoogleMapService.lookupGMap("4 Torresdale Road, South Morang VIC 3752");
+            logger.info(mapResult.toString());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
