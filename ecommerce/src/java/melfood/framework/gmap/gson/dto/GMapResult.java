@@ -43,7 +43,7 @@ public class GMapResult {
 
     @Override
     public String toString() {
-        return "DistancePojo [status=" + status + ", destination_addresses="
+        return "GMapResult [status=" + status + ", destination_addresses="
                 + Arrays.toString(destination_addresses)
                 + ", origin_addresses=" + Arrays.toString(origin_addresses)
                 + ", rows=" + Arrays.toString(rows) + "]";

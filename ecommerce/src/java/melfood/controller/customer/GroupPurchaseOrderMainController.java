@@ -11,6 +11,7 @@ package melfood.controller.customer;
 
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
+import melfood.framework.gmap.gson.dto.GMapResult;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
@@ -25,10 +26,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author steven.min
@@ -66,7 +71,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
         if (StringUtils.isBlank(groupPurchaseId)) throw new Exception("조회하고자하는 공동구매ID 값이 없습니다. :");
 
         GroupPurchase groupPurchase = null;
-        User organizer = null;
         List<GroupPurchaseProduct> groupPurchaseProducts = null;
 
         try {
@@ -99,7 +103,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
                 product.setProductOptionGroups(productOptionGroups);
 
                 // 첫번째 이미지를 대표이미지로 설정
-                if(productImages.size() > 0) product.setProductImage(productImages.get(0));
+                if (productImages.size() > 0) product.setProductImage(productImages.get(0));
                 groupPurchaseProducts.get(i).setProduct(product);
             }
 
@@ -112,17 +116,8 @@ public class GroupPurchaseOrderMainController extends BaseController {
                 mav.addObject("firstImageId", null);
             }
 
-            // TODO : 배송이 가능한 경우, 배송가능 목록 조회
-            String customerUserId = sessionUser.getUser().getUserId();
-            User customerUser = userService.getUserInfo(customerUserId);
-            // getSuburbs using customerUser;
-
-            //mav.addObject("purchaseOrganizer", organizer);
             mav.addObject("groupPurchase", groupPurchase);
             mav.addObject("groupPurchaseProducts", groupPurchaseProducts);
-
-            String mapResult = melfoodGoogleMapService.getLookupGmapDistance("4 Torresdale Road, South Morang VIC 3752", "724 Waverley Rd, Glen Waverley VIC 3150");
-            logger.info(mapResult);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,6 +135,131 @@ public class GroupPurchaseOrderMainController extends BaseController {
         mav.addObject("purchaseOrganizer", user);
 
         return mav;
+    }
+
+    /**
+     * 배송이 가능한 경우, 배송가능 목록 조회
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/checkDeliverable", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> checkDeliverable(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        GroupPurchase groupPurchase = null;
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        String customerUserId = sessionUser.getUser().getUserId();
+        User customerUser = userService.getUserInfo(customerUserId);
+
+        String resultCode = "OK";
+
+        StringBuffer marketAddress = new StringBuffer();
+        StringBuffer cutomerAddress = new StringBuffer();
+        GMapResult mapResult = null;
+        String mapResultCode = "";
+        String mapResultMessage = "";
+
+
+        try {
+
+            // 공동구매 기본정보를 얻어온다.
+            groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+
+            if (StringUtils.equals(groupPurchase.getDeliverable(), "Y")) {
+
+
+                if (marketAddress == null
+                        || StringUtils.isBlank(groupPurchase.getMarketAddressStreet())
+                        || StringUtils.isBlank(groupPurchase.getMarketAddressSuburb())
+                        || StringUtils.isBlank(groupPurchase.getMarketAddressState())
+                        || StringUtils.isBlank(groupPurchase.getMarketAddressPostcode())) {
+                    resultCode = "MARKET_ADDR_INVALID";
+                    mapResultMessage = "공동구매 하는곳의 소주소가 유효하지 않습니다.";
+
+                } else {
+                    marketAddress.append(groupPurchase.getMarketAddressStreet() + " ");
+                    marketAddress.append(groupPurchase.getMarketAddressSuburb() + " ");
+                    marketAddress.append(groupPurchase.getMarketAddressState() + " ");
+                    marketAddress.append(groupPurchase.getMarketAddressPostcode());
+                }
+
+                if (customerUser == null
+                        || StringUtils.isBlank(customerUser.getAddressStreet())
+                        || StringUtils.isBlank(customerUser.getAddressSuburb())
+                        || StringUtils.isBlank(customerUser.getAddressState())
+                        || StringUtils.isBlank(customerUser.getAddressPostcode())) {
+                    resultCode = "CUSTOMER_ADDR_INVALID";
+                    mapResultMessage = "고객님의 주소가 유효하지 않습니다. 'My푸드 -> 개인정보변' 에서 주소를 확인해 주세요.";
+
+
+                } else {
+                    cutomerAddress.append(customerUser.getAddressStreet() + " ");
+                    cutomerAddress.append(customerUser.getAddressSuburb() + " ");
+                    cutomerAddress.append(customerUser.getAddressState() + " ");
+                    cutomerAddress.append(customerUser.getAddressPostcode());
+                }
+
+                DecimalFormat df = new DecimalFormat("0.00");
+                float deliveruFee = 0.0f;
+                int distance = 0;
+                String duration = "0";
+                if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID")) {
+                    // 마켓주소와 고객의 주소에 일단 내용이 존재한다면 지도정보를 조회한다.
+                    mapResult = melfoodGoogleMapService.getLookupGmapDistance(marketAddress.toString(), cutomerAddress.toString());
+                    mapResultCode = mapResult.getRows()[0].getElements()[0].getStatus();
+
+                    if (!StringUtils.equalsIgnoreCase(mapResultCode, "OK")) {
+                        resultCode = "CUSTOMER_ADDR_INVALID";
+                        mapResultMessage = "고객님의 주소가 유효하지 않습니다. 배달서비스를 이용하기기 위해서 'My푸드 -> 개인정보변경' 에서 주소를 확인해 주세요.";
+                    } else {
+                        // 모든게 정상이면 거리와, 배달비를 계산한다
+                        distance = Math.round(Integer.parseInt(mapResult.getRows()[0].getElements()[0].getDistance().getValue()) / 1000);
+                        if (groupPurchase.getDeliveryFeePerKm() != 0 && distance != 0) {
+                            deliveruFee = groupPurchase.getDeliveryBasicFee() + (distance * groupPurchase.getDeliveryFeePerKm());
+                        } else {
+                            deliveruFee = groupPurchase.getDeliveryBasicFee();
+                        }
+                        duration = mapResult.getRows()[0].getElements()[0].getDuration().getText();
+                    }
+                }
+
+                model.put("resultCode", resultCode);
+                model.put("mapResultCode", mapResultCode);
+                model.put("mapResultMessage", mapResultMessage);
+                model.put("deliveryFee", df.format(deliveruFee));
+                model.put("cutomerAddress", cutomerAddress.toString());
+                model.put("distance", Integer.toString(distance));
+                model.put("duration", duration);
+
+            } else {
+                model.put("resultCode", "OK");
+                model.put("mapResultCode", "NO_DELIVERY");
+                model.put("mapResultMessage", "본 공동구매는 배달서비스를 제공하지 않습니다.");
+                model.put("deliveryFee", "0.00");
+                model.put("cutomerAddress", cutomerAddress.toString());
+                model.put("distance", "0");
+                model.put("duration", "0");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "OK");
+            model.put("mapResultCode", "UNKNOWN_ERROR");
+            model.put("mapResultMessage", e.getMessage());
+
+            model.put("deliveryFee", "0.00");
+            model.put("cutomerAddress", "");
+            model.put("distance", "0");
+            model.put("duration", "0");
+        }
+
+        return model;
     }
 
 }

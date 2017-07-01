@@ -76,7 +76,7 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
     }
 
     /**
-     * 두 지점사이의 거리를 얻어온다
+     * 두 지점사이의 거리/소요시간을 얻어온다
      *
      * @param originAddress
      * @param destinationAddress
@@ -84,12 +84,12 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
      * @throws Exception
      */
     @Override
-    public String getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception {
+    public GMapResult getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception {
         return this.getLookupGmapDistance(originAddress, destinationAddress, false);
     }
 
     /**
-     * 두 지점사이의 거리를 얻어온다
+     * 두 지점사이의 거리/소요시간을 얻어온다
      *
      * @param originAddress
      * @param destinationAddress
@@ -98,9 +98,7 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
      * @throws Exception
      */
     @Override
-    public String getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception {
-
-        // Reference - https://developers.google.com/maps/documentation/distancematrix/
+    public GMapResult getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception {
 
         StringBuffer options = new StringBuffer();
 
@@ -135,22 +133,17 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
             outputString += line;
         }
 
-        GMapResult mapLookupResult = new Gson().fromJson(outputString, GMapResult.class);
+        GMapResult mapResult = new Gson().fromJson(outputString, GMapResult.class);
 
         // Ref: https://developers.google.com/maps/documentation/distance-matrix/
-        //Top-level Status Codes : ["NOT_FOUND" | "OK" | "INVALID_REQUEST" | "MAX_ELEMENTS_EXCEEDED" | "OVER_QUERY_LIMIT" | "REQUEST_DENIED" | "UNKNOWN_ERROR" ]
-        //Element level status code : ["NOT_FOUND" | "OK" | "ZERO_RESULTS" | "MAX_ROUTE_LENGTH_EXCEEDED" ]
-        logger.info("Element Status : " + mapLookupResult.getRows()[0].getElements()[0].getStatus());
+        //Top-level Status Codes : [ "OK" | "INVALID_REQUEST" | "MAX_ELEMENTS_EXCEEDED" | "REQUEST_DENIED" | "UNKNOWN_ERROR" ]
+        logger.info("Top-level Status : " + mapResult.getStatus());
+        //Element level status code : ["OK" | "NOT_FOUND" |  "ZERO_RESULTS" | "MAX_ROUTE_LENGTH_EXCEEDED" ]
+        logger.info("Element Status : " + mapResult.getRows()[0].getElements()[0].getStatus());
+        logger.info("Distance : " + mapResult.getRows()[0].getElements()[0].getDistance().getText());
+        logger.info("Duration : " + mapResult.getRows()[0].getElements()[0].getDuration().getText());
 
-
-        logger.info("Distance : " + mapLookupResult.getRows()[0].getElements()[0].getDistance().getText());
-        logger.info("Duration : " + mapLookupResult.getRows()[0].getElements()[0].getDuration().getText());
-
-
-        // float distance = Float.parseFloat(mapLookupResult.getRows()[0].getElements()[0].getDistance().getValue()) / 1000;
-        String distance = mapLookupResult.getRows()[0].getElements()[0].getDistance().getText();
-
-        return distance;
+        return mapResult;
     }
 
 }

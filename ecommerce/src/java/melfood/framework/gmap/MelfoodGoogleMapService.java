@@ -9,6 +9,7 @@
 package melfood.framework.gmap;
 
 import com.google.maps.model.GeocodingResult;
+import melfood.framework.gmap.gson.dto.GMapResult;
 
 import java.util.List;
 
@@ -37,17 +38,17 @@ public interface MelfoodGoogleMapService {
 
 
     /**
-     * 두 지점사이의 거리를 얻어온다
+     * 두 지점사이의 거리/소요시간을 얻어온다
      *
      * @param originAddress
      * @param destinationAddress
      * @return
      * @throws Exception
      */
-    public String getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception;
+    public GMapResult getLookupGmapDistance(String originAddress, String destinationAddress) throws Exception;
 
     /**
-     * 두 지점사이의 거리를 얻어온다
+     * 두 지점사이의 거리/소요시간을 얻어온다
      *
      * @param originAddress
      * @param destinationAddress
@@ -55,7 +56,7 @@ public interface MelfoodGoogleMapService {
      * @return
      * @throws Exception
      */
-    public String getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception;
+    public GMapResult getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception;
 
 
 }
