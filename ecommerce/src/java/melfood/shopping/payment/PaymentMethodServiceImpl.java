@@ -101,12 +101,15 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
         List<Option> options = new ArrayList<Option>();
         String optionValue = "";
         String optionLabel = "";
+        String paymentType = "";
         // StringBuffer optionName = new StringBuffer("");
 
         for (PaymentMethod aPaymentMethod : paymentMethods) {
-            optionValue = aPaymentMethod.getPaymentMethod();
+            // optionValue = aPaymentMethod.getPaymentMethod();
+            optionValue = Integer.toString(aPaymentMethod.getMethodSeq());
             optionLabel = aPaymentMethod.getPaymentMethodCodeName();
-            if (StringUtils.equalsIgnoreCase(optionValue, "ACCOUNT_TRANSFER")) {
+            paymentType = aPaymentMethod.getPaymentMethod();
+            if (StringUtils.equalsIgnoreCase(paymentType, "ACCOUNT_TRANSFER")) {
                 // optionName.append(aPaymentMethod.getPaymentMethod());
                 if (includeDetailAccount) {
                     optionLabel = optionLabel + " [ " + aPaymentMethod.getBankNameCodeName() + "-  BSB: " + aPaymentMethod.getBankBsb() + ",  Account: " + aPaymentMethod.getBankAccountNo() + ",  Account holder: " + aPaymentMethod.getBankAccountOwnerName() + " ]";

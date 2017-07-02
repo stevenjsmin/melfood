@@ -22,6 +22,7 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.payment.PaymentMethod;
 import melfood.shopping.payment.PaymentMethodService;
 import melfood.shopping.product.*;
 import org.apache.commons.lang.StringUtils;
@@ -71,8 +72,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
     @Autowired
     private PaymentMethodService paymentMethodService;
-
-
 
     @RequestMapping("/Main")
     public ModelAndView orderProduct(HttpServletRequest request) throws Exception {
@@ -133,7 +132,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
             List<Option> paymentMethods = paymentMethodService.getCmbxOptions(groupPurchase.getPurchaseOrganizer(), true, "CASH");
             htmlProperty = new Properties("paymentMethod");
             htmlProperty.setCssClass("form-control");
-            htmlProperty.setOnchange("showAdditionalInfoForPaymentMethod(this)");
+            htmlProperty.setOnchange("getPaymentMethodInfo(this)");
             mav.addObject("cbxPaymentMethod", paymentMethodService.generateCmbx(paymentMethods, htmlProperty));
 
 
@@ -338,5 +337,36 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
         return mav;
     }
+
+
+    @RequestMapping(value = "/getPaymentMethodInfo", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> getPaymentMethodInfo(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        PaymentMethod paymentMethod = null;
+        String methodSeq = request.getParameter("methodSeq");
+        String purchaseOrganizer = request.getParameter("purchaseOrganizer");
+
+        try {
+            // 공동구매 기본정보를 얻어온다.
+            paymentMethod = paymentMethodService.getPaymentMethod(new PaymentMethod(purchaseOrganizer, methodSeq));
+
+            model.put("paymentMethod", paymentMethod);
+
+            model.put("resultCode", "0");
+            model.put("message", "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+
+        }
+
+        return model;
+    }
+
 
 }

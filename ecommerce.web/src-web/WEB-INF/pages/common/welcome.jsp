@@ -127,7 +127,7 @@
                     message = message + "</tr>";
                 } else {
                     message = message + "<tr style='height: 20px;'>";
-                    message = message + "  <td style='text-align: right;' colspan='2'><a href=\"javascript:goGroupPurchaseMain('${entry.groupPurchaseId}\')\">공.구하러 가기</a></td>";
+                    message = message + "  <td style='text-align: right;' colspan='2'><a href=\"javascript:goGroupPurchaseMain('${entry.groupPurchaseId}\')\">공.구하러 가기</a> &nbsp;&nbsp;<i class='fa fa-sign-in' aria-hidden='true'></i></td>";
                     message = message + "</tr>";
                 }
 

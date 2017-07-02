@@ -248,6 +248,55 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function getPaymentMethodInfo(obj) {
+
+            var methodSeq = obj.value;
+
+            if(methodSeq != '' & methodSeq != null) {
+                $.ajax({
+                    url: "/grouppurchase/getPaymentMethodInfo.yum",
+                    data: {
+                        purchaseOrganizer: '${groupPurchase.purchaseOrganizer}',
+                        methodSeq: obj.value
+                    },
+                    success: callbackGetPaymentMethodInfo
+                });
+
+            } else {
+                $('#detail_info_back_account').hide();
+            }
+
+        }
+        function callbackGetPaymentMethodInfo(data) {
+            var message = data.message;
+            var resultCode = data.resultCode;
+
+            var bankName = data.paymentMethod.bankNameCodeName;
+            var bankBsb = data.paymentMethod.bankBsb;
+            var bankAccountNo = data.paymentMethod.bankAccountNo;
+            var bankAccountOwnerName = data.paymentMethod.bankAccountOwnerName;
+
+            var paymentMethod = data.paymentMethod.paymentMethod;
+
+            if (resultCode != "0") {
+                warningPopup(data.message);
+            } else {
+                if(paymentMethod == 'ACCOUNT_TRANSFER') {
+                    $('#detail_info_back_account').show();
+
+                    $('#payment_bankName').html(bankName);
+                    $('#payment_bankBsbBankAccountNo').html(bankBsb + " - " + bankAccountNo);
+                    $('#payment_bankAccountOwnerName').html(bankAccountOwnerName);
+                } else {
+                    $('#detail_info_back_account').hide();
+                }
+            }
+        }
+    </script>
+
+
+
 </head>
 
 <body>
@@ -340,7 +389,7 @@
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
                                                 <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;">
-                                                     <span style="color: #606060;">Minimum order $ <fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.minimumPurchaseAmount}" />
+                                                     <span style="color: #606060;">Minimum order $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -670,15 +719,46 @@
                                 <span id="payment_finalAmount" style="font-size: 20px;font-weight: bold;color: #797979;">0.00</span> $
                             </td>
                         </tr>
-
-
-
                         <tr style="height: 30px;padding-top: 50px;">
-                            <td style="color: #C3C5C8; text-align: right;font-size: 13px;" colspan="3"><br/>결재방식</td>
+                            <td style="color: #C3C5C8; text-align: right;font-size: 13px;" colspan="3"><br/>결재방법</td>
                         </tr>
                         <tr style="height: 40px;">
                             <td style="color: #797979; text-align: right;font-size: 15px;" colspan="3"><c:out value="${cbxPaymentMethod}" escapeXml="false"/></td>
                         </tr>
+                        <tr id="detail_info_back_account" style="height: 40px;display: none;">
+                            <td colspan="3" style="padding-top: 0px;padding-bottom: 10px;">
+                                <table width="100%;" style="font-size: 5px;">
+                                    <tr>
+                                        <td style="width: 100px; text-align: right;font-size: 11px;color: #8D9999;">은행명</td>
+                                        <td style="width: 20px;text-align: center">:</td>
+                                        <td style="color: #514747;" id="payment_bankName"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 100px; text-align: right;font-size: 11px;color: #8D9999;">BSB - Account no</td>
+                                        <td style="width: 20px;text-align: center">:</td>
+                                        <td style="color: #514747;" id="payment_bankBsbBankAccountNo"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 100px; text-align: right;font-size: 11px;color: #8D9999;">Account Holder</td>
+                                        <td style="width: 20px;text-align: center">:</td>
+                                        <td style="color: #514747;" id="payment_bankAccountOwnerName"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+
+                        <tr style="height: 30px;padding-top: 50px;">
+                            <td style="color: #C3C5C8; text-align: right;font-size: 13px;" colspan="3"><br/>주문메모</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="3" id="comment" placeholder="주문시 메모하고 싶은 내용을 입력해주세요."></textarea>
+                                </div>
+                            </td>
+                        </tr>
+
 
                         <tr style="height: 25px;">
                             <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a></table>
