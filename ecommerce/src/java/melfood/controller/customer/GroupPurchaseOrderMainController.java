@@ -13,6 +13,7 @@ import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.gmap.gson.dto.GMapResult;
 import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
 import melfood.shopping.delivery.DeliveryCalendar;
@@ -21,6 +22,7 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.payment.PaymentMethodService;
 import melfood.shopping.product.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -66,6 +68,11 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
     @Autowired
     private DeliveryCalendarService deliveryCalendarService;
+
+    @Autowired
+    private PaymentMethodService paymentMethodService;
+
+
 
     @RequestMapping("/Main")
     public ModelAndView orderProduct(HttpServletRequest request) throws Exception {
@@ -120,6 +127,15 @@ public class GroupPurchaseOrderMainController extends BaseController {
             } else {
                 mav.addObject("firstImageId", null);
             }
+
+            // 결재방식 콤보박스 구성
+            Properties htmlProperty = new Properties();
+            List<Option> paymentMethods = paymentMethodService.getCmbxOptions(groupPurchase.getPurchaseOrganizer());
+            htmlProperty = new Properties("paymentMethod");
+            htmlProperty.setCssClass("form-control");
+            htmlProperty.setOnchange("showAdditionalInfoForPaymentMethod(this)");
+            mav.addObject("cbxPaymentMethod", paymentMethodService.generateCmbx(paymentMethods, htmlProperty));
+
 
             mav.addObject("organizer", userService.getUserInfo(groupPurchase.getPurchaseOrganizer()));
             mav.addObject("groupPurchase", groupPurchase);

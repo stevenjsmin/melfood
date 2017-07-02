@@ -285,8 +285,7 @@
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- 페이지 중간 [시작] :: 오른쪽:아이템목록 -->
-    <div class="col-sm-7">
-
+    <div class="col-sm-6" style="padding-right: 5px;padding-left: 5px;">
 
         <div class="row">
             <div class="col-sm-12">
@@ -367,7 +366,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- 배달서비스 -->
         <c:choose>
@@ -493,8 +491,7 @@
             </c:when>
         </c:choose>
 
-
-
+        <!-- 구글지도 및 스트릿뷰 -->
         <div class="row" style="padding-top: 20px;">
             <div class="col-sm-12">
                 <div class="panel panel-default">
@@ -543,17 +540,85 @@
             </div>
         </div>
 
-
-
-
-
     </div>
     <!-- 페이지 중간 [끝] :: 오른쪽:아이템목록 -->
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- 페이지 중간 [시작] :: 오른쪽:주문내역 -->
-    <div class="col-sm-6">
+    <div class="col-sm-3"style="padding-right: 20px;padding-left: 20px;">
+
+        <div class="panel panel-success">
+            <div class="panel-heading" style="height: 50px;vertical-align: middle; background-color: #C8E297;"><span style="font-size: 20px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
+            <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 30px;">
+
+                <table border="0" style="width: 100%;">
+                    <colgroup>
+                        <col style="width: 60%;">
+                        <col style="width: 10%;">
+                        <col style="width: 30%;">
+                    </colgroup>
+                    <tbody>
+                        <tr style="height: 30px;">
+                            <td style="color: #797979; text-align: right;font-size: 15px;font-weight: bold;" colspan="3">상품구매</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
+                            <td style="color: #797979; text-align: right;font-size: 15px;">50.40 $</td>
+                        </tr>
+                        <tr style="height: 15px;">
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr style="height: 15px;">
+                            <td style="text-align: right;">배송서비스</td>
+                            <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
+                            <td style="color: #797979; text-align: right;font-size: 15px;">20.50 $</td>
+                        </tr>
+                        <tr style="height: 15px;">
+                            <td style="text-align: right;">할인율</td>
+                            <td style="text-align: center;"><i class="fa fa-arrow-down" aria-hidden="true"></i></td>
+                            <td style="color: #797979; text-align: right;font-size: 15px;">5.00 $</td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="3" style="padding-left: 30%;">
+                                <hr class="subtitle-gray"/>
+                            </td>
+                        </tr>
+                        <tr style="height: 30px;">
+                            <td style="color: #797979; text-align: right;font-size: 15px;font-weight: bold;" colspan="3">결재방식</td>
+                        </tr>
+                        <tr style="height: 15px;">
+                            <td style="color: #797979; text-align: right;font-size: 15px;" colspan="3"><c:out value="${cbxPaymentMethod}" escapeXml="false"/></td>
+                        </tr>
+                        <tr style="height: 30px;">
+                            <td style="text-align: right;" colspan="2">결재수수료</td>
+                            <td style="color: #797979; text-align: right;font-size: 15px;">0.00 $</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="3" style="padding-left: 30%;">
+                                <hr class="subtitle-gray"/>
+                            </td>
+                        </tr>
+                        <tr style="height: 15px;">
+                            <td style="text-align: right;font-size: 20px;font-weight: bold;color: #797979;">총</td>
+                            <td style="text-align: center;"></td>
+                            <td style="color: #797979; text-align: right;font-size: 20px;font-weight: bold;color: #797979;">120.00 $</td>
+                        </tr>
+                        <tr style="height: 20px;">
+                            <td colspan="3">&nbsp;</td>
+                        </tr>
+                        <tr style="height: 30px;">
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 17px;">결재하기 > </a> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 
     </div>
     <!-- 페이지 중간 [끝] :: 오른쪽:주문내역 -->

@@ -56,6 +56,13 @@ hr.subtitle {
      margin-bottom: 5px;
 }
 
+hr.subtitle-gray {
+	color: #464646;
+	border-color: #464646;
+	margin-top: 0px;
+	margin-bottom: 5px;
+}
+
 span.popup-subtitle {
 	 font-size: 15px;
      font-weight: bold;
