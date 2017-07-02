@@ -21,6 +21,18 @@ function toCurrency(money){
 	return "$ " + parseFloat(money).toMoney(2);
 }
 
+function toCurrency(money, sign){
+
+	if(sign == false) {
+        if(money == null || money == '') return "0.00";
+        return parseFloat(money).toMoney(2);
+	} else {
+        if(money == null || money == '') return "$ 0";
+        return "$ " + parseFloat(money).toMoney(2);
+	}
+
+}
+
 
 // It is simiar with NVL function of Oracle
 function nvl(parm, defalutValue) {

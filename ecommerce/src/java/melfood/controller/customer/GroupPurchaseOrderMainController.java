@@ -130,7 +130,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
             // 결재방식 콤보박스 구성
             Properties htmlProperty = new Properties();
-            List<Option> paymentMethods = paymentMethodService.getCmbxOptions(groupPurchase.getPurchaseOrganizer());
+            List<Option> paymentMethods = paymentMethodService.getCmbxOptions(groupPurchase.getPurchaseOrganizer(), true, "CASH");
             htmlProperty = new Properties("paymentMethod");
             htmlProperty.setCssClass("form-control");
             htmlProperty.setOnchange("showAdditionalInfoForPaymentMethod(this)");

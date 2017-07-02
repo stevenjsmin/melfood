@@ -46,8 +46,6 @@
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
     <script type="text/javascript">
-        // document.location.href = "/common/auth/welcome.yum";
-
         function callbackCheckDeliverable(data) {
             var resultCode = data.resultCode;
             var mapResultCode = data.mapResultCode;
@@ -66,6 +64,7 @@
                 $("#estimatedDeliveryTime").html(estimatedDeliveryTime);
                 $("#distance").html(distance);
                 $("#deliveryFee").html(deliveryFee);
+                $("#deliveryServiceFee").val(deliveryFee);
 
             } else if(resultCode == "CUSTOMER_ADDR_INVALID"){
                 $("#CUSTOMER_ADDR_INVALID").show();
@@ -79,6 +78,8 @@
                 $("#unknownErrorCutomerAddress").html(cutomerAddress);
                 $("#unknownErrorMessage").html(mapResultMessage);
             }
+
+
         }
 
     </script>
@@ -165,6 +166,85 @@
             markStreeViewOnGMap(MelfoodGmap);
             $("#streetViewMap").show();
             $("#map-street-canvas").show();
+        }
+    </script>
+
+    <script type="text/javascript">
+        function increaseDecreaseOrderAmount(objectId, downOrUp) {
+            var currentAmount = $("#" + objectId).val();
+            var newAmount = currentAmount;
+
+            var numerictextbox = $("#" + objectId).data("kendoNumericTextBox");
+
+            if(downOrUp == "DOWN") {
+                if(currentAmount == 0 || currentAmount < 0 ) {
+                    newAmount = 0;
+                } else {
+                    newAmount = Number(currentAmount) - Number(1);
+                }
+            } else {
+                if(currentAmount >= 99){
+                    newAmount = 99;
+                } else {
+                    newAmount = Number(currentAmount) + Number(1);
+                }
+            }
+
+            $("#" + objectId).val(newAmount);
+            numerictextbox.value($("#" + objectId).val());
+
+            // 상품의 총주문 가격을 구한다.
+            parseProductOrderValue();
+        }
+    </script>
+
+    <script type="text/javascript">
+        function parseProductOrderValue() {
+            var amount = 0;
+            var totalProdAmount = 0;
+            var deliveryFee = 0;
+            var subTotal = 0.0;
+            var toBeDiscountAmount = 0.0;
+            var finalAmount = 0.0;
+            <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count" begin="0">
+                amount = $("#amountOfOrder_" + ${groupPurchaseProduct.product.prodId}).val();
+
+                if(amount != 0){
+                    totalProdAmount = Number(totalProdAmount) + Number(amount * ${groupPurchaseProduct.product.unitPrice});
+                }
+            </c:forEach>
+
+            $('#payment_totalAmountForProduct').html(toCurrency(totalProdAmount, false));
+
+            <c:choose>
+                <c:when test="${groupPurchase.deliverable == 'Y'}">
+                    if($('#useDeliveryService_' + ${groupPurchase.groupPurchaseId}).prop('checked') == true) {
+                        deliveryFee = Number($("#deliveryServiceFee").val());
+                    }
+
+                    $('#payment_deliveryFee').html(toCurrency(deliveryFee, false));
+
+                </c:when>
+            </c:choose>
+
+            subTotal = Number(totalProdAmount) + Number(deliveryFee);
+
+            <c:choose>
+                <c:when test="${groupPurchase.discountMethod == 'RATE'}">
+                    // toBeDiscountAmount = subTotal * ( (100 - ${groupPurchase.discountRateValue}) / 100 );
+                    // toBeDiscountAmount = subTotal * ( (100 - 5) / 100 );
+                    toBeDiscountAmount =  (${groupPurchase.discountRateValue * 100}/100) * subTotal;
+                </c:when>
+                <c:when test="${groupPurchase.discountMethod == 'FIXED'}">
+                    toBeDiscountAmount = subTotal - ${groupPurchase.discountFixedAmount};
+                </c:when>
+            </c:choose>
+            if(toBeDiscountAmount >= subTotal ) toBeDiscountAmount = 0;
+            $('#payment_toBeDiscountAmount').html(toCurrency(toBeDiscountAmount, false));
+
+            finalAmount = subTotal - toBeDiscountAmount;
+            $('#payment_finalAmount').html(toCurrency(finalAmount, false));
+
         }
     </script>
 
@@ -345,12 +425,11 @@
                                                 <table>
                                                     <tr>
                                                         <td style="padding-left: 40px;">
-                                                            <input type="text" class="amountOfOrder" id="amountOfOrder$_{groupPurchaseProduct.product.prodId}" name="amountOfOrder$_{groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;"/>
+                                                            <input type="text" class="amountOfOrder" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;color: #0080C5;" onchange="parseProductOrderValue()"/>
                                                         </td>
                                                         <td style="padding-left: 20px;">
-                                                            <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;"></i>
-                                                            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;"></i>
-
+                                                            <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'DOWN')"></i>
+                                                            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'UP')"></i>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -448,7 +527,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
-                                                <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" value="" style="transform: scale(1.5);"></label>
+                                                <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" id="useDeliveryService_${groupPurchase.groupPurchaseId}" value="" style="transform: scale(1.5);" onchange="parseProductOrderValue()"></label>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -482,6 +561,7 @@
                                         </tr>
 
                                     </table>
+                                    <input type="hidden" id="deliveryServiceFee" value="${deliveryFee}">
                                 </div>
                             </div>
                         </div>
@@ -549,7 +629,7 @@
     <div class="col-sm-3"style="padding-right: 20px;padding-left: 20px;">
 
         <div class="panel panel-success">
-            <div class="panel-heading" style="height: 25px;vertical-align: middle; background-color: #C8E297;"><span style="font-size: 12px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
+            <div class="panel-heading" style="height: 25px;vertical-align: middle; background-color: #C8E297;"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span style="font-size: 12px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
             <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 10px;">
 
                 <table border="0" style="width: 100%;">
@@ -562,7 +642,7 @@
                         <tr>
                             <td style="text-align: right;">상품구매</td>
                             <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
-                            <td style="color: #797979; text-align: right;font-size: 15px;">50.40 $</td>
+                            <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_totalAmountForProduct" style="font-size: 15px;">0.00</span> $</td>
                         </tr>
                         <tr style="height: 15px;">
                             <td colspan="3">&nbsp;</td>
@@ -570,46 +650,39 @@
                         <tr style="height: 15px;">
                             <td style="text-align: right;">배송서비스</td>
                             <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
-                            <td style="color: #797979; text-align: right;font-size: 15px;">20.50 $</td>
+                            <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_deliveryFee" style="font-size: 15px;">0.00</span> $</td>
                         </tr>
-                        <tr style="height: 15px;">
-                            <td style="text-align: right;">할인율</td>
-                            <td style="text-align: center;"><i class="fa fa-arrow-down" aria-hidden="true"></i></td>
-                            <td style="color: #797979; text-align: right;font-size: 15px;">5.00 $</td>
+                        <tr style="height: 30px;">
+                            <td style="text-align: right;color: #58A578;">할인</td>
+                            <td style="text-align: center;"><i class="fa fa-arrow-down" aria-hidden="true" style="color: #58A578;"></i></td>
+                            <td style="color: #58A578; text-align: right;font-size: 15px;">- <span id="payment_toBeDiscountAmount" style="font-size: 15px;color: #58A578;">0.00</span> $</td>
                         </tr>
-
-
                         <tr>
                             <td colspan="3" style="padding-left: 30%;">
                                 <hr class="subtitle-gray"/>
                             </td>
                         </tr>
-                        <tr style="height: 30px;">
-                            <td style="color: #797979; text-align: right;font-size: 13px;font-weight: bold;" colspan="3">결재방식</td>
-                        </tr>
-                        <tr style="height: 15px;">
-                            <td style="color: #797979; text-align: right;font-size: 15px;" colspan="3"><c:out value="${cbxPaymentMethod}" escapeXml="false"/></td>
-                        </tr>
-                        <tr style="height: 30px;">
-                            <td style="text-align: right;" colspan="2">결재수수료</td>
-                            <td style="color: #797979; text-align: right;font-size: 15px;">0.00 $</td>
-                        </tr>
-
-                        <tr>
-                            <td colspan="3" style="padding-left: 30%;">
-                                <hr class="subtitle-gray"/>
-                            </td>
-                        </tr>
+                        <tr style="height: 5px;"><td colspan="3">&nbsp;</td></tr>
                         <tr style="height: 15px;">
                             <td style="text-align: right;font-size: 20px;font-weight: bold;color: #797979;">총</td>
                             <td style="text-align: center;"></td>
-                            <td style="color: #797979; text-align: right;font-size: 20px;font-weight: bold;color: #797979;">120.00 $</td>
+                            <td style="color: #797979; text-align: right;font-size: 20px;font-weight: bold;color: #797979;">
+                                <span id="payment_finalAmount" style="font-size: 20px;font-weight: bold;color: #797979;">0.00</span> $
+                            </td>
                         </tr>
-                        <tr style="height: 20px;">
-                            <td colspan="3">&nbsp;</td>
+
+
+
+                        <tr style="height: 30px;padding-top: 50px;">
+                            <td style="color: #C3C5C8; text-align: right;font-size: 13px;" colspan="3"><br/>결재방식</td>
                         </tr>
+                        <tr style="height: 40px;">
+                            <td style="color: #797979; text-align: right;font-size: 15px;" colspan="3"><c:out value="${cbxPaymentMethod}" escapeXml="false"/></td>
+                        </tr>
+
                         <tr style="height: 25px;">
-                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a> </td>
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a></table>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
