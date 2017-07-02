@@ -54,7 +54,7 @@
                          </tr>
                          <tr>
                               <td class="label">Address </td>
-                              <td class="value" colspan="3">${user.address}</td>
+                              <td class="value" colspan="3">${user.addressStreet} ${user.addressSuburb} ${user.addressState} ${user.addressPostcode}</td>
                          </tr>
                          <tr>
                               <td class="label">Messenger </td>

@@ -50,6 +50,7 @@
             var mapResultCode = data.mapResultCode;
             var mapResultMessage = data.mapResultMessage;
 
+            var cutomerAddress = data.cutomerAddress;
             var deliveryFee = data.deliveryFee;
 
             var distance = data.distance;
@@ -64,19 +65,17 @@
 
 
             if(resultCode == "OK"){
-                $("#CUSTOMER_ADDR_INVALID").show();
-            } else if(resultCode == "CUSTOMER_ADDR_INVALID"){
                 $("#DELIVERY_SERVICE_DETAIL").show();
-            } else {
-                $("#NO_SCHEDULE_FOR_CUSTOMER_ADDR").show();
+                $("#cutomerAddress").html(cutomerAddress);
+                $("#distance").html(distance);
+                $("#deliveryFee").html(deliveryFee);
+
+            } else if(resultCode == "CUSTOMER_ADDR_INVALID"){
+                $("#CUSTOMER_ADDR_INVALID").show();
+            } else  if(resultCode == "NO_DELIVERABLE_SERVICE_AREA") {
+                $("#NO_DELIVERABLE_SERVICE_AREA").show();
+                $("#noDeliverableServiceAreaMessage").html(mapResultMessage);
             }
-
-
-
-
-
-
-
         }
 
     </script>
@@ -233,7 +232,7 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#FF5832;"></i></td>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-gift fa-3x" aria-hidden="true" style="color:#6F0E06;"></i></td>
                                 <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">공동구매 아이템</span></td>
                             </tr>
                         </table>
@@ -310,19 +309,19 @@
         <!-- 배달서비스 -->
         <c:choose>
             <c:when test="${groupPurchase.deliverable == 'Y'}">
-                <div class="row">
+                <div class="row" style="padding-top: 20px;">
                     <div class="col-sm-12">
                         <div class="panel panel-default">
                             <!-- Default panel contents -->
                             <div class="panel-heading">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#1AAF54;"></i></td>
+                                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#464646;"></i></td>
                                         <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배달서비스</span></td>
                                     </tr>
                                 </table>
                             </div>
-                            <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;">
+                            <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;padding-right: 100px;">
 
                                 <div class="alert alert-warning" id="CUSTOMER_ADDR_INVALID" style="display: none;">
                                     <table style="width: 100%;">
@@ -341,58 +340,60 @@
                                         </tr>
                                     </table>
                                 </div>
-                                <div class="alert alert-warning" id="NO_SCHEDULE_FOR_CUSTOMER_ADDR"  style="display: none;>
+                                <div class="alert alert-warning" id="NO_DELIVERABLE_SERVICE_AREA"  style="display: none;">
                                     <table style="width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 80px;">
+                                            <col style="width: 10px;">
+                                            <col>
+                                        </colgroup>
                                         <tr>
-                                            <td style="width: 40px; text-align: center;"><i class="fa fa-info" aria-hidden="true" style="color: #900C3E;"></i></td>
-                                            <td style="color: #900C3E;">죄송합니다. 현재 등록된 고객님의 주소지에 배달서비스 일정이 없어 배달 서비스를 이용하실수 없습니다.</td>
+                                            <td style="width: 40px; text-align: center;"><i class="fa fa-info fa-2x" aria-hidden="true" style="color: #900C3E;"></i></td>
+                                            <td></td>
+                                            <td style="color: #F15F4C;"><span id="noDeliverableServiceAreaMessage"></span></td>
                                         </tr>
-                                        <tr><td colspan="2"></td></tr>
                                         <tr style="height: 30px;">
-                                            <td></td>
-                                            <td><span style="color: #A2A4A4;">현재 고객님의 주소 :</span><span style="color: #505050;"> 4 Torresdale Road, South Morang VIC 3752</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td> <a href="/customer/mypage/myDetailInfo.yum">배달가능 지역보기</a></td>
+                                            <td style="text-align: right" colspan="3"><a href="/customer/mypage/myDetailInfo.yum">배송가능 지역보기</a></td>
                                         </tr>
                                     </table>
                                 </div>
-                                <table class="table table-striped" id="DELIVERY_SERVICE_DETAIL"  style="display: none;>
-                                    <colgroup>
-                                        <col style="width: 100px;">
-                                        <col style="width: 10px;">
-                                        <col style="width: *;">
-                                    </colgroup>
-                                    <tbody>
+                                <div id="DELIVERY_SERVICE_DETAIL"  style="display: none;">
+                                    <table class="table table-striped">
+                                        <colgroup>
+                                            <col style="width: 100px;">
+                                            <col style="width: 10px;">
+                                            <col style="width: *;">
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">고객님주소</td>
+                                            <td>:</td>
+                                            <td><span id="cutomerAddress"></span> &nbsp;&nbsp;<a href="/customer/mypage/myDetailInfo.yum" style="font-size: 10px;">주소변경</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">거리</td>
+                                            <td>:</td>
+                                            <td><span id="distance">0</span> Km</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">배송예정시간</td>
+                                            <td>:</td>
+                                            <td>13:00PM ~ 15:00 PM</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">배송비</td>
+                                            <td>:</td>
+                                            <td>$ <span id="deliveryFee">0.00</span> (기본서비스 + 서비스비/KM)</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
+                                                <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" value="" style="transform: scale(1.5);"></label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                    <tr>
-                                        <td>고객님주소</td>
-                                        <td>:</td>
-                                        <td>4 Torresdale Road, South Morang VIC 3752</td>
-                                    </tr>
-                                    <tr>
-                                        <td>거리</td>
-                                        <td>:</td>
-                                        <td>5 Km</td>
-                                    </tr>
-                                    <tr>
-                                        <td>배송예정시간</td>
-                                        <td>:</td>
-                                        <td>13:00PM ~ 15:00 PM</td>
-                                    </tr>
-                                    <tr>
-                                        <td>배송비</td>
-                                        <td>:</td>
-                                        <td> $20.00 (기본서비스 + 서비스비/KM)</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
-                                            <label>배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" value="" style="transform: scale(1.5);"></label>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>
@@ -400,6 +401,29 @@
 
             </c:when>
         </c:choose>
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-map fa-3x" aria-hidden="true" style="color:#3D6D51;"></i></td>
+                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">공동구매 장소</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body" style="padding-left: 20px;">
+                        <p style="color: #797979;">${groupPurchase.marketAddressComment}</p>
+                        <div id="map_canvas" style="width: 100%; height: 200px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
 

@@ -186,37 +186,75 @@ public class MyPageController extends BaseController {
         try {
 
             if (StringUtils.isBlank(userId)) throw new Exception("[사용자 ID]  이항목(들)은 빈 값이 될 수 없습니다.");
-            User user = new User(userId);
+            User user = userService.getUserInfo(userId);
 
-            if(StringUtils.isBlank(userName)){
+            if (StringUtils.isBlank(userName)) {
                 user.setUserName(userId.substring(userId.length() - 3));
                 // user.setUserName(joinMemberService.getDefaultUserName());
             } else {
                 user.setUserName(userName);
             }
 
-            if(StringUtils.isBlank(userNameReal)){
+            if (StringUtils.isBlank(userNameReal)) {
                 user.setUserNameReal(userId.substring(userId.length() - 3));
                 // user.setUserNameReal(joinMemberService.getDefaultUserName());
             } else {
                 user.setUserNameReal(userNameReal);
             }
 
-            user.setMobileAuthFinished("Y");
-
-            if (!StringUtils.isBlank(sex)) user.setSex(sex);
-            if (!StringUtils.isBlank(dob)) user.setDob(dob);
+            if (!StringUtils.isBlank(sex)) {
+                user.setSex(sex);
+            } else {
+                user.setSex(null);
+            }
+            if (!StringUtils.isBlank(dob)) {
+                user.setDob(dob);
+            } else {
+                user.setDob(null);
+            }
             // if (!StringUtils.isBlank(mobile)) user.setMobile(mobile);
-            if (!StringUtils.isBlank(telephone)) user.setTelephone(telephone);
-            if (!StringUtils.isBlank(email)) user.setEmail(email);
-            if (!StringUtils.isBlank(useSocialMessenger)) user.setUseSocialMessenger(useSocialMessenger);
-            if (!StringUtils.isBlank(useSocialMessengerId)) user.setUseSocialMessengerId(useSocialMessengerId);
-            if (!StringUtils.isBlank(addressPostcode)) user.setAddressPostcode(addressPostcode);
-            if (!StringUtils.isBlank(addressState)) user.setAddressState(addressState);
-            if (!StringUtils.isBlank(addressSuburb)) user.setAddressSuburb(addressSuburb);
-            if (!StringUtils.isBlank(addressStreet)) user.setAddressStreet(addressStreet);
+            if (!StringUtils.isBlank(telephone)) {
+                user.setTelephone(telephone);
+            } else {
+                user.setTelephone(null);
+            }
+            if (!StringUtils.isBlank(email)) {
+                user.setEmail(email);
+            } else {
+                user.setEmail(null);
+            }
+            if (!StringUtils.isBlank(useSocialMessenger)) {
+                user.setUseSocialMessenger(useSocialMessenger);
+            } else {
+                user.setUseSocialMessenger(null);
+            }
+            if (!StringUtils.isBlank(useSocialMessengerId)) {
+                user.setUseSocialMessengerId(useSocialMessengerId);
+            } else {
+                user.setUseSocialMessengerId(null);
+            }
+            if (!StringUtils.isBlank(addressPostcode)) {
+                user.setAddressPostcode(addressPostcode);
+            } else {
+                user.setAddressPostcode(null);
+            }
+            if (!StringUtils.isBlank(addressState)) {
+                user.setAddressState(addressState);
+            } else {
+                user.setAddressState(null);
+            }
+            if (!StringUtils.isBlank(addressSuburb)) {
+                user.setAddressSuburb(addressSuburb);
+            } else {
+                user.setAddressSuburb(null);
+            }
+            if (!StringUtils.isBlank(addressStreet)) {
+                user.setAddressStreet(addressStreet);
+            } else {
+                user.setAddressStreet(null);
+            }
 
-            updateUserId = userService.modifyUserForNotNull(user);
+            updateUserId = userService.modifyUser(user);
 
             if (!StringUtils.isBlank(user.getEmail()) && StringUtils.equalsIgnoreCase(Ctx.getVar("EMAIL.AFTR.CHANGE.MYINFO"), "Y")) {
 

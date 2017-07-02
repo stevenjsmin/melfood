@@ -15,6 +15,8 @@ import melfood.framework.gmap.gson.dto.GMapResult;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
+import melfood.shopping.delivery.DeliveryCalendar;
+import melfood.shopping.delivery.DeliveryCalendarService;
 import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
@@ -61,6 +63,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
     @Autowired
     private GroupPurchaseProductService groupPurchaseProductService;
+
+    @Autowired
+    private DeliveryCalendarService deliveryCalendarService;
 
     @RequestMapping("/Main")
     public ModelAndView orderProduct(HttpServletRequest request) throws Exception {
@@ -171,7 +176,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
             groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
 
             if (StringUtils.equals(groupPurchase.getDeliverable(), "Y")) {
-
+                // 배송가능인 경우
 
                 if (marketAddress == null
                         || StringUtils.isBlank(groupPurchase.getMarketAddressStreet())
@@ -204,11 +209,33 @@ public class GroupPurchaseOrderMainController extends BaseController {
                     cutomerAddress.append(customerUser.getAddressPostcode());
                 }
 
+                // 고객의 지역(Suburb)가 배송 가능지역인지 체크한다
+                if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID")) {
+                    // DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    // Calendar cal = Calendar.getInstance();
+                    // cal.setTime(new Date());
+                    // String deliveryDate = df.format(cal.getTime());
+                    String deliveryDate = groupPurchase.getMarketOpenStartDate();
+                    List<DeliveryCalendar> deliverySchedule = deliveryCalendarService.getDeliveryCalendars(new DeliveryCalendar(groupPurchase.getPurchaseOrganizer(), deliveryDate));
+
+                    boolean deliverable = false;
+                    for (DeliveryCalendar calendar : deliverySchedule) {
+                        if (StringUtils.equalsIgnoreCase(customerUser.getAddressSuburb(), calendar.getAddressSuburb())) {
+                            deliverable = true;
+                            break;
+                        }
+                    }
+                    if (deliverable == false) {
+                        resultCode = "NO_DELIVERABLE_SERVICE_AREA";
+                        mapResultMessage = "죄송합니다. 현재 고객님의 지역 '<b>" + customerUser.getAddressSuburb() + " "  + customerUser.getAddressPostcode() + "</b>' 에는 배송일정 스케줄이 잡혀있지 않습니다.";
+                    }
+                }
+
                 DecimalFormat df = new DecimalFormat("0.00");
                 float deliveruFee = 0.0f;
                 int distance = 0;
                 String duration = "0";
-                if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID")) {
+                if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID") && !StringUtils.equals(resultCode, "NO_DELIVERABLE_SERVICE_AREA")) {
                     // 마켓주소와 고객의 주소에 일단 내용이 존재한다면 지도정보를 조회한다.
                     mapResult = melfoodGoogleMapService.getLookupGmapDistance(marketAddress.toString(), cutomerAddress.toString());
                     mapResultCode = mapResult.getRows()[0].getElements()[0].getStatus();
