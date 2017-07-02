@@ -40,7 +40,7 @@
 	            }
 	        </c:forEach>
 	        
-	        MelfoodGmap.mapDeliverySchedules = schedule;
+	        MelfoodGmap.mapMultiplePoints = schedule;
 	        // MelfoodGmap.mapZoomLevel = 11;
         }
         

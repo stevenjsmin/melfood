@@ -72,11 +72,13 @@ public class AuthController extends BaseController {
 
                 retVal = this.getGroupPurchaseList(request);
                 mav.addObject("groupPurchaselist", (List<GroupPurchase>) retVal.get("list"));
+                mav.addObject("groupPurchaseAlllist", (List<GroupPurchase>) retVal.get("allList"));
                 mav.addObject("groupPurchaselistTotalCount", (Integer) retVal.get("totalCount"));
             }
         } else {
             retVal = this.getGroupPurchaseList(request);
             mav.addObject("groupPurchaselist", (List<GroupPurchase>) retVal.get("list"));
+            mav.addObject("groupPurchaseAlllist", (List<GroupPurchase>) retVal.get("allList"));
             mav.addObject("groupPurchaselistTotalCount", (Integer) retVal.get("totalCount"));
         }
 
@@ -128,8 +130,13 @@ public class AuthController extends BaseController {
 
         Integer totalCount = 0;
         List<GroupPurchase> list = null;
+        List<GroupPurchase> allList = null;
         list = groupPurchaseService.getGroupPurchaseForMallFront(groupPurchase);
         totalCount = groupPurchaseService.getTotalCntGroupPurchaseForMallFront(groupPurchase);
+
+        groupPurchase.setPagenationPage(0);
+        groupPurchase.setPagenationPageSize(99999);
+        allList = groupPurchaseService.getGroupPurchaseForMallFront(groupPurchase);
 
 
         retVal.put("pageSize", pageSize);
@@ -147,6 +154,7 @@ public class AuthController extends BaseController {
 
 
         retVal.put("list", list);
+        retVal.put("allList", allList);
         retVal.put("totalCount", totalCount);
 
         return retVal;

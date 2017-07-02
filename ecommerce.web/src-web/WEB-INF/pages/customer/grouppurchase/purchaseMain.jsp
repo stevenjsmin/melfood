@@ -386,7 +386,7 @@
                     <!-- Table -->
                     <table class="table bootstrap-tbl">
                         <tr>
-                        <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count1" begin="0">
+                        <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count" begin="0">
                             <tr>
                                 <td style="vertical-align: top;text-align: center;width: 120px;">
                                     <c:choose>

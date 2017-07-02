@@ -41,26 +41,30 @@
             border-bottom-right-radius: 50% 50%;
             border-bottom-left-radius: 50% 50%;
         }
+        .venueInfoWrapper {
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)),url(/resources/image/pizza-desktop.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: #797876;
+            box-sizing: border-box;
+            padding: 20px 0;
+            height: 150px;
+        }
     </style>
 
     <script>
         $(document).ready(function() {
+
+            // https://owlcarousel2.github.io/OwlCarousel2/docs/api-options.html
             var owl = $('.owl-carousel');
             owl.owlCarousel({
-                margin: 5,
+                items: 3,
+                center: false,
+                margin: 1,
                 nav: false,
                 loop: false,
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 3
-                    },
-                    1000: {
-                        items: 5
-                    }
-                }
+                autoWidth: false,
+                autoplay: false
             });
            /**
             // 스크롤하는 부분이 하나이면 상관없는데 여러개일때는 모두 같이 움직이는 현상이 있음
@@ -73,6 +77,8 @@
                 e.preventDefault();
             });
              */
+
+           displayGroupPurchaseMarketPlace();
         })
     </script>
 
@@ -83,6 +89,65 @@
         }
         function goGroupPurchaseMain(groupPurchaseId){
             document.location.href = "/grouppurchase/Main.yum?groupPurchaseId=" + groupPurchaseId;
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function displayGroupPurchaseMarketPlace() {
+            var MelfoodGmap = new Object();
+            MelfoodGmap.mapName = '멜푸드지도';
+            MelfoodGmap.mapStyleNo = 7;
+            MelfoodGmap.mapIsMultipleMark = 'Y';
+            MelfoodGmap.mapZoomLevel = 12;
+            MelfoodGmap.mapAddress = '4 Torresdale Road, South Morang VIC 3752';
+
+            //groupPurchaseAlllist
+            var points = [];
+            var address = "";
+            var message = "";
+
+            <c:forEach var="entry" items="${groupPurchaseAlllist}" varStatus="count" begin="0">
+                message = "<table style='width: 350px;'>";
+                message = message + "<tr style='height: 35px;'>";
+                message = message + "  <td style='color:#900C3E;font-weight: bold;' colspan='2'>${entry.groupPurchaseTitle}</td>";
+                message = message + "</tr>";
+                message = message + "<tr style='height: 20px;'>";
+                message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-map-marker fa-lg' aria-hidden='true'></i></td>";
+                message = message + "  <td><span style='color: #0095DA;font-weight:bold;'>${entry.marketAddressSuburb}</span> ${entry.marketAddressPostcode}</td>";
+                message = message + "</tr>";
+                message = message + "<tr style='height: 20px;'>";
+                message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
+                message = message + "  <td>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
+                message = message + "</tr>";
+
+                if('${entry.stopSelling}' == 'Y') {
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #EB7D3C;'>공.구 마감 </b>: ${entry.stopSellingReason}</td>";
+                    message = message + "</tr>";
+                } else {
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='text-align: right;' colspan='2'><a href=\"javascript:goGroupPurchaseMain('${entry.groupPurchaseId}\')\">공.구하러 가기</a></td>";
+                    message = message + "</tr>";
+                }
+
+                message = message + "</table>";
+
+                address = "${entry.marketAddressStreet}" + " " + "${entry.marketAddressSuburb}" + " " + "${entry.marketAddressState}" + " " + "${entry.marketAddressPostcode}";
+
+                if('${entry.stopSelling}' == 'Y') {
+                    points.push({address:address, message: message, clickEvent: true, active:false});
+
+                } else {
+                    points.push({address:address, message: message, clickEvent: true, active:true});
+                }
+
+            </c:forEach>
+
+            MelfoodGmap.mapMultiplePoints = points;
+
+            markAddressOnGMap(MelfoodGmap);
+
         }
     </script>
 
@@ -123,37 +188,12 @@
     <c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count1" begin="0">
 
         <div class="row gppurchase" style="height: 170px;">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <table style="width: 100%;color: #606060;">
                     <tr style="height: 30px;"><td colspan="3" style="font-size: 15px;font-weight: bold;color: #2A2A2A;">${groupPurchase.groupPurchaseTitle}</td></tr>
                     <tr style="height: 25px;">
                         <td style="width: 25px;text-align: center;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></td>
                         <td style="font-weight: bold;height: 25px;">${groupPurchase.marketAddressSuburb}</td>
-                        <c:choose>
-                            <c:when test="${groupPurchase.deliverable == 'Y' && groupPurchase.minimumPurchaseAmount > 0.0}"><c:set var = "rowSpan" scope = "session" value = "5"/></c:when>
-                            <c:when test="${groupPurchase.deliverable == 'Y' && groupPurchase.minimumPurchaseAmount == 0.0}"><c:set var = "rowSpan" scope = "session" value = "4"/></c:when>
-                            <c:when test="${groupPurchase.deliverable == 'N' && groupPurchase.minimumPurchaseAmount > 0.0}"><c:set var = "rowSpan" scope = "session" value = "4"/></c:when>
-                            <c:when test="${groupPurchase.deliverable == 'N' && groupPurchase.minimumPurchaseAmount == 0.0}"><c:set var = "rowSpan" scope = "session" value = "3"/></c:when>
-                        </c:choose>
-                        <td rowspan="${rowSpan}" style="width: 200px;">
-                            <c:choose>
-                                <c:when test="${groupPurchase.stopSelling == 'N'}">
-                                    <table style="width: 100%;">
-                                        <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
-                                        <tr><td style="text-align: right;padding-top: 5px;"><a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
-                                    </table>
-                                </c:when>
-                                <c:when test="${groupPurchase.stopSelling == 'Y'}">
-                                    <table style="width: 100%;">
-                                        <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
-                                        <tr><td style="text-align: right;padding-top: 5px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
-                                    </table>
-                                </c:when>
-                                <c:otherwise>
-                                    ?
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
                     </tr>
                     <tr style="height: 25px;">
                         <td style="width: 35px;text-align: center;"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></td>
@@ -161,7 +201,6 @@
                                 ${groupPurchase.marketOpenStartDate} <span style="color:#606060;">${groupPurchase.marketOpenStartTime} ~ ${groupPurchase.marketOpenEndTime}</span>
                         </td>
                     </tr>
-
                     <c:choose>
                         <c:when test="${groupPurchase.deliverable == 'Y'}">
                             <tr style="height: 25px;">
@@ -184,11 +223,34 @@
                 </table>
             </div>
 
-            <div class="col-sm-8" style="padding-left: 50px;">
+
+            <div class="col-sm-2">
+                <table style="width: 100%;color: #606060;">
+                        <c:choose>
+                            <c:when test="${groupPurchase.stopSelling == 'N'}">
+                                    <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
+                                    <tr><td style="text-align: right;padding-top: 5px;"><a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
+                                </table>
+                            </c:when>
+                            <c:when test="${groupPurchase.stopSelling == 'Y'}">
+                                <table style="width: 100%;">
+                                    <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
+                                    <tr><td style="text-align: right;padding-top: 5px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
+                                </table>
+                            </c:when>
+                            <c:otherwise>
+                                ?
+                            </c:otherwise>
+                        </c:choose>
+                </table>
+            </div>
+
+
+            <div class="col-sm-5" style="padding-left: 50px;">
                 <div class="owl-carousel owl-theme" style="padding-top: 5px;">
-                    <c:forEach var="groupPurchaseImage" items="${groupPurchase.groupPurchaseImages}" varStatus="count2" begin="0">
+                    <c:forEach var="groupPurchaseImage" items="${groupPurchase.groupPurchaseImages}" varStatus="count" begin="0">
                         <div class="item">
-                            <img src="/img/?f=${groupPurchaseImage.imageFileId}" style="height: 120px;"/>
+                            <img src="/img/?f=${groupPurchaseImage.imageFileId}" style="width: 130px;"/>
                         </div>
                     </c:forEach>
                 </div>
@@ -198,12 +260,8 @@
 
     </c:forEach>
 
-
-
-
-
-
-<div class="row" align="center" style="background-color: #1E1E1E;margin-top: 40px;padding-top: 10px;padding-bottom: 10px;">
+<!-- 협동조합 파트너스 -->
+<div class="row" align="center" style="background-color: #1E1E1E;margin-top: 10px;padding-top: 10px;padding-bottom: 10px;">
     <div class="col-sm-12">
         <table style="width: 100%;">
             <tr>
@@ -226,15 +284,18 @@
 
 
 <div class="row">
-    <div class="col-sm-12" style="padding-right: 0px;padding-left: 0px">
-        <img src="/resources/image/pizza-desktop.jpg" style="width: 100%;">
+    <div class="col-sm-12" style="padding: 0px 0px;">
+        <div class="venueInfoWrapper">
+        </div>
     </div>
 </div>
 
 
-
-
-
+<div class="row">
+    <div class="col-sm-12" style="padding: 0px 0px;">
+        <div id='map-canvas' style="width: 100%;height: 450px;"></div>
+    </div>
+</div>
 
 
 

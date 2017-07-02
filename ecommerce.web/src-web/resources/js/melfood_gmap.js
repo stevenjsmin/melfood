@@ -78,7 +78,8 @@ function markAddressOnGMap(MelfoodGmap){
        maxZoom: 20,
        center: latlng,
        mapTypeId: google.maps.MapTypeId.ROADMAP,
-       mapTypeControl: true
+       mapTypeControl: true,
+	   scrollwheel: false
      }; 	
 	
 	// Show the Google map in the div with the attribute id 'map-canvas'.
@@ -96,10 +97,10 @@ function markAddressOnGMap(MelfoodGmap){
  				alert("Geocode was not successful for the following reason: " + status);        
  		});	 	
  	} else {
- 		var list = MelfoodGmap.mapDeliverySchedules;
+ 		var list = MelfoodGmap.mapMultiplePoints;
  		if(list != null && list.length > 0) {
  			while((a=list.pop()) != null){ 
- 				geocodeAddressForMultiPlace(a.address, a.message, a.clickEvent);
+ 				geocodeAddressForMultiPlace(a.address, a.message, a.clickEvent, a.active);
  			}
  		}
  	}
@@ -135,11 +136,19 @@ function geocodeAddressForOnePlace( latlng, MelfoodGmap){
 	google.maps.event.trigger(marker, "click", {});
 }
 
-function geocodeAddressForMultiPlace(address, message, clickEvent) {
-    var icon1 = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-    var icon2 = "http://maps.google.com/mapfiles/ms/icons/orange.png";
-    var icon = icon2;
-    if(clickEvent) icon = icon1;
+function geocodeAddressForMultiPlace(address, message, clickEvent, active) {
+    // var activeIco = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+    var activeIco = "http://maps.google.com/mapfiles/kml/paddle/red-circle.png";
+    var disabledIco = "http://maps.google.com/mapfiles/ms/icons/yellow.png";
+    var icon = activeIco;
+
+    if(active == true){
+        icon = activeIco;
+	} else {
+        icon = disabledIco;
+	}
+
+	// if(clickEvent) icon = icon1;
     
     geocoder.geocode({
         'address': address
@@ -162,7 +171,7 @@ function geocodeAddressForMultiPlace(address, message, clickEvent) {
             	google.maps.event.trigger(marker, "click", {});
             }
         } else {
-            alert("geocode of " + address + " failed:" + status);
+            console.log("geocode of " + address + " failed:" + status);
         }
     });
 }

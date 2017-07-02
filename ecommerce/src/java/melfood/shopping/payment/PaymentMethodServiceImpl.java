@@ -111,7 +111,7 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
                 if (includeDetailAccount) {
                     optionLabel = optionLabel + " [ " + aPaymentMethod.getBankNameCodeName() + "-  BSB: " + aPaymentMethod.getBankBsb() + ",  Account: " + aPaymentMethod.getBankAccountNo() + ",  Account holder: " + aPaymentMethod.getBankAccountOwnerName() + " ]";
                 } else {
-                    optionLabel = optionLabel + " [ " + aPaymentMethod.getBankNameCodeName() + "]";
+                    optionLabel = optionLabel + " [ " + aPaymentMethod.getBankNameCodeName() + " ]";
                 }
             }
             options.add(new Option(optionValue, optionLabel, (StringUtils.equalsIgnoreCase(optionValue, defaultSelectedValue))));
