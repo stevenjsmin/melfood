@@ -168,12 +168,21 @@ public class GroupPurchaseOrderMainController extends BaseController {
         GMapResult mapResult = null;
         String mapResultCode = "";
         String mapResultMessage = "";
-
+        String estimatedDeliveryTime = "";
 
         try {
-
             // 공동구매 기본정보를 얻어온다.
             groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+
+            if (StringUtils.isNotBlank(groupPurchase.getMarketAddressStreet())) marketAddress.append(groupPurchase.getMarketAddressStreet() + " ");
+            if (StringUtils.isNotBlank(groupPurchase.getMarketAddressSuburb())) marketAddress.append(groupPurchase.getMarketAddressSuburb() + " ");
+            if (StringUtils.isNotBlank(groupPurchase.getMarketAddressState())) marketAddress.append(groupPurchase.getMarketAddressState() + " ");
+            if (StringUtils.isNotBlank(groupPurchase.getMarketAddressPostcode())) marketAddress.append(groupPurchase.getMarketAddressPostcode());
+
+            if (StringUtils.isNotBlank(customerUser.getAddressStreet())) cutomerAddress.append(customerUser.getAddressStreet() + " ");
+            if (StringUtils.isNotBlank(customerUser.getAddressSuburb())) cutomerAddress.append(customerUser.getAddressSuburb() + " ");
+            if (StringUtils.isNotBlank(customerUser.getAddressState())) cutomerAddress.append(customerUser.getAddressState() + " ");
+            if (StringUtils.isNotBlank(customerUser.getAddressPostcode())) cutomerAddress.append(customerUser.getAddressPostcode());
 
             if (StringUtils.equals(groupPurchase.getDeliverable(), "Y")) {
                 // 배송가능인 경우
@@ -184,13 +193,8 @@ public class GroupPurchaseOrderMainController extends BaseController {
                         || StringUtils.isBlank(groupPurchase.getMarketAddressState())
                         || StringUtils.isBlank(groupPurchase.getMarketAddressPostcode())) {
                     resultCode = "MARKET_ADDR_INVALID";
-                    mapResultMessage = "공동구매 하는곳의 소주소가 유효하지 않습니다.";
+                    mapResultMessage = "공동구매 하는곳의 주소가 유효하지 않습니다.";
 
-                } else {
-                    marketAddress.append(groupPurchase.getMarketAddressStreet() + " ");
-                    marketAddress.append(groupPurchase.getMarketAddressSuburb() + " ");
-                    marketAddress.append(groupPurchase.getMarketAddressState() + " ");
-                    marketAddress.append(groupPurchase.getMarketAddressPostcode());
                 }
 
                 if (customerUser == null
@@ -200,13 +204,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
                         || StringUtils.isBlank(customerUser.getAddressPostcode())) {
                     resultCode = "CUSTOMER_ADDR_INVALID";
                     mapResultMessage = "고객님의 주소가 유효하지 않습니다. 'My푸드 -> 개인정보변' 에서 주소를 확인해 주세요.";
-
-
-                } else {
-                    cutomerAddress.append(customerUser.getAddressStreet() + " ");
-                    cutomerAddress.append(customerUser.getAddressSuburb() + " ");
-                    cutomerAddress.append(customerUser.getAddressState() + " ");
-                    cutomerAddress.append(customerUser.getAddressPostcode());
                 }
 
                 // 고객의 지역(Suburb)가 배송 가능지역인지 체크한다
@@ -222,12 +219,14 @@ public class GroupPurchaseOrderMainController extends BaseController {
                     for (DeliveryCalendar calendar : deliverySchedule) {
                         if (StringUtils.equalsIgnoreCase(customerUser.getAddressSuburb(), calendar.getAddressSuburb())) {
                             deliverable = true;
+                            estimatedDeliveryTime = calendar.getBtwnFromHhmm() + " ~ " + calendar.getBtwnToHhmm();
+                            model.put("estimatedDeliveryTime", estimatedDeliveryTime);
                             break;
                         }
                     }
                     if (deliverable == false) {
                         resultCode = "NO_DELIVERABLE_SERVICE_AREA";
-                        mapResultMessage = "죄송합니다. 현재 고객님의 지역 '<b>" + customerUser.getAddressSuburb() + " "  + customerUser.getAddressPostcode() + "</b>' 에는 배송일정 스케줄이 잡혀있지 않습니다.";
+                        mapResultMessage = "죄송합니다. 현재 고객님의 지역 '<b>" + customerUser.getAddressSuburb() + " " + customerUser.getAddressPostcode() + "</b>' 에는 배송일정 스케줄이 잡혀있지 않습니다.";
                     }
                 }
 
@@ -269,6 +268,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
                 model.put("mapResultMessage", "본 공동구매는 배달서비스를 제공하지 않습니다.");
                 model.put("deliveryFee", "0.00");
                 model.put("cutomerAddress", cutomerAddress.toString());
+                model.put("estimatedDeliveryTime", estimatedDeliveryTime);
                 model.put("distance", "0");
                 model.put("duration", "0");
             }
@@ -276,17 +276,50 @@ public class GroupPurchaseOrderMainController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
 
-            model.put("resultCode", "OK");
+            model.put("resultCode", "UNKNOWN_ERROR");
             model.put("mapResultCode", "UNKNOWN_ERROR");
-            model.put("mapResultMessage", e.getMessage());
+            model.put("mapResultMessage", e.getMessage() == null ? "UNKNOWN_ERROR" : e.getMessage());
+            model.put("estimatedDeliveryTime", estimatedDeliveryTime);
 
             model.put("deliveryFee", "0.00");
-            model.put("cutomerAddress", "");
+            model.put("cutomerAddress", cutomerAddress.toString());
             model.put("distance", "0");
             model.put("duration", "0");
         }
 
         return model;
+    }
+
+    @RequestMapping("/deliverySchedule")
+    public ModelAndView deliverySchedule(HttpServletRequest request) throws Exception {
+
+        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/deliverySchedule");
+        Properties htmlProperty = new Properties();
+
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        GroupPurchase groupPurchase = null;
+        List<DeliveryCalendar> deliverySchedule = null;
+        String deliveryDate = null;
+
+        try {
+            // 공동구매 기본정보를 얻어온다.
+            groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+
+            deliveryDate = groupPurchase.getMarketOpenStartDate();
+            deliverySchedule = deliveryCalendarService.getDeliveryCalendars(new DeliveryCalendar(groupPurchase.getPurchaseOrganizer(), deliveryDate));
+
+            mav.addObject("deliveryDate", deliveryDate);
+            mav.addObject("deliverySchedules", deliverySchedule);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mav.addObject("deliveryDate", null);
+            mav.addObject("deliverySchedules", null);
+        }
+
+        return mav;
     }
 
 }

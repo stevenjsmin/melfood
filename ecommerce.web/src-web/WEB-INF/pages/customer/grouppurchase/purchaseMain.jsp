@@ -52,29 +52,29 @@
 
             var cutomerAddress = data.cutomerAddress;
             var deliveryFee = data.deliveryFee;
+            var estimatedDeliveryTime = data.estimatedDeliveryTime;
 
             var distance = data.distance;
             var duration = data.duration;
 
-            console.log("resultCode:" + resultCode);
-            console.log("mapResultCode:" + mapResultCode);
-            console.log("mapResultMessage:" + mapResultMessage);
-            console.log("deliveryFee:" + deliveryFee);
-            console.log("distance:" + distance);
-            console.log("duration:" + duration);
-
-
             if(resultCode == "OK"){
                 $("#DELIVERY_SERVICE_DETAIL").show();
                 $("#cutomerAddress").html(cutomerAddress);
+                $("#estimatedDeliveryTime").html(estimatedDeliveryTime);
                 $("#distance").html(distance);
                 $("#deliveryFee").html(deliveryFee);
 
             } else if(resultCode == "CUSTOMER_ADDR_INVALID"){
                 $("#CUSTOMER_ADDR_INVALID").show();
+                $("#customerAddrInvalidddress").html(cutomerAddress);
+
             } else  if(resultCode == "NO_DELIVERABLE_SERVICE_AREA") {
                 $("#NO_DELIVERABLE_SERVICE_AREA").show();
                 $("#noDeliverableServiceAreaMessage").html(mapResultMessage);
+            } else {
+                $("#UNKNOWN_ERROR").show();
+                $("#unknownErrorCutomerAddress").html(cutomerAddress);
+                $("#unknownErrorMessage").html(mapResultMessage);
             }
         }
 
@@ -105,11 +105,41 @@
             var win_dialog = $("#purchaseOrganizerPopup").data("kendoWindow");
             win_dialog.close();
         }
+
+
+        function deliverySchedulePopup() {
+
+            $("#deliverySchedulePopup").kendoWindow({
+                content: "/grouppurchase/deliverySchedule.yum?groupPurchaseId=" + "${groupPurchase.groupPurchaseId}",
+                actions: ["Minimize", "Maximize", "Close"],
+                title: "내가잘사는 방법:: MelFood",
+                modal: true,
+                iframe: true,
+                position:{ top:"300", left:"25%"}
+            });
+
+            var popup_dialog = $("#deliverySchedulePopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                width: 800,
+                height: 350
+            });
+            // popup_dialog.center();
+
+            $("#deliverySchedulePopup").data("kendoWindow").open();
+        }
+        function closeDeliverySchedulePopup() {
+            var win_dialog = $("#deliverySchedulePopup").data("kendoWindow");
+            win_dialog.close();
+        }
+
+
+
     </script>
 </head>
 
 <body>
 <div id="purchaseOrganizerPopup"></div>
+<div id="deliverySchedulePopup"></div>
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <!-- 페이지 상단 [시작] :: 공동구매 개요 -->
@@ -316,7 +346,7 @@
                             <div class="panel-heading">
                                 <table style="width: 100%;">
                                     <tr>
-                                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#464646;"></i></td>
+                                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#514747;"></i></td>
                                         <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배달서비스</span></td>
                                     </tr>
                                 </table>
@@ -332,11 +362,11 @@
                                         <tr><td colspan="2"></td></tr>
                                         <tr style="height: 30px;">
                                             <td></td>
-                                            <td><span style="color: #A2A4A4;">현재 고객님의 주소 :</span><span style="color: #505050;"> 4 Torresdale Road, South Morang VIC 3752</span></td>
+                                            <td><span style="color: #A2A4A4;">현재 고객님의 주소 :</span> <span id="customerAddrInvalidddress" style="color: #505050;"></span> </td>
                                         </tr>
                                         <tr>
                                             <td></td>
-                                            <td> <a href="/customer/mypage/myDetailInfo.yum">My 푸트 > 개인정보 변경</a> 에서 주소를 수정하실수 있습니다.</td>
+                                            <td style="text-align: right;"> <a href="/customer/mypage/myDetailInfo.yum">My 푸드 > 개인정보 변경</a> 에서 주소를 수정하실수 있습니다.</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -353,7 +383,7 @@
                                             <td style="color: #F15F4C;"><span id="noDeliverableServiceAreaMessage"></span></td>
                                         </tr>
                                         <tr style="height: 30px;">
-                                            <td style="text-align: right" colspan="3"><a href="/customer/mypage/myDetailInfo.yum">배송가능 지역보기</a></td>
+                                            <td style="text-align: right" colspan="3"><a href="javascript:deliverySchedulePopup();">배송가능 지역보기</a></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -378,7 +408,7 @@
                                         <tr>
                                             <td style="color: #797979; text-align: right;">배송예정시간</td>
                                             <td>:</td>
-                                            <td>13:00PM ~ 15:00 PM</td>
+                                            <td><span id="estimatedDeliveryTime"></span></td>
                                         </tr>
                                         <tr>
                                             <td style="color: #797979; text-align: right;">배송비</td>
@@ -394,6 +424,34 @@
                                     </table>
                                 </div>
 
+                                <div class="alert alert-warning" id="UNKNOWN_ERROR" style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 40px; text-align: center;"><i class="fa fa-info" aria-hidden="true" style="color: #900C3E;"></i></td>
+                                            <td style="color: #900C3E;">죄송합니다. 배송비를 계산할 수가 없어 배송서비스를 이용하실수 없습니다.</td>
+                                        </tr>
+                                        <tr><td colspan="2"></td></tr>
+                                        <tr style="height: 30px;">
+                                            <td></td>
+                                            <td><span style="color: #A2A4A4;" id="unknownErrorMessage"></span></td>
+                                        </tr>
+                                        <tr><td colspan="2"></td></tr>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <table style="width: 100%;">
+                                                    <tr>
+                                                        <td style="color: #797979; text-align: right;width: 80px;">고객님주소</td>
+                                                        <td style="width: 10px;"> : </td>
+                                                        <td><span id="unknownErrorCutomerAddress"></span> &nbsp;&nbsp;<a href="/customer/mypage/myDetailInfo.yum" style="font-size: 10px;">주소변경</a></td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -411,8 +469,8 @@
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-map fa-3x" aria-hidden="true" style="color:#3D6D51;"></i></td>
-                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">공동구매 장소</span></td>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-map fa-3x" aria-hidden="true" style="color:#514747;"></i></td>
+                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">장소</span></td>
                             </tr>
                         </table>
                     </div>
