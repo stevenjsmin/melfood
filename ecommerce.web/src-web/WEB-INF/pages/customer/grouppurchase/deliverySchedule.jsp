@@ -53,7 +53,28 @@
                          <th>배달예상시간</th>
                     </tr>
                     </thead>
-                    <c:forEach var="deliverySchedule" items="${deliverySchedules}" varStatus="count1" begin="0">
+
+                    <c:choose>
+                         <c:when test="${fn:length(deliverySchedules) gt 0}">
+                              <c:forEach var="deliverySchedule" items="${deliverySchedules}" varStatus="count" begin="0">
+                                   <tr>
+                                        <td class="front-tbl-label">${deliverySchedule.addressSuburb} ${deliverySchedule.addressPostcode}</td>
+                                        <td style="text-align: center;">${deliverySchedule.yyyyMmDd}</td>
+                                        <td>${deliverySchedule.btwnFromHhmm} ~ ${deliverySchedule.btwnToHhmm}</td>
+                                   </tr>
+                              </c:forEach>
+                         </c:when>
+                         <c:otherwise>
+                              <tr style="height: 50px;">
+                                   <td style="text-align: center;vertical-align: middle;color: #8D9999;" colspan="3"> 등록된 일정이 없습니다.</td>
+                              </tr>
+                         </c:otherwise>
+                    </c:choose>
+
+
+
+
+                    <c:forEach var="deliverySchedule" items="${deliverySchedules}" varStatus="count" begin="0">
                          <tr>
                               <td class="front-tbl-label">${deliverySchedule.addressSuburb} ${deliverySchedule.addressPostcode}</td>
                               <td style="text-align: center;">${deliverySchedule.yyyyMmDd}</td>

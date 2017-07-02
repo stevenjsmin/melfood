@@ -741,7 +741,7 @@
                                     <tr>
                                         <td style="width: 100px; text-align: right;font-size: 11px;color: #8D9999;">Account Holder</td>
                                         <td style="width: 20px;text-align: center">:</td>
-                                        <td style="color: #514747;" id="payment_bankAccountOwnerName"></td>
+                                        <td style="color: #8D9999;" id="payment_bankAccountOwnerName"></td>
                                     </tr>
                                 </table>
                             </td>
