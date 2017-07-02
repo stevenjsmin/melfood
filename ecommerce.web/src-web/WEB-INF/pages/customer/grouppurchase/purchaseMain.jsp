@@ -549,7 +549,7 @@
     <div class="col-sm-3"style="padding-right: 20px;padding-left: 20px;">
 
         <div class="panel panel-success">
-            <div class="panel-heading" style="height: 50px;vertical-align: middle; background-color: #C8E297;"><span style="font-size: 20px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
+            <div class="panel-heading" style="height: 50px;vertical-align: middle; background-color: #C8E297;"><span style="font-size: 15px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
             <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 30px;">
 
                 <table border="0" style="width: 100%;">
