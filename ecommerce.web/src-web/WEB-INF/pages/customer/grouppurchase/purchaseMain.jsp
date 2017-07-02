@@ -549,8 +549,8 @@
     <div class="col-sm-3"style="padding-right: 20px;padding-left: 20px;">
 
         <div class="panel panel-success">
-            <div class="panel-heading" style="height: 50px;vertical-align: middle; background-color: #C8E297;"><span style="font-size: 15px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
-            <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 30px;">
+            <div class="panel-heading" style="height: 25px;vertical-align: middle; background-color: #C8E297;"><span style="font-size: 12px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
+            <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 10px;">
 
                 <table border="0" style="width: 100%;">
                     <colgroup>
@@ -559,11 +559,8 @@
                         <col style="width: 30%;">
                     </colgroup>
                     <tbody>
-                        <tr style="height: 30px;">
-                            <td style="color: #797979; text-align: right;font-size: 15px;font-weight: bold;" colspan="3">상품구매</td>
-                        </tr>
                         <tr>
-                            <td></td>
+                            <td style="text-align: right;">상품구매</td>
                             <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
                             <td style="color: #797979; text-align: right;font-size: 15px;">50.40 $</td>
                         </tr>
@@ -588,7 +585,7 @@
                             </td>
                         </tr>
                         <tr style="height: 30px;">
-                            <td style="color: #797979; text-align: right;font-size: 15px;font-weight: bold;" colspan="3">결재방식</td>
+                            <td style="color: #797979; text-align: right;font-size: 13px;font-weight: bold;" colspan="3">결재방식</td>
                         </tr>
                         <tr style="height: 15px;">
                             <td style="color: #797979; text-align: right;font-size: 15px;" colspan="3"><c:out value="${cbxPaymentMethod}" escapeXml="false"/></td>
@@ -611,8 +608,8 @@
                         <tr style="height: 20px;">
                             <td colspan="3">&nbsp;</td>
                         </tr>
-                        <tr style="height: 30px;">
-                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 17px;">결재하기 > </a> </td>
+                        <tr style="height: 25px;">
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a> </td>
                         </tr>
                     </tbody>
                 </table>
