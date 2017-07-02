@@ -40,6 +40,9 @@
                 });
             }
 
+            // 공.구 장소를 지도상으로 보여준다.
+            displayGroupPurchaseMarketPlace();
+
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
     <script type="text/javascript">
@@ -131,10 +134,40 @@
             var win_dialog = $("#deliverySchedulePopup").data("kendoWindow");
             win_dialog.close();
         }
-
-
-
     </script>
+
+    <script type="text/javascript">
+        function displayGroupPurchaseMarketPlace() {
+            var MelfoodGmap = new Object();
+            MelfoodGmap.mapName = '멜푸드지도';
+            MelfoodGmap.mapStyleNo = 6;
+            MelfoodGmap.mapIsMultipleMark = 'N';
+            MelfoodGmap.mapZoomLevel = 18;
+            MelfoodGmap.mapAddress = '${groupPurchase.marketAddressStreet} ${groupPurchase.marketAddressSuburb} ${groupPurchase.marketAddressState} ${groupPurchase.marketAddressPostcode}';
+
+            var mapMessage = "<table style='width: 380px;height: 70px;'>";
+                mapMessage = mapMessage + "<tr>"
+                mapMessage = mapMessage + "  <td style='width: 40px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>"
+                mapMessage = mapMessage + "  <td>${groupPurchase.marketOpenStartTime} ~ ${groupPurchase.marketOpenEndTime}</td>"
+                mapMessage = mapMessage + "</tr>"
+                mapMessage = mapMessage + "<tr>"
+                mapMessage = mapMessage + "  <td></td>"
+                mapMessage = mapMessage + "  <td>근처에오셔서 위치를 잘 모르실때 공.구 진행자에게 전화주세요</td>"
+                mapMessage = mapMessage + "</tr>"
+                mapMessage = mapMessage + "<tr>"
+                mapMessage = mapMessage + "  <td style='width: 40px;text-align: center;'><i class='fa fa-mobile fa-lg' aria-hidden='true'></i></td>"
+                mapMessage = mapMessage + "  <td style='color:#900C3E;'>${organizer.mobile}</td>"
+                mapMessage = mapMessage + "</tr>"
+                mapMessage = mapMessage + "</table>"
+            MelfoodGmap.mapMessage = mapMessage;
+
+            markAddressOnGMap(MelfoodGmap);
+            markStreeViewOnGMap(MelfoodGmap);
+            $("#streetViewMap").show();
+            $("#map-street-canvas").show();
+        }
+    </script>
+
 </head>
 
 <body>
@@ -160,11 +193,11 @@
                                     </div>
                                     <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;
                                     <span style="font-size: 13px;font-weight: bold;">
-                                ${groupPurchase.marketAddressStreet}
-                                ${groupPurchase.marketAddressSuburb}
-                                ${groupPurchase.marketAddressState}
-                                ${groupPurchase.marketAddressPostcode}
-                        </span>
+                                    ${groupPurchase.marketAddressStreet}
+                                    ${groupPurchase.marketAddressSuburb}
+                                    ${groupPurchase.marketAddressState}
+                                    ${groupPurchase.marketAddressPostcode}
+                                    </span>
                                 </td>
                             </tr>
 
@@ -462,7 +495,7 @@
 
 
 
-        <div class="row">
+        <div class="row" style="padding-top: 20px;">
             <div class="col-sm-12">
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
@@ -475,8 +508,36 @@
                         </table>
                     </div>
                     <div class="panel-body" style="padding-left: 20px;">
-                        <p style="color: #797979;">${groupPurchase.marketAddressComment}</p>
-                        <div id="map_canvas" style="width: 100%; height: 200px;"></div>
+                        <table>
+                            <tr style="height: 25px;">
+                                <td style="width: 50px; text-align: center;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></td>
+                                <td>${groupPurchase.marketAddressStreet} ${groupPurchase.marketAddressSuburb} ${groupPurchase.marketAddressState} ${groupPurchase.marketAddressPostcode}</td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="width: 50px; text-align: center;"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></td>
+                                <td>${groupPurchase.marketOpenStartDate} <span style="text-decoration: underline;">${groupPurchase.marketOpenStartTime} ~ ${groupPurchase.marketOpenEndTime}</span></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="padding-top: 10px;"><p style="color: #797979;">${groupPurchase.marketAddressComment}</p></td>
+                            </tr>
+                        </table>
+
+
+                        <table style="width: 100%;border-color: #D6D6D6;">
+                            <tr>
+                                <td style="padding-left: 50px; padding-right: 50px;padding-top: 30px;">
+                                    <div id='map-canvas' style="width: 100%;height: 450px;"></div>
+
+                                    <div id="streetViewMap" style="padding-top: 20px;">
+                                        <span class="subtitle"> Street view</span>
+                                        <hr class="subtitle"/>
+                                        <div id='map-street-canvas' style="width: 100%; height: 450px;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
                     </div>
                 </div>
             </div>

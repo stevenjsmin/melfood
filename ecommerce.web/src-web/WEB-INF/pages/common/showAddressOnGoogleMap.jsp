@@ -8,17 +8,17 @@
 <head>
 <script type="text/javascript">
 	$(document).ready(function() {
-        var CoupangGmap = new Object(); 
-        CoupangGmap.mapName = '멜푸드지도';
-        CoupangGmap.mapStyleNo = 6;
-        CoupangGmap.mapIsMultipleMark = '${mapIsMultipleMark}';
-        CoupangGmap.mapZoomLevel = 13;
-        CoupangGmap.mapAddress = '${mapFullAddress}';
-        CoupangGmap.mapMessage = "${mapMessage}";
+        var MelfoodGmap = new Object();
+        MelfoodGmap.mapName = '멜푸드지도';
+        MelfoodGmap.mapStyleNo = 6;
+        MelfoodGmap.mapIsMultipleMark = '${mapIsMultipleMark}';
+        MelfoodGmap.mapZoomLevel = 13;
+        MelfoodGmap.mapAddress = '${mapFullAddress}';
+        MelfoodGmap.mapMessage = "${mapMessage}";
         
         if('${mapIsMultipleMark}' == 'Y'){
 	        
-        	CoupangGmap.mapStyleNo = 4;
+        	MelfoodGmap.mapStyleNo = 4;
         	
         	var schedule = [];
 	        var address = "";
@@ -40,17 +40,17 @@
 	            }
 	        </c:forEach>
 	        
-	        CoupangGmap.mapDeliverySchedules = schedule;
-	        // CoupangGmap.mapZoomLevel = 11;
+	        MelfoodGmap.mapDeliverySchedules = schedule;
+	        // MelfoodGmap.mapZoomLevel = 11;
         }
         
         if('${mapIsMultipleMark}' == 'Y'){
-			markAddressOnGMap(CoupangGmap);
+			markAddressOnGMap(MelfoodGmap);
 			$("#streetViewMap").hide();
 			$("#map-street-canvas").hide();
         } else {
-			markAddressOnGMap(CoupangGmap);
-			markStreeViewOnGMap(CoupangGmap);
+			markAddressOnGMap(MelfoodGmap);
+			markStreeViewOnGMap(MelfoodGmap);
 			$("#streetViewMap").show();
 			$("#map-street-canvas").show();
         }

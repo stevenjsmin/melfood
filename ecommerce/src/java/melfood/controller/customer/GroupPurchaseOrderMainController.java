@@ -121,6 +121,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
                 mav.addObject("firstImageId", null);
             }
 
+            mav.addObject("organizer", userService.getUserInfo(groupPurchase.getPurchaseOrganizer()));
             mav.addObject("groupPurchase", groupPurchase);
             mav.addObject("groupPurchaseProducts", groupPurchaseProducts);
 

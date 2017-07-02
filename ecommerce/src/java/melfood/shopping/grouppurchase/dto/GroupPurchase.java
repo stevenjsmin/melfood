@@ -1,6 +1,7 @@
 package melfood.shopping.grouppurchase.dto;
 
 import melfood.framework.common.dto.BaseDto;
+import melfood.framework.user.User;
 import melfood.shopping.product.ProductImage;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class GroupPurchase extends BaseDto {
     private String marketOpenEndDate;
     private String marketOpenEndTime;
 
+    private User organizer;
     private List<GroupPurchaseProduct> purchaseProducts;
     private List<ProductImage> groupPurchaseImages;
 
@@ -303,5 +305,13 @@ public class GroupPurchase extends BaseDto {
 
     public void setDeliveryBasicFee(Float deliveryBasicFee) {
         this.deliveryBasicFee = deliveryBasicFee;
+    }
+
+    public User getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(User organizer) {
+        this.organizer = organizer;
     }
 }
