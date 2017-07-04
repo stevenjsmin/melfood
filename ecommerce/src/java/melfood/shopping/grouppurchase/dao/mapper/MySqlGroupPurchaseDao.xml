@@ -28,6 +28,9 @@
             DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d %h:%i %p') 'marketOpenEndDt',
             DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d') 'marketOpenEndDate',
             DATE_FORMAT(a.market_open_end_dt,'%h:%i %p') 'marketOpenEndTime',
+            a.market_gmap_latitude 'marketGmapLatitude',
+            a.market_gmap_longitude 'marketGmapLongitude',
+            a.market_gmap_formatted_address 'marketGmapFormattedAddress',
             a.minimum_purchase_amount 'minimumPurchaseAmount',
             a.maximum_purchase_amount 'maximumPurchaseAmount',
             a.discount_method 'discountMethod',
@@ -133,6 +136,9 @@
             ,market_address_comment
             ,market_open_start_dt
             ,market_open_end_dt
+            ,market_gmap_latitude
+            ,market_gmap_longitude
+            ,market_gmap_formatted_address
             ,minimum_purchase_amount
             ,maximum_purchase_amount
             ,discount_method
@@ -160,6 +166,9 @@
             TRIM(#{marketAddressComment}),
             STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p'),
             STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p'),
+            TRIM(#{marketGmapLatitude}),
+            TRIM(#{marketGmapLongitude}),
+            TRIM(#{marketGmapFormattedAddress}),
             TRIM(#{minimumPurchaseAmount}),
             TRIM(#{maximumPurchaseAmount}),
             TRIM(#{discountMethod}),
@@ -193,6 +202,9 @@
             ,market_address_comment = TRIM(#{marketAddressComment})
             ,market_open_start_dt = STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p')
             ,market_open_end_dt = STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p')
+            ,market_gmap_latitude = TRIM(#{marketGmapLatitude})
+            ,market_gmap_longitude = TRIM(#{marketGmapLongitude})
+            ,market_gmap_formatted_address = TRIM(#{marketGmapFormattedAddress})
             ,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount})
             ,maximum_purchase_amount = TRIM(#{maximumPurchaseAmount})
             ,discount_method = TRIM(#{discountMethod})
@@ -227,6 +239,9 @@
             <if test="marketAddressComment != null">,market_address_comment = TRIM(#{marketAddressComment}) </if>
             <if test="marketOpenStartDt != null">,market_open_start_dt = STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p')</if>
             <if test="marketOpenEndDt != null">,market_open_end_dt = STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p')</if>
+            <if test="marketGmapLatitude != null">,market_gmap_latitude = TRIM(#{marketGmapLatitude}) </if>
+            <if test="marketGmapLongitude != null">,market_gmap_longitude = TRIM(#{marketGmapLongitude}) </if>
+            <if test="marketGmapFormattedAddress != null">,market_gmap_formatted_address = TRIM(#{marketGmapFormattedAddress}) </if>
             <if test="minimumPurchaseAmount != null">,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount}) </if>
             <if test="maximumPurchaseAmount != null">,maximum_purchase_amount = TRIM(#{maximumPurchaseAmount}) </if>
             <if test="discountMethod != null">,discount_method = TRIM(#{discountMethod}) </if>
@@ -358,6 +373,9 @@
             DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d %h:%i %p') 'marketOpenEndDt',
 			DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d') 'marketOpenEndDate',
 			DATE_FORMAT(a.market_open_end_dt,'%h:%i %p') 'marketOpenEndTime',
+            a.market_gmap_latitude 'marketGmapLatitude',
+            a.market_gmap_longitude 'marketGmapLongitude',
+            a.market_gmap_formatted_address 'marketGmapFormattedAddress',
             a.minimum_purchase_amount 'minimumPurchaseAmount',
             a.maximum_purchase_amount 'maximumPurchaseAmount',
             a.discount_method 'discountMethod',

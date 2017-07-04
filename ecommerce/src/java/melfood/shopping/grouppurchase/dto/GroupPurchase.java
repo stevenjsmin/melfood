@@ -27,6 +27,9 @@ public class GroupPurchase extends BaseDto {
     private String marketAddressComment;
     private String marketOpenStartDt;
     private String marketOpenEndDt;
+    private String marketGmapLatitude;
+    private String marketGmapLongitude;
+    private String marketGmapFormattedAddress;
     private String minimumPurchaseAmount;
     private String maximumPurchaseAmount;
     private String discountMethod;
@@ -322,5 +325,29 @@ public class GroupPurchase extends BaseDto {
 
     public void setMaximumPurchaseAmount(String maximumPurchaseAmount) {
         this.maximumPurchaseAmount = maximumPurchaseAmount;
+    }
+
+    public String getMarketGmapLatitude() {
+        return marketGmapLatitude;
+    }
+
+    public void setMarketGmapLatitude(String marketGmapLatitude) {
+        this.marketGmapLatitude = marketGmapLatitude;
+    }
+
+    public String getMarketGmapLongitude() {
+        return marketGmapLongitude;
+    }
+
+    public void setMarketGmapLongitude(String marketGmapLongitude) {
+        this.marketGmapLongitude = marketGmapLongitude;
+    }
+
+    public String getMarketGmapFormattedAddress() {
+        return marketGmapFormattedAddress;
+    }
+
+    public void setMarketGmapFormattedAddress(String marketGmapFormattedAddress) {
+        this.marketGmapFormattedAddress = marketGmapFormattedAddress;
     }
 }

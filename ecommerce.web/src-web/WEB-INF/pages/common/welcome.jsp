@@ -95,7 +95,9 @@
 
     <script type="text/javascript">
         function displayGroupPurchaseMarketPlace() {
+
             var MelfoodGmap = new Object();
+
             MelfoodGmap.mapName = '멜푸드지도';
             MelfoodGmap.mapStyleNo = 7;
             MelfoodGmap.mapIsMultipleMark = 'Y';
@@ -106,6 +108,8 @@
             var points = [];
             var address = "";
             var message = "";
+            var gmap_latitude = "";
+            var gmap_longitude = "";
 
             <c:forEach var="entry" items="${groupPurchaseAlllist}" varStatus="count" begin="0">
                 message = "<table style='width: 350px;'>";
@@ -134,12 +138,28 @@
                 message = message + "</table>";
 
                 address = "${entry.marketAddressStreet}" + " " + "${entry.marketAddressSuburb}" + " " + "${entry.marketAddressState}" + " " + "${entry.marketAddressPostcode}";
+                gmap_latitude = "${entry.marketGmapLatitude}";
+                gmap_longitude = "${entry.marketGmapLongitude}";
 
                 if('${entry.stopSelling}' == 'Y') {
-                    points.push({address:address, message: message, clickEvent: true, active:false});
+                    // points.push({address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/yellow.png'});
+                    points.push({latitude:gmap_latitude, longitude:gmap_longitude, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/yellow.png'});
 
                 } else {
-                    points.push({address:address, message: message, clickEvent: true, active:true});
+
+                    if(0 <= ${count.index} && ${count.index} < 1) {
+                        // points.push({address:address, message: message, clickEvent: true, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
+                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: true, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
+
+                    } else if(1 <= ${count.index} && ${count.index} < 10) {
+                        //points.push({address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
+                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
+
+                    } else {
+                        // points.push({address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/red-dot.png'});
+                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/red-dot.png'});
+
+                    }
                 }
 
             </c:forEach>

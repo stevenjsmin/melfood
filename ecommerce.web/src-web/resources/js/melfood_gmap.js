@@ -53,15 +53,14 @@ var prev_gmap_infowindow = false;
 function markAddressOnGMap(MelfoodGmap){
 	
 	var mapStyleNo = null;
-	var mapName = "Coupang Map";
+	var mapName = "멜푸드";
 	var mapBindObjID = "map-canvas";
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
 	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
 	var mapMessage = "";
 	var mapIsMultipleMark = "no";
-	
-	
+
 	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
 	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
 	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
@@ -70,7 +69,7 @@ function markAddressOnGMap(MelfoodGmap){
 	if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
 	
 	var styledMap = new google.maps.StyledMapType(mapStyleNo, {name: mapName});
-	var latlng = new google.maps.LatLng( -37.813556, 144.963050 );	// Melbourne, VIC
+	var latlng = new google.maps.LatLng( -37.818449, 145.124889 );	// Box Hill VIC
 	
 	// Map options for how to display the Google map
 	var mapOptions = {
@@ -87,25 +86,67 @@ function markAddressOnGMap(MelfoodGmap){
  	map.mapTypes.set('map_style', styledMap);
  	map.setMapTypeId('map_style');
 
- 	if(mapIsMultipleMark == 'N') {
- 		// Make asynchronous call to Google geocoding API
- 		geocoder.geocode( { 'address': mapAddress }, function(results, status) {
- 			var addr_type = results[0].types[0];	// [addr_type : administrative_area_level_1 | locality | street_address]
- 			if ( status == google.maps.GeocoderStatus.OK ) 
- 				geocodeAddressForOnePlace( results[0].geometry.location, MelfoodGmap);
- 			else     
- 				alert("Geocode was not successful for the following reason: " + status);        
- 		});	 	
- 	} else {
- 		var list = MelfoodGmap.mapMultiplePoints;
- 		if(list != null && list.length > 0) {
- 			while((a=list.pop()) != null){ 
- 				geocodeAddressForMultiPlace(a.address, a.message, a.clickEvent, a.active);
- 			}
- 		}
- 	}
- 	
+	if(mapIsMultipleMark == 'N') {
+		// Make asynchronous call to Google geocoding API
+		geocoder.geocode( { 'address': mapAddress }, function(results, status) {
+			var addr_type = results[0].types[0];	// [addr_type : administrative_area_level_1 | locality | street_address]
+			if ( status == google.maps.GeocoderStatus.OK )
+				geocodeAddressForOnePlace( results[0].geometry.location, MelfoodGmap);
+			else
+				alert("Geocode was not successful for the following reason: " + status);
+		});
+	} else {
+        geocodeAddressForMultiPlace(MelfoodGmap);
+
+	}
 }
+
+
+
+function geocodeAddressForMultiPlace(MelfoodGmap) {
+    var icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
+    var defaultIco = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
+
+    var list    = MelfoodGmap.mapMultiplePoints;
+
+    if(list != null && list.length > 0) {
+        while((a=list.pop()) != null){
+
+            if(a.iconUrl == '' || a.iconUrl == null  || a.iconUrl == undefined) {
+                icon = defaultIco;
+            } else {
+                icon = a.iconUrl;
+            }
+
+            var position = new google.maps.LatLng( a.latitude, a.longitude );
+
+            var marker = new google.maps.Marker({
+                animation: google.maps.Animation.DROP
+                , icon: icon
+                , map: map
+                , position: position
+                , title: location[ 0 ]
+            });
+
+
+            infoWindow(marker, map, a.message);
+            bounds.extend(marker.getPosition());
+            map.fitBounds(bounds);
+
+            if(a.clickEvent == true){
+                google.maps.event.trigger(marker, "click", {});
+            }
+        }
+		/**
+        var zoomLevel = map.getZoom();
+        var listener = google.maps.event.addListener(map, "idle", function() {
+        	map.setZoom(Number(zoomLevel) - Number(3));
+            google.maps.event.removeListener(listener);
+        }); **/
+    }
+
+}
+
 
 function geocodeAddressForOnePlace( latlng, MelfoodGmap){
 	var address = MelfoodGmap.mapAddress;
@@ -136,45 +177,7 @@ function geocodeAddressForOnePlace( latlng, MelfoodGmap){
 	google.maps.event.trigger(marker, "click", {});
 }
 
-function geocodeAddressForMultiPlace(address, message, clickEvent, active) {
-    // var activeIco = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
-    var activeIco = "http://maps.google.com/mapfiles/kml/paddle/red-circle.png";
-    var disabledIco = "http://maps.google.com/mapfiles/ms/icons/yellow.png";
-    var icon = activeIco;
 
-    if(active == true){
-        icon = activeIco;
-	} else {
-        icon = disabledIco;
-	}
-
-	// if(clickEvent) icon = icon1;
-    
-    geocoder.geocode({
-        'address': address
-    },
-    function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            var marker = new google.maps.Marker({
-            	icon: icon,
-            	map: map,
-            	position: results[0].geometry.location,
-            	// title: title,
-            	// animation: google.maps.Animation.DROP,
-            	address: address
-            });
-            infoWindow(marker, map, message);
-            bounds.extend(marker.getPosition());
-            map.fitBounds(bounds);
-            
-            if(clickEvent == true){
-            	google.maps.event.trigger(marker, "click", {});
-            }
-        } else {
-            console.log("geocode of " + address + " failed:" + status);
-        }
-    });
-}
 
 function infoWindow(marker, map, message) {
     google.maps.event.addListener(marker, 'click', function () {

@@ -25,11 +25,14 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $(".amountOfOrder").kendoNumericTextBox({
+                change: parseProductOrderValue,
+                spin: parseProductOrderValue,
                 max: 99999,
                 min: 0,
                 format: "n0"
             });
 
+            progress(true, 'dilivery_service_row');
             if('${groupPurchase.deliverable}' == 'Y'){
                 $.ajax({
                     url: "/grouppurchase/checkDeliverable.yum",
@@ -58,6 +61,7 @@
             var distance = data.distance;
             var duration = data.duration;
 
+            progress(false, 'dilivery_service_row');
             if(resultCode == "OK"){
                 $("#DELIVERY_SERVICE_DETAIL").show();
                 $("#cutomerAddress").html(cutomerAddress);
@@ -231,9 +235,8 @@
 
             <c:choose>
                 <c:when test="${groupPurchase.discountMethod == 'RATE'}">
-                    // toBeDiscountAmount = subTotal * ( (100 - ${groupPurchase.discountRateValue}) / 100 );
-                    // toBeDiscountAmount = subTotal * ( (100 - 5) / 100 );
-                    toBeDiscountAmount =  (${groupPurchase.discountRateValue * 100}/100) * subTotal;
+                    // toBeDiscountAmount =  (${groupPurchase.discountRateValue * 100}/100) * subTotal; // 배송비를 포함해서 할인했을 경우
+                    toBeDiscountAmount =  (${groupPurchase.discountRateValue * 100}/100) * totalProdAmount; // 제품 구매비만 할인했을 경우
                 </c:when>
                 <c:when test="${groupPurchase.discountMethod == 'FIXED'}">
                     toBeDiscountAmount = subTotal - ${groupPurchase.discountFixedAmount};
@@ -481,7 +484,7 @@
                                                 <table>
                                                     <tr>
                                                         <td style="padding-left: 40px;">
-                                                            <input type="text" class="amountOfOrder" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;color: #0080C5;" onchange="parseProductOrderValue()"/>
+                                                            <input type="text" class="amountOfOrder" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;color: #0080C5;" onchange="parseProductOrderValue()" onkeyup="parseProductOrderValue()"/>
                                                         </td>
                                                         <td style="padding-left: 20px;">
                                                             <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'DOWN')"></i>
@@ -505,7 +508,7 @@
         <!-- 배달서비스 -->
         <c:choose>
             <c:when test="${groupPurchase.deliverable == 'Y'}">
-                <div class="row" style="padding-top: 20px;">
+                <div class="row" style="padding-top: 20px;" >
                     <div class="col-sm-12">
                         <div class="panel panel-default">
                             <!-- Default panel contents -->
@@ -517,7 +520,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;padding-right: 100px;">
+                            <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;padding-right: 100px;" id="dilivery_service_row">
 
                                 <div class="alert alert-warning" id="CUSTOMER_ADDR_INVALID" style="display: none;">
                                     <table style="width: 100%;">
@@ -554,6 +557,7 @@
                                     </table>
                                 </div>
                                 <div id="DELIVERY_SERVICE_DETAIL"  style="display: none;">
+                                    <div style="text-align: right;font-size: 10px;color: #58A578;" align="right"> 배송비는 공.구 장소를 기준으로 Drive거리(Km)에 따라 계산됩니다.(Avoid toll road)  </div>
                                     <table class="table table-striped">
                                         <colgroup>
                                             <col style="width: 100px;">
@@ -717,7 +721,21 @@
                             <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_deliveryFee" style="font-size: 15px;">0.00</span> $</td>
                         </tr>
                         <tr style="height: 30px;">
-                            <td style="text-align: right;color: #58A578;">할인</td>
+                            <td style="text-align: right;color: #58A578;">
+                                할인
+                                <c:choose>
+                                    <c:when test="${groupPurchase.discountMethod != '' && groupPurchase.discountMethod != null}">
+                                        <c:choose>
+                                            <c:when test="${groupPurchase.discountMethod == 'FIXED' && groupPurchase.discountFixedAmount != '' && groupPurchase.discountFixedAmount != null}">
+                                                ($ <fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.discountFixedAmount}" />)
+                                            </c:when>
+                                            <c:when test="${groupPurchase.discountMethod == 'RATE' && groupPurchase.discountRateValue != '' && groupPurchase.discountRateValue != null}">
+                                                (<fmt:formatNumber type="number" pattern="###" value="${groupPurchase.discountRateValue * 100}" /> %)
+                                            </c:when>
+                                        </c:choose>
+                                    </c:when>
+                                </c:choose>
+                            </td>
                             <td style="text-align: center;"><i class="fa fa-arrow-down" aria-hidden="true" style="color: #58A578;"></i></td>
                             <td style="color: #58A578; text-align: right;font-size: 15px;">- <span id="payment_toBeDiscountAmount" style="font-size: 15px;color: #58A578;">0.00</span> $</td>
                         </tr>

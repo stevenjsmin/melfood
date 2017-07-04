@@ -72,5 +72,12 @@ function progress(turnOnOff) {
 	}
 }
 
+function progress(turnOnOff, objId) {
+    if(turnOnOff == true) {
+        kendo.ui.progress($('#' + objId), true);
+    } else {
+        kendo.ui.progress($('#' + objId), false);
+    }
+}
 
 
