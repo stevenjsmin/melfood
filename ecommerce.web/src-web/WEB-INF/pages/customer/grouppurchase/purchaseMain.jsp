@@ -284,12 +284,14 @@
             } else {
                 if(paymentMethod == 'ACCOUNT_TRANSFER') {
                     $('#detail_info_back_account').show();
+                    $('#payment_bankTransfer_message').show();
 
                     $('#payment_bankName').html(bankName);
                     $('#payment_bankBsbBankAccountNo').html(bankBsb + " - " + bankAccountNo);
                     $('#payment_bankAccountOwnerName').html(bankAccountOwnerName);
                 } else {
                     $('#detail_info_back_account').hide();
+                    $('#payment_bankTransfer_message').hide();
                 }
             }
         }
@@ -692,7 +694,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 10px;">
+            <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 30px;padding-top: 10px;">
 
                 <table border="0" style="width: 100%;">
                     <colgroup>
@@ -774,11 +776,15 @@
 
 
                         <tr style="height: 25px;">
-                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a></table>
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div style="padding: 10px;display: none;" id="payment_bankTransfer_message">
+               <div class="alert alert-warning" style="border-left: 6px solid #F15F4C;padding-left: 5px;">계좌이체를 선택하신경우 결재후 계좌송금 <span style="text-decoration: underline;">영수증 이미지를 업로드</span>해 주시면 빠르게 처리해 드리겠습니다.</div>
             </div>
         </div>
 
