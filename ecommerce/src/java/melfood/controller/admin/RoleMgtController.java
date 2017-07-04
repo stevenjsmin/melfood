@@ -9,13 +9,9 @@
 
 package melfood.controller.admin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.framework.role.Role;
+import melfood.framework.system.BaseController;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.framework.role.Role;
-import melfood.framework.system.BaseController;
-import net.sf.json.JSONObject;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Role Management controller
@@ -36,8 +34,8 @@ import net.sf.json.JSONObject;
  */
 @Controller
 @RequestMapping("/admin/role")
-public class RoleController extends BaseController {
-	private static final Logger logger = LoggerFactory.getLogger(RoleController.class);
+public class RoleMgtController extends BaseController {
+	private static final Logger logger = LoggerFactory.getLogger(RoleMgtController.class);
 
 	@RequestMapping("/Main")
 	public ModelAndView main() {

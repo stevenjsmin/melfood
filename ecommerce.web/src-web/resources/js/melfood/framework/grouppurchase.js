@@ -65,6 +65,12 @@ $(document).ready(function() {
         step: 0.50,
         format: "c2"
     });
+    $("#maximumPurchaseAmount").kendoNumericTextBox({
+        max: 99999,
+        min: 0.00,
+        step: 0.50,
+        format: "c2"
+    });
 
     $("#discountFixedAmount").kendoNumericTextBox({
         max: 99999,
@@ -129,6 +135,7 @@ function validateForm(){
     var groupPurchaseSubtitle = $('#groupPurchaseSubtitle').val();
     var purchaseOrganizer = $('#purchaseOrganizer').val();
     var minimumPurchaseAmount = $('#minimumPurchaseAmount').val();
+    var maximumPurchaseAmount = $('#maximumPurchaseAmount').val();
     var discountMethod = $('#discountMethod').val();
     var discountRateValue = $('#discountRateValue').val();
     var discountFixedAmount = $('#discountFixedAmount').val();
@@ -275,6 +282,7 @@ function save(){
     var groupPurchaseSubtitle = $('#groupPurchaseSubtitle').val();
     var purchaseOrganizer = $('#purchaseOrganizer').val();
     var minimumPurchaseAmount = $('#minimumPurchaseAmount').val();
+    var maximumPurchaseAmount = $('#maximumPurchaseAmount').val();
     var discountMethod = $('#discountMethod').val();
     var discountRateValue = $('#discountRateValue').val();
     var discountFixedAmount = $('#discountFixedAmount').val();
@@ -311,6 +319,7 @@ function save(){
                groupPurchaseSubtitle : groupPurchaseSubtitle,
                purchaseOrganizer : purchaseOrganizer,
                minimumPurchaseAmount : minimumPurchaseAmount,
+               maximumPurchaseAmount : maximumPurchaseAmount,
                discountMethod : discountMethod,
                discountRateValue : discountRateValue,
                discountFixedAmount : discountFixedAmount,
@@ -409,13 +418,13 @@ function openRegistGroupPurchasePopup(){
         title: "Regist Group Purchase",
         modal: true,
         iframe: true,
-        position:{ top:"50", left:"25%"}
+        position:{ top:"20", left:"25%"}
     });
 
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 760
+        height: 830
     });
     //popup_dialog.center();
 
@@ -430,13 +439,13 @@ function openUpdateGroupPurchasePopup(groupPurchaseId){
         title: "Regist Group Purchase",
         modal: true,
         iframe: true,
-        position:{ top:"50", left:"25%"}
+        position:{ top:"20", left:"25%"}
     });
 
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 760
+        height: 830
     });
     //popup_dialog.center();
 

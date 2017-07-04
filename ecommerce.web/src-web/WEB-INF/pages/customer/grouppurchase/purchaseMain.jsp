@@ -295,6 +295,11 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function doPaymentProcess() {
+
+        }
+    </script>
 
 
 </head>
@@ -389,7 +394,7 @@
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
                                                 <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;">
-                                                     <span style="color: #606060;">Minimum order $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}" />
+                                                     <span style="color: #606060;">최소주문 금액 : $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -477,8 +482,8 @@
                                                             <input type="text" class="amountOfOrder" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;color: #0080C5;" onchange="parseProductOrderValue()"/>
                                                         </td>
                                                         <td style="padding-left: 20px;">
-                                                            <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'DOWN')"></i>
-                                                            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'UP')"></i>
+                                                            <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'DOWN')"></i>
+                                                            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'UP')"></i>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -678,7 +683,15 @@
     <div class="col-sm-3"style="padding-right: 20px;padding-left: 20px;">
 
         <div class="panel panel-success">
-            <div class="panel-heading" style="height: 25px;vertical-align: middle; background-color: #C8E297;"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span style="font-size: 12px;font-weight: bold;color: #3D6D51;">내 주문</span></div>
+
+            <div class="panel-heading" style="background-color: #C8E297;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-shopping-cart fa-3x" aria-hidden="true"></i></td>
+                        <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">내 주문</span></td>
+                    </tr>
+                </table>
+            </div>
             <div class="panel-body" style="padding-left: 100px;padding-right: 10px;padding-bottom: 40px;padding-top: 10px;">
 
                 <table border="0" style="width: 100%;">

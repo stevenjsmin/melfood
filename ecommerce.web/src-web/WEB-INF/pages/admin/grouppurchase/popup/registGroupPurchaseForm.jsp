@@ -60,14 +60,15 @@
                 </tr>
                 <tr>
                     <td class="label">Subtitle :</td>
-                    <td class="value" colspan="2"><input class="form-control" type="text" id="groupPurchaseSubtitle" name="groupPurchaseSubtitle" value='' placeholder="부제목"/></td>
-                    <td></td>
-                </tr>
-                <tr>
+                    <td class="value"><input class="form-control" type="text" id="groupPurchaseSubtitle" name="groupPurchaseSubtitle" value='' placeholder="부제목"/></td>
                     <td class="label"><span class="required">* </span>공동구매 주관자 :</td>
                     <td class="value"><c:out value="${cbxPurchaseOrganizer}" escapeXml="false"/></td>
+                </tr>
+                <tr>
                     <td class="label">최소 참여금액 :</td>
                     <td class="value"><input id="minimumPurchaseAmount" name="minimumPurchaseAmount" value="0.00"></input></td>
+                    <td class="label">최대 참여금액 :</td>
+                    <td class="value"><input id="maximumPurchaseAmount" name="maximumPurchaseAmount" value="0.00"></input></td>
                 </tr>
                 <tr>
                     <td class="label">할인비율/금액 :</td>

@@ -1,5 +1,5 @@
 /** 
- * 2015 CommonController.java
+ * 2015 CommonMgtController.java
  * Created by Steven J.S Min(steven.min@utilitiessoftwareservices.com)
  *  
  * Licensed to the Utilities Software Services(USS). 
@@ -8,27 +8,6 @@
  */
 
 package melfood.controller.admin;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import melfood.framework.Ctx;
 import melfood.framework.abn.ABNDetails;
@@ -41,6 +20,20 @@ import melfood.framework.email.EmailServices;
 import melfood.framework.email.IEmailService;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Steven J.S Min(steven.min@utilitiessoftwareservices.com)
@@ -48,9 +41,9 @@ import melfood.framework.system.BaseController;
  */
 @Controller("adminCommonController")
 @RequestMapping("/admin/common")
-public class CommonController extends BaseController {
+public class CommonMgtController extends BaseController {
 
-	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommonMgtController.class);
 
 	@Autowired
 	IEmailService emailService;

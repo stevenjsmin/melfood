@@ -432,14 +432,15 @@
                 </tr>
                 <tr>
                     <td class="label">Subtitle :</td>
-                    <td class="value" colspan="2">${groupPurchase.groupPurchaseSubtitle}</td>
-                    <td></td>
-                </tr>
-                <tr>
+                    <td class="value">${groupPurchase.groupPurchaseSubtitle}</td>
                     <td class="label">공동구매 주관자 :</td>
                     <td class="value">${groupPurchase.purchaseOrganizerName} (ID : ${groupPurchase.purchaseOrganizer})</td>
+                </tr>
+                <tr>
                     <td class="label">최소 참여금액 :</td>
                     <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.minimumPurchaseAmount}"/></td>
+                    <td class="label">최대 참여금액 :</td>
+                    <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.maximumPurchaseAmount}"/></td>
                 </tr>
                 <tr>
                     <td class="label">주문받는 기간 :</td>

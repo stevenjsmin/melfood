@@ -29,6 +29,7 @@
             DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d') 'marketOpenEndDate',
             DATE_FORMAT(a.market_open_end_dt,'%h:%i %p') 'marketOpenEndTime',
             a.minimum_purchase_amount 'minimumPurchaseAmount',
+            a.maximum_purchase_amount 'maximumPurchaseAmount',
             a.discount_method 'discountMethod',
             a.discount_fixed_amount 'discountFixedAmount',
             a.discount_rate_value 'discountRateValue',
@@ -60,7 +61,8 @@
             <if test="marketOpenStartDt != null"> AND str_to_date(#{marketOpenStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_start_dt, '%Y-%m-%d') </if>
             <if test="marketOpenEndDt != null"> AND str_to_date(#{marketOpenEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d') </if>
             <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
-            <if test="minimumPurchaseAmount != null"> AND UPPER(a.minimum_purchase_amount) = UPPER(#{groupPurchaseId}) </if>
+            <if test="minimumPurchaseAmount != null"> AND a.minimum_purchase_amount = #{minimumPurchaseAmount} </if>
+            <if test="maximumPurchaseAmount != null"> AND a.maximum_purchase_amount = #{maximumPurchaseAmount} </if>
             <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
             <if test="discountFixedAmount != null"> AND UPPER(a.discount_fixed_amount) = UPPER(#{discountFixedAmount}) </if>
             <if test="discountRateValue != null"> AND UPPER(a.discount_rate_value) = UPPER(#{discountRateValue}) </if>
@@ -98,7 +100,8 @@
             <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
             <if test="marketOpenStartDt != null"> AND str_to_date(#{marketOpenStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_start_dt, '%Y-%m-%d') </if>
             <if test="marketOpenEndDt != null"> AND str_to_date(#{marketOpenEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d') </if>
-            <if test="minimumPurchaseAmount != null"> AND UPPER(a.minimum_purchase_amount) = UPPER(#{groupPurchaseId}) </if>
+            <if test="minimumPurchaseAmount != null"> AND a.minimum_purchase_amount = #{minimumPurchaseAmount} </if>
+            <if test="maximumPurchaseAmount != null"> AND a.maximum_purchase_amount = #{maximumPurchaseAmount} </if>
             <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
             <if test="discountFixedAmount != null"> AND UPPER(a.discount_fixed_amount) = UPPER(#{discountFixedAmount}) </if>
             <if test="discountRateValue != null"> AND UPPER(a.discount_rate_value) = UPPER(#{discountRateValue}) </if>
@@ -131,6 +134,7 @@
             ,market_open_start_dt
             ,market_open_end_dt
             ,minimum_purchase_amount
+            ,maximum_purchase_amount
             ,discount_method
             ,discount_fixed_amount
             ,discount_rate_value
@@ -157,6 +161,7 @@
             STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p'),
             STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p'),
             TRIM(#{minimumPurchaseAmount}),
+            TRIM(#{maximumPurchaseAmount}),
             TRIM(#{discountMethod}),
             TRIM(#{discountFixedAmount}),
             TRIM(#{discountRateValue}),
@@ -189,6 +194,7 @@
             ,market_open_start_dt = STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p')
             ,market_open_end_dt = STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p')
             ,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount})
+            ,maximum_purchase_amount = TRIM(#{maximumPurchaseAmount})
             ,discount_method = TRIM(#{discountMethod})
             ,discount_fixed_amount = TRIM(#{discountFixedAmount})
             ,discount_rate_value = TRIM(#{discountRateValue})
@@ -222,6 +228,7 @@
             <if test="marketOpenStartDt != null">,market_open_start_dt = STR_TO_DATE(#{marketOpenStartDt}, '%Y-%m-%d %h:%i %p')</if>
             <if test="marketOpenEndDt != null">,market_open_end_dt = STR_TO_DATE(#{marketOpenEndDt}, '%Y-%m-%d %h:%i %p')</if>
             <if test="minimumPurchaseAmount != null">,minimum_purchase_amount = TRIM(#{minimumPurchaseAmount}) </if>
+            <if test="maximumPurchaseAmount != null">,maximum_purchase_amount = TRIM(#{maximumPurchaseAmount}) </if>
             <if test="discountMethod != null">,discount_method = TRIM(#{discountMethod}) </if>
             <if test="discountFixedAmount != null">,discount_fixed_amount = TRIM(#{discountFixedAmount}) </if>
             <if test="discountRateValue != null">,discount_rate_value = TRIM(#{discountRateValue}) </if>
@@ -352,6 +359,7 @@
 			DATE_FORMAT(a.market_open_end_dt,'%Y-%m-%d') 'marketOpenEndDate',
 			DATE_FORMAT(a.market_open_end_dt,'%h:%i %p') 'marketOpenEndTime',
             a.minimum_purchase_amount 'minimumPurchaseAmount',
+            a.maximum_purchase_amount 'maximumPurchaseAmount',
             a.discount_method 'discountMethod',
             a.discount_fixed_amount 'discountFixedAmount',
             a.discount_rate_value 'discountRateValue',

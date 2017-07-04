@@ -32,9 +32,9 @@ import java.util.*;
  */
 @RequestMapping("/admin/grouppurchase")
 @Controller
-public class GroupPurchaseController extends BaseController {
+public class GroupPurchaseMgtController extends BaseController {
 
-    private static final Logger logger = LoggerFactory.getLogger(GroupPurchaseController.class);
+    private static final Logger logger = LoggerFactory.getLogger(GroupPurchaseMgtController.class);
 
     @Autowired
     GroupPurchaseService groupPurchaseService;
@@ -271,6 +271,7 @@ public class GroupPurchaseController extends BaseController {
         String marketOpenStartDt = request.getParameter("marketOpenStartDt");
         String marketOpenEndDt = request.getParameter("marketOpenEndDt");
         String minimumPurchaseAmount = request.getParameter("minimumPurchaseAmount");
+        String maximumPurchaseAmount = request.getParameter("maximumPurchaseAmount");
         String discountMethod = request.getParameter("discountMethod");
         String discountFixedAmount = request.getParameter("discountFixedAmount");
         String discountRateValue = request.getParameter("discountRateValue");
@@ -314,6 +315,7 @@ public class GroupPurchaseController extends BaseController {
             if (StringUtils.isNotBlank(marketOpenStartDt)) groupPurchase.setMarketOpenStartDt(marketOpenStartDt);
             if (StringUtils.isNotBlank(marketOpenEndDt)) groupPurchase.setMarketOpenEndDt(marketOpenEndDt);
             if (StringUtils.isNotBlank(minimumPurchaseAmount)) groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
+            if (StringUtils.isNotBlank(maximumPurchaseAmount)) groupPurchase.setMaximumPurchaseAmount(maximumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
 
             if (StringUtils.equalsIgnoreCase(deliverable, "Y")) {

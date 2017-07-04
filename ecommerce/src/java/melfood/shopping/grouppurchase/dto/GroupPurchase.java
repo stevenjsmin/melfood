@@ -28,6 +28,7 @@ public class GroupPurchase extends BaseDto {
     private String marketOpenStartDt;
     private String marketOpenEndDt;
     private String minimumPurchaseAmount;
+    private String maximumPurchaseAmount;
     private String discountMethod;
     private Float discountFixedAmount;
     private Float discountRateValue;
@@ -313,5 +314,13 @@ public class GroupPurchase extends BaseDto {
 
     public void setOrganizer(User organizer) {
         this.organizer = organizer;
+    }
+
+    public String getMaximumPurchaseAmount() {
+        return maximumPurchaseAmount;
+    }
+
+    public void setMaximumPurchaseAmount(String maximumPurchaseAmount) {
+        this.maximumPurchaseAmount = maximumPurchaseAmount;
     }
 }
