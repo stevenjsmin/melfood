@@ -32,10 +32,15 @@
 		
 		<typeAlias type="melfood.shopping.delivery.DeliveryCalendar" alias="DeliveryCalendar" />
 		<typeAlias type="melfood.shopping.payment.PaymentMethod" alias="PaymentMethod" />
-		
+
+		<!-- TODO : order 패키지에있는 클래스들 나중에 정리해야함 -->
 		<typeAlias type="melfood.shopping.order.ShoppingCart" alias="ShoppingCart" />
 		<typeAlias type="melfood.shopping.order.OrderProductOption" alias="OrderProductOption" />
-		
+
+		<typeAlias type="melfood.shopping.order.OrderMaster" alias="OrderMaster" />
+		<typeAlias type="melfood.shopping.order.OrderMasterProduct" alias="OrderMasterProduct" />
+		<typeAlias type="melfood.shopping.order.OrderMasterProductOption" alias="OrderMasterProductOption" />
+
 		<typeAlias type="melfood.shopping.shop.ShopTemplate" alias="ShopTemplate" />
 		<typeAlias type="melfood.shopping.shop.ShopTemplateSection" alias="ShopTemplateSection" />
 
