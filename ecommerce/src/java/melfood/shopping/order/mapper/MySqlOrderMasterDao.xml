@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlOrderMasterDao">
+
+	<select id="getOrderMasters" parameterType="OrderMaster" resultType="OrderMaster">
+		/* QUERY ID : getOrderMasters */
+			SELECT
+				 a.order_master_id 'orderMasterId'
+				,a.seller_id 'sellerId'
+				,a.customer_id 'customerId'
+				,a.order_datetime 'orderDatetime'
+				,a.invoice_issue 'invoiceIssue'
+				,a.invoice_issue_datetime 'invoiceIssueDatetime'
+				,a.customer_name 'customerName'
+				,a.customer_mobile 'customerMobile'
+				,a.customer_phone 'customerPhone'
+				,a.customer_email 'customerEmail'
+				,a.customer_address_street 'customerAddressStreet'
+				,a.customer_address_suburb 'customerAddressSuburb'
+				,a.customer_address_postcode 'customerAddressPostcode'
+				,a.customer_address_state 'customerAddressState'
+				,a.customer_order_note 'customerOrderNote'
+				,a.seller_name 'sellerName'
+				,a.seller_mobile 'sellerMobile'
+				,a.seller_phone 'sellerPhone'
+				,a.seller_email 'sellerEmail'
+				,a.seller_address_street 'sellerAddressStreet'
+				,a.seller_address_suburb 'sellerAddressSuburb'
+				,a.seller_address_postcode 'sellerAddressPostcode'
+				,a.seller_address_state 'sellerAddressState'
+				,a.pickup_address_street 'pickupAddressStreet'
+				,a.pickup_address_suburb 'pickupAddressSuburb'
+				,a.pickup_address_postcode 'pickupAddressPostcode'
+				,a.pickup_address_state 'pickupAddressState'
+				,a.pickup_address_note 'pickupAddressNote'
+				,a.is_pickup_or_delivery 'isPickupOrDelivery'
+				,a.normal_or_group_order 'normalOrGroupOrder'
+				,a.is_refund 'isRefund'
+				,a.refund_datetime 'refundDatetime'
+				,a.refund_service_charge 'refundServiceCharge'
+				,a.refund_amount 'refundAmount'
+				,a.refund_reason 'refundReason'
+				,a.status_payment 'statusPayment'
+				,a.status_delivery 'statusDelivery'
+				,a.delivery_from_addr_street 'deliveryFromAddrStreet'
+				,a.delivery_from_addr_suburb 'deliveryFromAddrSuburb'
+				,a.delivery_from_addr_state 'deliveryFromAddrState'
+				,a.delivery_from_addr_postcode 'deliveryFromAddrPostcode'
+				,a.delivery_to_addr_street 'deliveryToAddrStreet'
+				,a.delivery_to_addr_suburb 'deliveryToAddrSuburb'
+				,a.delivery_to_addr_state 'deliveryToAddrState'
+				,a.delivery_to_addr_postcode 'deliveryToAddrPostcode'
+				,a.delivery_distance 'deliveryDistance'
+				,a.delivery_fee_per_km 'deliveryFeePerKm'
+				,a.delivery_base_charge 'deliveryBaseCharge'
+				,a.payment_method 'paymentMethod'
+				,a.payment_bank_name 'paymentBankName'
+				,a.payment_bank_bsb 'paymentBankBsb'
+				,a.payment_account_no 'paymentAccountNo'
+				,a.payment_account_holder_name 'paymentAccountHolderName'
+				,a.payment_datetime 'paymentDatetime'
+				,(SELECT SUM(unit_price) FROM order_master_product a WHERE order_master_id = a.order_master_id ) 'amountTotalProduct'
+				,(SELECT SUM(a.amount_product_option) FROM order_master_product a WHERE order_master_id = a.order_master_id ) 'amountTotalProductOption'
+				,(a.delivery_base_charge + (a.delivery_fee_per_km * a.delivery_fee_per_km)) 'amountTotalDelivery'
+				,a.amount_total_discount 'amountTotalDiscount'
+				,a.amount_total_payment_service_charge 'amountTotalPaymentServiceCharge'
+				,a.amount_total_extra1 'amountTotalExtra1'
+				,a.amount_total_extra2 'amountTotalExtra2'
+				,a.amount_total_extra3 'amountTotalExtra3'
+				,a.amount_total_extra4 'amountTotalExtra4'
+				,(
+					 (SELECT SUM(unit_price) FROM order_master_product a WHERE order_master_id = a.order_master_id )
+		           + (SELECT SUM(a.amount_product_option) FROM order_master_product a WHERE order_master_id = a.order_master_id )
+		           + (a.delivery_base_charge + (a.delivery_fee_per_km * a.delivery_fee_per_km))
+		   		   + a.amount_total_discount
+				   + a.amount_total_payment_service_charge
+		 		   + a.amount_total_extra1
+		           + a.amount_total_extra2
+				   + a.amount_total_extra3
+				   + a.amount_total_extra4
+				 ) 'amountTotal'
+				,a.amount_total_commission 'amountTotalCommission'
+				,a.create_datetime 'createDatetime'
+				,a.modify_datetime 'modifyDatetime'
+				,a.creator 'creator'
+             FROM order_master a
+	         WHERE 1 = 1
+				<if test="orderMasterId                     != null and orderMasterId != 0"> AND a.order_master_id = #{orderMasterId} </if>
+				<if test="sellerId                          != null"> AND a.seller_id = #{sellerId} </if>
+				<if test="customerId                        != null"> AND a.customer_id = #{customerId} </if>
+				<if test="orderDatetime                     != null"> AND str_to_date(#{orderDatetime}, '%Y-%m-%d') = str_to_date(a.order_datetime, '%Y-%m-%d') </if>
+				<if test="invoiceIssue                      != null"> AND a.invoice_issue = UPPER(#{invoiceIssue}) </if>
+				<if test="invoiceIssueDatetime              != null"> AND str_to_date(#{invoiceIssueDatetime}, '%Y-%m-%d') = str_to_date(a.invoice_issue_datetime, '%Y-%m-%d') </if>
+				<if test="customerName                      != null"> AND UPPER(a.customer_name) LIKE CONCAT('%', UPPER(#{customerName}), '%') </if>
+				<if test="customerName                      != null"> AND UPPER(a.customer_name)                         LIKE CONCAT('%', UPPER( #{customerName}), '%') </if>
+				<if test="customerMobile                    != null"> AND a.customer_mobile                              = #{customerMobile} </if>
+				<if test="customerPhone                     != null"> AND a.customer_phone                               = #{customerPhone} </if>
+				<if test="customerEmail                     != null"> AND UPPER(a.customer_email)                        LIKE CONCAT('%', UPPER( #{customerEmail}), '%') </if>
+				<if test="customerAddressStreet             != null"> AND UPPER(a.customer_address_street)               LIKE CONCAT('%', UPPER( #{customerAddressStreet}), '%') </if>
+				<if test="customerAddressSuburb             != null"> AND UPPER(a.customer_address_suburb)               LIKE CONCAT('%', UPPER( #{customerAddressSuburb}), '%') </if>
+				<if test="customerAddressPostcode           != null"> AND UPPER(a.customer_address_postcode)             LIKE CONCAT('%', UPPER( #{customerAddressPostcode}), '%') </if>
+				<if test="customerAddressState              != null"> AND UPPER(a.customer_address_state)                LIKE CONCAT('%', UPPER( #{customerAddressState}), '%') </if>
+				<if test="customerOrderNote                 != null"> AND UPPER(a.customer_order_note)                   LIKE CONCAT('%', UPPER( #{customerOrderNote}), '%') </if>
+				<if test="sellerName                        != null"> AND UPPER(a.seller_name)                           LIKE CONCAT('%', UPPER( #{sellerName}), '%') </if>
+				<if test="sellerMobile                      != null"> AND a.seller_mobile                                = #{sellerMobile} </if>
+				<if test="sellerPhone                       != null"> AND a.seller_phone                                 = #{sellerPhone} </if>
+				<if test="sellerEmail                       != null"> AND UPPER(a.seller_email)                          LIKE CONCAT('%', UPPER( #{sellerEmail}), '%') </if>
+				<if test="sellerAddressStreet               != null"> AND UPPER(a.seller_address_street)                 LIKE CONCAT('%', UPPER( #{sellerAddressStreet}), '%') </if>
+				<if test="sellerAddressSuburb               != null"> AND UPPER(a.seller_address_suburb)                 LIKE CONCAT('%', UPPER( #{sellerAddressSuburb}), '%') </if>
+				<if test="sellerAddressPostcode             != null"> AND UPPER(a.seller_address_postcode)               LIKE CONCAT('%', UPPER( #{sellerAddressPostcode}), '%') </if>
+				<if test="sellerAddressState                != null"> AND UPPER(a.seller_address_state)                  LIKE CONCAT('%', UPPER( #{sellerAddressState}), '%') </if>
+				<if test="pickupAddressStreet               != null"> AND UPPER(a.pickup_address_street)                 LIKE CONCAT('%', UPPER( #{pickupAddressStreet}), '%') </if>
+				<if test="pickupAddressSuburb               != null"> AND UPPER(a.pickup_address_suburb)                 LIKE CONCAT('%', UPPER( #{pickupAddressSuburb}), '%') </if>
+				<if test="pickupAddressPostcode             != null"> AND UPPER(a.pickup_address_postcode)               LIKE CONCAT('%', UPPER( #{pickupAddressPostcode}), '%') </if>
+				<if test="pickupAddressState                != null"> AND UPPER(a.pickup_address_state)                  LIKE CONCAT('%', UPPER( #{pickupAddressState}), '%') </if>
+				<if test="pickupAddressNote                 != null"> AND UPPER(a.pickup_address_note)                   LIKE CONCAT('%', UPPER( #{pickupAddressNote}), '%') </if>
+				<if test="isPickupOrDelivery                != null"> AND UPPER(a.is_pickup_or_delivery)                 = UPPER(#{isPickupOrDelivery}) </if>
+				<if test="normalOrGroupOrder                != null"> AND UPPER(a.normal_or_group_order)                 = #{normalOrGroupOrder} </if>
+				<if test="isRefund                          != null"> AND UPPER(a.is_refund)                             = UPPER(#{isRefund}) </if>
+				<if test="refundDatetime                    != null"> AND str_to_date(#{refundDatetime}, '%Y-%m-%d') = str_to_date(a.refund_datetime, '%Y-%m-%d') </if>
+				<if test="refundServiceCharge               != null"> AND a.refund_service_charge                        = #{refundServiceCharge} </if>
+				<if test="refundReason                      != null"> AND UPPER(a.refund_reason)                         LIKE CONCAT('%', UPPER( #{refundReason}), '%') </if>
+				<if test="statusPayment                     != null"> AND UPPER(a.status_payment)                        = UPPER(#{statusPayment}) </if>
+				<if test="statusDelivery                    != null"> AND UPPER(a.status_delivery)                       = UPPER(#{statusDelivery}) </if>
+				<if test="deliveryFromAddrStreet            != null"> AND UPPER(a.delivery_from_addr_street)             LIKE CONCAT('%', UPPER( #{deliveryFromAddrStreet}), '%') </if>
+				<if test="deliveryFromAddrSuburb            != null"> AND UPPER(a.delivery_from_addr_suburb)             LIKE CONCAT('%', UPPER( #{deliveryFromAddrSuburb}), '%') </if>
+				<if test="deliveryFromAddrState             != null"> AND UPPER(a.delivery_from_addr_state)              LIKE CONCAT('%', UPPER( #{deliveryFromAddrState}), '%') </if>
+				<if test="deliveryFromAddrPostcode          != null"> AND UPPER(a.delivery_from_addr_postcode)           LIKE CONCAT('%', UPPER( #{deliveryFromAddrPostcode}), '%') </if>
+				<if test="deliveryToAddrStreet              != null"> AND UPPER(a.delivery_to_addr_street)               LIKE CONCAT('%', UPPER( #{deliveryToAddrStreet}), '%') </if>
+				<if test="deliveryToAddrSuburb              != null"> AND UPPER(a.delivery_to_addr_suburb)               LIKE CONCAT('%', UPPER( #{deliveryToAddrSuburb}), '%') </if>
+				<if test="deliveryToAddrState               != null"> AND UPPER(a.delivery_to_addr_state)                LIKE CONCAT('%', UPPER( #{deliveryToAddrState}), '%') </if>
+				<if test="deliveryToAddrPostcode            != null"> AND UPPER(a.delivery_to_addr_postcode)             LIKE CONCAT('%', UPPER( #{deliveryToAddrPostcode}), '%') </if>
+				<if test="paymentMethod                     != null"> AND UPPER(a.payment_method)                        = UPPER(#{paymentMethod}) </if>
+				<if test="paymentBankName                   != null"> AND UPPER(a.payment_bank_name)                     LIKE CONCAT('%', UPPER( #{paymentBankName}), '%') </if>
+				<if test="paymentBankBsb                    != null"> AND a.payment_bank_bsb                             = #{paymentBankBsb} </if>
+				<if test="paymentAccountNo                  != null"> AND a.payment_account_no                           = #{paymentAccountNo} </if>
+				<if test="paymentAccountHolderName          != null"> AND UPPER(a.payment_account_holder_name)           LIKE CONCAT('%', UPPER( #{paymentAccountHolderName}), '%') </if>
+		        <if test="paymentDatetime                   != null"> AND str_to_date(#{paymentDatetime}, '%Y-%m-%d') = str_to_date(a.payment_datetime, '%Y-%m-%d') </if>
+				<if test="searchDateFrom                    != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+				<if test="searchDateTo                      != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+	    	ORDER BY a.order_master_id ASC
+	</select>
+
+
+	<select id="getTotalCntForGetOrderMasters" parameterType="OrderMaster" resultType="java.lang.Integer">
+		/* QUERY ID : getTotalCntForGetOrderMasters */
+		SELECT COUNT(*)
+		FROM order_master a
+		WHERE 1 = 1
+				<if test="orderMasterId                     != null and orderMasterId != 0"> AND a.order_master_id = #{orderMasterId} </if>
+				<if test="sellerId                          != null"> AND a.seller_id = #{sellerId} </if>
+				<if test="customerId                        != null"> AND a.customer_id = #{customerId} </if>
+				<if test="orderDatetime                     != null"> AND str_to_date(#{orderDatetime}, '%Y-%m-%d') = str_to_date(a.order_datetime, '%Y-%m-%d') </if>
+				<if test="invoiceIssue                      != null"> AND a.invoice_issue = UPPER(#{invoiceIssue}) </if>
+				<if test="invoiceIssueDatetime              != null"> AND str_to_date(#{invoiceIssueDatetime}, '%Y-%m-%d') = str_to_date(a.invoice_issue_datetime, '%Y-%m-%d') </if>
+				<if test="customerName                      != null"> AND UPPER(a.customer_name) LIKE CONCAT('%', UPPER(#{customerName}), '%') </if>
+				<if test="customerName                      != null"> AND UPPER(a.customer_name)                         LIKE CONCAT('%', UPPER( #{customerName}), '%') </if>
+				<if test="customerMobile                    != null"> AND a.customer_mobile                              = #{customerMobile} </if>
+				<if test="customerPhone                     != null"> AND a.customer_phone                               = #{customerPhone} </if>
+				<if test="customerEmail                     != null"> AND UPPER(a.customer_email)                        LIKE CONCAT('%', UPPER( #{customerEmail}), '%') </if>
+				<if test="customerAddressStreet             != null"> AND UPPER(a.customer_address_street)               LIKE CONCAT('%', UPPER( #{customerAddressStreet}), '%') </if>
+				<if test="customerAddressSuburb             != null"> AND UPPER(a.customer_address_suburb)               LIKE CONCAT('%', UPPER( #{customerAddressSuburb}), '%') </if>
+				<if test="customerAddressPostcode           != null"> AND UPPER(a.customer_address_postcode)             LIKE CONCAT('%', UPPER( #{customerAddressPostcode}), '%') </if>
+				<if test="customerAddressState              != null"> AND UPPER(a.customer_address_state)                LIKE CONCAT('%', UPPER( #{customerAddressState}), '%') </if>
+				<if test="customerOrderNote                 != null"> AND UPPER(a.customer_order_note)                   LIKE CONCAT('%', UPPER( #{customerOrderNote}), '%') </if>
+				<if test="sellerName                        != null"> AND UPPER(a.seller_name)                           LIKE CONCAT('%', UPPER( #{sellerName}), '%') </if>
+				<if test="sellerMobile                      != null"> AND a.seller_mobile                                = #{sellerMobile} </if>
+				<if test="sellerPhone                       != null"> AND a.seller_phone                                 = #{sellerPhone} </if>
+				<if test="sellerEmail                       != null"> AND UPPER(a.seller_email)                          LIKE CONCAT('%', UPPER( #{sellerEmail}), '%') </if>
+				<if test="sellerAddressStreet               != null"> AND UPPER(a.seller_address_street)                 LIKE CONCAT('%', UPPER( #{sellerAddressStreet}), '%') </if>
+				<if test="sellerAddressSuburb               != null"> AND UPPER(a.seller_address_suburb)                 LIKE CONCAT('%', UPPER( #{sellerAddressSuburb}), '%') </if>
+				<if test="sellerAddressPostcode             != null"> AND UPPER(a.seller_address_postcode)               LIKE CONCAT('%', UPPER( #{sellerAddressPostcode}), '%') </if>
+				<if test="sellerAddressState                != null"> AND UPPER(a.seller_address_state)                  LIKE CONCAT('%', UPPER( #{sellerAddressState}), '%') </if>
+				<if test="pickupAddressStreet               != null"> AND UPPER(a.pickup_address_street)                 LIKE CONCAT('%', UPPER( #{pickupAddressStreet}), '%') </if>
+				<if test="pickupAddressSuburb               != null"> AND UPPER(a.pickup_address_suburb)                 LIKE CONCAT('%', UPPER( #{pickupAddressSuburb}), '%') </if>
+				<if test="pickupAddressPostcode             != null"> AND UPPER(a.pickup_address_postcode)               LIKE CONCAT('%', UPPER( #{pickupAddressPostcode}), '%') </if>
+				<if test="pickupAddressState                != null"> AND UPPER(a.pickup_address_state)                  LIKE CONCAT('%', UPPER( #{pickupAddressState}), '%') </if>
+				<if test="pickupAddressNote                 != null"> AND UPPER(a.pickup_address_note)                   LIKE CONCAT('%', UPPER( #{pickupAddressNote}), '%') </if>
+				<if test="isPickupOrDelivery                != null"> AND UPPER(a.is_pickup_or_delivery)                 = UPPER(#{isPickupOrDelivery}) </if>
+				<if test="normalOrGroupOrder                != null"> AND UPPER(a.normal_or_group_order)                 = #{normalOrGroupOrder} </if>
+				<if test="isRefund                          != null"> AND UPPER(a.is_refund)                             = UPPER(#{isRefund}) </if>
+				<if test="refundDatetime                    != null"> AND str_to_date(#{refundDatetime}, '%Y-%m-%d') = str_to_date(a.refund_datetime, '%Y-%m-%d') </if>
+				<if test="refundServiceCharge               != null"> AND a.refund_service_charge                        = #{refundServiceCharge} </if>
+				<if test="refundReason                      != null"> AND UPPER(a.refund_reason)                         LIKE CONCAT('%', UPPER( #{refundReason}), '%') </if>
+				<if test="statusPayment                     != null"> AND UPPER(a.status_payment)                        = UPPER(#{statusPayment}) </if>
+				<if test="statusDelivery                    != null"> AND UPPER(a.status_delivery)                       = UPPER(#{statusDelivery}) </if>
+				<if test="deliveryFromAddrStreet            != null"> AND UPPER(a.delivery_from_addr_street)             LIKE CONCAT('%', UPPER( #{deliveryFromAddrStreet}), '%') </if>
+				<if test="deliveryFromAddrSuburb            != null"> AND UPPER(a.delivery_from_addr_suburb)             LIKE CONCAT('%', UPPER( #{deliveryFromAddrSuburb}), '%') </if>
+				<if test="deliveryFromAddrState             != null"> AND UPPER(a.delivery_from_addr_state)              LIKE CONCAT('%', UPPER( #{deliveryFromAddrState}), '%') </if>
+				<if test="deliveryFromAddrPostcode          != null"> AND UPPER(a.delivery_from_addr_postcode)           LIKE CONCAT('%', UPPER( #{deliveryFromAddrPostcode}), '%') </if>
+				<if test="deliveryToAddrStreet              != null"> AND UPPER(a.delivery_to_addr_street)               LIKE CONCAT('%', UPPER( #{deliveryToAddrStreet}), '%') </if>
+				<if test="deliveryToAddrSuburb              != null"> AND UPPER(a.delivery_to_addr_suburb)               LIKE CONCAT('%', UPPER( #{deliveryToAddrSuburb}), '%') </if>
+				<if test="deliveryToAddrState               != null"> AND UPPER(a.delivery_to_addr_state)                LIKE CONCAT('%', UPPER( #{deliveryToAddrState}), '%') </if>
+				<if test="deliveryToAddrPostcode            != null"> AND UPPER(a.delivery_to_addr_postcode)             LIKE CONCAT('%', UPPER( #{deliveryToAddrPostcode}), '%') </if>
+				<if test="paymentMethod                     != null"> AND UPPER(a.payment_method)                        = UPPER(#{paymentMethod}) </if>
+				<if test="paymentBankName                   != null"> AND UPPER(a.payment_bank_name)                     LIKE CONCAT('%', UPPER( #{paymentBankName}), '%') </if>
+				<if test="paymentBankBsb                    != null"> AND a.payment_bank_bsb                             = #{paymentBankBsb} </if>
+				<if test="paymentAccountNo                  != null"> AND a.payment_account_no                           = #{paymentAccountNo} </if>
+				<if test="paymentAccountHolderName          != null"> AND UPPER(a.payment_account_holder_name)           LIKE CONCAT('%', UPPER( #{paymentAccountHolderName}), '%') </if>
+				<if test="paymentDatetime                   != null"> AND str_to_date(#{paymentDatetime}, '%Y-%m-%d') = str_to_date(a.payment_datetime, '%Y-%m-%d') </if>
+				<if test="searchDateFrom                    != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+				<if test="searchDateTo                      != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+	</select>
+
+
+
+
+	<insert id="insertOrderMasters" parameterType="java.util.List">
+		/* QUERY ID : insertOrderMasters */
+		INSERT INTO order_master (
+				 seller_id
+				,customer_id
+				,order_datetime
+				,invoice_issue
+				,invoice_issue_datetime
+				,customer_name
+				,customer_mobile
+				,customer_phone
+				,customer_email
+				,customer_address_street
+				,customer_address_suburb
+				,customer_address_postcode
+				,customer_address_state
+				,customer_order_note
+				,seller_name
+				,seller_mobile
+				,seller_phone
+				,seller_email
+				,seller_address_street
+				,seller_address_suburb
+				,seller_address_postcode
+				,seller_address_state
+				,pickup_address_street
+				,pickup_address_suburb
+				,pickup_address_postcode
+				,pickup_address_state
+				,pickup_address_note
+				,is_pickup_or_delivery
+				,normal_or_group_order
+				,is_refund
+				,refund_datetime
+				,refund_service_charge
+				,refund_amount
+				,refund_reason
+				,status_payment
+				,status_delivery
+				,delivery_from_addr_street
+				,delivery_from_addr_suburb
+				,delivery_from_addr_state
+				,delivery_from_addr_postcode
+				,delivery_to_addr_street
+				,delivery_to_addr_suburb
+				,delivery_to_addr_state
+				,delivery_to_addr_postcode
+				,delivery_distance
+				,delivery_fee_per_km
+				,delivery_base_charge
+				,payment_method
+				,payment_bank_name
+				,payment_bank_bsb
+				,payment_account_no
+				,payment_account_holder_name
+				,payment_datetime
+				,amount_total_product
+				,amount_total_product_option
+				,amount_total_delivery
+				,amount_total_discount
+				,amount_total_payment_service_charge
+				,amount_total_extra1
+				,amount_total_extra2
+				,amount_total_extra3
+				,amount_total_extra4
+				,amount_total
+				,amount_total_commission
+				,creator) VALUES (
+		                    #{sellerId}
+		                   ,#{customerId}
+		                   ,STR_TO_DATE(#{orderDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,#{invoiceIssue}
+		                   ,STR_TO_DATE(#{invoiceIssueDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,#{customerName}
+		                   ,#{customerMobile}
+		                   ,#{customerPhone}
+		                   ,#{customerEmail}
+		                   ,#{customerAddressStreet}
+		                   ,#{customerAddressSuburb}
+		                   ,#{customerAddressPostcode}
+		                   ,#{customerAddressState}
+		                   ,#{customerOrderNote}
+		                   ,#{sellerName}
+		                   ,#{sellerMobile}
+		                   ,#{sellerPhone}
+		                   ,#{sellerEmail}
+		                   ,#{sellerAddressStreet}
+		                   ,#{sellerAddressSuburb}
+		                   ,#{sellerAddressPostcode}
+		                   ,#{sellerAddressState}
+		                   ,#{pickupAddressStreet}
+		                   ,#{pickupAddressSuburb}
+		                   ,#{pickupAddressPostcode}
+		                   ,#{pickupAddressState}
+		                   ,#{pickupAddressNote}
+		                   ,#{isPickupOrDelivery}
+		                   ,#{normalOrGroupOrder}
+		                   ,#{isRefund}
+		                   ,STR_TO_DATE(#{refundDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,#{refundServiceCharge}
+		                   ,#{refundAmount}
+		                   ,#{refundReason}
+		                   ,#{statusPayment}
+		                   ,#{statusDelivery}
+		                   ,#{deliveryFromAddrStreet}
+		                   ,#{deliveryFromAddrSuburb}
+		                   ,#{deliveryFromAddrState}
+		                   ,#{deliveryFromAddrPostcode}
+		                   ,#{deliveryToAddrStreet}
+		                   ,#{deliveryToAddrSuburb}
+		                   ,#{deliveryToAddrState}
+		                   ,#{deliveryToAddrPostcode}
+		                   ,#{deliveryDistance}
+		                   ,#{deliveryFeePerKm}
+		                   ,#{deliveryBaseCharge}
+		                   ,#{paymentMethod}
+		                   ,#{paymentBankName}
+		                   ,#{paymentBankBsb}
+		                   ,#{paymentAccountNo}
+		                   ,#{paymentAccountHolderName}
+		                   ,STR_TO_DATE(#{paymentDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,#{amountTotalProduct}
+		                   ,#{amountTotalProductOption}
+		                   ,#{amountTotalDelivery}
+		                   ,#{amountTotalDiscount}
+		                   ,#{amountTotalPaymentServiceCharge}
+		                   ,#{amountTotalExtra1}
+		                   ,#{amountTotalExtra2}
+		                   ,#{amountTotalExtra3}
+		                   ,#{amountTotalExtra4}
+		                   ,#{amountTotal}
+		                   ,#{amountTotalCommission}
+		                   ,#{creator})
+	</insert>
+
+
+
+	<delete id="deleteOrderMaster" parameterType="OrderMaster">
+		/* QUERY ID : deleteOrderMaster */
+		DELETE FROM order_master
+		 WHERE order_master_id = #{orderMasterId}
+		       <if test="orderMasterProductId != null and orderMasterProductId != 0">, order_master_id = TRIM(#{orderMasterProductId}) </if>
+	</delete>
+
+</mapper>

@@ -38,17 +38,6 @@
 				<if test="prodId != null and prodId != 0"> AND a.prod_id = #{prodId} </if>
 				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 	</select>
-	
-	<!-- 쇼핑카트에서 해당고객에게 해당하는 모든 상품 판매자 정보를 얻어온다. -->
-	<select id="getProductSellers" parameterType="ShoppingCart" resultType="User">
-		/* QUERY ID : getProductSellers */
-			SELECT a.seller_id 'userId',
-			       b.user_name 'userName'
-			  FROM (SELECT DISTINCT seller_id FROM shopping_cart 
-			         WHERE 1 = 1 <if test="customerId != null"> AND UPPER(customer_id) = UPPER(#{customerId}) </if> ) a
-			       LEFT OUTER JOIN cmm_user b ON b.user_id = a.seller_id
-	      ORDER BY b.user_name ASC
-	</select>
 
 
 	<insert id="insertShoppingCart" parameterType="ShoppingCart" useGeneratedKeys="true" keyProperty="shoppingCart.id" keyColumn="id">

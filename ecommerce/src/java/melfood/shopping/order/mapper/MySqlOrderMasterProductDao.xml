@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlOrderMasterProductDao">
+
+	<select id="getOrderMasterProducts" parameterType="OrderMasterProduct" resultType="OrderMasterProduct">
+		/* QUERY ID : getOrderMasterProducts */
+			SELECT
+				 a.order_master_product_id 'orderMasterProductId'
+				,a.order_master_id 'orderMasterId'
+				,a.product_id 'productId'
+				,a.product_name 'productName'
+				,a.product_description 'productDescription'
+				,a.product_category 'productCategory'
+				,CASE
+					WHEN (SELECT COUNT(*) FROM order_master_product_option a WHERE order_master_product_id = a.order_master_product_id) > 0 THEN 'Y'
+					ELSE 'N'
+				 END 'hasProductOption'
+				,(SELECT SUM(addtional_price) FROM order_master_product_option a WHERE order_master_product_id = a.order_master_product_id) 'amountProductOption'
+				,a.seller_id 'sellerId'
+				,a.seller_name 'sellerName'
+				,a.seller_mobile 'sellerMobile'
+				,a.seller_phone 'sellerPhone'
+				,a.seller_email 'sellerEmail'
+				,a.seller_address_street 'sellerAddressStreet'
+				,a.seller_address_suburb 'sellerAddressSuburb'
+				,a.seller_address_postcode 'sellerAddressPostcode'
+				,a.seller_address_state 'sellerAddressState'
+				,a.unit_price 'unitPrice'
+				,a.comission_fee 'comissionFee'
+				a.create_datetime 'createDatetime',
+				a.modify_datetime 'modifyDatetime',
+				a.creator 'creator'
+             FROM order_master_product a
+	         WHERE 1 = 1
+				<if test="orderMasterProductId != null and orderMasterProductId != 0"> AND a.order_master_product_id = #{orderMasterProductId} </if>
+				<if test="orderMasterId != null and orderMasterId != 0"> AND a.order_master_id = #{orderMasterId} </if>
+				<if test="productId != null and productId != 0"> AND a.product_id = #{productId} </if>
+				<if test="productName != null"> AND UPPER(a.product_name) LIKE CONCAT('%', UPPER(#{productName}), '%') </if>
+				<if test="productDescription != null"> AND UPPER(a.product_description) LIKE CONCAT('%', UPPER(#{productDescription}), '%') </if>
+				<if test="productCategory != null"> AND UPPER(a.product_category) = UPPER(#{productCategory}) </if>
+				<if test="hasProductOption != null"> AND UPPER(a.has_product_option) = UPPER(#{hasProductOption}) </if>
+				<if test="amountProductOption != null"> AND a.amount_product_option <![CDATA[ >= ]]> #{amountProductOption} </if>
+				<if test="sellerId != null"> AND a.seller_id = #{sellerId} </if>
+				<if test="sellerName != null"> AND UPPER(a.seller_name) LIKE CONCAT('%', UPPER(#{sellerName}), '%') </if>
+				<if test="sellerMobile != null"> AND a.seller_mobile LIKE CONCAT('%', #{sellerMobile}, '%') </if>
+				<if test="sellerPhone != null"> AND a.seller_phone LIKE CONCAT('%', #{sellerPhone}, '%') </if>
+				<if test="sellerEmail != null"> AND UPPER(a.seller_email) LIKE CONCAT('%', UPPER(#{sellerEmail}), '%') </if>
+				<if test="sellerAddressStreet != null"> AND UPPER(a.seller_address_street) LIKE CONCAT('%', UPPER(#{sellerAddressStreet}), '%') </if>
+				<if test="sellerAddressSuburb != null"> AND UPPER(a.seller_address_suburb) LIKE CONCAT('%', UPPER(#{sellerAddressSuburb}), '%') </if>
+				<if test="sellerAddressPostcode != null"> AND UPPER(a.seller_address_postcode) LIKE CONCAT('%', UPPER(#{sellerAddressPostcode}), '%') </if>
+				<if test="sellerAddressState != null"> AND UPPER(a.seller_address_state) LIKE CONCAT('%', UPPER(#{sellerAddressState}), '%') </if>
+				<if test="unitPrice != null"> AND a.unit_price <![CDATA[ >= ]]> #{unitPrice} </if>
+				<if test="comissionFee != null"> AND a.comission_fee <![CDATA[ >= ]]> #{comissionFee} </if>
+	    	ORDER BY a.order_master_product_id ASC
+	</select>
+
+	<insert id="insertOrderMasterProducts" parameterType="java.util.List">
+		/* QUERY ID : insertOrderMasterProducts */
+		INSERT INTO order_master_product (
+			order_master_id
+			,product_id
+			,product_name
+			,product_description
+			,product_category
+			,has_product_option
+			,amount_product_option
+			,seller_id
+			,seller_name
+			,seller_mobile
+			,seller_phone
+			,seller_email
+			,seller_address_street
+			,seller_address_suburb
+			,seller_address_postcode
+			,seller_address_state
+			,unit_price
+			,comission_fee
+			,creator) VALUES
+		<foreach collection="list" index="index" item="item">
+			<if test="index != 0"> , </if>
+			(   #{item.orderMasterId},
+				#{item.productName},
+				#{item.productDescription},
+				#{item.productCategory},
+				#{item.hasProductOption},
+				#{item.amountProductOption},
+				#{item.sellerId},
+				#{item.sellerName},
+				#{item.sellerMobile},
+				#{item.sellerPhone},
+				#{item.sellerEmail},
+				#{item.sellerAddressStreet},
+				#{item.sellerAddressSuburb},
+				#{item.sellerAddressPostcode},
+				#{item.sellerAddressState},
+				#{item.unitPrice},
+				#{item.comissionFee},
+				#{item.creator} )
+		</foreach>
+	</insert>
+
+
+	<update id="modifyOrderMasterProduct" parameterType="OrderMasterProduct">
+		/* QUERY ID : modifyOrderMasterProduct */
+		UPDATE order_master_product
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,product_id = #{productId}
+		       ,productName = #{productName}
+		       ,product_description = #{productDescription}
+		       ,product_category = #{productCategory}
+		       ,has_product_option = #{hasProductOption}
+		       ,amount_product_option = #{amountProductOption}
+		       ,seller_id = #{sellerId}
+		       ,seller_name = #{sellerName}
+		       ,seller_mobile = #{sellerMobile}
+		       ,seller_phone = #{sellerPhone}
+		       ,seller_email = #{sellerEmail}
+		       ,seller_address_street = #{sellerAddressStreet}
+		       ,seller_address_suburb = #{sellerAddressSuburb}
+		       ,seller_address_postcode = #{sellerAddressPostcode}
+		       ,seller_address_state = #{sellerAddressState}
+		       ,unit_price = #{unitPrice}
+		       ,comission_fee = #{comissionFee}
+		 WHERE order_master_product_id = #{orderMasterProductId}
+	</update>
+
+	<update id="modifyOrderMasterProductForNotNull" parameterType="OrderMasterProduct">
+		/* QUERY ID : modifyOrderMasterProductForNotNull */
+		UPDATE order_master_product
+		   SET modify_datetime = CURRENT_TIMESTAMP
+				<if test="productId != null and productId != 0">,product_id = #{productId} </if>
+				<if test="productName != null">,productName = #{productName} </if>
+				<if test="productDescription != null">,product_description = #{productDescription} </if>
+				<if test="productCategory != null">,product_category = #{productCategory} </if>
+				<if test="hasProductOption != null">,has_product_option = #{hasProductOption} </if>
+				<if test="amountProductOption != null and amountProductOption != 0">,amount_product_option = #{amountProductOption} </if>
+				<if test="sellerId != null">,seller_id = #{sellerId} </if>
+				<if test="sellerName != null">,seller_name = #{sellerName} </if>
+				<if test="sellerMobile != null">,seller_mobile = #{sellerMobile} </if>
+				<if test="sellerPhone != null">,seller_phone = #{sellerPhone} </if>
+				<if test="sellerEmail != null">,seller_email = #{sellerEmail} </if>
+				<if test="sellerAddressStreet != null">,seller_address_street = #{sellerAddressStreet} </if>
+				<if test="sellerAddressSuburb != null">,seller_address_suburb = #{sellerAddressSuburb} </if>
+				<if test="sellerAddressPostcode != null">,seller_address_postcode = #{sellerAddressPostcode} </if>
+				<if test="sellerAddressState != null">,seller_address_state = #{sellerAddressState} </if>
+				<if test="unitPrice != null and unitPrice != 0">,unit_price = #{unitPrice} </if>
+				<if test="comissionFee != null and comissionFee != 0">,comission_fee = #{comissionFee}	 </if>
+		WHERE order_master_product_id = #{orderMasterProductId}
+	</update>
+
+	<delete id="deleteOrderMasterProduct" parameterType="OrderMasterProduct">
+		/* QUERY ID : deleteOrderMasterProduct */
+		DELETE FROM order_master_product
+		 WHERE order_master_id = #{orderMasterId}
+		       <if test="orderMasterProductId != null and orderMasterProductId != 0">, order_master_product_id = TRIM(#{orderMasterProductId}) </if>
+	</delete>
+
+</mapper>

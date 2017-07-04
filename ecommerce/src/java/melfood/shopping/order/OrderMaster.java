@@ -52,7 +52,6 @@ public class OrderMaster extends BaseDto {
     private String deliveryToAddrState;
     private String deliveryToAddrPostcode;
     private Float deliveryDistance;
-    private Float deliveryBasicFee;
     private Float deliveryFeePerKm;
     private Float deliveryBaseCharge;
     private String paymentMethod;
@@ -451,14 +450,6 @@ public class OrderMaster extends BaseDto {
 
     public void setDeliveryDistance(Float deliveryDistance) {
         this.deliveryDistance = deliveryDistance;
-    }
-
-    public Float getDeliveryBasicFee() {
-        return deliveryBasicFee;
-    }
-
-    public void setDeliveryBasicFee(Float deliveryBasicFee) {
-        this.deliveryBasicFee = deliveryBasicFee;
     }
 
     public Float getDeliveryFeePerKm() {

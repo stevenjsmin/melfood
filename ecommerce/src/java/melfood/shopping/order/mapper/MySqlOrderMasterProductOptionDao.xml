@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlOrderMasterProductOptionDao">
+
+	<select id="getOrderMasterProductOptions" parameterType="OrderMasterProductOption" resultType="OrderMasterProductOption">
+		/* QUERY ID : getOrderMasterProductOptions */
+			SELECT a.order_master_product_option_id 'orderMasterProductOptionId',
+				 a.order_master_product_id 'orderMasterProductId',
+				 a.option_name 'optionName',
+				 a.option_value 'optionValue',
+				 a.addtional_price 'addtionalPrice',
+				,a.create_datetime 'createDatetime'
+				,a.modify_datetime 'modifyDatetime'
+				,a.creator 'creator'
+             FROM order_master_product_option a
+	         WHERE 1 = 1
+				<if test="orderMasterProductOptionId != null and orderMasterProductOptionId != 0"> AND a.order_master_product_option_id = #{orderMasterProductOptionId} </if>
+				<if test="orderMasterProductId != null and orderMasterProductId != 0"> AND a.order_master_product_id = #{orderMasterProductId} </if>
+				<if test="optionName != null"> AND a.option_name LIKE CONCAT('%', #{optionName}, '%') </if>
+				<if test="optionValue != null"> AND a.option_value LIKE CONCAT('%', #{optionValue}, '%') </if>
+				<if test="addtionalPrice != null"> AND a.addtional_price = #{addtionalPrice} </if>
+	    	ORDER BY a.order_master_product_option_id ASC
+	</select>
+
+	<insert id="insertOrderMasterProductOptions" parameterType="java.util.List">
+		/* QUERY ID : insertOrderMasterProductOptions */
+		INSERT INTO order_master_product_option (order_master_product_id, option_name, option_value, addtional_price, creator) VALUES
+		<foreach collection="list" index="index" item="item">
+			<if test="index != 0"> , </if>
+			( #{item.orderMasterProductId}, #{item.optionName}, #{item.optionValue}, #{item.addtionalPrice}, #{item.creator} )
+		</foreach>
+	</insert>
+
+
+	<update id="modifyOrderMasterProductOption" parameterType="OrderMasterProductOption">
+		/* QUERY ID : modifyOrderMasterProductOption */
+		UPDATE order_master_product_option
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       ,order_master_product_id = #{orderMasterProductId}
+		       ,option_name = #{optionName}
+		       ,option_value = #{optionValue}
+		       ,addtional_price = #{addtionalPrice}
+		 WHERE order_master_product_option_id = #{orderMasterProductOptionId}
+	</update>
+
+	<update id="modifyOrderMasterProductOptionForNotNull" parameterType="OrderMasterProductOption">
+		/* QUERY ID : modifyOrderMasterProductOptionForNotNull */
+		UPDATE order_master_product_option
+		   SET modify_datetime = CURRENT_TIMESTAMP
+		       <if test="order_master_product_id != null">, customer_id = TRIM(#{orderMasterProductId}) </if>
+		       <if test="option_name != null">, seller_id = TRIM(#{optionName}) </if>
+		       <if test="option_value != null">, option_value = TRIM(#{optionValue}) </if>
+		       <if test="addtional_price != null">, addtional_price = TRIM(#{addtionalPrice}) </if>
+		WHERE order_master_product_option_id = #{orderMasterProductOptionId}
+	</update>
+
+	<delete id="deleteOrderMasterProductOption" parameterType="OrderMasterProductOption">
+		/* QUERY ID : deleteOrderMasterProductOption */
+		DELETE FROM order_master_product_option
+		 WHERE order_master_product_id = #{orderMasterProductId}
+			<if test="orderMasterProductOptionId != null and orderMasterProductOptionId != 0">, customer_id = TRIM(#{orderMasterProductOptionId}) </if>
+	</delete>
+
+</mapper>
