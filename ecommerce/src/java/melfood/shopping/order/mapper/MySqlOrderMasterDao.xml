@@ -208,8 +208,8 @@
 
 
 
-	<insert id="insertOrderMasters" parameterType="java.util.List">
-		/* QUERY ID : insertOrderMasters */
+	<insert id="insertOrderMaster" parameterType="java.util.List">
+		/* QUERY ID : insertOrderMaster */
 		INSERT INTO order_master (
 				 seller_id
 				,customer_id
