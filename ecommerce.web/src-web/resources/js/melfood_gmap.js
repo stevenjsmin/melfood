@@ -17,6 +17,13 @@
 /* TYPE 11 */ var MAPSTYLE_SUBTLE_GRAYSCALE = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}];
 /* TYPE 12 */ var MAPSTYLE_CLADME = [{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#4f595d"},{"visibility":"on"}]}];
 
+var geocoder = new google.maps.Geocoder();
+var prev_gmap_infowindow = false;
+var map;	// Google map object
+var bounds = new google.maps.LatLngBounds();
+var prev_gmap_infowindow = false;
+
+
 function getMapStyle(MelfoodGmap, mapType){
 	var mapStyleNo = null;
 	
@@ -42,13 +49,6 @@ function getMapStyle(MelfoodGmap, mapType){
 	return mapStyle;
 }
 
-var geocoder = new google.maps.Geocoder();
-var prev_gmap_infowindow = false;
-var map;	// Google map object
-var bounds = new google.maps.LatLngBounds();
-var prev_gmap_infowindow = false;
-
-
 
 function markAddressOnGMap(MelfoodGmap){
 	
@@ -58,16 +58,15 @@ function markAddressOnGMap(MelfoodGmap){
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
 	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
-	var mapMessage = "";
+	var message = "";
 	var mapIsMultipleMark = "no";
 
 	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
 	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
 	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
 	if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
-	if (typeof MelfoodGmap.mapMessage != 'undefined') mapMessage = MelfoodGmap.mapMessage;
-	if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
-	
+	if (typeof MelfoodGmap.message != 'undefined') message = MelfoodGmap.message;
+
 	var styledMap = new google.maps.StyledMapType(mapStyleNo, {name: mapName});
 	var latlng = new google.maps.LatLng( -37.818449, 145.124889 );	// Box Hill VIC
 	
@@ -204,7 +203,7 @@ function geocodeAddressForOnePlace( latlng, MelfoodGmap){
 	});
 	
 	// Create an InfoWindow for the marker
-	var contentString = MelfoodGmap.mapMessage;	// HTML text to display in the InfoWindow
+	var contentString = MelfoodGmap.message;	// HTML text to display in the InfoWindow
 	var infowindow = new google.maps.InfoWindow( { content: contentString } );
 	
 	// Set event to display the InfoWindow anchored to the marker when the marker is clicked.
@@ -233,9 +232,62 @@ function infoWindow(marker, map, message) {
     });
 }
 
+
+function markStreeViewOnGMap1(MelfoodGmap){
+    var latitude = "-37.813556";
+    var longitude = "144.963050";
+
+    var mapStyleNo = null;
+    var mapName = "Coupang Map";
+    var mapBindObjID = "map-street-canvas";
+    var mapZoomLevel = 11;
+    var mapAddress = "Melbourne, VIC";
+    var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
+    var message = "";
+    var mapIsMultipleMark = "no";
+
+
+    if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
+    if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
+    if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
+    if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
+    if (typeof MelfoodGmap.message != 'undefined') message = MelfoodGmap.message;
+    if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
+
+    geocoder.geocode( { 'address': mapAddress}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+            latitude = results[0].geometry.location.lat();
+            longitude = results[0].geometry.location.lng();
+
+            var mapOptions = {
+                zoom: mapZoomLevel,
+                maxZoom: 20,
+                center: latlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                mapTypeControl: true
+            };
+
+            var latlng = new google.maps.LatLng( latitude, longitude );	// Melbourne, VIC
+
+            var panorama = new google.maps.StreetViewPanorama(
+                document.getElementById(mapBindObjID), {
+                    position: latlng,
+                    pov: {
+                        heading: 34,
+                        pitch: 10
+                    }
+                });
+            map.setStreetView(panorama);
+
+        } else {
+            alert(2);
+        }
+    });
+
+}
+
+
 function markStreeViewOnGMap(MelfoodGmap){
-	var latitude = "-37.813556";
-	var longitude = "144.963050";
 	
 	var mapStyleNo = null;
 	var mapName = "Coupang Map";
@@ -243,46 +295,41 @@ function markStreeViewOnGMap(MelfoodGmap){
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
 	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
-	var mapMessage = "";
 	var mapIsMultipleMark = "no";
 	
 	
 	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
 	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
 	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
-	if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
-	if (typeof MelfoodGmap.mapMessage != 'undefined') mapMessage = MelfoodGmap.mapMessage;
-	if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
 
- 	geocoder.geocode( { 'address': mapAddress}, function(results, status) {
- 		if (status == google.maps.GeocoderStatus.OK) {
- 		    	latitude = results[0].geometry.location.lat();
- 		    	longitude = results[0].geometry.location.lng();
- 		    	
- 		   	var mapOptions = {
- 		   	       zoom: mapZoomLevel,
- 		   	       maxZoom: 20,
- 		   	       center: latlng,
- 		   	       mapTypeId: google.maps.MapTypeId.ROADMAP,
- 		   	       mapTypeControl: true
- 		   	     }; 
- 		   	
- 		    var latlng = new google.maps.LatLng( latitude, longitude );	// Melbourne, VIC
- 		    
- 			var panorama = new google.maps.StreetViewPanorama(
- 		 			document.getElementById(mapBindObjID), {
- 		              position: latlng,
- 		              pov: {
- 		                heading: 34,
- 		                pitch: 10
- 		              }
- 		            }); 	
- 			map.setStreetView(panorama);
- 		    	
- 		} else {
- 			alert(2);
- 		} 
- 	}); 
- 	
+    var list    = MelfoodGmap.mapMultiplePoints;
+    var point = list.pop();
+
+    console.log("MelfoodGmap.mapMultiplePoints:" + MelfoodGmap.mapMultiplePoints);
+    console.log("list:" + list);
+    console.log("point:" + point);
+
+    var mapOptions = {
+        zoom: mapZoomLevel,
+        maxZoom: 20,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: true
+    };
+
+    var latlng = new google.maps.LatLng( point.latitude, point.longitude );	// Melbourne, VIC
+
+    var panorama = new google.maps.StreetViewPanorama(
+        document.getElementById(mapBindObjID), {
+            position: latlng,
+            pov: {
+                heading: 34,
+                pitch: 10
+            }
+        });
+    map.setStreetView(panorama);
+
+
+
 }
 
