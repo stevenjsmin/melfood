@@ -86,24 +86,12 @@ function markAddressOnGMap(MelfoodGmap){
  	map.mapTypes.set('map_style', styledMap);
  	map.setMapTypeId('map_style');
 
-	if(mapIsMultipleMark == 'N') {
-		// Make asynchronous call to Google geocoding API
-		geocoder.geocode( { 'address': mapAddress }, function(results, status) {
-			var addr_type = results[0].types[0];	// [addr_type : administrative_area_level_1 | locality | street_address]
-			if ( status == google.maps.GeocoderStatus.OK )
-				geocodeAddressForOnePlace( results[0].geometry.location, MelfoodGmap);
-			else
-				alert("Geocode was not successful for the following reason: " + status);
-		});
-	} else {
-        geocodeAddressForMultiPlace(MelfoodGmap);
-
-	}
+    markingByCoordinate(MelfoodGmap);
 }
 
 
 
-function geocodeAddressForMultiPlace(MelfoodGmap) {
+function markingByCoordinate(MelfoodGmap) {
     var icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
     var defaultIco = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
 
@@ -147,6 +135,56 @@ function geocodeAddressForMultiPlace(MelfoodGmap) {
 
 }
 
+/**
+ * Should be careful to call, it require to call Google webservice and could be over maximum limitation.
+ *
+ * @param MelfoodGmap
+ */
+function markingByAddress(MelfoodGmap) {
+    var icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
+    var defaultIco = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
+
+    var list    = MelfoodGmap.mapMultiplePoints;
+
+    if(list != null && list.length > 0) {
+        while((a=list.pop()) != null){
+
+            if(a.iconUrl == '' || a.iconUrl == null  || a.iconUrl == undefined) {
+                icon = defaultIco;
+            } else {
+                icon = a.iconUrl;
+            }
+
+            geocoder.geocode({
+                    'address': a.address
+                },
+                function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var marker = new google.maps.Marker({
+                            icon: icon,
+                            map: map,
+                            position: results[0].geometry.location,
+                            // title: title,
+                            // animation: google.maps.Animation.DROP,
+                            address: a.address
+                        });
+                        infoWindow(marker, map, a.message);
+                        bounds.extend(marker.getPosition());
+                        map.fitBounds(bounds);
+
+                        if(clickEvent == true){
+                            google.maps.event.trigger(marker, "click", {});
+                        }
+                    } else {
+                        console.log("geocode of " + address + " failed:" + status);
+                    }
+                });
+
+
+        } // End of While
+
+    }
+}
 
 function geocodeAddressForOnePlace( latlng, MelfoodGmap){
 	var address = MelfoodGmap.mapAddress;
