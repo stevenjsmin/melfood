@@ -61,7 +61,7 @@
 
 <div class="row">
   <div class="col-md-2"></div>
-  <div class="col-md-4"><a href="javascript:goHome();"><img src="/resources/image/logo_melfood.png" style="height: 40px;"></a></div>
+  <div class="col-md-4"><a href="javascript:goHome();"><img src="/resources/image/logo_melfood_2.png" style="height: 40px;"></a></div>
   <div class="col-md-6" style="vertical-align: middle;">
      <div style="height: 50px;">
        <% if(sessionUser != null) {  %>
