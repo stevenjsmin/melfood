@@ -289,7 +289,7 @@
 <!-- 공동구매목록-->
 <c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count" begin="0">
 
-    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;border-left: 6px solid #F15F4C;">
+    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;border-left: 6px solid #F15F4C;margin-bottom: 5px;">
 
         <div class="col-sm-2 col-centered" style="padding-right: 40px;text-align: right;">
             <c:choose>
@@ -401,7 +401,7 @@
 
 
 <!-- 협동조합 파트너스 -->
-<div class="row" align="center" style="background-color: #1E1E1E;padding-top: 5px;padding-bottom: 5px;">
+<div class="row" align="center" style="background-color: #1E1E1E;padding-top: 5px;padding-bottom: 5px;margin-top: 10px;">
     <div class="col-sm-12"></div>
 </div>
 <div class="row">
