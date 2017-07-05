@@ -32,7 +32,7 @@
                 format: "n0"
             });
 
-            progress(true, 'dilivery_service_row');
+            progressWithId(true, 'dilivery_service_row');
             if('${groupPurchase.deliverable}' == 'Y'){
                 $.ajax({
                     url: "/grouppurchase/checkDeliverable.yum",
@@ -61,7 +61,7 @@
             var distance = data.distance;
             var duration = data.duration;
 
-            progress(false, 'dilivery_service_row');
+            progressWithId(false, 'dilivery_service_row');
             if(resultCode == "OK"){
                 $("#DELIVERY_SERVICE_DETAIL").show();
                 $("#cutomerAddress").html(cutomerAddress);

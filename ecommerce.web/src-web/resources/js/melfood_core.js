@@ -72,7 +72,7 @@ function progress(turnOnOff) {
 	}
 }
 
-function progress(turnOnOff, objId) {
+function progressWithId(turnOnOff, objId) {
     if(turnOnOff == true) {
         kendo.ui.progress($('#' + objId), true);
     } else {
