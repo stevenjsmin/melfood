@@ -191,7 +191,7 @@
                 title: "Product images",
                 modal: true,
                 iframe: true,
-                position:{ top:"200", left:"25%"}
+                position:{ top:"100", left:"25%"}
             });
 
             var popup_dialog = $("#groupPurchaseImagePopup").data("kendoWindow");
