@@ -101,7 +101,7 @@
             MelfoodGmap.mapName = '멜푸드지도';
             MelfoodGmap.mapStyleNo = 7;
             MelfoodGmap.mapIsMultipleMark = 'Y';
-            MelfoodGmap.mapZoomLevel = 12;
+            MelfoodGmap.mapZoomLevel = 10;
             MelfoodGmap.mapAddress = '4 Torresdale Road, South Morang VIC 3752';
 
             //groupPurchaseAlllist

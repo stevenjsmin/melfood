@@ -149,41 +149,31 @@
             MelfoodGmap.mapName = '멜푸드지도';
             MelfoodGmap.mapStyleNo = 6;
             MelfoodGmap.mapIsMultipleMark = 'N';
-            MelfoodGmap.mapZoomLevel = 18;
+            MelfoodGmap.mapZoomLevel = 15;
+
+            // 단일 포인트를 나타탈때는 MelfoodGmap에 직접 위치 정보를 설정해준다
             MelfoodGmap.mapAddress = '${groupPurchase.marketAddressStreet} ${groupPurchase.marketAddressSuburb} ${groupPurchase.marketAddressState} ${groupPurchase.marketAddressPostcode}';
+            MelfoodGmap.mapLatitude = "${groupPurchase.marketGmapLatitude}";
+            MelfoodGmap.mapLongitude = "${groupPurchase.marketGmapLongitude}";
 
-            var gmap_latitude = "${groupPurchase.marketGmapLatitude}";
-            var gmap_longitude = "${groupPurchase.marketGmapLongitude}";
-
-            console.log("gmap_latitude :" + gmap_latitude)
-            console.log("gmap_longitude :" + gmap_longitude)
-
-            var message = "<table style='width: 380px;height: 70px;'>";
+            var message = "<table style='width: 300px;height: 70px;'>";
                 message = message + "<tr>"
-                message = message + "  <td style='width: 40px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>"
+                message = message + "  <td style='width: 30px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>"
                 message = message + "  <td>${groupPurchase.marketOpenStartTime} ~ ${groupPurchase.marketOpenEndTime}</td>"
                 message = message + "</tr>"
                 message = message + "<tr>"
-                message = message + "  <td></td>"
-                message = message + "  <td>근처에오셔서 위치를 잘 모르실때 공.구 진행자에게 전화주세요</td>"
-                message = message + "</tr>"
-                message = message + "<tr>"
-                message = message + "  <td style='width: 40px;text-align: center;'><i class='fa fa-mobile fa-lg' aria-hidden='true'></i></td>"
-                message = message + "  <td style='color:#900C3E;'>${organizer.mobile}</td>"
+                message = message + "  <td style='width: 30px;text-align: center;'><i class='fa fa-mobile fa-lg' aria-hidden='true'></i></td>"
+                message = message + "  <td>공.구 진행자 모바일 : <span style='color:#900C3E;'>${organizer.mobile}</span></td>"
                 message = message + "</tr>"
                 message = message + "</table>"
 
             // 한개의 포인트만 담는다.
-            points.push({latitude:gmap_latitude, longitude:gmap_longitude, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/yellow.png'});
+            points.push({latitude:'${groupPurchase.marketGmapLatitude}', longitude:'${groupPurchase.marketGmapLongitude}', message: message, clickEvent: true, iconUrl:'/resources/image/map_marker12.png'});
             MelfoodGmap.mapMultiplePoints = points;
 
-            console.log("JSP MelfoodGmap.mapMultiplePoints :" + MelfoodGmap.mapMultiplePoints);
-            console.log("JSP points :" + points);
-
             markAddressOnGMap(MelfoodGmap);
-            markStreeViewOnGMap(MelfoodGmap);
-            $("#streetViewMap").show();
-            $("#map-street-canvas").show();
+            markStreeViewByCoordinate(MelfoodGmap);
+
         }
     </script>
 

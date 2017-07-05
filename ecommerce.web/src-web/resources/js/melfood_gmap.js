@@ -24,14 +24,14 @@ var bounds = new google.maps.LatLngBounds();
 var prev_gmap_infowindow = false;
 
 
-function getMapStyle(MelfoodGmap, mapType){
+function getMapStyle(melGmap, mapType){
 	var mapStyleNo = null;
 	
 	// Default MAP style select
 	var mapStyle = MAPSTYLE_UNSATURATED_BROWNS;
 	if(mapType == 'HEAT') mapStyle = MAPSTYLE_BENTLEY;
 	
-	if (typeof MelfoodGmap.mapStyleNo != 'undefined') mapStyleNo = MelfoodGmap.mapStyleNo;
+	if (typeof melGmap.mapStyleNo != 'undefined') mapStyleNo = melGmap.mapStyleNo;
 	
 	if(mapStyleNo == '1')  mapStyle  = MAPSTYLE_NEUTRAL_BLUE;
 	if(mapStyleNo == '2')  mapStyle  = MAPSTYLE_GOWALLA;
@@ -50,22 +50,22 @@ function getMapStyle(MelfoodGmap, mapType){
 }
 
 
-function markAddressOnGMap(MelfoodGmap){
+function markAddressOnGMap(melGmap){
 	
 	var mapStyleNo = null;
 	var mapName = "멜푸드";
 	var mapBindObjID = "map-canvas";
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
-	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
+	var mapStyleNo = getMapStyle(melGmap,'HEAT');
 	var message = "";
 	var mapIsMultipleMark = "no";
 
-	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
-	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
-	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
-	if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
-	if (typeof MelfoodGmap.message != 'undefined') message = MelfoodGmap.message;
+	if (typeof melGmap.mapName != 'undefined') mapName = melGmap.mapName;
+	if (typeof melGmap.mapBindObjID != 'undefined') mapBindObjID = melGmap.mapBindObjID;
+	if (typeof melGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(melGmap.mapZoomLevel);
+	if (typeof melGmap.mapAddress != 'undefined') mapAddress = melGmap.mapAddress;
+	if (typeof melGmap.message != 'undefined') message = melGmap.message;
 
 	var styledMap = new google.maps.StyledMapType(mapStyleNo, {name: mapName});
 	var latlng = new google.maps.LatLng( -37.818449, 145.124889 );	// Box Hill VIC
@@ -85,19 +85,25 @@ function markAddressOnGMap(MelfoodGmap){
  	map.mapTypes.set('map_style', styledMap);
  	map.setMapTypeId('map_style');
 
-    markingByCoordinate(MelfoodGmap);
+    markingByCoordinate(melGmap);
 }
 
 
 
-function markingByCoordinate(MelfoodGmap) {
+function markingByCoordinate(melGmap) {
     var icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
     var defaultIco = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
 
-    var list    = MelfoodGmap.mapMultiplePoints;
+    var list    = melGmap.mapMultiplePoints;
+
+    console.log("JS melGmap.mapMultiplePoints :" + melGmap.mapMultiplePoints)
+    console.log("JS melGmap.mapZoomLevel :" + melGmap.mapZoomLevel)
 
     if(list != null && list.length > 0) {
         while((a=list.pop()) != null){
+
+            console.log("JS a.latitude :" + a.latitude)
+            console.log("JS a.longitude :" + a.longitude)
 
             if(a.iconUrl == '' || a.iconUrl == null  || a.iconUrl == undefined) {
                 icon = defaultIco;
@@ -115,7 +121,6 @@ function markingByCoordinate(MelfoodGmap) {
                 , title: location[ 0 ]
             });
 
-
             infoWindow(marker, map, a.message);
             bounds.extend(marker.getPosition());
             map.fitBounds(bounds);
@@ -124,12 +129,15 @@ function markingByCoordinate(MelfoodGmap) {
                 google.maps.event.trigger(marker, "click", {});
             }
         }
-		/**
-        var zoomLevel = map.getZoom();
-        var listener = google.maps.event.addListener(map, "idle", function() {
-        	map.setZoom(Number(zoomLevel) - Number(3));
-            google.maps.event.removeListener(listener);
-        }); **/
+
+        if(melGmap.mapZoomLevel != 'undefined' && melGmap.mapZoomLevel != '' ) {
+            var zoomLevel = map.getZoom();
+            var listener = google.maps.event.addListener(map, "idle", function() {
+                map.setZoom(zoomLevel);
+                google.maps.event.removeListener(listener);
+            });
+        }
+
     }
 
 }
@@ -137,13 +145,13 @@ function markingByCoordinate(MelfoodGmap) {
 /**
  * Should be careful to call, it require to call Google webservice and could be over maximum limitation.
  *
- * @param MelfoodGmap
+ * @param melGmap
  */
-function markingByAddress(MelfoodGmap) {
+function markingByAddress(melGmap) {
     var icon = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
     var defaultIco = "http://maps.google.com/mapfiles/ms/micons/red-dot.png";
 
-    var list    = MelfoodGmap.mapMultiplePoints;
+    var list    = melGmap.mapMultiplePoints;
 
     if(list != null && list.length > 0) {
         while((a=list.pop()) != null){
@@ -185,55 +193,62 @@ function markingByAddress(MelfoodGmap) {
     }
 }
 
-function geocodeAddressForOnePlace( latlng, MelfoodGmap){
-	var address = MelfoodGmap.mapAddress;
-	var zoom = MelfoodGmap.mapZoomLevel;
-	
-	// Center the map at the specified location
-	// Set the zoom level according to the address level of detail the user specified
-	map.setCenter( latlng );
-	map.setZoom( zoom );
-		
-	// Place a Google Marker at the same location as the map center 
-	// When you hover over the marker, it will display the title
-	var marker = new google.maps.Marker( { 
-		position: latlng,     
-		map: map,      
-		title: address
-	});
-	
-	// Create an InfoWindow for the marker
-	var contentString = MelfoodGmap.message;	// HTML text to display in the InfoWindow
-	var infowindow = new google.maps.InfoWindow( { content: contentString } );
-	
-	// Set event to display the InfoWindow anchored to the marker when the marker is clicked.
-	google.maps.event.addListener( marker, 'click', function() { 
-		infowindow.open( map, marker ); 
-	});
-	
-	google.maps.event.trigger(marker, "click", {});
-}
 
 
 
-function infoWindow(marker, map, message) {
-    google.maps.event.addListener(marker, 'click', function () {
-        var html = message;
-        iw = new google.maps.InfoWindow({
-            content: html,
-            maxWidth: 350
+
+function markStreeViewByCoordinate(melGmap){
+
+    var mapStyleNo = null;
+    var mapName = "Coupang Map";
+    var mapBindObjID = "map-street-canvas";
+    var mapZoomLevel = 11;
+    var mapAddress = "Melbourne, VIC";
+    var mapStyleNo = getMapStyle(melGmap,'HEAT');
+    var mapIsMultipleMark = "no";
+
+
+    if (typeof melGmap.mapName != 'undefined') mapName = melGmap.mapName;
+    if (typeof melGmap.mapBindObjID != 'undefined') mapBindObjID = melGmap.mapBindObjID;
+    if (typeof melGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(melGmap.mapZoomLevel);
+
+    var list    = melGmap.mapMultiplePoints;
+    var point = list.pop();
+
+    console.log("melGmap.mapMultiplePoints:" + melGmap.mapMultiplePoints);
+    console.log("JS gmap_latitude :" +  melGmap.mapLatitude)
+    console.log("JS gmap_longitude :" +  melGmap.mapLongitude)
+
+    var mapOptions = {
+        zoom: mapZoomLevel,
+        maxZoom: 20,
+        center: latlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: true
+    };
+
+    // var latlng = new google.maps.LatLng( point.latitude, point.longitude );	// Melbourne, VIC
+    var latlng = new google.maps.LatLng( melGmap.mapLatitude, melGmap.mapLongitude );	// Melbourne, VIC
+
+    var panorama = new google.maps.StreetViewPanorama(
+        document.getElementById(mapBindObjID), {
+            position: latlng,
+            pov: {
+                heading: 50,
+                pitch: 10
+            }
         });
-        
-    	if( prev_gmap_infowindow ) {
-    		prev_gmap_infowindow.close();
-        }
-    	prev_gmap_infowindow = iw;
-        iw.open(map, marker);
-    });
+    map.setStreetView(panorama);
+
 }
 
 
-function markStreeViewOnGMap1(MelfoodGmap){
+/**
+ * Should be careful to call, it require to call Google webservice and could be over maximum limitation.
+ *
+ * @param melGmap
+ */
+function markStreeViewByAddress(melGmap){
     var latitude = "-37.813556";
     var longitude = "144.963050";
 
@@ -242,17 +257,17 @@ function markStreeViewOnGMap1(MelfoodGmap){
     var mapBindObjID = "map-street-canvas";
     var mapZoomLevel = 11;
     var mapAddress = "Melbourne, VIC";
-    var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
+    var mapStyleNo = getMapStyle(melGmap,'HEAT');
     var message = "";
     var mapIsMultipleMark = "no";
 
 
-    if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
-    if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
-    if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
-    if (typeof MelfoodGmap.mapAddress != 'undefined') mapAddress = MelfoodGmap.mapAddress;
-    if (typeof MelfoodGmap.message != 'undefined') message = MelfoodGmap.message;
-    if (typeof MelfoodGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = MelfoodGmap.mapIsMultipleMark;
+    if (typeof melGmap.mapName != 'undefined') mapName = melGmap.mapName;
+    if (typeof melGmap.mapBindObjID != 'undefined') mapBindObjID = melGmap.mapBindObjID;
+    if (typeof melGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(melGmap.mapZoomLevel);
+    if (typeof melGmap.mapAddress != 'undefined') mapAddress = melGmap.mapAddress;
+    if (typeof melGmap.message != 'undefined') message = melGmap.message;
+    if (typeof melGmap.mapIsMultipleMark != 'undefined') mapIsMultipleMark = melGmap.mapIsMultipleMark;
 
     geocoder.geocode( { 'address': mapAddress}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
@@ -287,49 +302,20 @@ function markStreeViewOnGMap1(MelfoodGmap){
 }
 
 
-function markStreeViewOnGMap(MelfoodGmap){
-	
-	var mapStyleNo = null;
-	var mapName = "Coupang Map";
-	var mapBindObjID = "map-street-canvas";
-	var mapZoomLevel = 11;
-	var mapAddress = "Melbourne, VIC";
-	var mapStyleNo = getMapStyle(MelfoodGmap,'HEAT');
-	var mapIsMultipleMark = "no";
-	
-	
-	if (typeof MelfoodGmap.mapName != 'undefined') mapName = MelfoodGmap.mapName;
-	if (typeof MelfoodGmap.mapBindObjID != 'undefined') mapBindObjID = MelfoodGmap.mapBindObjID;
-	if (typeof MelfoodGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(MelfoodGmap.mapZoomLevel);
 
-    var list    = MelfoodGmap.mapMultiplePoints;
-    var point = list.pop();
 
-    console.log("MelfoodGmap.mapMultiplePoints:" + MelfoodGmap.mapMultiplePoints);
-    console.log("list:" + list);
-    console.log("point:" + point);
-
-    var mapOptions = {
-        zoom: mapZoomLevel,
-        maxZoom: 20,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: true
-    };
-
-    var latlng = new google.maps.LatLng( point.latitude, point.longitude );	// Melbourne, VIC
-
-    var panorama = new google.maps.StreetViewPanorama(
-        document.getElementById(mapBindObjID), {
-            position: latlng,
-            pov: {
-                heading: 34,
-                pitch: 10
-            }
+function infoWindow(marker, map, message) {
+    google.maps.event.addListener(marker, 'click', function () {
+        var html = message;
+        iw = new google.maps.InfoWindow({
+            content: html,
+            maxWidth: 350
         });
-    map.setStreetView(panorama);
 
-
-
+        if( prev_gmap_infowindow ) {
+            prev_gmap_infowindow.close();
+        }
+        prev_gmap_infowindow = iw;
+        iw.open(map, marker);
+    });
 }
-
