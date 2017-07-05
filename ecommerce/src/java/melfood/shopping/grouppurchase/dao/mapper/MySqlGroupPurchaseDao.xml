@@ -354,6 +354,17 @@
         /* QUERY ID : getGroupPurchaseForMallFront */
         SELECT
             a.group_purchase_id 'groupPurchaseId',
+            CASE
+                WHEN a.stop_selling = 'Y' THEN '2_ORDER_CLOSED'
+                ELSE
+                CASE
+                    WHEN STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i') <![CDATA[ < ]]> a.order_start_dt THEN '4_WILL_BE_ORDER'
+                    WHEN (STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i') <![CDATA[ >= ]]> a.order_start_dt AND STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i') <![CDATA[ < ]]> a.order_end_dt) THEN '1_ON_ORDER'
+                    WHEN (STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i') <![CDATA[ >= ]]> a.market_open_start_dt AND STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i')  <![CDATA[ < ]]> a.market_open_end_dt  ) THEN '3_ON_SELLING'
+                    WHEN (STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i') <![CDATA[ > ]]> a.order_end_dt AND STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i')  <![CDATA[ <= ]]> a.market_open_start_dt AND STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i')  <![CDATA[ < ]]> a.market_open_end_dt  ) THEN '2_ORDER_CLOSED'
+                    ELSE '5_UNKNOWN'
+                END
+            END 'status',
             a.group_purchase_title 'groupPurchaseTitle',
             a.group_purchase_subtitle 'groupPurchaseSubtitle',
             a.purchase_organizer 'purchaseOrganizer',
@@ -391,9 +402,9 @@
             a.modify_datetime 'modifyDatetime',
             a.creator 'creator'
         FROM group_purchase a
-        WHERE 1 = 1
-              AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d')
-        ORDER BY a.stop_selling ASC, a.group_purchase_id ASC
+       WHERE (      STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i')   <![CDATA[ <=]]>  a.order_start_dt
+               OR   STR_TO_DATE(#{searchDateFrom}, '%Y-%m-%d %H:%i')   <![CDATA[ <=]]>  a.market_open_end_dt )
+   ORDER BY status ASC, a.create_datetime ASC
         LIMIT #{pagenationPage}, #{pagenationPageSize}
     </select>
     <select id="getTotalCntGroupPurchaseForMallFront" parameterType="GroupPurchase" resultType="java.lang.Integer">
@@ -403,7 +414,5 @@
         WHERE 1 = 1
         AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d')
     </select>
-
-
 
 </mapper>

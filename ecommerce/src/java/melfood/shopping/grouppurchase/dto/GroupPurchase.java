@@ -47,6 +47,8 @@ public class GroupPurchase extends BaseDto {
     private String marketOpenEndDate;
     private String marketOpenEndTime;
 
+    private String status;
+
     private User organizer;
     private List<GroupPurchaseProduct> purchaseProducts;
     private List<ProductImage> groupPurchaseImages;
@@ -349,5 +351,13 @@ public class GroupPurchase extends BaseDto {
 
     public void setMarketGmapFormattedAddress(String marketGmapFormattedAddress) {
         this.marketGmapFormattedAddress = marketGmapFormattedAddress;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

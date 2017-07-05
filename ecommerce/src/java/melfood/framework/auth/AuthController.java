@@ -123,7 +123,7 @@ public class AuthController extends BaseController {
         groupPurchase.setPagenationPage(page);
         groupPurchase.setPagenationPageSize(pageSize);
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         groupPurchase.setSearchDateFrom(df.format(cal.getTime()));

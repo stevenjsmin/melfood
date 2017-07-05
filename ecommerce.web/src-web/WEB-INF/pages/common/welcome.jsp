@@ -122,6 +122,10 @@
             var gmap_latitude = "";
             var gmap_longitude = "";
 
+            var on_order = 0;
+            var on_selling = 0;
+            var will_be_order = 0;
+
             <c:forEach var="entry" items="${groupPurchaseAlllist}" varStatus="count" begin="0">
                 message = "<table style='width: 350px;'>";
                 message = message + "<tr style='height: 35px;'>";
@@ -131,18 +135,54 @@
                 message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-map-marker fa-lg' aria-hidden='true'></i></td>";
                 message = message + "  <td><span style='color: #0095DA;font-weight:bold;'>${entry.marketAddressSuburb}</span> ${entry.marketAddressPostcode}</td>";
                 message = message + "</tr>";
-                message = message + "<tr style='height: 20px;'>";
-                message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
-                message = message + "  <td>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
-                message = message + "</tr>";
 
-                if('${entry.stopSelling}' == 'Y') {
+
+                if( '${entry.status}' == '2_ORDER_CLOSED') {
                     message = message + "<tr style='height: 20px;'>";
-                    message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #EB7D3C;'>공.구 마감 </b>: ${entry.stopSellingReason}</td>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
+                    message = message + "  <td>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
                     message = message + "</tr>";
-                } else {
+
+                    if('${entry.stopSelling}' == 'Y') {
+                        message = message + "<tr style='height: 20px;'>";
+                        message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #EB7D3C;'>공.구 마감 </b>: ${entry.stopSellingReason}</td>";
+                        message = message + "</tr>";
+                    } else {
+                        message = message + "<tr style='height: 20px;'>";
+                        message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #EB7D3C;'>공.구 마감 </b>: 주문기간 종료됬습니다.</td>";
+                        message = message + "</tr>";
+                    }
+
+                } else if( '${entry.status}' == '1_ON_ORDER') {
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
+                    message = message + "  <td>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
+                    message = message + "</tr>";
+
                     message = message + "<tr style='height: 20px;'>";
                     message = message + "  <td style='text-align: right;' colspan='2'><a href=\"javascript:goGroupPurchaseMain('${entry.groupPurchaseId}\')\">공.구하러 가기</a> &nbsp;&nbsp;<i class='fa fa-sign-in' aria-hidden='true'></i></td>";
+                    message = message + "</tr>";
+
+                } else if( '${entry.status}' == '3_ON_SELLING') {
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
+                    message = message + "  <td>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
+                    message = message + "</tr>";
+
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #502C34;'>공.구 마감 </b>: 현재 공.구 장소에서 공.구 진행중입니다.</td>";
+                    message = message + "</tr>";
+
+                } else if( '${entry.status}' == '4_WILL_BE_ORDER') {
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
+                    message = message + "  <td style='height: 35px;'>${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문 가능</span>합니다.</td>";
+                    message = message + "</tr>";
+
+                } else {
+                    message = message + "<tr style='height: 20px;'>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
+                    message = message + "  <td>${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문 가능</span>합니다.</td>";
                     message = message + "</tr>";
                 }
 
@@ -152,25 +192,29 @@
                 gmap_latitude = "${entry.marketGmapLatitude}";
                 gmap_longitude = "${entry.marketGmapLongitude}";
 
-                if('${entry.stopSelling}' == 'Y') {
-                    // points.push({address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/yellow.png'});
+                if( '${entry.status}' == '2_ORDER_CLOSED') {
                     points.push({latitude:gmap_latitude, longitude:gmap_longitude, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/yellow.png'});
 
-                } else {
-
-                    if(0 <= ${count.index} && ${count.index} < 1) {
-                        // points.push({address:address, message: message, clickEvent: true, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
-                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: true, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
-
-                    } else if(1 <= ${count.index} && ${count.index} < 10) {
-                        //points.push({address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
-                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/${count.index + 1}.png'});
-
+                } else if( '${entry.status}' == '1_ON_ORDER') {
+                    on_order = Number(on_order) + Number(1);
+                    if(1 <= on_order && on_order < 10) {
+                        if(on_order == 1){
+                            // points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: true, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/' + on_order + '.png'});
+                            points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/' + on_order + '.png'});
+                        } else {
+                            points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/' + on_order + '.png'});
+                        }
                     } else {
-                        // points.push({address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/red-dot.png'});
-                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/red-dot.png'});
-
+                        points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/kml/paddle/red-blank.png'});
                     }
+                } else if( '${entry.status}' == '3_ON_SELLING') {
+                    points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://www.google.com/mapfiles/arrow.png'});
+
+                } else if( '${entry.status}' == '4_WILL_BE_ORDER') {
+                    points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.google.com/mapfiles/ms/micons/red-pushpin.png'});
+
+                } else {
+                    points.push({latitude:gmap_latitude, longitude:gmap_longitude, address:address, message: message, clickEvent: false, iconUrl:'http://maps.gstatic.com/mapfiles/ridefinder-images/mm_20_gray.png'});
                 }
 
             </c:forEach>
@@ -299,10 +343,11 @@
         <div class="col-sm-3 col-centered" >
             <table style="width: 100%;color: #606060;">
                     <c:choose>
-                        <c:when test="${groupPurchase.stopSelling == 'N'}">
+
+                        <c:when test="${groupPurchase.status == '1_ON_ORDER'}">
                                 <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
                                 <tr>
-                                    <td style="text-align: left;padding-top: 5px;padding-left: 100px;">
+                                    <td style="text-align: left;padding-top: 5px;padding-left: 50px;">
                                         <c:choose>
                                             <c:when test="${sessionUser != null}">
                                                 <a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a>
@@ -314,14 +359,38 @@
                                     </td>
                                 </tr>
                         </c:when>
-                        <c:when test="${groupPurchase.stopSelling == 'Y'}">
-                                <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
-                                <tr><td style="text-align: left;padding-top: 5px;padding-left: 100px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
+
+                        <c:when test="${groupPurchase.status == '2_ORDER_CLOSED'}">
+                            <c:choose>
+                                <c:when test="${groupPurchase.stopSelling == 'Y'}">
+                                    <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
+                                    <tr><td style="text-align: left;padding-top: 5px;padding-left: 50px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
+                                    <tr><td style="text-align: left;padding-top: 5px;padding-left: 50px;color: #BE0712;">주문 마감 기간 지났습니다.</td></tr>
+                                </c:otherwise>
+                            </c:choose>
                         </c:when>
-                        <c:otherwise>
-                            ?
-                        </c:otherwise>
+
+                        <c:when test="${groupPurchase.status == '3_ON_SELLING'}">
+                            <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
+                            <tr><td style="text-align: left;padding-top: 5px;padding-left: 50px;">현재 공.구 현장에서 판매중입니다.</td></tr>
+                        </c:when>
+
+                        <c:when test="${groupPurchase.status == '4_WILL_BE_ORDER'}">
+                            <tr><td style="font-weight: bold;color: #4cae4c;font-size: 20px;">coming soon....</td></tr>
+                            <tr><td style="text-align: left;padding-top: 5px;padding-left: 50px;">공.구예정입니다.</td></tr>
+                            <tr><td style=";padding-top: 5px;padding-left: 50px;color: #8D9999;height: 30px;">${groupPurchase.orderStartDt} <span style="text-decoration: underline;">부터 주문 가능</span>합니다.</td></tr>
+                        </c:when>
+
+
                     </c:choose>
+
+
+
+
+
             </table>
         </div>
 
@@ -338,20 +407,25 @@
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div class="venueInfoWrapper">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="text-align: left;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="text-align: left;color: #DDDEE0;padding-top: 5px;padding-left: 10px;height: 40px;font-size: 15px;">
-                        <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
-                        | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>
-                        | <span style="font-weight: bold;text-decoration: underline">조선김치</span>
-                    </td>
-                </tr>
-            </table>
+
+            <div class="row">
+                <div class="col-sm-6" style="padding: 0px 0px;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;padding-left: 10px;height: 40px;font-size: 15px;">
+                                <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
+                                | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>
+                                | <span style="font-weight: bold;text-decoration: underline">조선김치</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
