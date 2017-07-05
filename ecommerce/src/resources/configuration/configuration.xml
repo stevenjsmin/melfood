@@ -10,7 +10,7 @@
     <!-- Exception URLs for access checking -->
     <system-config>
     	<release-version>1.0.0</release-version>
-        <acess-check-except-url>/common/auth/welcome.yum, /common/auth/login.yum, /common/auth/loginForm.yum, /common/auth/logout.yum, /common/EmailSendFrom.yum, /common/auth/Welcome.yum, /common/updateNmiGMapCoordinate.yum, /guest/common/sendQuestionMessage.yum, /common/postcode/suburbCmbx.yum, /common/getNumberOfCartItems.yum </acess-check-except-url>
+        <acess-check-except-url>/common/auth/welcome.yum, /common/auth/login.yum, /common/auth/loginForm.yum, /common/auth/logout.yum, /common/EmailSendFrom.yum, /common/auth/Welcome.yum, /grouppurchase/groupPurchaseImageViewer.yum, /guest/common/sendQuestionMessage.yum, /common/postcode/suburbCmbx.yum, /common/getNumberOfCartItems.yum </acess-check-except-url>
 
         <login-fail-allow-cnt>5</login-fail-allow-cnt>
         <password-change-period-days>80</password-change-period-days>

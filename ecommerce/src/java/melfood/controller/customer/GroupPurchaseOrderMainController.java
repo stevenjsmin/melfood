@@ -368,5 +368,28 @@ public class GroupPurchaseOrderMainController extends BaseController {
         return model;
     }
 
+    @RequestMapping("/groupPurchaseImageViewer")
+    public ModelAndView groupPurchaseImageViewer(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/groupPurchaseImageViewer");
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        if (StringUtils.isBlank(groupPurchaseId)) {
+            throw new Exception("[groupPurchaseId]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+        ProductImage productImage = new ProductImage(groupPurchaseId);
+
+        // For Pagination
+        productImage.setPagenationPage(0);
+        productImage.setPagenationPageSize(99999);
+
+        List<ProductImage> list = groupPurchaseService.getProductImages(productImage);
+
+        mav.addObject("groupPurchase", groupPurchase);
+        mav.addObject("imageList", list);
+
+        return mav;
+    }
 
 }

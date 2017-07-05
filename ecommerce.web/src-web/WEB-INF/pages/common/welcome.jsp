@@ -6,10 +6,27 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <%@ page import="melfood.framework.Ctx" %>
+<%@ page import="melfood.framework.auth.SessionUserInfo" %>
+<%@ page import="melfood.framework.system.BeanHelper" %>
+<%@ page import="melfood.framework.role.Role"%>
+<%@ page import="melfood.framework.user.User"%>
+<%@ page import="melfood.framework.auth.AuthService"%>
+<%@ page import="melfood.framework.auth.AuthServiceImpl"%>
+
+<%
+    AuthService userService = new AuthServiceImpl();
+    SessionUserInfo sessionUser = BeanHelper.getSessionUser();
+
+    if(sessionUser != null) {
+        pageContext.setAttribute("sessionUser", sessionUser);
+    } else {
+        pageContext.setAttribute("sessionUser", null);
+    }
+
+%>
 
 <!doctype html>
 <head>
-
     <style>
         /**
          * 상위에서 정의된 레이아웃 재정의함
@@ -26,12 +43,21 @@
             font-weight: bold;
         }
         .gppurchase {
-            border:2px solid;
-            color: #FBFBFB;
+            border: 2px solid transparent;
         }
         .gppurchase:hover {
-            border-color: #69B7F5;
+            border: 2px solid #0099FF;
         }
+
+        .gppurchaseimage {
+            border-bottom: 6px solid #FFFFFF;
+        }
+        .gppurchaseimage:hover {
+            border-bottom: 6px solid #16B906;
+            cursor: hand;
+
+        }
+
         .fa {
             color: #606060;
         }
@@ -50,38 +76,23 @@
             padding: 20px 0;
             height: 150px;
         }
+        /* centered columns styles */
+        .col-centered {
+            display:inline-block;
+            float:none;
+            /* reset the text-align */
+            text-align:left;
+            /* inline-block space fix */
+            margin-right:-4px;
+            vertical-align: top;
+        }
     </style>
 
-    <script>
+    <script type="text/javascript">
         $(document).ready(function() {
-
-            // https://owlcarousel2.github.io/OwlCarousel2/docs/api-options.html
-            var owl = $('.owl-carousel');
-            owl.owlCarousel({
-                items: 1,
-                center: false,
-                margin: 0,
-                nav: false,
-                loop: false,
-                autoWidth: false,
-                autoplay: false
-            });
-           /**
-            // 스크롤하는 부분이 하나이면 상관없는데 여러개일때는 모두 같이 움직이는 현상이 있음
-            owl.on('mousewheel', '.owl-stage', function(e) {
-                if (e.deltaY > 0) {
-                    owl.trigger('next.owl');
-                } else {
-                    owl.trigger('prev.owl');
-                }
-                e.preventDefault();
-            });
-             */
-
-           displayGroupPurchaseMarketPlace();
+            displayGroupPurchaseMarketPlace();
         })
     </script>
-
 
     <script type="text/javascript">
         function goChangePage(page){
@@ -171,9 +182,36 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function groupPurchaseImageViwer(groupPurchaseId) {
+
+            $("#groupPurchaseImagePopup").kendoWindow({
+                content: "/grouppurchase/groupPurchaseImageViewer.yum?groupPurchaseId=" + groupPurchaseId,
+                actions: ["Minimize", "Maximize", "Close"],
+                title: "Product images",
+                modal: true,
+                iframe: true,
+                position:{ top:"200", left:"25%"}
+            });
+
+            var popup_dialog = $("#groupPurchaseImagePopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                width: 700,
+                height: 480
+            });
+            // popup_dialog.center();
+
+            $("#groupPurchaseImagePopup").data("kendoWindow").open();
+        }
+        function closeGroupPurchaseImagePopup() {
+            var win_dialog = $("#groupPurchaseImagePopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
 </head>
 
 <body>
+<div id="groupPurchaseImagePopup"></div>
 <div class="row">
     <div class="col-sm-12" align="right">
         <table>
@@ -205,10 +243,25 @@
 </div>
 
 <!-- 공동구매목록-->
-<c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count1" begin="0">
+<c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count" begin="0">
 
-    <div class="row gppurchase" style="height: 170px;">
-        <div class="col-sm-3">
+    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;border-left: 6px solid #F15F4C;">
+
+        <div class="col-sm-2 col-centered" style="padding-right: 40px;text-align: right;">
+            <c:choose>
+                <c:when test="${groupPurchase.groupPurchaseImages.size() > 0}">
+                    <img src="/img/?f=${groupPurchase.groupPurchaseImages.iterator().next().imageFileId}"
+                         class="gppurchaseimage"
+                         style="width:150px;"
+                         onclick="groupPurchaseImageViwer('${groupPurchase.groupPurchaseId}')"/>
+                </c:when>
+                <c:otherwise>
+                    <img src="/resources/image/default_goods4.png"  style="width:130px;" />
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <div class="col-sm-3 col-centered" style="padding-left: 10px;">
             <table style="width: 100%;color: #606060;">
                 <tr style="height: 30px;"><td colspan="3" style="font-size: 15px;font-weight: bold;color: #2A2A2A;">${groupPurchase.groupPurchaseTitle}</td></tr>
                 <tr style="height: 25px;">
@@ -243,20 +296,27 @@
             </table>
         </div>
 
-
-        <div class="col-sm-2">
+        <div class="col-sm-3 col-centered" >
             <table style="width: 100%;color: #606060;">
                     <c:choose>
                         <c:when test="${groupPurchase.stopSelling == 'N'}">
                                 <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
-                                <tr><td style="text-align: right;padding-top: 5px;"><a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
-                            </table>
+                                <tr>
+                                    <td style="text-align: left;padding-top: 5px;padding-left: 100px;">
+                                        <c:choose>
+                                            <c:when test="${sessionUser != null}">
+                                                <a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="javascript:doLoginPopup()">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
                         </c:when>
                         <c:when test="${groupPurchase.stopSelling == 'Y'}">
-                            <table style="width: 100%;">
                                 <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
-                                <tr><td style="text-align: right;padding-top: 5px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
-                            </table>
+                                <tr><td style="text-align: left;padding-top: 5px;padding-left: 100px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
                         </c:when>
                         <c:otherwise>
                             ?
@@ -265,23 +325,9 @@
             </table>
         </div>
 
-
-        <div class="col-sm-5" style="padding-left: 50px;">
-            <div class="owl-carousel owl-theme" style="padding-top: 5px;">
-                <c:forEach var="groupPurchaseImage" items="${groupPurchase.groupPurchaseImages}" varStatus="count" begin="0">
-                    <div class="item">
-                        <img src="/img/?f=${groupPurchaseImage.imageFileId}" style="width: 130px;"/>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-
     </div>
 
 </c:forEach>
-
-
-
 
 
 

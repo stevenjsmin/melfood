@@ -22,4 +22,9 @@
 		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/deliverySchedule.jsp" />
 	</definition>
 
+	<definition name="tiles/customer/grouppurchase/groupPurchaseImageViewer" extends="layout/panel_100">
+		<put-attribute name="title" value="공.구 이미지 보기" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/groupPurchaseImageViewer.jsp" />
+	</definition>
+
 </tiles-definitions>
