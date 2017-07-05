@@ -58,9 +58,9 @@
             // https://owlcarousel2.github.io/OwlCarousel2/docs/api-options.html
             var owl = $('.owl-carousel');
             owl.owlCarousel({
-                items: 3,
+                items: 1,
                 center: false,
-                margin: 1,
+                margin: 0,
                 nav: false,
                 loop: false,
                 autoWidth: false,
@@ -281,23 +281,28 @@
 </c:forEach>
 
 
+
+
+
+
 <!-- 협동조합 파트너스 -->
+<div class="row" align="center" style="background-color: #1E1E1E;padding-top: 5px;padding-bottom: 5px;">
+    <div class="col-sm-12"></div>
+</div>
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div class="venueInfoWrapper">
             <table style="width: 100%;">
                 <tr>
-                    <td style="text-align: left;vertical-align: top;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
-                    <td>
-                        <table align="center">
-                            <tr>
-                                <td style="text-align: center;" id="mousefollow"><img class="circular-square" title="로즈 베이커리" src="/resources/image/sample/partner_1.jpg"/></td>
-                                <td style="width: 10px;">&nbsp;</td>
-                                <td style="text-align: center"><img class="circular-square" title="조선김치" src="/resources/image/sample/partner_2.jpg" /></td>
-                                <td style="width: 10px;">&nbsp;</td>
-                                <td style="text-align: center"><img class="circular-square" title="족과의 동침" src="/resources/image/sample/partner_3.jpg" /></td>
-                            </tr>
-                        </table>
+                    <td style="text-align: left;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td style="text-align: left;color: #DDDEE0;padding-top: 5px;padding-left: 10px;height: 40px;font-size: 15px;">
+                        <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
+                        | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>
+                        | <span style="font-weight: bold;text-decoration: underline">조선김치</span>
                     </td>
                 </tr>
             </table>
@@ -306,6 +311,7 @@
 </div>
 
 
+<!-- 하단에 지도표시 -->
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div id='map-canvas' style="width: 100%;height: 450px;"></div>
