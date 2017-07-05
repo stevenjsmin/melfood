@@ -204,108 +204,103 @@
     </div>
 </div>
 
+<!-- 공동구매목록-->
+<c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count1" begin="0">
 
-    <c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count1" begin="0">
-
-        <div class="row gppurchase" style="height: 170px;">
-            <div class="col-sm-3">
-                <table style="width: 100%;color: #606060;">
-                    <tr style="height: 30px;"><td colspan="3" style="font-size: 15px;font-weight: bold;color: #2A2A2A;">${groupPurchase.groupPurchaseTitle}</td></tr>
-                    <tr style="height: 25px;">
-                        <td style="width: 25px;text-align: center;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></td>
-                        <td style="font-weight: bold;height: 25px;">${groupPurchase.marketAddressSuburb}</td>
-                    </tr>
-                    <tr style="height: 25px;">
-                        <td style="width: 35px;text-align: center;"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></td>
-                        <td style="font-weight: bold;">
-                                ${groupPurchase.marketOpenStartDate} <span style="color:#606060;">${groupPurchase.marketOpenStartTime} ~ ${groupPurchase.marketOpenEndTime}</span>
-                        </td>
-                    </tr>
-                    <c:choose>
-                        <c:when test="${groupPurchase.deliverable == 'Y'}">
-                            <tr style="height: 25px;">
-                                <td style="width: 35px;text-align: center;"><i class="fa fa-truck" aria-hidden="true"></i></td>
-                                <td style="font-weight: bold;">배달 가능</td>
-                            </tr>
-                        </c:when>
-                    </c:choose>
-                    <c:choose>
-                        <c:when test="${groupPurchase.minimumPurchaseAmount > 0.0}">
-                            <tr style="height: 25px;">
-                                <td></td>
-                                <td style="font-weight: bold;color: #FF5832;">
-                                    Minimum order $ <fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.minimumPurchaseAmount}" />
-                                </td>
-                            </tr>
-                        </c:when>
-                    </c:choose>
-                    <tr style="height: 25px;"><td></td><td>&nbsp;</td></tr>
-                </table>
-            </div>
-
-
-            <div class="col-sm-2">
-                <table style="width: 100%;color: #606060;">
-                        <c:choose>
-                            <c:when test="${groupPurchase.stopSelling == 'N'}">
-                                    <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
-                                    <tr><td style="text-align: right;padding-top: 5px;"><a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
-                                </table>
-                            </c:when>
-                            <c:when test="${groupPurchase.stopSelling == 'Y'}">
-                                <table style="width: 100%;">
-                                    <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
-                                    <tr><td style="text-align: right;padding-top: 5px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
-                                </table>
-                            </c:when>
-                            <c:otherwise>
-                                ?
-                            </c:otherwise>
-                        </c:choose>
-                </table>
-            </div>
-
-
-            <div class="col-sm-5" style="padding-left: 50px;">
-                <div class="owl-carousel owl-theme" style="padding-top: 5px;">
-                    <c:forEach var="groupPurchaseImage" items="${groupPurchase.groupPurchaseImages}" varStatus="count" begin="0">
-                        <div class="item">
-                            <img src="/img/?f=${groupPurchaseImage.imageFileId}" style="width: 130px;"/>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-
+    <div class="row gppurchase" style="height: 170px;">
+        <div class="col-sm-3">
+            <table style="width: 100%;color: #606060;">
+                <tr style="height: 30px;"><td colspan="3" style="font-size: 15px;font-weight: bold;color: #2A2A2A;">${groupPurchase.groupPurchaseTitle}</td></tr>
+                <tr style="height: 25px;">
+                    <td style="width: 25px;text-align: center;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></td>
+                    <td style="font-weight: bold;height: 25px;">${groupPurchase.marketAddressSuburb}</td>
+                </tr>
+                <tr style="height: 25px;">
+                    <td style="width: 35px;text-align: center;"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></td>
+                    <td style="font-weight: bold;">
+                            ${groupPurchase.marketOpenStartDate} <span style="color:#606060;">${groupPurchase.marketOpenStartTime} ~ ${groupPurchase.marketOpenEndTime}</span>
+                    </td>
+                </tr>
+                <c:choose>
+                    <c:when test="${groupPurchase.deliverable == 'Y'}">
+                        <tr style="height: 25px;">
+                            <td style="width: 35px;text-align: center;"><i class="fa fa-truck" aria-hidden="true"></i></td>
+                            <td style="font-weight: bold;">배달 가능</td>
+                        </tr>
+                    </c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="${groupPurchase.minimumPurchaseAmount > 0.0}">
+                        <tr style="height: 25px;">
+                            <td></td>
+                            <td style="font-weight: bold;color: #FF5832;">
+                                Minimum order $ <fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.minimumPurchaseAmount}" />
+                            </td>
+                        </tr>
+                    </c:when>
+                </c:choose>
+                <tr style="height: 25px;"><td></td><td>&nbsp;</td></tr>
+            </table>
         </div>
 
-    </c:forEach>
+
+        <div class="col-sm-2">
+            <table style="width: 100%;color: #606060;">
+                    <c:choose>
+                        <c:when test="${groupPurchase.stopSelling == 'N'}">
+                                <tr><td><img src="/resources/image/good_grp_buy.jpg" style="width: 80px;"></td></tr>
+                                <tr><td style="text-align: right;padding-top: 5px;"><a href="javascript:goGroupPurchaseMain('${groupPurchase.groupPurchaseId}')">공동구매 참여하기 <img src="/resources/image/click-here.png" style="width: 40px;"> </a></td></tr>
+                            </table>
+                        </c:when>
+                        <c:when test="${groupPurchase.stopSelling == 'Y'}">
+                            <table style="width: 100%;">
+                                <tr><td><img src="/resources/image/close-order.png" style="width: 80px;"></td></tr>
+                                <tr><td style="text-align: right;padding-top: 5px;color: #BE0712;">${groupPurchase.stopSellingReason}</td></tr>
+                            </table>
+                        </c:when>
+                        <c:otherwise>
+                            ?
+                        </c:otherwise>
+                    </c:choose>
+            </table>
+        </div>
+
+
+        <div class="col-sm-5" style="padding-left: 50px;">
+            <div class="owl-carousel owl-theme" style="padding-top: 5px;">
+                <c:forEach var="groupPurchaseImage" items="${groupPurchase.groupPurchaseImages}" varStatus="count" begin="0">
+                    <div class="item">
+                        <img src="/img/?f=${groupPurchaseImage.imageFileId}" style="width: 130px;"/>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+
+    </div>
+
+</c:forEach>
+
 
 <!-- 협동조합 파트너스 -->
-<div class="row" align="center" style="background-color: #1E1E1E;margin-top: 10px;padding-top: 10px;padding-bottom: 10px;">
-    <div class="col-sm-12">
-        <table style="width: 100%;">
-            <tr>
-                <td style="text-align: left;vertical-align: top;color: #797979;padding-top: 5px;width: 120px;">협동조합 파트너스</td>
-                <td>
-                    <table align="center">
-                        <tr>
-                            <td style="text-align: center;" id="mousefollow"><img class="circular-square" title="로즈 베이커리" src="/resources/image/sample/partner_1.jpg"/></td>
-                            <td style="width: 10px;">&nbsp;</td>
-                            <td style="text-align: center"><img class="circular-square" title="조선김치" src="/resources/image/sample/partner_2.jpg" /></td>
-                            <td style="width: 10px;">&nbsp;</td>
-                            <td style="text-align: center"><img class="circular-square" title="족과의 동침" src="/resources/image/sample/partner_3.jpg" /></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>
-    </div>
-</div>
-
-
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div class="venueInfoWrapper">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="text-align: left;vertical-align: top;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
+                    <td>
+                        <table align="center">
+                            <tr>
+                                <td style="text-align: center;" id="mousefollow"><img class="circular-square" title="로즈 베이커리" src="/resources/image/sample/partner_1.jpg"/></td>
+                                <td style="width: 10px;">&nbsp;</td>
+                                <td style="text-align: center"><img class="circular-square" title="조선김치" src="/resources/image/sample/partner_2.jpg" /></td>
+                                <td style="width: 10px;">&nbsp;</td>
+                                <td style="text-align: center"><img class="circular-square" title="족과의 동침" src="/resources/image/sample/partner_3.jpg" /></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
