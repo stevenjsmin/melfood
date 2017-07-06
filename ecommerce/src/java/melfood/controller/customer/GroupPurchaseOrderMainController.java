@@ -93,6 +93,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
             // 공동구매 상품정보(목록)
             groupPurchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(groupPurchaseId);
 
+            if(!StringUtils.equalsIgnoreCase(groupPurchase.getStatus(), "3_ON_SELLING")) throw new Exception("주문 가능하지 않은 공동구매 입니다.");
+
+
             // GroupPurchase --> GroupPurchaseProduct/(s) --> Product/(s) --> ProductImage/(s)
             List<ProductImage> productImages = null;
             List<ProductOptionGroup> productOptionGroups = null;
@@ -142,6 +145,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
 
         return mav;

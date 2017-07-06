@@ -281,20 +281,15 @@ public class CommonController extends BaseController {
 			message.append("errorCode=" + errorCode + "^");
 			message.append("errorUrl=" + errorUrl + "^");
 			message.append("errorMessage=" + errorMessage + "^");
-			message.append("errorDetailMessage=" + errorDetailMessage + "^");
 			message.append("errorTime=" + errorTime + "^");
 			message.append("reportedBy=" + reportedBy.toString() + "^");
-			String recipient1 = Ctx.xmlConfig.getString("contact-info/level1/email");
-			String recipient2 = Ctx.xmlConfig.getString("contact-info/application-developer/email");
-			String recipient3 = Ctx.xmlConfig.getString("contact-info/system-administrator/email");
-			// String recipient4 = UssCtx.config.getString("contact-info/level2/email");
+			String recipient1 = Ctx.xmlConfig.getString("contact-info/system-administrator/email");
 
 			// Send email
-			// "4" is template id of Contract mail message body
 			EmailServices email = new EmailServices();
-			if (!StringUtils.isBlank(recipient1)) email.sendEmailUsingHtmlTemplate(recipient1, "System Error Report", message.toString(), "7");
-			if (!StringUtils.isBlank(recipient2)) email.sendEmailUsingHtmlTemplate(recipient2, "System Error Report", message.toString(), "7");
-			if (!StringUtils.isBlank(recipient3)) email.sendEmailUsingHtmlTemplate(recipient3, "System Error Report", message.toString(), "7");
+			if (!StringUtils.isBlank(recipient1)) email.sendEmailUsingHtmlTemplate(recipient1, "System Error Report", message.toString(), "5");
+			//if (!StringUtils.isBlank(recipient2)) email.sendEmailUsingHtmlTemplate(recipient2, "System Error Report", message.toString(), "5");
+			//if (!StringUtils.isBlank(recipient3)) email.sendEmailUsingHtmlTemplate(recipient3, "System Error Report", message.toString(), "5");
 			// if(StringUtils.isBlank(recipient4)) email.sendEmailWithTemplate(recipient4, "System Error Report", message.toString(), "7");
 
 			model.put("result", "OK");

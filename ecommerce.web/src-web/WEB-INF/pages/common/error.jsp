@@ -7,150 +7,96 @@
 
 <%@ page import="java.io.*"%>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-
-<script type="text/javascript">
-    var status = "less";
-
-    function toggleText()
-    {
-        if (status == "less") {
-            $("#textArea").show();
-            document.getElementById("toggleButton").innerText = "오류내용 상세히보기 열기..";
-            status = "more";
-        } else if (status == "more") {
-            $("#textArea").hide();
-            document.getElementById("toggleButton").innerText = "오류내용 상세히보기 닫기..";
-            status = "less"
-        }
+<style>
+    /* centered columns styles */
+    .col-centered {
+        display:inline-block;
+        float:none;
     }
-</script>
+</style>
 
 
-<div align="center">
-    <table style="width: 50%;">
-        <tr>
-            <td style="vertical-align: middle;">
-                <div class="alert alert-info" style="width: 100%;">
-                    <br/>
-                    <br/>
-                    <font style="color: #004080; font-size: small;">
-                            <b>죄송합니다. 요청하신 서비스를 수행하는 도중 문제가 발생하였습니다.</b>
-                    </font><br><br>
-                    <font style="font-size: x-small; color: #004080;">
-                    <%
-                        boolean handled = false; // Set to true after handling the error
+<%
+    ErrorData ed = null;
+    try {
+        ed = pageContext.getErrorData();
+    } catch (NullPointerException ne) {
+        // If the error page was accessed directly, a NullPointerException
+        // is thrown at (PageContext.java:514).
+        // Catch and ignore it... it effectively means we can't use the ErrorData
+    }
+%>
 
-                        // Get the PageContext
-                        if (pageContext != null) {
 
-                            // Get the ErrorData
-                            ErrorData ed = null;
-                            try {
-                                ed = pageContext.getErrorData();
-                            } catch (NullPointerException ne) {
-                                // If the error page was accessed directly, a NullPointerException
-                                // is thrown at (PageContext.java:514).
-                                // Catch and ignore it... it effectively means we can't use the ErrorData
-                            }
+<div class="row" style="margin-top: 30px;text-align: center;">
+    <div class="col-sm-7 col-centered">
 
-                            // Display error details for the user
-                            if (ed != null) {
-	                                // Output details about the HTTP error
-	                                // (this should show error code 404, and the name of the missing page)
-	                                out.println("<br/>오류코드: <span id='errorCode' style='color: #2185E8;'>" + ed.getStatusCode() + "</span>"); %>
-	                                
-	                                <br/>URL: <span id='errorUrl' style='color: #2185E8;'><% out.print(ed.getRequestURI() + "?"); %><c:out value="${queryString}" /></span>
-	                                <%
-	                                out.println("<br>");
-	                                out.println("<br>");
-	                                out.println("<br>");
-	                                out.println("<a id='toggleButton' onclick='toggleText();' href='javascript:void(0);'>오류내용 상세히보기 닫기..</a>");
-	                                out.println("<div id='textArea' style='display: none;width: 500px;'>");
-	                                if(exception != null){
-	                                	
-		                                out.println("<font style=\"font-size: small; color: #0000FF\"><span id='errorMessage'>" + StringUtils.abbreviate(exception.getMessage().toLowerCase().replaceAll("(\r\n|\n)", "<br />"),150) +"</span></font>");
-                                        /**
-		                                out.println("<div style='height: 200px;overflow-y:scroll;width:160%'>");
-		                                out.println("<font style='font-size: x-small;'><span id='errorDetailMessage'>");
-		                                StringWriter stringWriter = new StringWriter();
-		                                PrintWriter printWriter = new PrintWriter(stringWriter);
-		                                exception.printStackTrace(printWriter);
-		                                out.println(stringWriter);
-		                                printWriter.close();
-		                                stringWriter.close();
-		                                out.println("</span></font>");
-		                                out.println("</div>");
-		                                out.println("<br>");
-                                         */
-		                           } else {
-		                               out.println("<br/>오류 메시지: <span id='errorMessage'>Unknown</span>");
-		                               out.println("<br/>상세 메시지: <span id='errorDetailMessage'>Unknown</span>");
-		                           }
-                                   out.println("</div>");
-                                   out.println("<br/>");
-                                   out.println("<br/>");
+        <div class="panel panel-info">
+            <div class="panel-heading" style="padding-top: 10px;padding-bottom: 10px;">
+                <span style="color: #004080; font-size: small;font-weight: bold;">죄송합니다. 요청하신 서비스를 처리할 수 없습니다.</span>
+            </div>
+            <div class="panel-body" style="padding-top: 20px; padding-bottom: 30px;background-color: #F4F5F5;padding-left: 20px;padding-right: 20px;">
+                <table style="width: 100%;color: #514747;" align="center">
+                    <tr style="height: 30px;vertical-align: middle;border-bottom: solid 1px #C3C5C8;">
+                        <td style="width: 70px;text-align: right;">서비스 처리코드</td>
+                        <td style="width: 30px;text-align: center;font-weight: bold;">:</td>
+                        <td style="font-weight: bold;color: #0080C5;"><%=ed.getStatusCode()%></td>
+                    </tr>
+                    <tr style="height: 30px;">
+                        <td style="text-align: right;">요청URL</td>
+                        <td style="width: 30px;text-align: center;font-weight: bold;">:</td>
+                        <td style="color: #0080C5;"><%=ed.getRequestURI() %>?${queryString}</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100px;text-align: right;vertical-align: top;padding-top: 5px;">오류내용</td>
+                        <td style="width: 30px;text-align: center;vertical-align: top;padding-top: 5px;font-weight: bold;">:</td>
+                        <td style="vertical-align: top;padding-top: 5px;color: #0080C5;"><%=exception.getMessage()%></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
-                                // Error handled successfully, set a flag
-                                handled = true;
-                            }
-                        } else {
-                            out.println("<br/>오류코드: <span id='errorCode' style='color: #2185E8;font-weight: bold;'>Unknown</span>");
-                            out.println("<br/>URL: <span id='errorMessage'>Unknown</span>");
-                            out.println("<br/>오류 메시지: <span id='errorMessage'>Unknown</span>");
-                            out.println("<br/>상세 메시지: <span id='errorDetailMessage'>Unknown</span>");
-                            out.println("<br>");
-                            out.println("<br>");
-                        }
-
-                        // Check if the error was handled
-                        if (!handled) {
-                            out.println("<p>");
-                            out.println("발생한 오류에대해서 더이상 제공할 오류 메시지가 존재하지 않습니다.");
-                        }
-                    %>
-                    </font>
-                </div>
-                <br>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <font color="#004080" style="font-size: 12px;">
-                    <b>문의 </b> <c:out value="${in_charge_of_person}" />
-                </font>
-                <br/><br/>
-                <div style="font-size: small;text-align: right;color: #8D8D8D"> 다음 이메일 아이콘을 선택하여 오류내용을 보고해주세요.
-                    <span class="glyphicon glyphicon-envelope" onclick="reportError()" style="cursor: pointer;"></span>
-                </div>&nbsp;&nbsp;<br/>
-
-                <font style="font-size: 13px;"><a href="/" class="alert-link">홈</a> | <a href="javascript:history.back()">뒤로가기</a> | <a href="javascript:window.close()">닫기</a></font>
-            </td>
-        </tr>
-    </table>
-    <br> <br>
+    </div>
 </div>
+
+
+<div class="row" style="margin-top: 5px;margin-bottom: 30px;text-align: center;">
+    <div class="col-sm-7 col-centered">
+        <table style="width: 100%;">
+            <tr style="height: 40px;"><td style="color: #464646;"><b>문의 - </b> <c:out value="${inChargeOfPerson}" /></td></tr>
+            <tr>
+                <td style="font-size: small;text-align: right;">
+                    <a href="javascript:reportError();" style="color: #C3C5C8;">오류내용을 보고해 주세요</a>
+                </td>
+            </tr>
+            <tr>
+                <td style=""><font style="font-size: 13px;">
+                    <a href="/" class="alert-link"><i class="fa fa-home fa-lg" aria-hidden="true" style="color: #465876;"></i></a> &nbsp;&nbsp;
+                    <a href="javascript:history.back()"><i class="fa fa-step-backward" aria-hidden="true" style="color: #465876;"></i></a> &nbsp;&nbsp;
+                    <a href="javascript:window.close()"><i class="fa fa-times fa-lg" aria-hidden="true" style="color: #465876;"></i></a></font></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
 
 <script type="text/javascript">
    function reportError(){
 	   
-       var errorCode = "";
-       var errorUrl = "";
-       var errorMessage = "";
-       var errorDetailMessage = "";
+       var errorCode = "<%=ed.getStatusCode()%>";
+       var errorUrl = "<%=ed.getRequestURI() %>?${queryString}";
+       var errorMessage = "<%=exception.getMessage()%>";
        var errorTime = '<c:out value="${errorTime}"/>';
 
-       if($('#errorCode') != null) errorCode = $('#errorCode').get(0).innerText;
-       if($('#errorUrl') != null) errorUrl = $('#errorUrl').get(0).innerText;
-       if($('#errorMessage') != null)  errorMessage = $('#errorMessage').get(0).innerText;
-       if($('#errorDetailMessage') != null) errorDetailMessage = $('#errorDetailMessage').get(0).innerText;
-        
+       progress(true);
         $.ajax({
             url     : "/common/ReportError.yum",
             data    : {
             	errorCode : errorCode,
             	errorUrl : errorUrl,
             	errorMessage : errorMessage,
-            	errorDetailMessage : errorDetailMessage,
             	errorTime : errorTime
             },
             success : callbackReportError
@@ -158,11 +104,13 @@
     }
    function callbackReportError(data) {
        var message = data.result;
-       
+
+       progress(false);
+
        if(message == "OK"){
-    	    alert('Successfully reported. Thanks so much');
+           infoPopup('Successfully reported. Thanks so much');
        } else {
-            alert('Successfully reported.');
+           warningPopup(data.resultMessage);
        }
    }   
 </script>

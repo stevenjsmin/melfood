@@ -35,17 +35,13 @@ public class ErrorController extends BaseController {
 		
 	    String queryString = request.getQueryString();
 	    
-	    if (queryString != null) {
-	    	queryString =  queryString + "?";
-	    } else {
-	    }
 	    mav.addObject("queryString",queryString);
 	    
 
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		mav.addObject("errorTime",dt.format(new Date()).toString());
 
-		mav.addObject("in_charge_of_person",
+		mav.addObject("inChargeOfPerson",
 				Ctx.xmlConfig.getString("contact-info/default-customer-service/name")
 						+ " | " + Ctx.xmlConfig.getString("contact-info/default-customer-service/phone")
 						+ " | " + Ctx.xmlConfig.getString("contact-info/default-customer-service/email"));

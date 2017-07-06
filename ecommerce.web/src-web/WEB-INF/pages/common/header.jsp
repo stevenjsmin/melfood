@@ -112,7 +112,7 @@ $(document).ready(function() {
                          <td><span style="color: #007900;font-weight: bold;"><%=sessionUser.getUser().getUserName() %> </span><span style="color: #bfbfbf;">/ <%=sessionUser.getSessionRole().getRoleName() %></span> 님 안녕하세요? &nbsp;&nbsp;&nbsp;</td>
                          <td>
                               <a href="javascript:logout();">로그아웃</a>  &nbsp;|&nbsp;
-                              <a href="javascript:goPayment();">장바구니 <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp;|&nbsp;
+                              <a href="javascript:goPayment();">결재 <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp;|&nbsp;
                               <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');">My 푸드</a>
                          </td>
                     </tr>
