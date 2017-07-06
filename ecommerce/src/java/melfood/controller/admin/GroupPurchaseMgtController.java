@@ -1,8 +1,10 @@
 package melfood.controller.admin;
 
+import com.google.maps.model.GeocodingResult;
 import melfood.framework.Ctx;
 import melfood.framework.MelfoodConstants;
 import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
 import melfood.framework.uitl.html.Option;
@@ -53,6 +55,9 @@ public class GroupPurchaseMgtController extends BaseController {
 
     @Autowired
     private ProductImageService productImageService;
+
+    @Autowired
+    private MelfoodGoogleMapService melfoodGoogleMapService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -287,6 +292,11 @@ public class GroupPurchaseMgtController extends BaseController {
             stopSellingReason = null;
         }
 
+        GeocodingResult geoResult = null;
+        // 20-24 Ellingworth Parade, Box Hill VIC 3128
+        String marketGmapLatitude = "-37.820836";
+        String marketGmapLongitude = "145.125625";
+
         try {
 
             GroupPurchase groupPurchase = null;
@@ -317,6 +327,24 @@ public class GroupPurchaseMgtController extends BaseController {
             if (StringUtils.isNotBlank(minimumPurchaseAmount)) groupPurchase.setMinimumPurchaseAmount(minimumPurchaseAmount);
             if (StringUtils.isNotBlank(maximumPurchaseAmount)) groupPurchase.setMaximumPurchaseAmount(maximumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
+
+
+            try {
+                geoResult = melfoodGoogleMapService.lookupGMap(marketAddressStreet + " " + marketAddressSuburb + " " + marketAddressState + " " + marketAddressPostcode);
+                if (geoResult != null) {
+                    marketGmapLatitude = Double.toString(geoResult.geometry.location.lat);
+                    marketGmapLongitude = Double.toString(geoResult.geometry.location.lng);
+
+                    groupPurchase.setMarketGmapLatitude(marketGmapLatitude);
+                    groupPurchase.setMarketGmapLongitude(marketGmapLongitude);
+                    groupPurchase.setMarketGmapFormattedAddress(geoResult.formattedAddress);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.info("[" + marketAddressStreet + " " + marketAddressSuburb + " " + marketAddressState + " " + marketAddressPostcode + "] 에대한 죄표를 구하는데 실패하였습니다. :" + e.getMessage());
+            }
+
 
             if (StringUtils.equalsIgnoreCase(deliverable, "Y")) {
                 groupPurchase.setDeliverable("Y");

@@ -485,17 +485,39 @@
                                             <td style="color: #797979; text-align: right;">생산자 :</td>
                                             <td style="padding: 5px 5px;">${groupPurchaseProduct.product.sellerName}</td>
                                             <td>
-                                                <table>
-                                                    <tr>
-                                                        <td style="padding-left: 40px;">
-                                                            <input type="text" class="amountOfOrder" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;color: #0080C5;" onchange="parseProductOrderValue()" onkeyup="parseProductOrderValue()"/>
-                                                        </td>
-                                                        <td style="padding-left: 20px;">
-                                                            <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'DOWN')"></i>
-                                                            <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'UP')"></i>
-                                                        </td>
-                                                    </tr>
-                                                </table>
+                                                <c:choose>
+                                                    <c:when test="${groupPurchaseProduct.stopSelling == 'Y' }">
+
+                                                        <table style="width: 200px;">
+                                                            <tr><td style="padding-left: 10px;color: #58A578;font-size: 14px;font-weight: bold;">판매정지</td></tr>
+                                                            <tr><td style="text-align: right;color: #505050;padding-left: 10px;">${groupPurchaseProduct.stopSellingReason}</td></tr>
+                                                        </table>
+                                                        <input type="hidden" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0'/>
+
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <table style="width: 200px;">
+                                                            <tr>
+                                                                <td style="padding-left: 10px;">
+                                                                    <input type="text" class="amountOfOrder" id="amountOfOrder_${groupPurchaseProduct.product.prodId}" name="amountOfOrder_${groupPurchaseProduct.product.prodId}" value='0' maxlength="2" style="width: 100px; text-align: center;font-weight: bold;color: #0080C5;" onchange="parseProductOrderValue()" onkeyup="parseProductOrderValue()"/>
+                                                                </td>
+                                                                <td style="padding-left: 20px;">
+                                                                    <i class="fa fa-minus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'DOWN')"></i>
+                                                                    <i class="fa fa-plus-square fa-2x" aria-hidden="true" style="color: #797979;cursor: pointer;" onclick="increaseDecreaseOrderAmount('amountOfOrder_${groupPurchaseProduct.product.prodId}', 'UP')"></i>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+
+
+
+
+
+
+
+
                                             </td>
                                         </tr>
                                     </table>

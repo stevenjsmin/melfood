@@ -96,14 +96,14 @@ function markingByCoordinate(melGmap) {
 
     var list    = melGmap.mapMultiplePoints;
 
-    console.log("JS melGmap.mapMultiplePoints :" + melGmap.mapMultiplePoints)
-    console.log("JS melGmap.mapZoomLevel :" + melGmap.mapZoomLevel)
+    //console.log("JS melGmap.mapMultiplePoints :" + melGmap.mapMultiplePoints)
+    //console.log("JS melGmap.mapZoomLevel :" + melGmap.mapZoomLevel)
 
     if(list != null && list.length > 0) {
         while((a=list.pop()) != null){
 
-            console.log("JS a.latitude :" + a.latitude)
-            console.log("JS a.longitude :" + a.longitude)
+            // console.log("JS a.latitude :" + a.latitude)
+            // console.log("JS a.longitude :" + a.longitude)
 
             if(a.iconUrl == '' || a.iconUrl == null  || a.iconUrl == undefined) {
                 icon = defaultIco;
@@ -214,10 +214,6 @@ function markStreeViewByCoordinate(melGmap){
 
     var list    = melGmap.mapMultiplePoints;
     var point = list.pop();
-
-    console.log("melGmap.mapMultiplePoints:" + melGmap.mapMultiplePoints);
-    console.log("JS gmap_latitude :" +  melGmap.mapLatitude)
-    console.log("JS gmap_longitude :" +  melGmap.mapLongitude)
 
     var mapOptions = {
         zoom: mapZoomLevel,

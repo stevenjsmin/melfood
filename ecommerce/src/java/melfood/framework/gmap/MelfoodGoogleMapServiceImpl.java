@@ -34,11 +34,10 @@ import java.util.List;
 public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
 
     private static final Logger logger = LoggerFactory.getLogger(MelfoodGoogleMapServiceImpl.class);
-    private static final String googleMapApiKey = Ctx.getVar("GOOGLE.GEO.API.KEY");
-    private static final String googleapisUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?";
 
     @Override
     public GeocodingResult lookupGMap(String address) throws Exception {
+        String googleMapApiKey = Ctx.getVar("GOOGLE.GEO.API.KEY");
 
         GeoApiContext context = new GeoApiContext().setApiKey(googleMapApiKey);
         GeocodingResult[] results = null;
@@ -57,6 +56,7 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
 
     @Override
     public List<GeocodingResult> lookupGMap(List<String> addresses) throws Exception {
+        String googleMapApiKey = Ctx.getVar("GOOGLE.GEO.API.KEY");
 
         GeoApiContext context = new GeoApiContext().setApiKey(googleMapApiKey);
         GeocodingResult[] results = null;
@@ -99,7 +99,8 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
      */
     @Override
     public GMapResult getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception {
-
+        String googleapisUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?";
+        
         StringBuffer options = new StringBuffer();
 
         String orgAddr[] = StringUtils.split(originAddress);

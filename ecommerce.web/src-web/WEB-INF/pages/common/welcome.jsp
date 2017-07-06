@@ -170,7 +170,7 @@
                     message = message + "</tr>";
 
                     message = message + "<tr style='height: 20px;'>";
-                    message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #502C34;'>공.구 마감 </b>: 현재 공.구 장소에서 공.구 진행중입니다.</td>";
+                    message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #502C34;'>공.구 마감 </b>: 현재 공.구 장소에서 행사 진행중입니다.</td>";
                     message = message + "</tr>";
 
                 } else if( '${entry.status}' == '4_WILL_BE_ORDER') {

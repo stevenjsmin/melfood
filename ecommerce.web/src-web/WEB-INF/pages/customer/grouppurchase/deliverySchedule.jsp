@@ -71,16 +71,6 @@
                          </c:otherwise>
                     </c:choose>
 
-
-
-
-                    <c:forEach var="deliverySchedule" items="${deliverySchedules}" varStatus="count" begin="0">
-                         <tr>
-                              <td class="front-tbl-label">${deliverySchedule.addressSuburb} ${deliverySchedule.addressPostcode}</td>
-                              <td style="text-align: center;">${deliverySchedule.yyyyMmDd}</td>
-                              <td>${deliverySchedule.btwnFromHhmm} ~ ${deliverySchedule.btwnToHhmm}</td>
-                         </tr>
-                    </c:forEach>
                </table>
           </div>
      </div>

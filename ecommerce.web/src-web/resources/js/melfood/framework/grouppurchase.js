@@ -152,6 +152,7 @@ function validateForm(){
     var marketOpenStartDt = $('#marketOpenStartDt').val();
     var groupPurchaseNotice = $('#groupPurchaseNotice').val();
 
+
  	if(groupPurchaseTitle == "") {
  		message = message + prefix + "공동구매 제목은 필수입력 항목입니다.<br>";
  		checkObject[checkObject.length] = "groupPurchaseTitle";
@@ -261,7 +262,12 @@ function validateForm(){
         validation = false;
     }
 
-
+    if( marketOpenStartDt.substring(0,10) != marketOpenEndDt.substring(0,10)){
+        message = message + prefix + "공.구 마켓일은 시작일과 끝나는 일이 같아야합니다.<br>";
+        checkObject[checkObject.length] = "marketOpenEndDt";
+        checkObject[checkObject.length] = "marketOpenStartDt";
+        validation = false;
+    }
 
  	// 검증된 필드들을 마킹한다.
 	for(count=0; count < checkObject.length; count++ ){
