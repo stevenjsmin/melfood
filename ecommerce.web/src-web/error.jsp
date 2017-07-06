@@ -14,4 +14,7 @@
     }
 %>
 
-<span style="color: #004080; font-size: small;font-weight: bold;">죄송합니다. 요청하신 서비스를 처리할 수 없습니다 - <%=ed.getStatusCode()%> </span>
+<span style="color: #004080; font-size: small;font-weight: bold;">
+    죄송합니다. 요청하신 서비스를 처리할 수 없습니다 : &nbsp;&nbsp;&nbsp;<%=ed.getStatusCode()%> <br/>
+    <a href="/">home</a>
+</span>

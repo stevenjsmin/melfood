@@ -103,9 +103,10 @@ $(document).ready(function() {
 
 <div class="row" id="home">
   <div class="col-md-2"></div>
-  <div class="col-md-4"><a href="javascript:goHome();"><img src="/resources/image/logo_melfood.png" style="height: 40px;"></a></div>
-  <div class="col-md-6" style="vertical-align: middle;">
-     <div style="height: 50px;padding-right: 20px;">
+  <div class="col-md-3"><a href="javascript:goHome();"><img src="/resources/image/logo_melfood.png" style="height: 40px;"></a></div>
+  <div class="col-md-7" style="vertical-align: middle;">
+
+     <div style="height: 50px;padding-right: 0px;">
        <% if(sessionUser != null) {  %>
                <table align="right" style="height: 100%;">
                     <tr>
@@ -124,10 +125,14 @@ $(document).ready(function() {
                          <td style="padding-left: 5px;"><input type="password" class="form-control" id="password" name="password" placeholder="Password" onkeydown="pressEnter();"></td>
                          <td>&nbsp;<a href="javascript:login();"><img src="/resources/image/login.jpg" style="height: 45px;"></a></td>
                          <td style="width: 15px;">&nbsp;</td>
-                         <td><a href="javascript:joinMember();">회원가입</a> | <a href="javascript:findPassword();">비밀번호찾기</a> | 입점문의</td>
+                         <td><a href="javascript:joinMember();">회원가입</a> | <a href="javascript:findPassword();">비밀번호찾기</a></td>
                     </tr>
                </table>
        <%  } %>
+
+
+
+
      </div>
   </div>
 </div>
