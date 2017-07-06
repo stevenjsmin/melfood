@@ -26,6 +26,11 @@
 
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
+    <style type="text/css">
+        #addressState {
+            color: #BFBEC5;
+        }
+    </style>
 </head>
 
 <script type="text/javascript">
@@ -283,8 +288,9 @@
                 <tr>
                     <td></td>
                     <td colspan="3" class="value" style="padding-top: 5px;">
-                        <b>멜푸드</b>몰에서는 아이디를 사용하시는 <span style="color: #B0346B;">모바일(핸드폰) 번호</span>로만 받습니다.
-                        <br/><span style="color: #BFBEC5;">고객님의 개인정보 보호를 위하여 고객님의 ID(모바일번호)는 공개/노출되지 않습니다. </span></td>
+                        <b>멜푸드</b>몰에서는 아이디를 사용하시는 <span style="color: #B0346B;">모바일(핸드폰) 번호</span>로만 받습니다.<br/><br/>
+                        <!--<span style="color: #BFBEC5;">고객님의 개인정보 보호를 위하여 고객님의 ID(모바일번호)는 공개/노출되지 않습니다. </span> -->
+                        </td>
                 </tr>
                 <tr>
                     <td class="label"><span class="required">* </span>비밀번호</td>
@@ -304,14 +310,18 @@
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
+                    <td colspan="3" style="padding-left: 10px;"><span style="color: #BFBEC5;"><b>닉네임</b>, <b>실명</b>에 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
+                </tr>
+                <tr>
                     <td class="label">닉네임</td>
-                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30"/></td>
-                    <td colspan="2"><span style="color: #BFBEC5;">입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #BFBEC5;" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30" st/></td>
+                    <td colspan="2"></td>
                 </tr>
                 <tr>
                     <td class="label">실명</td>
-                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
-                    <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다. 입력하시지 않는 경우 아이디(모바일번호) 끝 3자리로 이용됩니다.</span></td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #BFBEC5;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
+                    <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다.</span></td>
                 </tr>
 
                 <tr><td colspan="4" style="height: 10px;"></td></tr>
@@ -361,7 +371,7 @@
                     <td colspan="4">
                         <table class="action_button_table" width="100%">
                             <tr>
-                                <td><a href="javascript:openMemberAgreementStmt();" class="btn btn-default">회원가입 및 관리규정에관한 약관</a> <a href="javascript:registerMember();" class="btn btn-primary">회원가입</a> </td>
+                                <td><a href="javascript:openMemberAgreementStmt();" class="btn btn-default">회원정보 보호에 관한 약속</a> <a href="javascript:registerMember();" class="btn btn-primary">회원가입</a> </td>
                             </tr>
                         </table>
                     </td>
