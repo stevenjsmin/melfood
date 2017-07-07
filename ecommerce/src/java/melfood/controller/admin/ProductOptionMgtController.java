@@ -8,22 +8,6 @@
 
 package melfood.controller.admin;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 import melfood.framework.MelfoodConstants;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
@@ -33,6 +17,20 @@ import melfood.shopping.product.Product;
 import melfood.shopping.product.ProductOptionService;
 import melfood.shopping.product.ProductOptionValue;
 import melfood.shopping.product.ProductService;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * TODO: Class description
@@ -62,6 +60,8 @@ public class ProductOptionMgtController extends BaseController {
 		htmlProperty.setCssClass("form-control");
 		mav.addObject("cbxOptionSeq", productOptionService.generateCmbxForOption(htmlProperty, Integer.parseInt(prodId)));
 
+		mav.addObject("product", productService.getProduct(new Product(prodId)));
+		mav.addObject("prodId", prodId);
 		mav.addObject("prodId", prodId);
 
 		return mav;

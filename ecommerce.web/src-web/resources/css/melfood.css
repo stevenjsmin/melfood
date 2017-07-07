@@ -9,6 +9,12 @@
 	border-bottom: 1px solid #FFDECD;
 	background-color: #FFFFFF;
 }
+.mainMenu {
+	width: 100%;
+	background: white;
+	border: 0px solid #CCC;
+	padding: 0px 0px 0px 0px;
+}
 
 .content {
 	width: 99%;

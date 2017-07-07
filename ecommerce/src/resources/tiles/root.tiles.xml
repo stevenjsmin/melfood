@@ -45,7 +45,7 @@
 		 레이아웃설명     : 상단에 페이지 제목과, 중간에는 좌측에 메인메뉴 네비게이션(트리)와 컨텐츠, 하단에는 Footer가 자리잡는다
 	-->
 	<definition name="layout/panel_300" extends="root" template="/WEB-INF/pages/_layout/panel_300.jsp">
-		<put-attribute name="left-menu" value="/WEB-INF/pages/common/empty.jsp" />
+		<put-attribute name="main-menu" value="/WEB-INF/pages/common/empty.jsp" />
 		<put-attribute name="body" value="/WEB-INF/pages/common/empty.jsp" />
 	</definition>
 

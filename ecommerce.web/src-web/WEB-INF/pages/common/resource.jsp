@@ -19,7 +19,7 @@
 <link href="/resources/css/melfood-kendo.css?ver=<%=Ctx.releaseVersion%>" rel="stylesheet" media="screen">
 <link href="/resources/css/melfood.css?ver=<%=Ctx.releaseVersion%>" rel="stylesheet" media="screen">
 <link href="/resources/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" >
-
+<link rel="stylesheet" href="/resources/header-menu/header-menu.css">
 <link rel="icon" type="image/png" href="/resources/image/favicon.png" />
 
 <!-- If call jquery.min.js form local resource,some javascript error found : HTTP404: NOT FOUND - The server has not found anything matching the requested URI (Uniform Resource Identifier). -->
