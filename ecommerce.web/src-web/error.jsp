@@ -14,7 +14,12 @@
     }
 %>
 
-<span style="color: #004080; font-size: small;font-weight: bold;">
-    죄송합니다. 요청하신 서비스를 처리할 수 없습니다 : &nbsp;&nbsp;&nbsp;<%=ed.getStatusCode()%> <br/>
-    <a href="/">home</a>
-</span>
+<table style="color: #3c3c3c;font-size: 15px;">
+    <tr>
+        <td style="vertical-align: middle;">죄송합니다. 요청하신 서비스를 처리할 수 없습니다</td>
+        <td style="width: 20px;text-align: center;">|</td>
+        <td style="vertical-align: middle;"><%=ed.getStatusCode()%></td>
+        <td style="width: 20px;text-align: center;">|</td>
+        <td style="vertical-align: middle;"><a href="/" style="color: #3c3c3c;"><img src="/resources/css/images/gic/ic_home_black_18dp_1x.png"></a></td>
+    </tr>
+</table>

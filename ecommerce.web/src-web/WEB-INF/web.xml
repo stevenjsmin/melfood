@@ -70,6 +70,15 @@
         <filter-class>melfood.framework.auth.AccessCheckFilter</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+
     <filter-mapping>
         <filter-name>AccessCheck</filter-name>
         <url-pattern>*.yum</url-pattern>
@@ -79,6 +88,15 @@
         <url-pattern>/*</url-pattern>
         </filter-mapping> -->
 
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    출처: http://kcmuni.tistory.com/entry/한글-깨짐-처리URIEncodingUTF-8 [내일을 항해~]
+
+
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
@@ -87,11 +105,11 @@
         <listener-class>melfood.framework.MelfoodContextListener</listener-class>
     </listener>
 
-<!--
-    <error-page>
-        <location>/framework/errormanager/error.yum</location>
-    </error-page>
--->
+    <!--
+        <error-page>
+            <location>/framework/errormanager/error.yum</location>
+        </error-page>
+    -->
     <error-page>
         <error-code>404</error-code>
         <location>/error.jsp</location>

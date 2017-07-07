@@ -287,12 +287,12 @@ public class AuthController extends BaseController {
 
             } else {
                 status = MelfoodConstants.LOGIN_AUTH_STATUS_FAILURE;
-                message = "로그인 실패  : 입력하신 ID(Email 또는 모바일번호)를 확인해주세요";
+                message = "로그인 실패  : 입력하신 ID를 확인해주세요";
             }
 
         } else {
             logger.debug("There is no user information with '" + userId + "'");
-            message = "입력하신 ID(Email 또는 모바일번호)에 해당하는 사용자 정보가 존재하지 않습니다.";
+            message = "입력하신 ID에 해당하는 사용자 정보가 존재하지 않습니다.";
             status = MelfoodConstants.LOGIN_AUTH_STATUS_FAILURE;
         }
 

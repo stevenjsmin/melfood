@@ -8,10 +8,9 @@
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- Layout Define -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<definition name="tiles/customer/mypage/root" extends="layout/panel_300">
-	    <put-attribute name="leftMenuName" value="CUSTOMER :: MY 푸드" />
+	<definition name="tiles/customer/mypage/root" extends="root" template="/WEB-INF/pages/_layout/panel_320.jsp">
 		<put-attribute name="navigation" value="Customer > My Page" />
-		<put-attribute name="main-menu" value="/WEB-INF/pages/customer/customer_main_menu.jsp" />
+		<put-attribute name="sub-left-main-menu" value="/WEB-INF/pages/customer/mypage_main_menu.jsp" />
 	</definition>
 	
 	<definition name="tiles/customer/mypage/customer/main" extends="tiles/customer/mypage/root">

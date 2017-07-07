@@ -70,7 +70,7 @@
 	<!-- PRODUCT MANAGEMENT -->
 	<definition name="layout/panel_310" extends="root" template="/WEB-INF/pages/_layout/panel_310.jsp">
 		<put-attribute name="main-menu" value="/WEB-INF/pages/admin/admin_main_menu.jsp" />
-		<put-attribute name="product-manage-left-menu" value="/WEB-INF/pages/admin/product_manage_left_menu.jsp" />
+		<put-attribute name="sub-left-main-menu" value="/WEB-INF/pages/admin/product_manage_left_menu.jsp" />
 		<put-attribute name="body" value="/WEB-INF/pages/common/empty.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/pages/common/footer_backoffice.jsp" />
 	</definition>

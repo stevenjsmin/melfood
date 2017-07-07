@@ -110,11 +110,11 @@ $(document).ready(function() {
        <% if(sessionUser != null) {  %>
                <table align="right" style="height: 100%;">
                     <tr>
-                         <td><span style="color: #007900;font-weight: bold;"><%=sessionUser.getUser().getUserName() %> </span><span style="color: #bfbfbf;">/ <%=sessionUser.getSessionRole().getRoleName() %></span> 님 안녕하세요? &nbsp;&nbsp;&nbsp;</td>
+                         <td><span style="color: #007900;font-weight: bold;"><%=sessionUser.getUser().getUserName() %> </span><span style="color: #bfbfbf;">/ <%=sessionUser.getSessionRole().getRoleName() %></span> 님:: &nbsp;&nbsp;&nbsp;</td>
                          <td>
-                              <a href="javascript:logout();">로그아웃</a>  &nbsp;|&nbsp;
-                              <a href="javascript:goPayment();">결재 <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp;|&nbsp;
-                              <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');">My 푸드</a>
+                              <a href="javascript:logout();"><i class="fa fa-unlock fa-lg" aria-hidden="true" style="color: #337AB7;"></i></a>  &nbsp;|&nbsp;
+                              <a href="javascript:goPayment();"><i class="fa fa-credit-card-alt" aria-hidden="true" style="color: #337AB7;"></i> <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp; | &nbsp;
+                              <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');" style="color: #337AB7;font-weight: bold;">My 푸드</a>
                          </td>
                     </tr>
                </table>

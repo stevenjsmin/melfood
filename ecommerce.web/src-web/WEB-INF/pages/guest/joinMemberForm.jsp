@@ -12,6 +12,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+        TABLE.detail_table TD.label1 {
+            background-color: #EAEAEA;
+            font-weight: bold;
+            text-align: right;
+            vertical-align: middle;
+            color: #ACADAF;
+            display: table-cell;
+        }
+    </style>
+
     <script type="text/javascript">
         $(document).ready(function () {
               // Member join form
@@ -40,15 +51,16 @@
             actions: ["Minimize", "Maximize", "Close"],
             title: "이용약관",
             modal: true,
-            iframe: true
+            iframe: true,
+            position:{ top:"100", left:"25%"}
         });
 
         var popupwid_dialog = $("#agreementStmtPopup").data("kendoWindow");
         popupwid_dialog.setOptions({
             width: 700,
-            height: 600
+            height: 320
         });
-        popupwid_dialog.center();
+        //popupwid_dialog.center();
 
         $("#agreementStmtPopup").data("kendoWindow").open();
     }
@@ -314,32 +326,32 @@
                     <td colspan="3" style="padding-left: 10px;"><span style="color: #BFBEC5;"><b>닉네임</b>, <b>실명</b>에 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
                 </tr>
                 <tr>
-                    <td class="label">닉네임</td>
+                    <td class="label1">닉네임</td>
                     <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #BFBEC5;" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30" st/></td>
                     <td colspan="2"></td>
                 </tr>
                 <tr>
-                    <td class="label">실명</td>
+                    <td class="label1">실명</td>
                     <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #BFBEC5;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
                     <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다.</span></td>
                 </tr>
 
                 <tr><td colspan="4" style="height: 10px;"></td></tr>
                 <tr>
-                    <td class="label">이메일</td>
+                    <td class="label1">이메일</td>
                     <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소 @" value='' maxlength="50"/></td>
                     <td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
                 </tr>
 
                 <tr><td colspan="4" style="height: 10px;"></td></tr>
                 <tr>
-                    <td class="label">State</td>
+                    <td class="label1">State</td>
                     <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
                     <td></td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="label">Postcode</td>
+                    <td class="label1">Postcode</td>
                     <td class="value" style="padding-left: 3px;">
                         <table>
                             <tr>
@@ -348,7 +360,7 @@
                             </tr>
                         </table>
                     </td>
-                    <td class="label">Suburb</td>
+                    <td class="label1">Suburb</td>
                     <td class="value">
                         <div id="cbx_addressSuburb">
                             <input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressSuburb" name="addressSuburb" value=''/>
@@ -356,7 +368,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="label">Street</td>
+                    <td class="label1">Street</td>
                     <td class="value" colspan="2"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressStreet" name="addressStreet" value=''/></td>
                     <td></td>
                 </tr>

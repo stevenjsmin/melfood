@@ -17,7 +17,7 @@
 		<put-attribute name="body" value="/WEB-INF/pages/guest/joinMemberForm.jsp" />
 	</definition>
 	<definition name="tiles/guest/joinmember/openMemberJoinAgreement" extends="layout/panel_100">
-		<put-attribute name="title" value="쇼핑몰 이용약관" />
+		<put-attribute name="title" value="회원정보 보호에 관한 약속" />
 		<put-attribute name="body" value="/WEB-INF/pages/guest/popup/openMemberJoinAgreement.jsp" />
 	</definition>
 	<definition name="tiles/guest/joinmember/findPassword" extends="tiles/guest/root">

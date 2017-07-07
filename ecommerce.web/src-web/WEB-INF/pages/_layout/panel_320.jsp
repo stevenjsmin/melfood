@@ -13,11 +13,6 @@
     <tiles:insertAttribute name="header"/>
 </div>
 
-<div class="mainMenu" id="mainMenu">
-    <tiles:insertAttribute name="main-menu"/>
-</div>
-
-
 <div class="content" id="contentsDiv">
     <div class="row">
         <div class="col-md-2" style="padding-left: 0px;">
