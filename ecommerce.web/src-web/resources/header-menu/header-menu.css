@@ -134,14 +134,14 @@ nav > ul {
 	display: none;
 	width: 100%;
 	padding: 20px 15px;
-	background: #E95546;
+	background: #58A578;
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: 600;
 }
 
 .responsive-menu:hover {
-	background: #E95546;
+	background: #8D9999;
 	color: #fff;
 	text-decoration: none;
 }
@@ -152,8 +152,8 @@ a.homer {
 }
 
 .sub-menu {
+	background-color: #C8E297;
 }
-
 
 @media ( min-width : 768px) and (max-width: 979px) {
 	.mainWrap {
@@ -180,6 +180,8 @@ a.homer {
 	}
 	.responsive-menu {
 		display: block;
+		background-color: #547183;
+		color: #FFFFFF;
 	}
 	nav {
 		margin: 0;
@@ -195,8 +197,8 @@ a.homer {
 		color: #797979;
 	}
 	.menu li a:hover, .menu li:hover>a {
-		background: #FC6D58;
-		color: #fff;
+		background: #7CBF2F;
+		color: #FFFFFF;
 	}
 	.menu ul {
 		visibility: hidden;
@@ -205,6 +207,7 @@ a.homer {
 		left: 0;
 		width: 100%;
 		transform: initial;
+		background-color: #d5d500;
 	}
 	.menu li:hover>ul {
 		visibility: visible;
