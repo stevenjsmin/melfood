@@ -62,6 +62,7 @@
 				,a.payment_account_no 'paymentAccountNo'
 				,a.payment_account_holder_name 'paymentAccountHolderName'
 				,a.payment_datetime 'paymentDatetime'
+				,a.payment_acc_transfer_receipt 'paymentAccTransferReceipt'
 				,(SELECT SUM(unit_price) FROM order_master_product a WHERE order_master_id = a.order_master_id ) 'amountTotalProduct'
 				,(SELECT SUM(a.amount_product_option) FROM order_master_product a WHERE order_master_id = a.order_master_id ) 'amountTotalProductOption'
 				,(a.delivery_base_charge + (a.delivery_fee_per_km * a.delivery_fee_per_km)) 'amountTotalDelivery'
@@ -264,6 +265,7 @@
 				,payment_account_no
 				,payment_account_holder_name
 				,payment_datetime
+				,payment_acc_transfer_receipt
 				,amount_total_product
 				,amount_total_product_option
 				,amount_total_delivery
@@ -329,6 +331,7 @@
 		                   ,#{paymentAccountNo}
 		                   ,#{paymentAccountHolderName}
 		                   ,STR_TO_DATE(#{paymentDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,#{paymentAccTransferReceipt}
 		                   ,#{amountTotalProduct}
 		                   ,#{amountTotalProductOption}
 		                   ,#{amountTotalDelivery}

@@ -60,6 +60,7 @@ public class OrderMaster extends BaseDto {
     private String paymentAccountNo;
     private String paymentAccountHolderName;
     private String paymentDatetime;
+    private Integer paymentAccTransferReceipt;
     private Float amountTotalProduct;
     private Float amountTotalProductOption;
     private Float amountTotalDelivery;
@@ -602,6 +603,14 @@ public class OrderMaster extends BaseDto {
 
     public void setAmountTotal(Float amountTotal) {
         this.amountTotal = amountTotal;
+    }
+
+    public Integer getPaymentAccTransferReceipt() {
+        return paymentAccTransferReceipt;
+    }
+
+    public void setPaymentAccTransferReceipt(Integer paymentAccTransferReceipt) {
+        this.paymentAccTransferReceipt = paymentAccTransferReceipt;
     }
 }
 
