@@ -10,7 +10,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <script src="/resources/js/melfood/framework/noticediscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
+    <script src="/resources/js/melfood/framework/communicationmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
     <script type="text/javascript">
         var KENDO_SELECTED_RECORD = null;
         $(document).ready(function () {

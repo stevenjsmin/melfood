@@ -23,12 +23,12 @@ $(document).ready(function () {
             serverFiltering: true,
             transport: {
                 read: {
-                    url: "/framework/noticedisscussmanager/findUser.yum",
+                    url: "/framework/communicationmanager/findUser.yum",
                     dataType: "json",
                     type: "POST"
                 },
                 destroy: {
-                    url: "/framework/noticedisscussmanager/findUser.yum",
+                    url: "/framework/communicationmanager/findUser.yum",
                     dataType: "jsonp",
                     type: "POST"
                 }, 

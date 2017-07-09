@@ -11,15 +11,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="/resources/js/melfood/framework/noticediscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-}); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-</script>
+<script src="/resources/js/melfood/framework/communicationmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
+     <script type="text/javascript">
+         $(document).ready(function () {
+         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     </script>
+
+     <script type="text/javascript">
+         function sendMessagePopup(receiverUserId){
+
+             $("#sendMessagePopup").kendoWindow({
+                 content: "/framework/communicationmanager/sendMessageForm.yum?receiverUserId=" + receiverUserId,
+                 actions: [ "Minimize", "Maximize","Close" ],
+                 title: "SEND MESSAGE",
+                 modal: true,
+                 iframe: true
+             });
+
+             var popup_dialog = $("#sendMessagePopup").data("kendoWindow");
+             popup_dialog.setOptions({
+                 pinned: true,
+                 width: 650,height: 350,
+                 open: function (e) {
+                     this.wrapper.css({ top: 100 });
+                 }
+             });
+             popup_dialog.center().open();
+
+         }
+         function closesendMessagePopup() {
+             var win_dialog = $("#sendMessagePopup").data("kendoWindow");
+             win_dialog.close();
+         }
+     </script>
 </head>
 
 <body>
-	<div id="findUserPopup"></div>
+	<div id="sendMessagePopup"></div>
 		
      <table>
           <tr>
@@ -50,9 +78,25 @@ $(document).ready(function() {
 
                          <tr>
                               <td class="label">From</td>
-                              <td class="value">${communication.writeFrom} / ${communication.writeFromName}</td>
+                              <td class="value">
+                                   <c:choose>
+                                        <c:when test="${communication.writeFrom != null}">
+                                             ${communication.writeFrom} / ${communication.writeFromName}
+                                             <a href="javascript:sendMessagePopup('${communication.writeFrom}');"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                                        </c:when>
+                                        <c:otherwise>${communication.writeFrom} / ${communication.writeFromName}</c:otherwise>
+                                   </c:choose>
+                              </td>
                               <td class="label">To</td>
-                              <td class="value">${communication.writeTo} / ${communication.writeToName}</td>
+                              <td class="value">
+                                   <c:choose>
+                                        <c:when test="${communication.writeTo != null}">
+                                             ${communication.writeTo} / ${communication.writeToName}
+                                             <a href="javascript:sendMessagePopup('${communication.writeTo}');"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                                        </c:when>
+                                        <c:otherwise>${communication.writeTo} / ${communication.writeToName}</c:otherwise>
+                                   </c:choose>
+                              </td>
                          </tr>
                          <tr>
                               <td class="label">For all seller</td>

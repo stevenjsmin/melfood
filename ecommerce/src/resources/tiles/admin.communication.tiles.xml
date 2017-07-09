@@ -47,5 +47,15 @@
         <put-attribute name="body" value="/WEB-INF/pages/framework/communication/qnADetailInfo.jsp" />
     </definition>
 
+	<definition name="tiles/framework/communicationmanager/sendMessageForm" extends="layout/panel_100">
+		<put-attribute name="title" value="메시지보내기" />
+		<put-attribute name="navigation" value="Common > 메시지발송" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/sendMessageForm.jsp" />
+	</definition>
+
+	<definition name="tiles/framework/communicationmanager/sendMessageFormWIthHistory" extends="layout/panel_100">
+		<put-attribute name="title" value="궁금한거 물어보세요" />
+		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/sendMessageFormWIthHistory.jsp" />
+	</definition>
 
 </tiles-definitions>

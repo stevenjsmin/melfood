@@ -22,5 +22,6 @@ public interface CommunicationDAO {
     public List<Communication> getMyCommunicationList(Communication communication) throws Exception;
 
     public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception;
+    public List<Communication> getMyCommunicationListWithPerson(Communication communication) throws Exception;
 
 }

@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="/resources/js/melfood/framework/noticediscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
+<script src="/resources/js/melfood/framework/communicationmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#contents").kendoEditor({
@@ -25,7 +25,7 @@ $(document).ready(function() {
 <script type="text/javascript">
      function findUser(objectName) {
          $("#findUserPopup").kendoWindow({
-               content: "/framework/noticedisscussmanager/findUserForm.yum?objectName=" + objectName,
+               content: "/framework/communicationmanager/findUserForm.yum?objectName=" + objectName,
                actions: [ "Minimize", "Maximize","Close" ],
                title: "Find User",
                modal: true,

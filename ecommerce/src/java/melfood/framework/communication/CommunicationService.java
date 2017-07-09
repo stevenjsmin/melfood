@@ -36,4 +36,6 @@ public interface CommunicationService {
 
     public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception;
 
+    public List<Communication> getMyCommunicationListWithPerson(Communication communication) throws Exception;
+
 }

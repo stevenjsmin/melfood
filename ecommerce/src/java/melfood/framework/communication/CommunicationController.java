@@ -418,4 +418,117 @@ public class CommunicationController extends BaseController {
         return model;
     }
 
+    @RequestMapping("/sendMessageForm")
+    public ModelAndView sendMessageForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/framework/communicationmanager/sendMessageForm");
+
+        String receiverUserId = request.getParameter("receiverUserId");
+        User receiverUser = userService.getUserInfo(receiverUserId);
+        mav.addObject("receiverUser", receiverUser);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/sendMessage", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> sendMessage(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String receiverUserId = request.getParameter("receiverUserId");
+        String contents = request.getParameter("contents");
+        String sendSMS = request.getParameter("sendSMS");
+        String sendEmail = request.getParameter("sendEmail");
+
+        Communication communication = new Communication();
+
+        try {
+            User receiverUser = userService.getUserInfo(receiverUserId);
+
+            String receiverUserEmail = receiverUser.getEmail();
+            String receiverUserMobile = receiverUser.getUserId();
+
+            communication.setCategory("CHAT");
+            if (StringUtils.isNotBlank(contents)) communication.setContents(contents);
+            communication.setWriter(sessionUser.getUser().getUserId());
+            communication.setWriterMobile(sessionUser.getUser().getUserId());
+            communication.setWriterEmail(sessionUser.getUser().getEmail());
+            communication.setWriteFrom(sessionUser.getUser().getUserId());
+
+            communication.setWriteTo(receiverUser.getUserId());
+
+            communication.setIsForAllSeller("N");
+            communication.setIsForAllCustomer("N");
+            communication.setProgressStatus(null);
+
+            // Notifiy 설정
+            if (StringUtils.isNotBlank(receiverUserMobile) && StringUtils.equalsIgnoreCase(sendSMS, "true")) {
+                communication.setNotifySmsNo(receiverUserMobile);
+            } else {
+                communication.setNotifySmsNo(null);
+            }
+
+            if (StringUtils.isNotBlank(receiverUserEmail) && StringUtils.equalsIgnoreCase(sendEmail, "true")) {
+                communication.setNotifyEmail(receiverUserEmail);
+            } else {
+                communication.setNotifyEmail(null);
+            }
+
+            int updateCnt = communicationService.registCommunication(communication);
+
+            model.put("resultCode", "0");
+            model.put("message", updateCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+
+        return model;
+    }
+
+    /**
+     * 한달치의 대화기록을 가져온다.
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/sendMessageFormWIthHistory")
+    public ModelAndView sendMessageFormWIthHistory(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/framework/communicationmanager/sendMessageFormWIthHistory");
+
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        String userId = sessionUser.getUser().getUserId();
+        mav.addObject("sessionUserId", userId);
+
+        String receiverUserId = request.getParameter("receiverUserId");
+        User receiverUser = userService.getUserInfo(receiverUserId);
+        mav.addObject("receiverUser", receiverUser);
+
+        Communication communication = new Communication();
+        communication.setWriteFrom(userId);
+        communication.setWriteTo(receiverUser.getUserId());
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MONTH, -1);
+        communication.setSearchDateFrom(df.format(cal.getTime()));
+
+        // For Pagination
+        communication.setPagenationPage(0);
+        communication.setPagenationPageSize(99999);
+
+        List<Communication> list = communicationService.getMyCommunicationListWithPerson(communication);
+        mav.addObject("communicationList", list);
+
+
+
+        return mav;
+    }
+
 }

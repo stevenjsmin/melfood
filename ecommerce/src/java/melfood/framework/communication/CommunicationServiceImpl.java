@@ -100,7 +100,7 @@ public class CommunicationServiceImpl implements CommunicationService {
                 message.append("createDatetime=" + df.format(cal.getTime()) + "^");
 
                 EmailServices emailSvc = new EmailServices();
-                emailSvc.sendEmailUsingHtmlTemplate(communication.getNotifyEmail(), "[고객문의 사항] 고객의 문의사항이 접수되었습니다.", message.toString(), "4");
+                emailSvc.sendEmailUsingHtmlTemplate(communication.getNotifyEmail(), "[멜푸드] 멜푸드에 문의/글이 등록되었습니다.", message.toString(), "4");
 
                 logger.info("이메일 발송완료 :" + communication.getNotifyEmail());
             }
@@ -144,5 +144,10 @@ public class CommunicationServiceImpl implements CommunicationService {
     @Override
     public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception {
         return communicationDAO.getTotalCntForGetMyCommunicationList(communication);
+    }
+
+    @Override
+    public List<Communication> getMyCommunicationListWithPerson(Communication communication) throws Exception {
+        return communicationDAO.getMyCommunicationListWithPerson(communication);
     }
 }
