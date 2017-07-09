@@ -129,9 +129,6 @@ function callbackFindMemberPassword(data) {
 						   
 						   <span style="color: #BFBEC5;">
 						   아이디(모바일번호)를 입력하시고 오른쪽 하단에 있는 "비밀번호 찾기" 버튼을 클릭하시면 사용하시고 계신 비밀번호가 등록하신 메일로 발송됩니다.
-						   <br/>
-						   고객님의 이름/닉네임은 로그인 후 마이페이지에서 언제든지 수정이 가능하십니다.<br/><br/>
-						   감사합니다.
 						   </span>
 	               </td>
 	           </tr>
