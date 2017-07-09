@@ -61,17 +61,28 @@ function validateForm(){
     var isForAllSeller = $('#isForAllSeller').val();
     var isForAllCustomer = $('#isForAllCustomer').val();
     var contents = $('#contents').val();
-      
- 	if(subject == "") {
- 		message = message + prefix + "글 제목은 필수입력입니다.<br>";
- 		checkObject[checkObject.length] = "subject";
-        validation = false;
- 	}
+
+
  	if(category == "") {
  		message = message + prefix + "글 분류선택은 필수입력입니다.<br>";
  		checkObject[checkObject.length] = "category";
         validation = false;
- 	}
+
+        if(subject == "") {
+            message = message + prefix + "글 제목은 필수입력입니다.<br>";
+            checkObject[checkObject.length] = "subject";
+            validation = false;
+        }
+ 	} else {
+        if(category == "NOTICE") {
+            if(subject == "") {
+                message = message + prefix + "글 제목은 필수입력입니다.<br>";
+                checkObject[checkObject.length] = "subject";
+                validation = false;
+            }
+        }
+    }
+
  	if(writeFrom == "") {
  		message = message + prefix + "공지자(From) 지정은 필수입니다.<br>";
  		checkObject[checkObject.length] = "writeFrom";

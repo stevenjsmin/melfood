@@ -11,9 +11,9 @@ package melfood.controller.customer;
 
 import melfood.framework.Ctx;
 import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.communication.Communication;
+import melfood.framework.communication.CommunicationService;
 import melfood.framework.email.EmailServices;
-import melfood.framework.notice.NoticeDiscuss;
-import melfood.framework.notice.NoticeDiscussService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
@@ -41,7 +41,7 @@ public class MyPageController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
     @Autowired
-    private NoticeDiscussService noticeDiscussService;
+    private CommunicationService communicationService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -299,15 +299,15 @@ public class MyPageController extends BaseController {
         return mav;
     }
 
-    @RequestMapping("/myQnAs")
+    @RequestMapping("/myCommunication")
     public ModelAndView myQnAs(HttpServletRequest request) throws Exception {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
-        ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/myQnAs");
+        ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/myCommunication");
         String userId = sessionUser.getUser().getUserId();
 
-        NoticeDiscuss noticeDiscuss = new NoticeDiscuss();
-        noticeDiscuss.setWriteFrom(userId);
-        noticeDiscuss.setWriteTo(userId);
+        Communication communication = new Communication();
+        communication.setWriteFrom(userId);
+        communication.setWriteTo(userId);
 
         String searchDateFrom = request.getParameter("searchDateFrom");
         String searchDateTo = request.getParameter("searchDateTo");
@@ -322,13 +322,13 @@ public class MyPageController extends BaseController {
         }
 
         if (StringUtils.isNotBlank(searchDateFrom)) {
-            noticeDiscuss.setSearchDateFrom(searchDateFrom);
+            communication.setSearchDateFrom(searchDateFrom);
             mav.addObject("searchDateFrom", searchDateFrom);
         } else {
             mav.addObject("setSearchDateFrom", "");
         }
         if (StringUtils.isNotBlank(searchDateTo)) {
-            noticeDiscuss.setSearchDateTo(searchDateTo);
+            communication.setSearchDateTo(searchDateTo);
             mav.addObject("searchDateTo", searchDateTo);
         } else {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -339,12 +339,12 @@ public class MyPageController extends BaseController {
         }
 
         // For Pagination
-        noticeDiscuss.setPagenationPage(0);
-        noticeDiscuss.setPagenationPageSize(99999);
+        communication.setPagenationPage(0);
+        communication.setPagenationPageSize(99999);
 
-        List<NoticeDiscuss> list = noticeDiscussService.getAllMyDiscussListForCustomer(noticeDiscuss);
+        List<Communication> list = communicationService.getMyCommunicationList(communication);
 
-        mav.addObject("noticeDiscussList", list);
+        mav.addObject("communicationList", list);
         mav.addObject("sessionUserId", userId);
 
         return mav;

@@ -81,6 +81,58 @@
     </select>
 
 
+
+	<select id="getMyCommunicationList" parameterType="Communication" resultType="Communication">
+		/* QUERY ID : getMyCommunicationList */
+		SELECT
+		a.id                    'id'
+		,a.category              'category'
+		,a.subject               'subject'
+		,a.contents              'contents'
+		,a.writer                'writer'
+		,a.writer_mobile         'writerMobile'
+		,a.writer_email          'writerEmail'
+		,a.write_from            'writeFrom'
+		,a.write_to              'writeTo'
+		,CASE
+		WHEN (SELECT user_name FROM cmm_user WHERE user_id = a.write_from) IS NOT NULL THEN (SELECT user_name FROM cmm_user WHERE user_id = a.write_from)
+		ELSE a.write_from
+		END 'writeFromName'
+		,CASE
+		WHEN (SELECT user_name FROM cmm_user WHERE user_id = a.write_to) IS NOT NULL THEN (SELECT user_name FROM cmm_user WHERE user_id = a.write_to)
+		ELSE a.write_to
+		END 'writeToName'
+		,a.is_for_all_seller     'isForAllSeller'
+		,a.is_for_all_customer   'isForAllCustomer'
+		,a.progress_status       'progressStatus'
+		,a.notify_sms_no     	'notifySmsNo'
+		,a.notify_email       	'notifyEmail'
+		,a.modify_datetime       'modifyDatetime'
+		,a.create_datetime       'createDatetime'
+		,a.creator               'creator'
+		FROM cmm_communication a
+		WHERE 1 = 1
+		    AND category <![CDATA[ <> ]]> 'NOTICE'
+			AND ( a.write_from = #{writeFrom} OR  a.write_to = #{writeTo} )
+			<if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+			<if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+		ORDER BY a.id ASC
+		LIMIT #{pagenationPage}, #{pagenationPageSize}
+	</select>
+
+	<select id="getTotalCntForGetMyCommunicationList" parameterType="Communication" resultType="Integer">
+		/* QUERY ID : getTotalCntForGetMyCommunicationList */
+		SELECT COUNT(*)
+		FROM cmm_communication a
+		WHERE 1 = 1
+			AND category <![CDATA[ <> ]]> 'NOTICE'
+			AND ( a.write_from = #{writeFrom} OR  a.write_to = #{writeTo} )
+			<if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+			<if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+	</select>
+
+
+
     <delete id="deleteCommunication" parameterType="java.lang.Integer">
         /* QUERY ID : deleteCommunication */
         DELETE FROM cmm_communication WHERE id = #{id}

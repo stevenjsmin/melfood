@@ -23,7 +23,7 @@ function menuSelect() {
 	} else if(pathName.startsWith("/customer/mypage/myOrderList")) {
 		barElement = view.findByText("상품구매 목록조회");
 	} else if(pathName.startsWith("/customer/mypage/myQnAs")) {
-		barElement = view.findByText("My QnA");	
+		barElement = view.findByText("My Communication");
 	} 
 	view.select(barElement);
 	
@@ -38,7 +38,7 @@ function menuSelect() {
             {id: 100, text: "비밀번호 변경", LinksTo: "/customer/mypage/passwordChangeForm.yum", image: "/resources/css/images/gic/ic_security_black_18dp_1x.png" },
             {id: 200, text: "개인정보 변경", LinksTo: "/customer/mypage/myDetailInfo.yum", image: "/resources/css/images/gic/ic_person_black_18dp_1x.png" },
             {id: 300, text: "상품구매 목록조회", LinksTo: "/customer/mypage/myOrderList.yum", image: "/resources/css/images/gic/ic_history_black_18dp_1x.png" },
-            {id: 400, text: "My QnA", LinksTo: "/customer/mypage/myQnAs.yum", image: "/resources/css/images/gic/ic_question_answer_black_18dp_1x.png" }     ];
+            {id: 400, text: "My Communication", LinksTo: "/customer/mypage/myCommunication.yum", image: "/resources/css/images/gic/ic_question_answer_black_18dp_1x.png" }     ];
 
         var treeview = $("#treeview").kendoTreeView({
             dataUrlField: "LinksTo",

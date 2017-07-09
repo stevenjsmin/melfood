@@ -135,4 +135,14 @@ public class CommunicationServiceImpl implements CommunicationService {
             return null;
         }
     }
+
+    @Override
+    public List<Communication> getMyCommunicationList(Communication communication) throws Exception {
+        return communicationDAO.getMyCommunicationList(communication);
+    }
+
+    @Override
+    public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception {
+        return communicationDAO.getTotalCntForGetMyCommunicationList(communication);
+    }
 }

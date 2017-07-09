@@ -96,8 +96,8 @@
                 },
                 columns: [
                     { hidden : true, field: 'id'},
-                    { title : 'Subject', field: 'subject',attributes: {style: "color: e37200; font-weight: bolder;" }},
                     { title : 'Category', template: kendo.template($("#category-template").html()), width: 120},
+                    { title : 'Subject', template: kendo.template($("#subject-template").html()),attributes: {style: "color: e37200; font-weight: bolder;" }},
                     { title : 'Date', width: 130, template: "#= kendo.toString(kendo.parseDate(createDatetime), 'yyyy-MM-dd hh:mm') #"},
                     { title : 'From', width: 200, template: kendo.template($("#writeFrom-template").html()), filterable: false},
                     { title : 'To', width: 200, template: kendo.template($("#writeTo-template").html()), filterable: false},
@@ -183,6 +183,15 @@
         #= '<span style="color: 006F3C;">공지</span>' #
         # } else if (category == 'CHAT') { #
         #= '<span style="color: ACADAF;">대화</span>' #
+        # } else { #
+        #= '' #
+        # } #
+    </script>
+    <script id="subject-template" type="text/x-kendo-template">
+        # if (category == 'NOTICE') { #
+        #= subject #
+        # } else if (category == 'CHAT') { #
+        #=  abbreviate(contents, 30) #
         # } else { #
         #= '' #
         # } #

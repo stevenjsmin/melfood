@@ -55,8 +55,6 @@
 		<typeAlias type="melfood.framework.menu.Menu" alias="Menu" />
 		<typeAlias type="melfood.framework.workdays.WorkDays" alias="WorkDays" />
 
-		<typeAlias type="melfood.framework.notice.NoticeDiscuss" alias="NoticeDiscuss" />
-		<typeAlias type="melfood.framework.qna.QnA" alias="QnA" />
 		<typeAlias type="melfood.framework.communication.Communication" alias="Communication" />
 
 

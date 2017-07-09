@@ -32,4 +32,8 @@ public interface CommunicationService {
 
     public Communication getCommunication(int id) throws Exception;
 
+    public List<Communication> getMyCommunicationList(Communication communication) throws Exception;
+
+    public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception;
+
 }

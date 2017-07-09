@@ -18,4 +18,9 @@ public interface CommunicationDAO {
     public Integer modifyCommunication(Communication communication) throws Exception;
 
     public Integer modifyCommunicationForNotNull(Communication communication) throws Exception;
+
+    public List<Communication> getMyCommunicationList(Communication communication) throws Exception;
+
+    public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception;
+
 }

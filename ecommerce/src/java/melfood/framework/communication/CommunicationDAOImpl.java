@@ -39,4 +39,14 @@ public class CommunicationDAOImpl extends BaseDAO implements CommunicationDAO {
     public Integer modifyCommunicationForNotNull(Communication communication) throws Exception {
         return sqlSession.update("mySqlCommunicationDao.modifyCommunicationForNotNull", communication);
     }
+
+    @Override
+    public List<Communication> getMyCommunicationList(Communication communication) throws Exception {
+        return sqlSession.selectList("mySqlCommunicationDao.getMyCommunicationList", communication);
+    }
+
+    @Override
+    public Integer getTotalCntForGetMyCommunicationList(Communication communication) throws Exception {
+        return sqlSession.selectOne("mySqlCommunicationDao.getTotalCntForGetMyCommunicationList", communication);
+    }
 }
