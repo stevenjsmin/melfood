@@ -788,11 +788,20 @@
                         <tr style="height: 15px;">
                             <td colspan="3">&nbsp;</td>
                         </tr>
-                        <tr style="height: 15px;">
-                            <td style="text-align: right;">배송서비스</td>
-                            <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
-                            <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_deliveryFee" style="font-size: 15px;">0.00</span> $</td>
-                        </tr>
+
+                        <c:choose>
+                            <c:when test="${groupPurchase.deliverable == 'Y'}">
+                                <tr style="height: 15px;">
+                                    <td style="text-align: right;">배송서비스</td>
+                                    <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
+                                    <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_deliveryFee" style="font-size: 15px;">0.00</span> $</td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="hidden" id="payment_deliveryFee">
+                            </c:otherwise>
+                        </c:choose>
+
                         <tr style="height: 30px;">
                             <td style="text-align: right;color: #58A578;">
                                 할인

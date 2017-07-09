@@ -139,8 +139,8 @@
 
                 if( '${entry.status}' == '2_ORDER_CLOSED') {
                     message = message + "<tr style='height: 20px;'>";
-                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
-                    message = message + "  <td>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true' style='color:#ACADAF;'></i></td>";
+                    message = message + "  <td style='color:#ACADAF;'>${entry.marketOpenStartDate} <span style='text-decoration: underline;'>${entry.marketOpenStartTime} ~ ${entry.marketOpenEndTime}</span></td>";
                     message = message + "</tr>";
 
                     if('${entry.stopSelling}' == 'Y') {
@@ -175,14 +175,14 @@
 
                 } else if( '${entry.status}' == '4_WILL_BE_ORDER') {
                     message = message + "<tr style='height: 20px;'>";
-                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
-                    message = message + "  <td style='height: 35px;'>${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문 가능</span>합니다.</td>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true' style='color:#008600;'></i></td>";
+                    message = message + "  <td style='height: 35px;color:#008600;'><span style='font-weight: bold;'>[Coming soon..]</span> ${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문</span></td>";
                     message = message + "</tr>";
 
                 } else {
                     message = message + "<tr style='height: 20px;'>";
-                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true'></i></td>";
-                    message = message + "  <td>${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문 가능</span>합니다.</td>";
+                    message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true' style='color:#008600;'></i></td>";
+                    message = message + "  <td>${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문</span>해주세요.</td>";
                     message = message + "</tr>";
                 }
 
