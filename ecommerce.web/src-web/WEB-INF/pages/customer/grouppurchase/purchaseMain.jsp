@@ -389,7 +389,7 @@
                                         <tr style="height: 50px;">
                                             <td style="padding-right: 20px;">
                                                 <table style="color: #FFFFFF;width: 100%;">
-                                                    <tr>
+                                                    <tr style="height: 20px;">
                                                         <td style="width: 25px;text-align: center;"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></td>
                                                         <td>
                                                             ${groupPurchase.marketOpenStartDate}
@@ -401,13 +401,13 @@
                                                         <c:when test="${groupPurchase.discountMethod != '' && groupPurchase.discountMethod != null}">
                                                             <c:choose>
                                                                 <c:when test="${groupPurchase.discountMethod == 'FIXED' && groupPurchase.discountFixedAmount != '' && groupPurchase.discountFixedAmount != null}">
-                                                                    <tr>
+                                                                    <tr style="height: 20px;">
                                                                         <td style="width: 25px;text-align: center;"><i class="fa fa-usd" aria-hidden="true"></i></td>
                                                                         <td style="padding-top: 5px;"><fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.discountFixedAmount}" /> Discount</td>
                                                                     </tr>
                                                                 </c:when>
                                                                 <c:when test="${groupPurchase.discountMethod == 'RATE' && groupPurchase.discountRateValue != '' && groupPurchase.discountRateValue != null}">
-                                                                    <tr>
+                                                                    <tr style="height: 20px;">
                                                                         <td style="width: 25px;text-align: center;"><i class="fa fa-percent" aria-hidden="true"></i></td>
                                                                         <td style="padding-top: 5px;"><fmt:formatNumber type="number" pattern="###" value="${groupPurchase.discountRateValue * 100}" /> (Percent) Discount</td>
                                                                     </tr>
@@ -418,7 +418,7 @@
 
                                                     <c:choose>
                                                         <c:when test="${groupPurchase.deliverable == 'Y'}">
-                                                            <tr>
+                                                            <tr style="height: 20px;">
                                                                 <td style="width: 25px;text-align: center;"><i class="fa fa-truck" aria-hidden="true"></i></td>
                                                                 <td style="padding-top: 5px;color: #AFB1B1;">배달 가능</td>
                                                             </tr>
@@ -432,12 +432,12 @@
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
                                                 <table>
-                                                    <tr>
+                                                    <tr style="height: 25px;">
                                                         <td style="width: 20px;text-align: center;"><i class="fa fa-address-card-o" aria-hidden="true" style="color: #FFFFFF;"></i></td>
                                                         <td style="width: 10px;"></td>
                                                         <td><a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;">공동구매 진행자정보</a><br/></td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr style="height: 25px;">
                                                         <td style="width: 20px;text-align: center;"><i class="fa fa-comment" aria-hidden="true" style="color: #FFFFFF;"></i></td>
                                                         <td style="width: 10px;"></td>
                                                         <td><a href="javascript:askQuestion('${groupPurchase.purchaseOrganizer}')" style="color: #69B7F5;"> ?!! 물어보세요</a><br/></td>
