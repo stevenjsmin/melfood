@@ -304,6 +304,36 @@
         }
     </script>
 
+
+    <script type="text/javascript">
+        function askQuestion(receiverUserId){
+
+            $("#askQuestionPopup").kendoWindow({
+                content: "/framework/communicationmanager/sendMessageFormWIthHistory.yum?receiverUserId=" + receiverUserId,
+                actions: [ "Minimize", "Maximize","Close" ],
+                title: "SEND MESSAGE",
+                modal: true,
+                iframe: true
+            });
+
+            var popup_dialog = $("#askQuestionPopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                pinned: true,
+                width: 650,height: 500,
+                open: function (e) {
+                    this.wrapper.css({ top: 100 });
+                }
+            });
+            popup_dialog.center().open();
+
+        }
+        function closeAskQuestionPopupPopup() {
+            var win_dialog = $("#askQuestionPopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
+
+
     <script type="text/javascript">
         function doPaymentProcess() {
 
@@ -314,6 +344,7 @@
 </head>
 
 <body>
+<div id="askQuestionPopup"></div>
 <div id="purchaseOrganizerPopup"></div>
 <div id="deliverySchedulePopup"></div>
 
@@ -399,7 +430,24 @@
 
                                             </td>
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
-                                            <td style="padding: 20px 20px;"><a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;">공동구매 진행자정보</a></td>
+                                            <td style="padding: 20px 20px;">
+                                                <table>
+                                                    <tr>
+                                                        <td style="width: 20px;text-align: center;"><i class="fa fa-address-card-o" aria-hidden="true" style="color: #FFFFFF;"></i></td>
+                                                        <td style="width: 10px;"></td>
+                                                        <td><a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;">공동구매 진행자정보</a><br/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width: 20px;text-align: center;"><i class="fa fa-comment" aria-hidden="true" style="color: #FFFFFF;"></i></td>
+                                                        <td style="width: 10px;"></td>
+                                                        <td><a href="javascript:askQuestion('${groupPurchase.purchaseOrganizer}')" style="color: #69B7F5;"> ?!! 물어보세요</a><br/></td>
+                                                    </tr>
+                                                </table>
+
+
+
+
+                                            </td>
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
                                                 <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;">
@@ -740,11 +788,20 @@
                         <tr style="height: 15px;">
                             <td colspan="3">&nbsp;</td>
                         </tr>
-                        <tr style="height: 15px;">
-                            <td style="text-align: right;">배송서비스</td>
-                            <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
-                            <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_deliveryFee" style="font-size: 15px;">0.00</span> $</td>
-                        </tr>
+
+                        <c:choose>
+                            <c:when test="${groupPurchase.deliverable == 'Y'}">
+                                <tr style="height: 15px;">
+                                    <td style="text-align: right;">배송서비스</td>
+                                    <td style="text-align: center;"><i class="fa fa-plus" aria-hidden="true"></i></td>
+                                    <td style="color: #797979; text-align: right;font-size: 15px;"><span id="payment_deliveryFee" style="font-size: 15px;">0.00</span> $</td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <input type="hidden" id="payment_deliveryFee">
+                            </c:otherwise>
+                        </c:choose>
+
                         <tr style="height: 30px;">
                             <td style="text-align: right;color: #58A578;">
                                 할인

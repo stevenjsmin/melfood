@@ -32,12 +32,12 @@ $(document).ready(function() {
 
                          <tr>
                               <td class="label">Status :</td>
-                              <td class="value" colspan="3">
+                              <td class="value" colspan="3" style="height: 40px;">
                                    <span style="font-weight: bold;color: #e37200;">
                                      <c:choose>
-                                          <c:when test="${qnA.qnaStatus == 'NOT_OPEN'}">처리 전</c:when>
-                                          <c:when test="${qnA.qnaStatus == 'OPEN'}">처리 중</c:when>
-                                          <c:when test="${qnA.qnaStatus == 'COMPLETE'}">처리 완료</c:when>
+                                          <c:when test="${communication.progressStatus == 'NOT_OPEN'}">처리 전</c:when>
+                                          <c:when test="${communication.progressStatus == 'OPEN'}">처리 중</c:when>
+                                          <c:when test="${communication.progressStatus == 'COMPLETE'}">처리 완료</c:when>
                                           <c:otherwise>-</c:otherwise>
                                      </c:choose>
                                    </span>
@@ -45,18 +45,18 @@ $(document).ready(function() {
                          </tr>
                          <tr>
                               <td class="label">Mobile :</td>
-                              <td class="value">${qnA.customerMobile}</td>
+                              <td class=communicationlue">${communication.writerMobile}</td>
                               <td class="label">Email :</td>
-                              <td class="value">${qnA.customerEmail}</td>
+                              <td class="value">${communication.writerEmail}</td>
                          </tr>
                          <tr>
                               <td class="label">내용 :</td>
-                              <td class="value" colspan="3">${qnA.customerQuestion}</td>
+                              <td class="value" colspan="3">${communication.contents}</td>
                          </tr>
                          <tr><td colspan="4"><hr/></td></tr>
                          <tr>
                               <td class="label">작성일 :</td>
-                              <td class="value" colspan="3"><span style="color: #A2A4A4;">${qnA.createDatetime}</span></td>
+                              <td class="value" colspan="3"><span style="color: #A2A4A4;">${communication.createDatetime}</span></td>
                          </tr>
                          <tr><td colspan="4"><hr/></td></tr>
 

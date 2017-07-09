@@ -9,9 +9,11 @@
 
 package melfood.controller.guest;
 
-import melfood.framework.qna.QnA;
-import melfood.framework.qna.QnAService;
+import melfood.framework.Ctx;
+import melfood.framework.communication.Communication;
+import melfood.framework.communication.CommunicationService;
 import melfood.framework.system.BaseController;
+import melfood.framework.user.User;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +38,7 @@ public class GuestCommonController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(GuestCommonController.class);
 
     @Autowired
-    private QnAService qnAServie;
+    private CommunicationService communicationService;
 
     @RequestMapping(value = "/sendQuestionMessage", produces = "application/json")
     @ResponseBody
@@ -49,6 +51,8 @@ public class GuestCommonController extends BaseController {
         String customerEmail = request.getParameter("customerEmail");
         String customerQuestion = request.getParameter("customerQuestion");
 
+        String writeTo = request.getParameter("writeTo");
+
         try {
             if (StringUtils.isBlank(customerMobile) && StringUtils.isBlank(customerEmail)) {
                 throw new Exception("고객의 모바일번호 또는 Email주소 중 한가지는 입력해주셔야합니다.");
@@ -56,9 +60,56 @@ public class GuestCommonController extends BaseController {
             if (StringUtils.isBlank(customerQuestion)) {
                 throw new Exception("고객의 문의내용이 비어있습니다. 문의내용을 다시 확인해주세요.");
             }
-            QnA qnA = new QnA(customerMobile, customerEmail, customerQuestion, "NOT_OPEN");
+            //QnA qnA = new QnA(customerMobile, customerEmail, customerQuestion, "NOT_OPEN");
+            Communication communication = new Communication();
+            communication.setProgressStatus("NOT_OPEN");
 
-            updateCnt = qnAServie.registQnA(qnA);
+
+            // Notify User 설정
+            // SMS 또는 Email 수신자 설정 :  QnA등록 사항을 알려준다.
+            User writeToUser = StringUtils.isBlank(writeTo) ? null : userService.getUserInfo(writeTo);
+
+            if (writeToUser == null) {
+                String customerSupportMobile = Ctx.xmlConfig.getString("contact-info/default-customer-service/mobile");
+                String customerSupportEmail = Ctx.xmlConfig.getString("contact-info/default-customer-service/email");
+
+                communication.setWriteTo(customerSupportMobile); // 고객관리자를 수신자로 설정한다.
+
+                if (!StringUtils.isBlank(customerSupportEmail)) {
+                    communication.setNotifyEmail(customerSupportEmail);
+                }
+                if (!StringUtils.isBlank(customerSupportMobile)) {
+                    communication.setNotifySmsNo(customerSupportMobile);
+                }
+
+            } else {
+
+                communication.setWriteTo(writeToUser.getUserId());
+
+                if (!StringUtils.isBlank(writeToUser.getEmail())) {
+                    communication.setNotifyEmail(writeToUser.getEmail());
+                }
+                if (!StringUtils.isBlank(writeToUser.getMobile())) {
+                    communication.setNotifySmsNo(writeToUser.getMobile());
+                }
+            }
+
+            communication.setCategory("QNA");
+            communication.setContents(customerQuestion);
+
+            if (!StringUtils.isBlank(customerEmail)) {
+                communication.setWriter(customerEmail);
+                communication.setWriteFrom(customerEmail);
+                communication.setWriterEmail(customerEmail);
+            }
+
+            if (!StringUtils.isBlank(customerMobile)) {
+                communication.setWriter(customerMobile);
+                communication.setWriteFrom(customerMobile);
+                communication.setWriterMobile(customerMobile);
+            }
+
+            updateCnt = communicationService.registCommunication(communication);
 
             model.put("resultCode", "0");
             model.put("message", updateCnt + " 의 정보가 반영되었습니다.");

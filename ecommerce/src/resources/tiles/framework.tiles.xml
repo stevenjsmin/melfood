@@ -105,32 +105,6 @@
 		<put-attribute name="title" value="Postcode DetailInfo" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/postcode/postcodeDetailInfo.jsp" />
 	</definition>	
-	
-	<!-- NOTICE MANAGEMENT -->
-	<definition name="tiles/framework/noticedisscussmanager/main" extends="tiles/admin/root">
-		<put-attribute name="navigation" value="Admin > Notice/Discuss Management > Search" />
-		<put-attribute name="title" value="Notice/Discuss Search" />
-		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/noticeDiscussList.jsp" />
-	</definition>
-	<definition name="tiles/framework/noticedisscussmanager/regist" extends="tiles/admin/root">
-		<put-attribute name="navigation" value="Admin > Notice/Discuss Management > register" />
-		<put-attribute name="title" value="Notice/Discuss Register" />
-		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/noticeDiscussRegister.jsp" />
-	</definition>
-	<definition name="tiles/framework/noticedisscussmanager/modify" extends="tiles/admin/root">
-		<put-attribute name="navigation" value="Admin > Notice/Discuss Management > modify" />
-		<put-attribute name="title" value="Notice/Discuss Modify" />
-		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/noticeDiscussModify.jsp" />
-	</definition>
-	<definition name="tiles/framework/noticedisscussmanager/detailInfo" extends="tiles/admin/root">
-		<put-attribute name="navigation" value="Admin > Notice/Discuss Management > Detail" />
-		<put-attribute name="title" value="Notice/Discuss Detail" />
-		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/noticeDiscussDetailInfo.jsp" />
-	</definition>
-	<definition name="tiles/framework/noticedisscussmanager/findUserForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Find User" />
-		<put-attribute name="body" value="/WEB-INF/pages/framework/notice-discuss/findUser.jsp" />
-	</definition>	
-	
+
 		
 </tiles-definitions>

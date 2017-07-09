@@ -39,7 +39,7 @@
     function goList(){
         var searchDateFrom = $("#searchDateFrom").val();
         var searchDateTo = $("#searchDateTo").val();
-        document.location.href = "/customer/mypage/myQnAs.yum?searchDateFrom=" + searchDateFrom + "&searchDateTo=" + searchDateTo;
+        document.location.href = "/customer/mypage/myCommunication.yum?searchDateFrom=" + searchDateFrom + "&searchDateTo=" + searchDateTo;
     }
 </script>
 
@@ -85,7 +85,7 @@
      <div class="row">
           <div class="col-md-12" style="padding: 0px;">
                <!-- 대화내용 -->
-               <c:forEach var="entry" items="${noticeDiscussList}" varStatus="count" begin="0">
+               <c:forEach var="entry" items="${communicationList}" varStatus="count" begin="0">
                     <c:choose>
                          <c:when test="${sessionUserId == entry.writeFrom}">
                               <table style="width: 600px;">
@@ -96,16 +96,23 @@
                                                        <span class="chat-tip chat-tip-right"></span>
                                                        <div class="chat-message">
                                                             <table style="width: 100%;">
-                                                                 <tr><td style="font-size: 11px;color: #727272;">${entry.contents}</td></tr>
                                                                  <tr>
-                                                                      <td style="text-align: right;font-size: 10px;">To :
+                                                                      <td style="font-size: 13px;color: #1E1E1E;">
+                                                                           <c:choose>
+                                                                                <c:when test="${entry.category == 'QNA'}">[QnA]</c:when>
+                                                                           </c:choose>
+                                                                           ${entry.contents}
+                                                                      </td>
+                                                                 </tr>
+                                                                 <tr>
+                                                                      <td style="text-align: left;font-size: 10px;padding-top: 5px;">To :
                                                                            <c:choose>
                                                                                 <c:when test="${entry.writeToName == '' || entry.writeToName == null}">_(삭제된사용자)</c:when>
                                                                                 <c:otherwise>${entry.writeToName}</c:otherwise>
                                                                            </c:choose>
                                                                       </td>
                                                                  </tr>
-                                                                 <tr><td style="text-align: right;"><span style="color: #AEACAF; font-size: 10px;">${entry.createDatetime}</span></td></tr>
+                                                                 <tr><td style="text-align: left;"><span style="color: #AEACAF; font-size: 10px;">${entry.createDatetime}</span></td></tr>
                                                             </table>
                                                        </div>
                                                   </div>
@@ -126,7 +133,7 @@
                                                        <span class="chat-tip chat-tip-left"></span>
                                                        <div class="chat-message">
                                                             <table style="width: 100%;">
-                                                                 <tr><td style="font-size: 11px;color: #727272;">${entry.contents}</td></tr>
+                                                                 <tr><td style="font-size: 13px;color: #727272;">${entry.contents}</td></tr>
                                                                  <tr>
                                                                       <td style="text-align: right;font-size: 10px;">From :
                                                                            <c:choose>

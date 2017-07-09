@@ -40,7 +40,7 @@ $(document).ready(function () {
             serverFiltering: true,
             transport: {
                 read: {
-                    url: "/framework/qnamanager/getQnAs.yum",
+                    url: "/framework/communicationmanager/getCommunications.yum",
                     dataType: "json",
                     type: "POST"
                 },
@@ -49,7 +49,8 @@ $(document).ready(function () {
                         return {
                             page : options.page,
                             pageSize : options.pageSize,
-                            qnaStatus : $("#qnaStatus").val(),
+                            category : "QNA",
+                            progressStatus : $("#progressStatus").val(),
                             searchDateFrom : $("#searchDateFrom").val(),
                             searchDateTo : $("#searchDateTo").val()
                         };
@@ -104,10 +105,10 @@ $(document).ready(function () {
         },         
 		columns: [
 				  { hidden : true, field: 'id'},
-		          { title : 'Mobile', field: 'customerMobile',attributes: {style: "color: e37200; font-weight: bolder;" },width: 100},
-		          { title : 'Email', field: 'customerEmail'},
+		          { title : 'Mobile', field: 'writerMobile',attributes: {style: "color: e37200; font-weight: bolder;" },width: 100},
+		          { title : 'Email', field: 'writerEmail'},
                   { title : 'Question', template: kendo.template($("#question-template").html()), filterable: false},
-                  { title : 'qnaStatus', template: kendo.template($("#qnaStatus-template").html()), filterable: false, width: 100},
+                  { title : 'Status', template: kendo.template($("#progressStatus-template").html()), filterable: false, width: 100},
                   { title : 'Date', template: "#= kendo.toString(kendo.parseDate(createDatetime), 'yyyy-MM-dd hh:mm') #", width: 120},
 		          { command: [ {text : "Not open", click: doStatusNotOpen}],width: 100},
 		          { command: [ {text : "Open", click: doStatusOpen}],width: 100},
@@ -131,42 +132,42 @@ $(document).ready(function () {
     search();
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 </script>
-    <script type="text/javascript">
-        function qnADetailInfoPopup(id){
+<script type="text/javascript">
+    function qnADetailInfoPopup(id){
 
-            $("#QnAInfoPopup").kendoWindow({
-                content: "/framework/qnamanager/getQnA.yum?id=" + id,
-                actions: [ "Minimize", "Maximize","Close" ],
-                title: "QnA 상세정보",
-                modal: true,
-                iframe: true
-            });
+        $("#QnAInfoPopup").kendoWindow({
+            content: "/framework/communicationmanager/getCommunication.yum?id=" + id,
+            actions: [ "Minimize", "Maximize","Close" ],
+            title: "QnA 상세정보",
+            modal: true,
+            iframe: true
+        });
 
-            var popup_dialog = $("#QnAInfoPopup").data("kendoWindow");
-            popup_dialog.setOptions({
-                pinned: true,
-                width: 650,height: 450,
-                open: function (e) {
-                    this.wrapper.css({ top: 100 });
-                }
-            });
-            popup_dialog.center().open();
+        var popup_dialog = $("#QnAInfoPopup").data("kendoWindow");
+        popup_dialog.setOptions({
+            pinned: true,
+            width: 650,height: 450,
+            open: function (e) {
+                this.wrapper.css({ top: 100 });
+            }
+        });
+        popup_dialog.center().open();
 
-        }
-        function closeQnADetailInfoPopup() {
-            var win_dialog = $("#QnAInfoPopup").data("kendoWindow");
-            win_dialog.close();
-        }
-    </script>
+    }
+    function closeQnADetailInfoPopup() {
+        var win_dialog = $("#QnAInfoPopup").data("kendoWindow");
+        win_dialog.close();
+    }
+</script>
 <script type="text/javascript">
     function doStatusNotOpen(e) {
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
         $.ajax({
-            url  : "/framework/qnamanager/updateStatus.yum",
+            url  : "/framework/communicationmanager/updateProgressStatus.yum",
             data      : {
                 id : dataItem.id,
-                qnaStatus : 'NOT_OPEN'
+                progressStatus : 'NOT_OPEN'
             },
             success : callbackStatusUpdate
         });
@@ -175,10 +176,10 @@ $(document).ready(function () {
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
         $.ajax({
-            url  : "/framework/qnamanager/updateStatus.yum",
+            url  : "/framework/communicationmanager/updateProgressStatus.yum",
             data      : {
                 id : dataItem.id,
-                qnaStatus : 'OPEN'
+                progressStatus : 'OPEN'
             },
             success : callbackStatusUpdate
         });
@@ -187,10 +188,10 @@ $(document).ready(function () {
         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
         $.ajax({
-            url  : "/framework/qnamanager/updateStatus.yum",
+            url  : "/framework/communicationmanager/updateProgressStatus.yum",
             data      : {
                 id : dataItem.id,
-                qnaStatus : 'COMPLETE'
+                progressStatus : 'COMPLETE'
             },
             success : callbackStatusUpdate
         });
@@ -211,7 +212,7 @@ $(document).ready(function () {
             callback: function(result) {
                 if(result) {
                     $.ajax({
-                        url  : "/framework/qnamanager/deleteQnA.yum",
+                        url  : "/framework/communicationmanager/deleteCommunication.yum",
                         data      : {
                             id : dataItem.id
                         },
@@ -243,12 +244,12 @@ $(document).ready(function () {
     }
 </script>
 
-<script id="qnaStatus-template" type="text/x-kendo-template">
-    # if (qnaStatus == 'NOT_OPEN') { #
+<script id="progressStatus-template" type="text/x-kendo-template">
+    # if (progressStatus == 'NOT_OPEN') { #
         #=  '<span style="color: C14F51;">처리 전</span>' #
-    # } else if (qnaStatus == 'OPEN') { #
+    # } else if (progressStatus == 'OPEN') { #
         #=  '<span style="color: 128D15;">처리 중</span>' #
-    # } else if (qnaStatus == 'COMPLETE') { #
+    # } else if (progressStatus == 'COMPLETE') { #
         #=  '<span style="color: 5974AB;">처리 완료</span>' #
     # } else { #
         #=  '-' #
@@ -256,8 +257,8 @@ $(document).ready(function () {
 
 </script>
 <script id="question-template" type="text/x-kendo-template">
-    # if (customerQuestion != '' && customerQuestion != null) { #
-        #=  abbreviate(customerQuestion,20) #
+    # if (contents != '' && contents != null) { #
+        #=  abbreviate(contents,20) #
     # } else { #
         #=  '-'#
     # }#
@@ -278,7 +279,7 @@ $(document).ready(function () {
         <table class="search_table">
             <tr>
                 <td class="label">상태 : </td>
-                <td class="value"><c:out value="${cbxQnaStatus}" escapeXml="false"/></td>
+                <td class="value"><c:out value="${cbxProgressStatus}" escapeXml="false"/></td>
                 <td class="label">Start Date :  </td>
                 <td class="value"><input id="searchDateFrom" name="searchDateFrom" value="${searchDateFrom}"></input></td>
                 <td class="label">End Date :  </td>
@@ -294,16 +295,6 @@ $(document).ready(function () {
     <div id="grid_panel_main"></div>
 
     <br/>
-    <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-    <!-- Extra buttons -->
-    <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
-     <table class="action_button_table">
-         <tr>
-             <td>
-             	<button type="button" class="btn btn-primary" onclick="add();">Add Item</button>
-             </td>
-         </tr>
-     </table>
 
 </body>
 </html>

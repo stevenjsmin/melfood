@@ -64,8 +64,8 @@ public class ApplicationProperties {
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::EMAIL.SMTP.PASSWORD", melfood.getString("EMAIL.SMTP.PASSWORD"));
 
 		// SNS Service setting
-		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::SNS.SMS.ACCESS-KEY", melfood.getString("SNS.SMS.ACCESS_KEY"));
-		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::SNS.SMS.SECRET-KEY", melfood.getString("SNS.SMS.SECRET_KEY"));
+		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::SNS.SMS.ACCESS-KEY", melfood.getString("SNS.SMS.ACCESS-KEY"));
+		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::SNS.SMS.SECRET-KEY", melfood.getString("SNS.SMS.SECRET-KEY"));
 
 		// GOOGLE GEO API SERVICE setting
 		appPropMap.put(StringUtils.upperCase(Ctx.env) + "::GOOGLE.GEO.API.KEY", melfood.getString("GOOGLE.GEO.API.KEY"));

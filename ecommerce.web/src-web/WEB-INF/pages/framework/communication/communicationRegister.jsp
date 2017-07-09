@@ -11,7 +11,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script src="/resources/js/melfood/framework/noticediscussmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
+<script src="/resources/js/melfood/framework/communicationmanager.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $("#contents").kendoEditor({
@@ -25,7 +25,7 @@ $(document).ready(function() {
 <script type="text/javascript">
      function findUser(objectName) {
          $("#findUserPopup").kendoWindow({
-               content: "/framework/noticedisscussmanager/findUserForm.yum?objectName=" + objectName,
+               content: "/framework/communicationmanager/findUserForm.yum?objectName=" + objectName,
                actions: [ "Minimize", "Maximize","Close" ],
                title: "Find User",
                modal: true,
@@ -76,14 +76,20 @@ function clearWriteWhom(objName){
                          </colgroup>       
                          <tr>
                               <td class="label"><span class="required">* </span>Subject :</td>
-                              <td class="value" colspan="3"><input class="form-control" type="text" id="subject" name="subject" value='${noticeDiscuss.subject}' placeholder="Subject" maxlength="30"/></td>
-                         </tr>                         
+                              <td class="value" colspan="3"><input class="form-control" type="text" id="subject" name="subject" value='' placeholder="Subject" maxlength="30"/></td>
+                         </tr>
+                        <tr>
+                            <td class="label"><span class="required">* </span>글분류</td>
+                            <td class="value"><c:out value="${cbxCategory}" escapeXml="false"/></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                          <tr>
                               <td class="label"><span class="required">* </span>From</td>
                               <td class="value" style="padding-left: 3px;" colspan="2">
                                    <table style="width: 100%;">
                                    		<tr>
-                                   			<td><input class="form-control" type="text" id="writeFromLabel" name="writeFromLabel" value='${noticeDiscuss.writeFromName}' disabled/></td>
+                                   			<td><input class="form-control" type="text" id="writeFromLabel" name="writeFromLabel" value='${writeFromName }' placeholder="오른쪽 검색 아이콘을 이용하세요." disabled/></td>
                                    			<td>
                                    				<img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findUser('writeFrom')">
                                    				<img src="/resources/image/delete.png" style="cursor: pointer;" onclick="clearWriteWhom('writeFrom')">
@@ -91,14 +97,14 @@ function clearWriteWhom(objName){
                                    		</tr>
                                    	</table>
                               </td>
-                              <td><input type="hidden" id="writeFrom" name="writeFrom" value='${noticeDiscuss.writeFrom}'></input></td>
+                              <td><input type="hidden" id="writeFrom" name="writeFrom" value='${writeFrom }'></input></td>
                          </tr>
                          <tr>
                               <td class="label">To</td>
                               <td class="value" style="padding-left: 3px;" colspan="2">
                                    <table style="width: 100%;">
                                    		<tr>
-                                   			<td><input class="form-control" type="text" id="writeToLabel" name="writeToLabel" value='${noticeDiscuss.writeToName}' disabled/></td>
+                                   			<td><input class="form-control" type="text" id="writeToLabel" name="writeToLabel" value='' placeholder="오른쪽 검색 아이콘을 이용하세요." disabled/></td>
                                    			<td>
                                    				<img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findUser('writeTo')">
                                    				<img src="/resources/image/delete.png" style="cursor: pointer;" onclick="clearWriteWhom('writeTo')">
@@ -106,7 +112,7 @@ function clearWriteWhom(objName){
                                    		</tr>
                                    	</table>
                               </td>
-                              <td><input type="hidden" id="writeTo" name="writeTo" value='${noticeDiscuss.writeTo}'></input></td>
+                              <td><input type="hidden" id="writeTo" name="writeTo" value=''></input></td>
                          </tr>
                          <tr>
                               <td class="label"><span class="required">* </span>For all seller</td>
@@ -115,14 +121,8 @@ function clearWriteWhom(objName){
                               <td class="value"><c:out value="${cbxIsForAllCustomer}" escapeXml="false"/></td>
                          </tr>
                          <tr>
-                              <td class="label"><span class="required">* </span>Is for notice</td>
-                              <td class="value"><c:out value="${cbxIsForNotice}" escapeXml="false"/></td>
-                              <td></td>
-                              <td></td>
-                         </tr>
-                         <tr>
                               <td class="label" style="vertical-align: top;padding-top: 5px;"><span class="required">* </span>Contents</td>
-                              <td class="value" colspan="3"><textarea class="form-control" rows="3" id="contents" name="contents">${noticeDiscuss.contents}</textarea></td>
+                              <td class="value" colspan="3"><textarea class="form-control" rows="3" id="contents" name="contents"></textarea></td>
                               <td></td>
                          </tr>                         
                     </table>
@@ -134,7 +134,7 @@ function clearWriteWhom(objName){
                     <table class="action_button_table" width="100%">
                          <tr>
                               <td>
-                                   <a href="javascript:goDetailInfo('${noticeDiscuss.id}');" class="btn btn-info">&nbsp;&nbsp; Cancel &nbsp;&nbsp;</a>
+                                   <a href="javascript:goList();" class="btn btn-info">&nbsp;&nbsp; Cancel &nbsp;&nbsp;</a>
                                    <a href="javascript:save();" class="btn btn-primary">Save</a>
                               </td>
                          </tr>
@@ -145,8 +145,8 @@ function clearWriteWhom(objName){
      </table>
      
      <script type="text/javascript">
-          var ACTION_MODE = "MODIFY";
-          var ID = "${noticeDiscuss.id}";
+          var ACTION_MODE = "ADD";
+          var ID = "";
      </script>     
 </body>
 </html>

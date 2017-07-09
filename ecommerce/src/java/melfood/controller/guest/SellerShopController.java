@@ -9,16 +9,15 @@
 
 package melfood.controller.guest;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import melfood.controller.common.ProductUtilCtrl;
+import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import melfood.framework.user.User;
+import melfood.shopping.delivery.DeliveryCalendar;
+import melfood.shopping.delivery.DeliveryCalendarService;
+import melfood.shopping.product.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,21 +27,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import melfood.controller.common.ProductUtilCtrl;
-import melfood.framework.auth.SessionUserInfo;
-import melfood.framework.notice.NoticeDiscuss;
-import melfood.framework.notice.NoticeDiscussService;
-import melfood.framework.system.BaseController;
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
-import melfood.framework.user.User;
-import melfood.shopping.delivery.DeliveryCalendar;
-import melfood.shopping.delivery.DeliveryCalendarService;
-import melfood.shopping.product.Product;
-import melfood.shopping.product.ProductImage;
-import melfood.shopping.product.ProductImageService;
-import melfood.shopping.product.ProductOptionService;
-import melfood.shopping.product.ProductService;
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+//import melfood.framework.notice.NoticeDiscuss;
+//import melfood.framework.notice.NoticeDiscussService;
 
 /**
  * @author steven.min
@@ -57,8 +48,8 @@ public class SellerShopController extends BaseController {
 	@Autowired
 	private DeliveryCalendarService deliveryCalendarService;
 
-	@Autowired
-	private NoticeDiscussService noticeDiscussService;
+//	@Autowired
+//	private NoticeDiscussService noticeDiscussService;
 
 	@Autowired
 	private ProductOptionService productOptionService;
@@ -77,7 +68,7 @@ public class SellerShopController extends BaseController {
 		String sellerId = request.getParameter("seller");
 		mav.addObject("productName", productName);
 
-		NoticeDiscuss noticeDiscuss = new NoticeDiscuss();
+//		NoticeDiscuss noticeDiscuss = new NoticeDiscuss();
 
 		SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
@@ -91,32 +82,32 @@ public class SellerShopController extends BaseController {
 
 		// 판매자의 공지사항 내용을 가저온다.
 		String noticeCnt = request.getParameter("noticeCnt");
-		if (StringUtils.isBlank(noticeCnt)) noticeCnt = "2";
-		noticeDiscuss = new NoticeDiscuss();
-		noticeDiscuss.setPagenationPage(0);
-		noticeDiscuss.setPagenationPageSize(Integer.parseInt(noticeCnt));
-		noticeDiscuss.setWriteFrom(sellerId);
-		noticeDiscuss.setIsForNotice("Y");
-		List<NoticeDiscuss> noticeDiscussList = noticeDiscussService.getNoticeDiscussList(noticeDiscuss);
-		mav.addObject("noticeDiscussList", noticeDiscussList);
-
-		// 판매자와 로그인 사용자간의 대화 내용을 가저온다.
-		List<NoticeDiscuss> conversationList = null;
-		if (sessionUser != null) {
-			noticeDiscuss = new NoticeDiscuss();
-			String conversationCnt = request.getParameter("conversationCnt");
-			if (StringUtils.isBlank(conversationCnt)) conversationCnt = "5";
-			noticeDiscuss = new NoticeDiscuss();
-			noticeDiscuss.setPagenationPage(0);
-			noticeDiscuss.setPagenationPageSize(Integer.parseInt(conversationCnt));
-			noticeDiscuss.setWriteFrom(sellerId);
-			noticeDiscuss.setWriteTo(sessionUser.getUser().getUserId());
-			conversationList = noticeDiscussService.getConversationList(noticeDiscuss);
-			mav.addObject("sessionUser", sessionUser);
-		} else {
-			mav.addObject("sessionUser", null);
-		}
-		mav.addObject("conversationList", conversationList);
+//		if (StringUtils.isBlank(noticeCnt)) noticeCnt = "2";
+//		noticeDiscuss = new NoticeDiscuss();
+//		noticeDiscuss.setPagenationPage(0);
+//		noticeDiscuss.setPagenationPageSize(Integer.parseInt(noticeCnt));
+//		noticeDiscuss.setWriteFrom(sellerId);
+//		noticeDiscuss.setIsForNotice("Y");
+//		List<NoticeDiscuss> noticeDiscussList = noticeDiscussService.getNoticeDiscussList(noticeDiscuss);
+//		mav.addObject("noticeDiscussList", noticeDiscussList);
+//
+//		// 판매자와 로그인 사용자간의 대화 내용을 가저온다.
+//		List<NoticeDiscuss> conversationList = null;
+//		if (sessionUser != null) {
+//			noticeDiscuss = new NoticeDiscuss();
+//			String conversationCnt = request.getParameter("conversationCnt");
+//			if (StringUtils.isBlank(conversationCnt)) conversationCnt = "5";
+//			noticeDiscuss = new NoticeDiscuss();
+//			noticeDiscuss.setPagenationPage(0);
+//			noticeDiscuss.setPagenationPageSize(Integer.parseInt(conversationCnt));
+//			noticeDiscuss.setWriteFrom(sellerId);
+//			noticeDiscuss.setWriteTo(sessionUser.getUser().getUserId());
+//			conversationList = noticeDiscussService.getConversationList(noticeDiscuss);
+//			mav.addObject("sessionUser", sessionUser);
+//		} else {
+//			mav.addObject("sessionUser", null);
+//		}
+//		mav.addObject("conversationList", conversationList);
 
 		// 판매자의 상품을 모두 가저온다.
 		mav = new ProductUtilCtrl().getSellerProducts(mav, request, sellerId);
@@ -140,25 +131,25 @@ public class SellerShopController extends BaseController {
 		String isForAllCustomer = "N";
 		String isForNotice = "N";
 
-		NoticeDiscuss noticeDiscuss = null;
+//		NoticeDiscuss noticeDiscuss = null;
 
 		try {
 
 			if (StringUtils.isBlank(subject) || StringUtils.isBlank(contents)) {
 				throw new Exception("[SUBJECT | CONTENTS]  이항목(들)은 빈 값이 될 수 없습니다.");
 			}
-			noticeDiscuss = new NoticeDiscuss();
-			noticeDiscuss.setCreator(sessionUser.getUser().getUserId());
-
-			if (StringUtils.isNotBlank(subject)) noticeDiscuss.setSubject(subject);
-			if (StringUtils.isNotBlank(contents)) noticeDiscuss.setContents(contents);
-			if (StringUtils.isNotBlank(writeFrom)) noticeDiscuss.setWriteFrom(writeFrom);
-			if (StringUtils.isNotBlank(writeTo)) noticeDiscuss.setWriteTo(writeTo);
-			if (StringUtils.isNotBlank(isForAllSeller)) noticeDiscuss.setIsForAllSeller(isForAllSeller);
-			if (StringUtils.isNotBlank(isForAllCustomer)) noticeDiscuss.setIsForAllCustomer(isForAllCustomer);
-			if (StringUtils.isNotBlank(isForNotice)) noticeDiscuss.setIsForNotice(isForNotice);
-
-			updateCnt = noticeDiscussService.registNoticeDiscuss(noticeDiscuss);
+//			noticeDiscuss = new NoticeDiscuss();
+//			noticeDiscuss.setCreator(sessionUser.getUser().getUserId());
+//
+//			if (StringUtils.isNotBlank(subject)) noticeDiscuss.setSubject(subject);
+//			if (StringUtils.isNotBlank(contents)) noticeDiscuss.setContents(contents);
+//			if (StringUtils.isNotBlank(writeFrom)) noticeDiscuss.setWriteFrom(writeFrom);
+//			if (StringUtils.isNotBlank(writeTo)) noticeDiscuss.setWriteTo(writeTo);
+//			if (StringUtils.isNotBlank(isForAllSeller)) noticeDiscuss.setIsForAllSeller(isForAllSeller);
+//			if (StringUtils.isNotBlank(isForAllCustomer)) noticeDiscuss.setIsForAllCustomer(isForAllCustomer);
+//			if (StringUtils.isNotBlank(isForNotice)) noticeDiscuss.setIsForNotice(isForNotice);
+//
+//			updateCnt = noticeDiscussService.registNoticeDiscuss(noticeDiscuss);
 
 			model.put("resultCode", "0");
 			model.put("message", updateCnt + " 의 정보가 반영되었습니다.");

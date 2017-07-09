@@ -37,9 +37,9 @@
 		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myOrderList.jsp" />
 	</definition>	
 
-	<definition name="tiles/customer/mypage/customer/myQnAs" extends="tiles/customer/mypage/root">
-		<put-attribute name="title" value="나의 QnA" />
-		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myQnAs.jsp" />
+	<definition name="tiles/customer/mypage/customer/myCommunication" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="나의 Communication" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myCommunication.jsp" />
 	</definition>	
 
 		
