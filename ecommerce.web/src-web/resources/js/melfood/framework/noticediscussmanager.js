@@ -12,23 +12,30 @@ $(document).ready(function() {
 
 
 function goDetailInfo(id){
-	document.location.href = "/framework/noticedisscussmanager/noticeDiscuss.yum?id=" + id;
+	document.location.href = "/framework/communicationmanager/getCommunication.yum?id=" + id;
 }
     
 function goModify(id){
-	document.location.href = "/framework/noticedisscussmanager/modify.yum?id=" + id;
+	document.location.href = "/framework/communicationmanager/modify.yum?id=" + id;
 }
 
-function goList() {
-	document.location.href = "/framework/noticedisscussmanager/Main.yum";
+function goList(category) {
+	document.location.href = "/framework/communicationmanager/Main.yum?category=" + category;
 } 
 
 
 function add(){
-	document.location.href = "/framework/noticedisscussmanager/regist.yum";
+	document.location.href = "/framework/communicationmanager/regist.yum";
 }
 
 function search(){
+    var category = $('#category').val();
+    if(category == "") {
+        $('#category').css({'background':'#fffacd','border-color':'#DF0000','border' : '1px solid #f00'});
+        warningPopup("검색하고자하는 Category를 먼저 선택해주세요");
+        return;
+    }
+
   	$('#grid_panel_main').data('kendoGrid').dataSource.read();
    	$('#grid_panel_main').data('kendoGrid').refresh();
 }
@@ -49,15 +56,20 @@ function validateForm(){
     var message = "";
 
     var subject = $('#subject').val();
+    var category = $('#category').val();
     var writeFrom = $('#writeFrom').val();
     var isForAllSeller = $('#isForAllSeller').val();
     var isForAllCustomer = $('#isForAllCustomer').val();
-    var isForNotice = $('#isForNotice').val();
     var contents = $('#contents').val();
       
  	if(subject == "") {
  		message = message + prefix + "글 제목은 필수입력입니다.<br>";
  		checkObject[checkObject.length] = "subject";
+        validation = false;
+ 	}
+ 	if(category == "") {
+ 		message = message + prefix + "글 분류선택은 필수입력입니다.<br>";
+ 		checkObject[checkObject.length] = "category";
         validation = false;
  	}
  	if(writeFrom == "") {
@@ -75,12 +87,6 @@ function validateForm(){
  		checkObject[checkObject.length] = "isForAllCustomer";
  		validation = false;
  	}
- 	if(isForNotice == "") {
- 		message = message + prefix + "For Notice 선택은 필수항목입니다.<br>";
- 		checkObject[checkObject.length] = "isForNotice";
- 		validation = false;
- 	}
- 	
  	if(contents == "") {
  		message = message + prefix + "등록하려는 내용을 입력해주세요.<br>";
  		checkObject[checkObject.length] = "contents";
@@ -103,24 +109,24 @@ function validateForm(){
 
 function save(){
       var subject = $('#subject').val();
+      var category = $('#category').val();
       var writeFrom = $('#writeFrom').val();
       var writeTo = $('#writeTo').val();
       var isForAllSeller = $('#isForAllSeller').val();
       var isForAllCustomer = $('#isForAllCustomer').val();
-      var isForNotice = $('#isForNotice').val();
       var contents = $('#contents').val();
       
       if(validateForm() == false) return;
       
       $.ajax({
-           url  : "/framework/noticedisscussmanager/saveModify.yum",
+           url  : "/framework/communicationmanager/saveModify.yum",
            data      : {
         	   subject : subject,
+               category : category,
         	   writeFrom : writeFrom,
         	   writeTo : writeTo,
         	   isForAllSeller : isForAllSeller,
         	   isForAllCustomer : isForAllCustomer,
-        	   isForNotice : isForNotice,
         	   contents : contents,
         	   id : ID,
         	   actionMode : ACTION_MODE
@@ -132,11 +138,12 @@ function save(){
 function callbackSave(data) {
       var message = data.message;
       var resultCode = data.resultCode;
+      var category = data.category;
 
       if (resultCode != "0") {
            warningPopup(data.message);
       } else {
-    	  goList();
+    	  goList(category);
       }
 }
 
@@ -154,7 +161,7 @@ function deleteInfo(){
         callback: function(result) {
             if(result) {
 			      $.ajax({
-			           url  : "/framework/codemanager/codeDelete.yum",
+			           url  : "/framework/communicationmanager/codeDelete.yum",
 			           data      : {
 			             category : CATEGORY,
 			             type : TYPE,

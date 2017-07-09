@@ -15,8 +15,8 @@ import melfood.framework.Ctx;
 public class AwsClients {
 
     public static AmazonSNSClient getSNSClient() {
-        String accessKey = Ctx.getVar("SNS.SMS.ACCESS_KEY");
-        String secretKey = Ctx.getVar("SNS.SMS.SECRET_KEY");
+        String accessKey = Ctx.getVar("SNS.SMS.ACCESS-KEY");
+        String secretKey = Ctx.getVar("SNS.SMS.SECRET-KEY");
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 
         AmazonSNSClient snsClient = new AmazonSNSClient(credentials);

@@ -41,13 +41,8 @@
                  $("#grouppurchase-000").addClass("homer");
 
 
-             } else if(pathName.startsWith("/framework/noticedisscussmanager")) {
-                 $("#noticediscussion-000").addClass("homer");
-
-
-             } else if(pathName.startsWith("/framework/qnamanager")) {
-                 $("#qna-000").addClass("homer");
-
+             } else if(pathName.startsWith("/framework/communicationmanager")) {
+                 $("#communication-000").addClass("homer");
 
              } else if (pathName.startsWith("/framework/codemanager")) {
                  $("#setting-000").addClass("homer");
@@ -97,9 +92,13 @@
 
                          <li><a id="grouppurchase-000" href="/admin/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공동구매 관리</a>
 
-                         <li><a id="noticediscussion-000" href="/framework/noticedisscussmanager/Main.yum"><i class="fa fa-comments" aria-hidden="true"></i>&nbsp; Notice/Discussion 관리</a>
 
-                         <li><a id="qna-000" href="/framework/qnamanager/Main.yum"><i class="fa fa-question-circle" aria-hidden="true"></i>&nbsp; QnA 관리</a>
+                         <li><a id="communication-000" href="#"><i class="fa fa-cogs fa-lg"></i>&nbsp; Communication 관리</a>
+                              <ul class="sub-menu">
+                                   <li><a id="communication-110" href="/framework/communicationmanager/Main.yum?category=QNA"><i class="fa fa-question-circle" aria-hidden="true"></i>&nbsp; QnA 관리</a></li>
+                                   <li><a id="communication-120" href="/framework/communicationmanager/Main.yum?category=NOTICE"><i class="fa fa-bell-o" aria-hidden="true"></i> / <i class="fa fa-comments" aria-hidden="true"></i>&nbsp;  공지/대화 관리</a></li>
+                              </ul>
+                         </li>
 
                          <li><a id="setting-000" href="#"><i class="fa fa-cogs fa-lg"></i>&nbsp; 시스템관리</a>
                               <ul class="sub-menu">

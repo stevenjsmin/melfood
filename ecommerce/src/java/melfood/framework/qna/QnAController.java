@@ -10,6 +10,7 @@
 package melfood.framework.qna;
 
 import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.communication.CommunicationService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
@@ -38,6 +39,9 @@ import java.util.*;
 public class QnAController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(QnAController.class);
+
+    @Autowired
+    private CommunicationService communicationService;
 
     @Autowired
     private QnAService qnAService;

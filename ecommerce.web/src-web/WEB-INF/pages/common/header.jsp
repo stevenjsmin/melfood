@@ -112,8 +112,8 @@ $(document).ready(function() {
                     <tr>
                          <td><span style="color: #007900;font-weight: bold;"><%=sessionUser.getUser().getUserName() %> </span><span style="color: #bfbfbf;">/ <%=sessionUser.getSessionRole().getRoleName() %></span> 님:: &nbsp;&nbsp;&nbsp;</td>
                          <td>
-                              <a href="javascript:logout();"><i class="fa fa-unlock fa-lg" aria-hidden="true" style="color: #337AB7;"></i></a>  &nbsp;|&nbsp;
-                              <a href="javascript:goPayment();"><i class="fa fa-credit-card-alt" aria-hidden="true" style="color: #337AB7;"></i> <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp; | &nbsp;
+                              <a href="javascript:logout();"><i class="fa fa-unlock fa-lg" aria-hidden="true" style="color: #337AB7;" title="로그아웃"></i></a>  &nbsp;|&nbsp;
+                              <a href="javascript:goPayment();"><i class="fa fa-credit-card-alt" aria-hidden="true" style="color: #337AB7;" title="결재"></i> <span id="markNumberOfProductOnCartForHeader"></span></a>  &nbsp; | &nbsp;
                               <a href="javascript:goMyPage('${sessionUser.sessionRole.roleId}');" style="color: #337AB7;font-weight: bold;">My 푸드</a>
                          </td>
                     </tr>
