@@ -279,7 +279,7 @@
                     <div class="panel-heading" style="height: 50px;">
                         <table style="width: 100%;height: 100%;">
                             <tr>
-                                <td style="padding-left: 20px;text-align: left;font-size: 15px;font-weight: bold;color: #333333;">주문완료 :: 주문해 주셔서 감사합니다.</td>
+                                <td style="padding-left: 20px;text-align: left;font-size: 15px;font-weight: bold;color: #333333;"><span style="color: #F15F4C;font-size: 15px;font-weight: bold;">주문완료</span> :: 주문해 주셔서 감사합니다.</td>
                             </tr>
                         </table>
                     </div>
@@ -378,17 +378,17 @@
 
                     <div class="row">
                         <div class="col-sm-12" style="padding-left: 40px; padding-top: 20px; ">
-                            <table class="table table-striped">
+                            <table class="table table-striped" border="0">
                                 <thead>
                                 <tr>
-                                    <th style="text-align: right;color: #575758;">할인 (%)</th>
+                                    <th style="text-align: right;color: #575758;">할인 (<i class="fa fa-arrow-down" aria-hidden="true" style="color: #575758;"></i><i class="fa fa-arrow-down" aria-hidden="true" style="color: #575758;"></i>)</th>
                                     <th style="width: 100px;text-align: right;color: #575758;">할인금액</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td style="color: #797979;text-align: right;">- 5 %</td>
-                                    <td style="color: #797979;text-align: right;">- 2.50 $</td>
+                                    <td style="color: #797979;text-align: right;"> - 5 %</td>
+                                    <td style="color: #797979;text-align: right;width: 90px;"> - 2.50 $</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -430,13 +430,21 @@
                 <table style="width: 100%;">
                     <tr>
                         <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-bell fa-3x" aria-hidden="true"></i></td>
-                        <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">고맙니다.</span></td>
+                        <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">고맙습니다.</span></td>
                     </tr>
                 </table>
             </div>
             <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 20px;padding-top: 20px;">
+
+                <!-- 계좌이체 결재인경우 수금받을 계좌정보 -->
                 <div id="detailinfo_for_acc_transfer" style="padding-bottom: 20px;">
                     <table width="100%;" style="font-size: 5px;">
+                        <tr>
+                            <td colspan="3" style="text-align: right;">
+                                <span class="subtitle" style="color: #737273;text-align: right;">송금하실 계좌정보</span>
+                                <hr class="subtitle"/>
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width: 100px; text-align: right;font-size: 11px;color: #8D9999;">은행명</td>
                             <td style="width: 20px;text-align: center">:</td>
@@ -454,10 +462,13 @@
                         </tr>
                     </table>
                 </div>
+
+                <!-- 계좌이체 결재인경우 영수증 첨부 안내 -->
                 <div id="notice_for_acc_transfer">
                     <div class="alert alert-warning" style="border-left: 6px solid #F15F4C;padding-left: 5px;">송금하신 후 <span style="text-decoration: underline;">영수증 이미지를 업로드</span>해 주시면 빠르게 처리해 드리겠습니다.</div>
                 </div>
 
+                <!-- 영수증 업로드 -->
                 <div id="acc_transfer_receipt_upload" style="margin-bottom: 10px;">
                     <table style="width: 100%;">
                         <tr>
@@ -472,6 +483,62 @@
                         </tr>
                     </table>
                 </div>
+
+                <!-- 설문조사 -->
+                <div id="survey_for_next" style="margin-bottom: 10px;padding-top: 40px;">
+                    <table width="100%;" style="font-size: 5px;" border="0">
+                        <tr>
+                            <td colspan="6" style="text-align: right;">
+                                <span class="subtitle" style="color: #737273;text-align: right;">선호하시는 공동구매 요일을 선택해 주실래요 ? ^^</span>
+                                <hr class="subtitle"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;font-size: 13px;color: #333333;">월 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Monday"> </td>
+
+                            <td style="text-align: right;font-size: 13px;color: #A6D364;width: 70px;">토 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Saturday"> </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;font-size: 13px;color: #333333;">화 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Tuesday"> </td>
+
+                            <td style="text-align: right;font-size: 13px;color: #A6D364;">일 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Sunday"> </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;font-size: 13px;color: #333333;">수 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Wednesday"> </td>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;font-size: 13px;color: #333333;">목 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Thursday"> </td>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;font-size: 13px;color: #333333;">금 요일</td>
+                            <td style="width: 20px;text-align: center">:</td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Friday"> </td>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: right;font-size: 13px;color: #333333;padding-right: 7px;" colspan="6">
+                                오전 <input type="radio" name="survey_for_next_ampm" value="AM">&nbsp;&nbsp;
+                                오후 <input type="radio" name="survey_for_next_ampm" value="PM">
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
 
                 <div style="margin-bottom: 10px;padding-top: 30px;">
                     <table style="width: 100%;">

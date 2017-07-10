@@ -29,7 +29,7 @@
 
 
 <div class="row" style="margin-top: 30px;text-align: center;">
-    <div class="col-sm-5 col-centered">
+    <div class="col-sm-6 col-centered">
 
         <div class="panel panel-info">
             <div class="panel-heading" style="padding-top: 10px;padding-bottom: 10px;">
