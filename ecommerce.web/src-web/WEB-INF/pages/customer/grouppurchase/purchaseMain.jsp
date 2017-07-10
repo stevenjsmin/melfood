@@ -340,23 +340,12 @@
     </script>
 
     <script type="text/javascript">
-        var checkObject = [];
 
         function validateForm(){
 
-            var count;
-            var elementObj = "";
             var validation = true;
-
-            // Initialize
-            for(count=0; count < checkObject.length; count++ ){
-                elementObj = "#" + checkObject[count];
-                $(elementObj).css({'background':'#ECF5FF','border-color':'#DFDFDF'});
-            }
-            checkObject = [];
             var prefix = "- &nbsp;&nbsp;";
             var message = "";
-
 
             var totalOrderAmount = 0;
             var minimumPurchaseAmount = ${groupPurchase.minimumPurchaseAmount};
@@ -377,8 +366,9 @@
                 validation = false;
             }
 
-            if(minimumPurchaseAmount > 0) {
-                if(totalOrderAmount < minimumPurchaseAmount){
+            console.log(totalOrderAmount + "/" + minimumPurchaseAmount);
+            if(parseFloat(minimumPurchaseAmount) > 0) {
+                if(parseFloat(totalOrderAmount) < parseFloat(minimumPurchaseAmount)){
                     message = message + prefix + "최소 주문금액은" + toCurrency(minimumPurchaseAmount) + "입니다.<br>";
                     validation = false;
                 }
@@ -386,16 +376,9 @@
 
             if(paymentMethod == "") {
                 message = message + prefix + "결재방법을 선택해주세요<br>";
-                checkObject[checkObject.length] = "paymentMethod";
                 validation = false;
             }
 
-
-            // 검증된 필드들을 마킹한다.
-            for(count=0; count < checkObject.length; count++ ){
-                elementObj = "#" + checkObject[count];
-                $(elementObj).css({'background':'#fffacd','border-color':'#DF0000','border' : '1px solid #f00'});
-            }
             if(validation == false){
                 // 오류가 있는 경우 경고 창을 보여준다.
                 warningPopup(message);

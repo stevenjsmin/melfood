@@ -429,7 +429,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
             // Convertiong JSON --> OrderScreenDTO.class
             logger.info("JSONDocument :" + JSONDocument);
             OrderScreenDTO screenDto = gson.fromJson(JSONDocument, OrderScreenDTO.class);
-            orderMaster = this.settingOrderMasterInfo(screenDto);
+            orderMaster.setGroupPurchaseId(screenDto.getGroupPurchaseId());
+            //orderMaster = this.settingOrderMasterInfo(screenDto);
+
 
             // TODO : OrderMaster를 DB에 저장한다.
 
