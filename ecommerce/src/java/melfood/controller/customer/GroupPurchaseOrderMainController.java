@@ -414,9 +414,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/doPaymentProcessConfirmCalculation", produces = "application/json")
+    @RequestMapping(value = "/doPaymentProcess", produces = "application/json")
     @ResponseBody
-    public Map<String, Object> doPaymentProcessConfirmCalculation(HttpServletRequest request) throws Exception {
+    public Map<String, Object> doPaymentProcess(HttpServletRequest request) throws Exception {
         Map<String, Object> model = new HashMap<String, Object>();
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
@@ -425,14 +425,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
         OrderMaster orderMaster = null;
         Gson gson = new Gson();
 
-        String groupPurchaseId = orderMaster.getGroupPurchaseId();
-
         try {
-
-            // orderMaster.setGroupPurchaseId(groupPurchaseId);
-
+            // Convertiong JSON --> OrderScreenDTO.class
             logger.info("JSONDocument :" + JSONDocument);
-
             OrderScreenDTO screenDto = gson.fromJson(JSONDocument, OrderScreenDTO.class);
             orderMaster = this.settingOrderMasterInfo(screenDto);
 
@@ -530,7 +525,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
         List<GroupPurchaseProduct> purchaseProducts = null;
 
 
-        return null;
+        return orderMaster;
     }
 
 }

@@ -478,7 +478,7 @@
 
             progress(true);
             $.ajax({
-                url: "/grouppurchase/doPaymentProcessConfirmCalculation.yum",
+                url: "/grouppurchase/doPaymentProcess.yum",
                 data: {
                     JSONDocument    : JSONDocument
                 },
