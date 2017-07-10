@@ -5,8 +5,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<%@ page import="melfood.framework.Ctx" %>
+
 <!doctype html>
 <head>
+    <script src="/resources/js/melfood/framework/grouppurchasepayment.js?ver=<%=Ctx.releaseVersion%>"></script>
+
     <style>
         .content {
             width: 100%;
@@ -333,13 +337,40 @@
         }
     </script>
 
-
     <script type="text/javascript">
-        function doPaymentProcess() {
+        function doPaymentProcessConfirm() {
+            var amount = 0;
+            var totalProdAmount = 50.5;
+            var deliveryFee = 200;
+            var subTotal = 0.0;
+            var toBeDiscountAmount = 0.0;
+            var finalAmount = 0.0;
 
+            progress(true);
+            $.ajax({
+                url: "/grouppurchase/doPaymentProcessConfirmCalculation.yum",
+                data: {
+                    groupPurchaseId: '${groupPurchase.groupPurchaseId}',
+                    amount: amount,
+                    totalProdAmount: totalProdAmount,
+                    deliveryFee: deliveryFee
+                },
+                success: callbackDoPaymentProcessConfirm
+            });
+        }
+        function callbackDoPaymentProcessConfirm(data) {
+            var message = data.message;
+            var resultCode = data.resultCode;
+            var sessOrderKey = data.sessOrderKey;
+
+            progress(false);
+            if (resultCode != "0") {
+                warningPopup(data.message);
+            } else {
+                document.location.href = "/grouppurchase/doPaymentProcessConfirm.yum?sessOrderKey=" + sessOrderKey;
+            }
         }
     </script>
-
 
 </head>
 
@@ -876,7 +907,7 @@
 
 
                         <tr style="height: 25px;">
-                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a>
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="javascript:doPaymentProcessConfirm();" style="color: #FFFFFF;font-weight: bold;font-size: 15px;"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp; 결재하기 </a>
                             </td>
                         </tr>
                     </tbody>

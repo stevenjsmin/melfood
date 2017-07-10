@@ -90,9 +90,9 @@ public class CommunicationServiceImpl implements CommunicationService {
 
             for (String email : emails) {
                 message = new StringBuffer("");
-                message.append("customerMobile=" + communication.getWriterMobile() + "^");
-                message.append("customerEmail=" + communication.getWriterEmail() + "^");
-                message.append("customerQuestion=" + communication.getContents() + "^");
+                message.append("customerMobile=" + (StringUtils.isBlank(communication.getWriterMobile()) ? "-" : communication.getWriterMobile()) + "^");
+                message.append("customerEmail=" + (StringUtils.isBlank(communication.getWriterEmail()) ? "-" : communication.getWriterEmail()) + "^");
+                message.append("customerQuestion=" + (StringUtils.isBlank(communication.getContents()) ? "-" : communication.getContents()) + "^");
 
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss a");
                 Calendar cal = Calendar.getInstance();

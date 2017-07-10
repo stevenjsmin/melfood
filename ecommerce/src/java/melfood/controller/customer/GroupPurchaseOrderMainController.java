@@ -22,6 +22,8 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.order.OrderMaster;
+import melfood.shopping.order.OrderService;
 import melfood.shopping.payment.PaymentMethod;
 import melfood.shopping.payment.PaymentMethodService;
 import melfood.shopping.product.*;
@@ -71,6 +73,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
     private DeliveryCalendarService deliveryCalendarService;
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private PaymentMethodService paymentMethodService;
 
     @RequestMapping("/Main")
@@ -93,7 +98,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
             // 공동구매 상품정보(목록)
             groupPurchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(groupPurchaseId);
 
-            if(!StringUtils.equalsIgnoreCase(groupPurchase.getStatus(), "1_ON_ORDER")) throw new Exception("주문 가능하지 않은 공동구매 입니다.");
+            if (!StringUtils.equalsIgnoreCase(groupPurchase.getStatus(), "1_ON_ORDER")) throw new Exception("주문 가능하지 않은 공동구매 입니다.");
 
 
             // GroupPurchase --> GroupPurchaseProduct/(s) --> Product/(s) --> ProductImage/(s)
@@ -392,6 +397,83 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
         mav.addObject("groupPurchase", groupPurchase);
         mav.addObject("imageList", list);
+
+        return mav;
+    }
+
+    /**
+     * 주문한 내역을 최종적으로 결재하기전에 상세주문 내역과 비용계산결과를 만들어서 세션에 저장해 놓는다.
+     * <p/>
+     * Session = HashMap<(자용자ID:SESSION_ORDER, MasterOrder.java)>
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/doPaymentProcessConfirmCalculation", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> doPaymentProcessConfirmCalculation(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String amount = request.getParameter("amount");
+        String totalProdAmount = request.getParameter("totalProdAmount");
+        String deliveryFee = request.getParameter("deliveryFee");
+
+        OrderMaster orderMaster = new OrderMaster();
+        try {
+
+            orderMaster.setGroupPurchaseId(groupPurchaseId);
+            orderMaster.setAmountTotal(100.00f);
+            orderMaster.setAmountTotalDelivery(Float.parseFloat(deliveryFee));
+            orderMaster.setAmountTotalProduct(Float.parseFloat(totalProdAmount));
+
+            // 공동구매 기본정보를 얻어온다.
+            String sessOrderKey = orderService.addUserSessionOrder(request, orderMaster);
+
+            model.put("sessOrderKey", sessOrderKey);
+
+            model.put("resultCode", "0");
+            model.put("message", "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+
+        }
+
+        return model;
+    }
+
+
+    @RequestMapping("/doPaymentProcessConfirm")
+    public ModelAndView doPaymentProcessConfirm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/doPaymentProcessConfirm");
+
+        String sessOrderKey = request.getParameter("sessOrderKey");
+
+        if (StringUtils.isBlank(sessOrderKey)) {
+            throw new Exception("[sessOrderKey]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        OrderMaster orderMaster = orderService.getUserSessionOrder(request, sessOrderKey);
+        String groupPurchaseId = orderMaster.getGroupPurchaseId();
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+        mav.addObject("groupPurchase", groupPurchase);
+
+        List<ProductImage> groupPurchaseImages = groupPurchaseService.getProductImages(new ProductImage(groupPurchase.getGroupPurchaseId()));
+        groupPurchase.setGroupPurchaseImages(groupPurchaseImages);
+        if (groupPurchaseImages.size() > 0 && groupPurchaseImages.get(0).getImageFileId() != 0) {
+            // 등록된 첫번째 이미지를 대표이미지로 사용한다.
+            mav.addObject("firstImageId", Integer.toString(groupPurchaseImages.get(0).getImageFileId()));
+        } else {
+            mav.addObject("firstImageId", null);
+        }
+
+        mav.addObject("orderMaster", orderMaster);
 
         return mav;
     }

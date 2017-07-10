@@ -42,5 +42,4 @@
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/stopSellingForm.jsp" />
 	</definition>
 
-
 </tiles-definitions>

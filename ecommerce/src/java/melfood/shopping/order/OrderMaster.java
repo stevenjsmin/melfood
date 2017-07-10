@@ -2,6 +2,8 @@ package melfood.shopping.order;
 
 import melfood.framework.common.dto.BaseDto;
 
+import java.util.List;
+
 /**
  * Created by Steven on 4/7/17.
  */
@@ -36,6 +38,7 @@ public class OrderMaster extends BaseDto {
     private String pickupAddressNote;
     private String isPickupOrDelivery;
     private String normalOrGroupOrder;
+    private String groupPurchaseId;
     private String isRefund;
     private String refundDatetime;
     private String refundServiceCharge;
@@ -72,6 +75,8 @@ public class OrderMaster extends BaseDto {
     private Float amountTotalExtra3;
     private Float amountTotalExtra4;
     private Float amountTotal;
+
+    private List<OrderMasterProduct> orderMasterProduct;
 
     public OrderMaster() {
     }
@@ -611,6 +616,22 @@ public class OrderMaster extends BaseDto {
 
     public void setPaymentAccTransferReceipt(Integer paymentAccTransferReceipt) {
         this.paymentAccTransferReceipt = paymentAccTransferReceipt;
+    }
+
+    public List<OrderMasterProduct> getOrderMasterProduct() {
+        return orderMasterProduct;
+    }
+
+    public void setOrderMasterProduct(List<OrderMasterProduct> orderMasterProduct) {
+        this.orderMasterProduct = orderMasterProduct;
+    }
+
+    public String getGroupPurchaseId() {
+        return groupPurchaseId;
+    }
+
+    public void setGroupPurchaseId(String groupPurchaseId) {
+        this.groupPurchaseId = groupPurchaseId;
     }
 }
 

@@ -38,6 +38,7 @@
 				,a.pickup_address_note 'pickupAddressNote'
 				,a.is_pickup_or_delivery 'isPickupOrDelivery'
 				,a.normal_or_group_order 'normalOrGroupOrder'
+				,a.group_purchase_id 'groupPurchaseId'
 				,a.is_refund 'isRefund'
 				,a.refund_datetime 'refundDatetime'
 				,a.refund_service_charge 'refundServiceCharge'
@@ -120,6 +121,7 @@
 				<if test="pickupAddressNote                 != null"> AND UPPER(a.pickup_address_note)                   LIKE CONCAT('%', UPPER( #{pickupAddressNote}), '%') </if>
 				<if test="isPickupOrDelivery                != null"> AND UPPER(a.is_pickup_or_delivery)                 = UPPER(#{isPickupOrDelivery}) </if>
 				<if test="normalOrGroupOrder                != null"> AND UPPER(a.normal_or_group_order)                 = #{normalOrGroupOrder} </if>
+				<if test="groupPurchaseId                != null"> AND UPPER(a.group_purchase_id)                 = #{groupPurchaseId} </if>
 				<if test="isRefund                          != null"> AND UPPER(a.is_refund)                             = UPPER(#{isRefund}) </if>
 				<if test="refundDatetime                    != null"> AND str_to_date(#{refundDatetime}, '%Y-%m-%d') = str_to_date(a.refund_datetime, '%Y-%m-%d') </if>
 				<if test="refundServiceCharge               != null"> AND a.refund_service_charge                        = #{refundServiceCharge} </if>
@@ -182,6 +184,7 @@
 				<if test="pickupAddressNote                 != null"> AND UPPER(a.pickup_address_note)                   LIKE CONCAT('%', UPPER( #{pickupAddressNote}), '%') </if>
 				<if test="isPickupOrDelivery                != null"> AND UPPER(a.is_pickup_or_delivery)                 = UPPER(#{isPickupOrDelivery}) </if>
 				<if test="normalOrGroupOrder                != null"> AND UPPER(a.normal_or_group_order)                 = #{normalOrGroupOrder} </if>
+				<if test="groupPurchaseId                != null"> AND UPPER(a.group_purchase_id)                 = #{groupPurchaseId} </if>
 				<if test="isRefund                          != null"> AND UPPER(a.is_refund)                             = UPPER(#{isRefund}) </if>
 				<if test="refundDatetime                    != null"> AND str_to_date(#{refundDatetime}, '%Y-%m-%d') = str_to_date(a.refund_datetime, '%Y-%m-%d') </if>
 				<if test="refundServiceCharge               != null"> AND a.refund_service_charge                        = #{refundServiceCharge} </if>
@@ -241,6 +244,7 @@
 				,pickup_address_note
 				,is_pickup_or_delivery
 				,normal_or_group_order
+				,group_purchase_id
 				,is_refund
 				,refund_datetime
 				,refund_service_charge
@@ -307,6 +311,7 @@
 		                   ,#{pickupAddressNote}
 		                   ,#{isPickupOrDelivery}
 		                   ,#{normalOrGroupOrder}
+		                   ,#{groupPurchaseId}
 		                   ,#{isRefund}
 		                   ,STR_TO_DATE(#{refundDatetime}, '%Y-%m-%d %h:%i %p')
 		                   ,#{refundServiceCharge}

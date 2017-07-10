@@ -44,9 +44,11 @@
         }
         .gppurchase {
             border: 2px solid transparent;
+            border-left: 6px solid #F15F4C;
         }
         .gppurchase:hover {
             border: 2px solid #0099FF;
+            border-left: 6px solid #008600;
         }
 
         .gppurchaseimage {
@@ -289,7 +291,7 @@
 <!-- 공동구매목록-->
 <c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count" begin="0">
 
-    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;border-left: 6px solid #F15F4C;margin-bottom: 5px;">
+    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;margin-bottom: 5px;">
 
         <div class="col-sm-2 col-centered" style="padding-right: 40px;text-align: right;">
             <c:choose>
