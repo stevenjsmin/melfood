@@ -9,6 +9,7 @@
 
 package melfood.controller.customer;
 
+import com.google.gson.Gson;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.gmap.gson.dto.GMapResult;
@@ -23,6 +24,7 @@ import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
 import melfood.shopping.order.OrderMaster;
+import melfood.shopping.order.OrderScreenDTO;
 import melfood.shopping.order.OrderService;
 import melfood.shopping.payment.PaymentMethod;
 import melfood.shopping.payment.PaymentMethodService;
@@ -417,17 +419,18 @@ public class GroupPurchaseOrderMainController extends BaseController {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
         String groupPurchaseId = request.getParameter("groupPurchaseId");
-        String amount = request.getParameter("amount");
-        String totalProdAmount = request.getParameter("totalProdAmount");
-        String deliveryFee = request.getParameter("deliveryFee");
+        String JSONDocument = request.getParameter("JSONDocument");
 
         OrderMaster orderMaster = new OrderMaster();
+        Gson gson = new Gson();
+
         try {
 
             orderMaster.setGroupPurchaseId(groupPurchaseId);
-            orderMaster.setAmountTotal(100.00f);
-            orderMaster.setAmountTotalDelivery(Float.parseFloat(deliveryFee));
-            orderMaster.setAmountTotalProduct(Float.parseFloat(totalProdAmount));
+
+            logger.info("JSONDocument :" + JSONDocument);
+
+            OrderScreenDTO screenDto = gson.fromJson(JSONDocument, OrderScreenDTO.class);
 
             // 공동구매 기본정보를 얻어온다.
             String sessOrderKey = orderService.addUserSessionOrder(request, orderMaster);

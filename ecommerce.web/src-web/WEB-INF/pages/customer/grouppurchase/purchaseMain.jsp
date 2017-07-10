@@ -71,6 +71,9 @@
                 $("#cutomerAddress").html(cutomerAddress);
                 $("#estimatedDeliveryTime").html(estimatedDeliveryTime);
                 $("#distance").html(distance);
+
+                $("#delivery_distance").val(distance);
+
                 $("#deliveryFee").html(deliveryFee);
                 $("#deliveryServiceFee").val(deliveryFee);
 
@@ -86,7 +89,6 @@
                 $("#unknownErrorCutomerAddress").html(cutomerAddress);
                 $("#unknownErrorMessage").html(mapResultMessage);
             }
-
 
         }
 
@@ -346,14 +348,68 @@
             var toBeDiscountAmount = 0.0;
             var finalAmount = 0.0;
 
+            var orderAmount = "";
+            var optionValue = "";
+
+            var prodCnt = 0;
+
+            var JSONDocument = "{"
+            JSONDocument = JSONDocument + '"groupPurchaseId":' + '"${groupPurchase.groupPurchaseId}"' + ",";
+            JSONDocument = JSONDocument + '"items" : [';
+
+            <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count" begin="0">
+                orderAmount = $("#amountOfOrder_${groupPurchaseProduct.product.prodId}").val();
+                if(orderAmount > 0){
+                    JSONDocument = JSONDocument + '{"productOrder" : [{' + '"${groupPurchaseProduct.product.prodId}" : "' + orderAmount + '"}]';
+                    prodCnt++;
+
+                    if(${fn:length(groupPurchaseProduct.product.productOptionGroups)} > 0) {
+                        JSONDocument = JSONDocument + ',';
+                        JSONDocument = JSONDocument + '"options" : ';
+                        JSONDocument = JSONDocument + '[';
+                        <c:forEach var="productOptionGroup" items="${groupPurchaseProduct.product.productOptionGroups}" varStatus="count1" begin="0">
+                            optionValue = $("#" + ${groupPurchaseProduct.product.prodId} + "_" + ${count1.index + 1}).val();
+                            <c:choose>
+                                <c:when test="${fn:length(groupPurchaseProduct.product.productOptionGroups) gt 0 }">
+                                    <c:choose>
+                                        <c:when test="${(count1.index + 1) < fn:length(groupPurchaseProduct.product.productOptionGroups) }">
+                                                JSONDocument = JSONDocument + '{' + '"${productOptionGroup.optionLabel}" : "' + optionValue + '"},' ;
+                                        </c:when>
+                                        <c:otherwise>
+                                                JSONDocument = JSONDocument + '{' + '"${productOptionGroup.optionLabel}" : "' + optionValue + '"}' ;
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                        JSONDocument = JSONDocument + ']';
+                    } else {
+                        JSONDocument = JSONDocument + ', "options" : []';
+                    }
+                    JSONDocument = JSONDocument + '},';
+                }
+            </c:forEach>
+
+            if(prodCnt > 0) JSONDocument = JSONDocument.substring(0, JSONDocument.length - 1); // Remove last comma.
+            JSONDocument = JSONDocument + ']'
+
+            if($("#useDeliveryService_${groupPurchase.groupPurchaseId}").prop('checked') == true) {
+                JSONDocument = JSONDocument + ', "deliveryService" :' + '"yes"'
+                JSONDocument = JSONDocument + ', "deliveryDistance" :' + '"' + $('#delivery_distance').val() + '"';
+            } else {
+                JSONDocument = JSONDocument + ', "deliveryService" :' + '"no"'
+                JSONDocument = JSONDocument + ', "deliveryDistance" :' + '"0"'
+            }
+            JSONDocument = JSONDocument + '}'
+
+            console.log(JSONDocument);
+
             progress(true);
             $.ajax({
                 url: "/grouppurchase/doPaymentProcessConfirmCalculation.yum",
                 data: {
-                    groupPurchaseId: '${groupPurchase.groupPurchaseId}',
-                    amount: amount,
-                    totalProdAmount: totalProdAmount,
-                    deliveryFee: deliveryFee
+                    groupPurchaseId : '${groupPurchase.groupPurchaseId}',
+                    JSONDocument    : JSONDocument
                 },
                 success: callbackDoPaymentProcessConfirm
             });
@@ -590,12 +646,6 @@
 
 
 
-
-
-
-
-
-
                                             </td>
                                         </tr>
                                     </table>
@@ -677,7 +727,10 @@
                                         <tr>
                                             <td style="color: #797979; text-align: right;">거리</td>
                                             <td>:</td>
-                                            <td><span id="distance">0</span> Km</td>
+                                            <td>
+                                                <span id="distance">0</span> Km
+                                                <input type="hidden" name="delivery_distance" id="delivery_distance" value="0" />
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="color: #797979; text-align: right;">배송예정시간</td>
