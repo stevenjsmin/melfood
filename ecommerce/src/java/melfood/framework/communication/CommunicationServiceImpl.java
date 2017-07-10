@@ -60,24 +60,24 @@ public class CommunicationServiceImpl implements CommunicationService {
         // 1. SMS로 보내야하는 경우 SMS로 발송한다
         if (cntUpdate > 0 && StringUtils.isNotBlank(communication.getNotifySmsNo())) {
 
-            String[] mobileNumbers = StringUtils.split(communication.getNotifySmsNo(), ",");
+            String[] receiverMobiles = StringUtils.split(communication.getNotifySmsNo(), ",");
 
-            for (String mobileNumber : mobileNumbers) {
+            for (String receiverMbile : receiverMobiles) {
                 message = new StringBuffer();
                 message.append("[" + communication.getWriter() + "] ");
 
                 if (StringUtils.equalsIgnoreCase(communication.getCategory(), "QNA")) {
                     message.append("문의사항 : ");
                 } else if (StringUtils.equalsIgnoreCase(communication.getCategory(), "NOTICE")) {
-                    message.append("공지사항 : ");
+                    message.append("의 공지 : ");
                 } else if (StringUtils.equalsIgnoreCase(communication.getCategory(), "CHAT")) {
-                    message.append("일반대화 : ");
+                    message.append("의 글 : ");
                 } else {
                     message.append(" : ");
                 }
                 message.append(StringUtils.abbreviate(communication.getContents(), 200));
 
-                notifyResult = AwsSNSUtils.sendMessage(message.toString(), mobileNumber);
+                notifyResult = AwsSNSUtils.sendMessage(message.toString(), receiverMbile);
                 logger.info("SMS of AWS SNS 발송 :" + notifyResult);
             }
 
@@ -100,7 +100,11 @@ public class CommunicationServiceImpl implements CommunicationService {
                 message.append("createDatetime=" + df.format(cal.getTime()) + "^");
 
                 EmailServices emailSvc = new EmailServices();
-                emailSvc.sendEmailUsingHtmlTemplate(communication.getNotifyEmail(), "[멜푸드] 멜푸드에 문의/글이 등록되었습니다.", message.toString(), "4");
+                if (StringUtils.equalsIgnoreCase(communication.getCategory(), "QNA")) {
+                    emailSvc.sendEmailUsingHtmlTemplate(communication.getNotifyEmail(), "[멜푸드] 멜푸드에 문의사항이 등록되었습니다.", message.toString(), "4");
+                } else {
+                    emailSvc.sendEmailUsingHtmlTemplate(communication.getNotifyEmail(), "[멜푸드] 멜푸드에 글이 등록되었습니다.", message.toString(), "6");
+                }
 
                 logger.info("이메일 발송완료 :" + communication.getNotifyEmail());
             }

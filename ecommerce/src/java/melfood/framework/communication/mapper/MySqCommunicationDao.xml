@@ -116,7 +116,7 @@
 			AND ( a.write_from = #{writeFrom} OR  a.write_to = #{writeTo} )
 			<if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 			<if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
-		ORDER BY a.id ASC
+		ORDER BY a.id DESC
 		LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
 
@@ -166,7 +166,7 @@
 		AND (  (a.write_from = #{writeFrom} AND  a.write_to = #{writeTo}) OR (a.write_from = #{writeTo} AND  a.write_to = #{writeFrom}) )
 			<if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 			<if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
-			ORDER BY a.id ASC
+			ORDER BY a.id DESC
 		LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
 

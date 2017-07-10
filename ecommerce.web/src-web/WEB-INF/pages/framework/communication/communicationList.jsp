@@ -191,7 +191,11 @@
         # if (category == 'NOTICE') { #
         #= subject #
         # } else if (category == 'CHAT') { #
-        #=  abbreviate(contents, 30) #
+             # if (contents != null && contents != '') { #
+                  #=  abbreviate(contents, 30) #
+             # } else { #
+                  #= '' #
+             # } #
         # } else { #
         #= '' #
         # } #
