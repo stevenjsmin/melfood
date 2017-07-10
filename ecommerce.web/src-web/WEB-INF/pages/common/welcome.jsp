@@ -178,7 +178,7 @@
                 } else if( '${entry.status}' == '4_WILL_BE_ORDER') {
                     message = message + "<tr style='height: 20px;'>";
                     message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true' style='color:#008600;'></i></td>";
-                    message = message + "  <td style='height: 35px;color:#008600;'><span style='font-weight: bold;'>[Coming soon..]</span> ${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문</span></td>";
+                    message = message + "  <td style='height: 35px;color:#008600;'><span style='font-weight: bold;color: #C2002F;'>Coming soon..</span> ${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문</span></td>";
                     message = message + "</tr>";
 
                 } else {

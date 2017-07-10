@@ -532,7 +532,8 @@ public class CommunicationController extends BaseController {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.MONTH, -1);
+        // cal.add(Calendar.MONTH, -1); // One month ago
+        cal.add(Calendar.DAY_OF_MONTH, -7); // 7 Days ago
         communication.setSearchDateFrom(df.format(cal.getTime()));
 
         // For Pagination
