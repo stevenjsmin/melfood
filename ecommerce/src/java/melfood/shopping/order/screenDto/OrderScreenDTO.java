@@ -1,4 +1,4 @@
-package melfood.shopping.order;
+package melfood.shopping.order.screenDto;
 
 import java.util.List;
 

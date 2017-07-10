@@ -24,8 +24,9 @@ import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
 import melfood.shopping.order.OrderMaster;
-import melfood.shopping.order.OrderScreenDTO;
 import melfood.shopping.order.OrderService;
+import melfood.shopping.order.screenDto.OrderScreenDTO;
+import melfood.shopping.order.screenDto.OrderScreenItemDTO;
 import melfood.shopping.payment.PaymentMethod;
 import melfood.shopping.payment.PaymentMethodService;
 import melfood.shopping.product.*;
@@ -40,6 +41,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -418,19 +420,23 @@ public class GroupPurchaseOrderMainController extends BaseController {
         Map<String, Object> model = new HashMap<String, Object>();
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
-        String groupPurchaseId = request.getParameter("groupPurchaseId");
         String JSONDocument = request.getParameter("JSONDocument");
 
-        OrderMaster orderMaster = new OrderMaster();
+        OrderMaster orderMaster = null;
         Gson gson = new Gson();
+
+        String groupPurchaseId = orderMaster.getGroupPurchaseId();
 
         try {
 
-            orderMaster.setGroupPurchaseId(groupPurchaseId);
+            // orderMaster.setGroupPurchaseId(groupPurchaseId);
 
             logger.info("JSONDocument :" + JSONDocument);
 
             OrderScreenDTO screenDto = gson.fromJson(JSONDocument, OrderScreenDTO.class);
+            orderMaster = this.settingOrderMasterInfo(screenDto);
+
+            // TODO : OrderMaster를 DB에 저장한다.
 
             // 공동구매 기본정보를 얻어온다.
             String sessOrderKey = orderService.addUserSessionOrder(request, orderMaster);
@@ -479,6 +485,52 @@ public class GroupPurchaseOrderMainController extends BaseController {
         mav.addObject("orderMaster", orderMaster);
 
         return mav;
+    }
+
+
+    /**
+     * 화면으로부터 주문된 내용을 주문 Object(OrderMaster) 필요한 값들을 설정한다.
+     *
+     * @param screenDto
+     * @return
+     * @throws Exception
+     */
+    private OrderMaster settingOrderMasterInfo(OrderScreenDTO screenDto) throws Exception {
+        String groupPurchaseId = screenDto.getGroupPurchaseId();
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+
+        OrderMaster orderMaster = new OrderMaster();
+        Product product = null;
+        Float unitPrice = 0.0f;
+        Float orderTotalForProduct = 0.0f;
+
+        String prodId = null;
+        String orderAmount = null;
+
+        List<Product> productList = new ArrayList<Product>();
+        List<OrderScreenItemDTO> items = screenDto.getItems();
+        for (OrderScreenItemDTO dto : items) {
+            List<Map<String, String>> orderList = dto.getProductOrder(); // List 이지만 사실 상품은 하나다.
+            prodId = (String) orderList.get(0).keySet().iterator().next();
+            orderAmount = (String) orderList.get(0).get(prodId);
+
+            product = productService.getProduct(new Product(prodId));
+            unitPrice = product.getUnitPrice().floatValue();
+
+            orderTotalForProduct = Float.parseFloat(orderAmount) * unitPrice;
+
+            // TODO : 1. OrderMasterProductOption에 필요한 값을 채운다
+            // TODO : 2. OrderMasterProduct에 필요한 값을 채운다
+            // TODO : 2. OrderMaster에 필요한 값을 채운다
+
+
+        }
+
+
+        List<GroupPurchaseProduct> purchaseProducts = null;
+
+
+        return null;
     }
 
 }
