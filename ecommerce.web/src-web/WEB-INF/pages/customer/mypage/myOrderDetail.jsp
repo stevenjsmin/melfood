@@ -86,16 +86,42 @@
         function goList() {
             document.location.href = "/customer/mypage/myorder/Main.yum";
         }
+
+        function groupPurchaseOrganizer() {
+
+            $("#purchaseOrganizerPopup").kendoWindow({
+                content: "/grouppurchase/purchaseOrganizerInfo.yum?purchaseOrganizer=" + "${orderMaster.sellerId}",
+                actions: ["Minimize", "Maximize", "Close"],
+                title: "내가잘사는 방법:: MelFood",
+                modal: true,
+                iframe: true,
+                position:{ top:"200", left:"25%"}
+            });
+
+            var popup_dialog = $("#purchaseOrganizerPopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                width: 800,
+                height: 350
+            });
+            // popup_dialog.center();
+
+            $("#purchaseOrganizerPopup").data("kendoWindow").open();
+        }
+        function closePurchaseOrganizerPopup() {
+            var win_dialog = $("#purchaseOrganizerPopup").data("kendoWindow");
+            win_dialog.close();
+        }
     </script>
 </head>
 
 <body>
 <div id="askQuestionPopup"></div>
+<div id="purchaseOrganizerPopup"></div>
 <div class="row">
     <div class="col-sm-9" style="padding-bottom: 10px;padding-right: 40px;">
         <table style="width: 100%;">
             <tr>
-                <td style="text-align: right;"><h3 style="color: #6F0E06;padding-top: 0px;margin-bottom: 0px;margin-top: 0px;">${fn:substring(orderMaster.createDatetime, 0, 16)} </h3></td>
+                <td style="text-align: right;"><h3 style="color: #6F0E06;padding-top: 0px;margin-bottom: 0px;margin-top: 0px;"><i class="fa fa-shopping-cart" aria-hidden="true" style="color: #3c3c3c;"></i>&nbsp;: &nbsp; ${fn:substring(orderMaster.createDatetime, 0, 16)} </h3></td>
             </tr>
         </table>
     </div>
@@ -186,6 +212,8 @@
                                                 <hr class="subtitle"/>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td style="text-align: center;font-size: 14px;color: #C5C6C9;">만나서 CASH 지불</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -210,7 +238,7 @@
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;">판매자 정보</span>
+                                    <span style="font-size: 15px;font-weight: bold;color: #575758;">판매자 정보</span> <a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;"><i class="fa fa-info-circle" aria-hidden="true" style="color: #3c3c3c;"></i></a>
                                 </td>
                             </tr>
                         </table>
@@ -350,7 +378,7 @@
 
         <!-- Total -->
         <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;padding-bottom: 20px;">
+            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
                 <table class="table table-striped">
                     <tbody>
                     <tr>
@@ -363,12 +391,29 @@
             </div>
         </div>
 
+        <c:choose>
+            <c:when test="${orderMaster.customerOrderNote != '' && orderMaster.customerOrderNote != null}">
+                <div class="row">
+                    <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
+                        <div class="alert alert-warning" style="background-color: #FFFFFF;border-color: #C5C6C9;color: #3c3c3c;">
+                            <i class="fa fa-sticky-note-o" aria-hidden="true"></i> &nbsp;<strong>주문메모 : </strong>
+                            ${orderMaster.customerOrderNote}
+                        </div>
+                    </div>
+                </div>
+            </c:when>
+        </c:choose>
+
+
     </div>
 </div>
 
 
+
+
+
 <div class="row">
-    <div class="col-sm-9" style="padding-bottom: 30px;">
+    <div class="col-sm-9" style="padding-bottom: 30px;padding-top: 20px;">
         <table class="action_button_table">
             <tr>
                 <td style="text-align: right;padding-right: 15px;">
