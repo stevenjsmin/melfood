@@ -5,7 +5,7 @@
 
 <mapper namespace="mySqlOrderMasterDao">
 
-	<select id="getOrderMasters" parameterType="OrderMaster" resultType="OrderMaster">
+	<select id="getOrderMasters" parameterType="OrderMaster" resultType="OrderMaster" >
 		/* QUERY ID : getOrderMasters */
 			SELECT
 				 a.order_master_id 'orderMasterId'
@@ -212,7 +212,7 @@
 
 
 
-	<insert id="insertOrderMaster" parameterType="java.util.List">
+	<insert id="insertOrderMaster" parameterType="OrderMaster" useGeneratedKeys="true" keyProperty="orderMaster.orderMasterId" keyColumn="order_master_id">
 		/* QUERY ID : insertOrderMaster */
 		INSERT INTO order_master (
 				 seller_id
@@ -222,7 +222,7 @@
 				,invoice_issue_datetime
 				,customer_name
 				,customer_mobile
-				,customer_phone
+ 				,customer_phone
 				,customer_email
 				,customer_address_street
 				,customer_address_suburb
@@ -284,9 +284,9 @@
 				,creator) VALUES (
 		                    #{sellerId}
 		                   ,#{customerId}
-		                   ,STR_TO_DATE(#{orderDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,STR_TO_DATE(#{orderDatetime}, '%Y-%m-%d %H:%i:%s')
 		                   ,#{invoiceIssue}
-		                   ,STR_TO_DATE(#{invoiceIssueDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,STR_TO_DATE(#{invoiceIssueDatetime}, '%Y-%m-%d %H:%i:%s')
 		                   ,#{customerName}
 		                   ,#{customerMobile}
 		                   ,#{customerPhone}
@@ -313,7 +313,7 @@
 		                   ,#{normalOrGroupOrder}
 		                   ,#{groupPurchaseId}
 		                   ,#{isRefund}
-		                   ,STR_TO_DATE(#{refundDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,STR_TO_DATE(#{refundDatetime}, '%Y-%m-%d %H:%i:%s')
 		                   ,#{refundServiceCharge}
 		                   ,#{refundAmount}
 		                   ,#{refundReason}
@@ -335,7 +335,7 @@
 		                   ,#{paymentBankBsb}
 		                   ,#{paymentAccountNo}
 		                   ,#{paymentAccountHolderName}
-		                   ,STR_TO_DATE(#{paymentDatetime}, '%Y-%m-%d %h:%i %p')
+		                   ,STR_TO_DATE(#{paymentDatetime}, '%Y-%m-%d %H:%i:%s')
 		                   ,#{paymentAccTransferReceipt}
 		                   ,#{amountTotalProduct}
 		                   ,#{amountTotalProductOption}
@@ -349,6 +349,10 @@
 		                   ,#{amountTotal}
 		                   ,#{amountTotalCommission}
 		                   ,#{creator})
+
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="orderMasterId">
+			SELECT LAST_INSERT_ID() as orderMasterId
+		</selectKey>
 	</insert>
 
 

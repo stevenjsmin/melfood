@@ -1,5 +1,7 @@
 package melfood.shopping.order.screenDto;
 
+import melfood.framework.user.User;
+
 import java.util.List;
 
 /**
@@ -10,6 +12,10 @@ public class OrderScreenDTO {
     private List<OrderScreenItemDTO> items;
     private String deliveryService;
     private String deliveryDistance;
+    private String customerOrderNote;
+    private String paymentMethod;
+
+    private User customer;
 
     public String getGroupPurchaseId() {
         return groupPurchaseId;
@@ -41,5 +47,29 @@ public class OrderScreenDTO {
 
     public void setItems(List<OrderScreenItemDTO> items) {
         this.items = items;
+    }
+
+    public String getCustomerOrderNote() {
+        return customerOrderNote;
+    }
+
+    public void setCustomerOrderNote(String customerOrderNote) {
+        this.customerOrderNote = customerOrderNote;
+    }
+
+    public User getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(User customer) {
+        this.customer = customer;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

@@ -7,7 +7,7 @@ import melfood.framework.common.dto.BaseDto;
  */
 public class OrderMasterProductOption extends BaseDto {
     private int orderMasterProductOptionId;
-    private int orderMasterProductId;
+    private int orderMasterProductId; // order_master_product 테이블의 참조
     private String optionName;
     private String optionValue;
     private Float addtionalPrice;

@@ -57,6 +57,54 @@
 	    	ORDER BY a.order_master_product_id ASC
 	</select>
 
+
+	<insert id="insertOrderMasterProduct" parameterType="OrderMasterProduct" useGeneratedKeys="true" keyProperty="orderMasterProduct.orderMasterProductId" keyColumn="order_master_product_id">
+		/* QUERY ID : insertOrderMasterProducts */
+		INSERT INTO order_master_product (
+			 order_master_id
+			,product_id
+			,product_name
+			,product_description
+			,product_category
+			,has_product_option
+			,amount_product_option
+			,seller_id
+			,seller_name
+			,seller_mobile
+			,seller_phone
+			,seller_email
+			,seller_address_street
+			,seller_address_suburb
+			,seller_address_postcode
+			,seller_address_state
+			,unit_price
+			,comission_fee
+			,creator) VALUES (
+				#{orderMasterId},
+				#{productId},
+				#{productName},
+				#{productDescription},
+				#{productCategory},
+				#{hasProductOption},
+				#{amountProductOption},
+				#{sellerId},
+				#{sellerName},
+				#{sellerMobile},
+				#{sellerPhone},
+				#{sellerEmail},
+				#{sellerAddressStreet},
+				#{sellerAddressSuburb},
+				#{sellerAddressPostcode},
+				#{sellerAddressState},
+				#{unitPrice},
+				#{comissionFee},
+				#{creator} )
+
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="orderMasterProductId">
+			SELECT LAST_INSERT_ID() as orderMasterProductId
+		</selectKey>
+	</insert>
+
 	<insert id="insertOrderMasterProducts" parameterType="java.util.List">
 		/* QUERY ID : insertOrderMasterProducts */
 		INSERT INTO order_master_product (

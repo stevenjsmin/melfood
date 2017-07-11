@@ -293,7 +293,7 @@
             var paymentMethod = data.paymentMethod.paymentMethod;
 
             if (resultCode != "0") {
-                warningPopup(data.message);
+                warningPopup(message);
             } else {
                 if(paymentMethod == 'ACCOUNT_TRANSFER') {
                     $('#detail_info_back_account').show();
@@ -366,7 +366,6 @@
                 validation = false;
             }
 
-            console.log(totalOrderAmount + "/" + minimumPurchaseAmount);
             if(parseFloat(minimumPurchaseAmount) > 0) {
                 if(parseFloat(totalOrderAmount) < parseFloat(minimumPurchaseAmount)){
                     message = message + prefix + "최소 주문금액은" + toCurrency(minimumPurchaseAmount) + "입니다.<br>";
@@ -448,6 +447,9 @@
             if(prodCnt > 0) JSONDocument = JSONDocument.substring(0, JSONDocument.length - 1); // Remove last comma.
             JSONDocument = JSONDocument + ']'
 
+            JSONDocument = JSONDocument + ', "customerOrderNote" : "' + $('#customerOrderNote').val() + '"';
+            JSONDocument = JSONDocument + ', "paymentMethod" : "' + $('#paymentMethod').val() + '"';
+
             if($("#useDeliveryService_${groupPurchase.groupPurchaseId}").prop('checked') == true) {
                 JSONDocument = JSONDocument + ', "deliveryService" :' + '"yes"'
                 JSONDocument = JSONDocument + ', "deliveryDistance" :' + '"' + $('#delivery_distance').val() + '"';
@@ -475,7 +477,7 @@
 
             progress(false);
             if (resultCode != "0") {
-                warningPopup(data.message);
+                warningPopup(message);
             } else {
                 document.location.href = "/grouppurchase/doPaymentProcessConfirm.yum?sessOrderKey=" + sessOrderKey;
             }
@@ -1007,7 +1009,7 @@
                         <tr>
                             <td colspan="3">
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="3" id="comment" placeholder="주문시 메모하고 싶은 내용을 입력해주세요."></textarea>
+                                    <textarea class="form-control" rows="3" id="customerOrderNote" placeholder="주문시 메모하고 싶은 내용을 입력해주세요."></textarea>
                                 </div>
                             </td>
                         </tr>

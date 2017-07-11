@@ -10,7 +10,7 @@ import java.util.List;
 public class OrderMasterProduct extends BaseDto {
 
     private int orderMasterProductId;
-    private int orderMasterId;
+    private int orderMasterId; // order_master 테이블의 참조
     private int productId;
     private String productName;
     private String productDescription;
@@ -28,6 +28,7 @@ public class OrderMasterProduct extends BaseDto {
     private String sellerAddressState;
     private Float unitPrice;
     private Float comissionFee;
+    private Integer numberOfOrder;
 
     private List<OrderMasterProductOption> orderMasterProductOptionList;
 
@@ -210,6 +211,14 @@ public class OrderMasterProduct extends BaseDto {
 
     public void setOrderMasterProductOptionList(List<OrderMasterProductOption> orderMasterProductOptionList) {
         this.orderMasterProductOptionList = orderMasterProductOptionList;
+    }
+
+    public Integer getNumberOfOrder() {
+        return numberOfOrder;
+    }
+
+    public void setNumberOfOrder(Integer numberOfOrder) {
+        this.numberOfOrder = numberOfOrder;
     }
 }
 
