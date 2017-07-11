@@ -188,7 +188,7 @@ public class OrderMasterUtil {
             Float feeKm = (groupPurchase.getDeliveryFeePerKm() == null) ? 0.0f : groupPurchase.getDeliveryFeePerKm();
             Float dist = (deliveryDistance == null) ? 0.0f : Float.parseFloat(deliveryDistance);
 
-            amountTotalDelivery = basicFee + (feeKm + dist);
+            amountTotalDelivery = basicFee + (feeKm * dist);
 
         } else {
             amountTotalDelivery = 0.0f;

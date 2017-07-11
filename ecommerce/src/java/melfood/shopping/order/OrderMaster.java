@@ -633,6 +633,7 @@ public class OrderMaster extends BaseDto {
     public void setGroupPurchaseId(String groupPurchaseId) {
         this.groupPurchaseId = groupPurchaseId;
     }
+
 }
 
 

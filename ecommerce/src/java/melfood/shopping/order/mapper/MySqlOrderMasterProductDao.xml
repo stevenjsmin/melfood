@@ -29,6 +29,7 @@
 				,a.seller_address_postcode 'sellerAddressPostcode'
 				,a.seller_address_state 'sellerAddressState'
 				,a.unit_price 'unitPrice'
+				,a.number_of_order 'numberOfOrder'
 				,a.comission_fee 'comissionFee'
 				,a.create_datetime 'createDatetime'
 				,a.modify_datetime 'modifyDatetime'
@@ -79,6 +80,7 @@
 			,seller_address_postcode
 			,seller_address_state
 			,unit_price
+		    ,number_of_order
 			,comission_fee
 			,creator) VALUES (
 				#{orderMasterId},
@@ -98,6 +100,7 @@
 				#{sellerAddressPostcode},
 				#{sellerAddressState},
 				#{unitPrice},
+				#{numberOfOrder},
 				#{comissionFee},
 				#{creator} )
 
@@ -126,6 +129,7 @@
 			,seller_address_postcode
 			,seller_address_state
 			,unit_price
+			,number_of_order
 			,comission_fee
 			,creator) VALUES
 		<foreach collection="list" index="index" item="item">
@@ -146,6 +150,7 @@
 				#{item.sellerAddressPostcode},
 				#{item.sellerAddressState},
 				#{item.unitPrice},
+				#{item.numberOfOrder},
 				#{item.comissionFee},
 				#{item.creator} )
 		</foreach>
@@ -172,6 +177,7 @@
 		       ,seller_address_postcode = #{sellerAddressPostcode}
 		       ,seller_address_state = #{sellerAddressState}
 		       ,unit_price = #{unitPrice}
+		       ,number_of_order = #{numberOfOrder}
 		       ,comission_fee = #{comissionFee}
 		 WHERE order_master_product_id = #{orderMasterProductId}
 	</update>
@@ -196,6 +202,7 @@
 				<if test="sellerAddressPostcode != null">,seller_address_postcode = #{sellerAddressPostcode} </if>
 				<if test="sellerAddressState != null">,seller_address_state = #{sellerAddressState} </if>
 				<if test="unitPrice != null and unitPrice != 0">,unit_price = #{unitPrice} </if>
+				<if test="numberOfOrder != null and numberOfOrder != 0">,number_of_order = #{numberOfOrder} </if>
 				<if test="comissionFee != null and comissionFee != 0">,comission_fee = #{comissionFee}	 </if>
 		WHERE order_master_product_id = #{orderMasterProductId}
 	</update>
