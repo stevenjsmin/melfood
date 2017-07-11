@@ -17,7 +17,7 @@
 		<put-attribute name="body" value="/WEB-INF/pages/customer/customer_welcome.jsp" />
 	</definition>
 
-	<definition name="tiles/customer/mypage/customer/passwordChangeForm" extends="tiles/customer/mypage/root">
+	<definition name="tiles/customer/mypage/passwordChangeForm" extends="tiles/customer/mypage/root">
 		<put-attribute name="title" value="비밀번호 변경" />
 		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/passwordChangeForm.jsp" />
 	</definition>	
@@ -31,16 +31,20 @@
 		<put-attribute name="title" value="개인정보 변경" />
 		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/modifyMyDetailInfo.jsp" />
 	</definition>	
-	
-	<definition name="tiles/customer/mypage/customer/myOrderList" extends="tiles/customer/mypage/root">
-		<put-attribute name="title" value="상품구매 목록" />
-		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myOrderList.jsp" />
-	</definition>	
 
 	<definition name="tiles/customer/mypage/customer/myCommunication" extends="tiles/customer/mypage/root">
 		<put-attribute name="title" value="나의 Communication" />
 		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myCommunication.jsp" />
-	</definition>	
+	</definition>
 
-		
+	<definition name="tiles/customer/mypage/myorder/main" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="상품구매 목록" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myOrderList.jsp" />
+	</definition>
+
+	<definition name="tiles/customer/mypage/myorder/myorderdetail" extends="tiles/customer/mypage/root">
+		<put-attribute name="title" value="상세 장본 내역" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/mypage/myOrderDetail.jsp" />
+	</definition>
+
 </tiles-definitions>

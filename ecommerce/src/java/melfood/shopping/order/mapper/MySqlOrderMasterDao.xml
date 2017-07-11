@@ -135,7 +135,8 @@
 				<if test="searchDateFrom                    != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 				<if test="searchDateTo                      != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 				<if test="creator != null"> AND a.creator = #{creator} </if>
-	    	ORDER BY a.order_master_id ASC
+	    	ORDER BY a.create_datetime DESC
+		LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
 
 

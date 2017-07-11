@@ -18,6 +18,8 @@ import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
+import melfood.shopping.order.OrderMaster;
+import melfood.shopping.order.OrderMasterService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,9 @@ public class MyPageController extends BaseController {
     @Autowired
     private CommunicationService communicationService;
 
+    @Autowired
+    private OrderMasterService orderMasterService;
+
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/main");
@@ -51,7 +56,7 @@ public class MyPageController extends BaseController {
 
     @RequestMapping("/passwordChangeForm")
     public ModelAndView passwordChangeForm(HttpServletRequest request) throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/passwordChangeForm");
+        ModelAndView mav = new ModelAndView("tiles/customer/mypage/passwordChangeForm");
         return mav;
     }
 
@@ -110,7 +115,7 @@ public class MyPageController extends BaseController {
     }
 
     @RequestMapping("/modifyMyDetailInfo")
-    public ModelAndView modifyCodeForm(HttpServletRequest request) throws Exception {
+    public ModelAndView modifyMyDetailInfo(HttpServletRequest request) throws Exception {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
         ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/modifyMyDetailInfo");
 
@@ -291,11 +296,80 @@ public class MyPageController extends BaseController {
         return model;
     }
 
-    @RequestMapping("/myOrderList")
-    public ModelAndView myOrderList(HttpServletRequest request) throws Exception {
+    @RequestMapping("/myorder/Main")
+    public ModelAndView myOrderMain(HttpServletRequest request) throws Exception {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
-        ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/myOrderList");
+        ModelAndView mav = new ModelAndView("tiles/customer/mypage/myorder/main");
         String userId = sessionUser.getUser().getUserId();
+
+        String searchDateFrom = null;
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MONTH, -1);
+        searchDateFrom = df.format(cal.getTime());
+
+        mav.addObject("searchDateFrom", searchDateFrom);
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/myorder/myorders", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> myOrderList(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String userId = sessionUser.getUser().getUserId();
+        String searchDateFrom = request.getParameter("searchDateFrom");
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setCreator(userId);
+        orderMaster.setSearchDateFrom(searchDateFrom);
+        orderMaster.setLazyLoad(true); // 해당 제품 목록을 가저올 필요없다
+
+        List<OrderMaster> myOrderList = null;
+
+        // For Pagination
+        orderMaster.setPagenationPage(getPage(request));
+        orderMaster.setPagenationPageSize(getPageSize(request));
+
+        try {
+            Integer totalCount = 0;
+            totalCount = orderMasterService.getTotalCntForGetOrderMasters(orderMaster);
+
+            myOrderList = orderMasterService.getOrderMasters(orderMaster);
+
+            model.put("list", myOrderList);
+            model.put("totalCount", totalCount);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+    @RequestMapping("/myorder/myorderdetail")
+    public ModelAndView myorderdetail(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        ModelAndView mav = new ModelAndView("tiles/customer/mypage/myorder/myorderdetail");
+
+        String userId = sessionUser.getUser().getUserId();
+        String thanks = request.getParameter("thanks");
+
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setCreator(userId);
+        orderMaster.setOrderMasterId(Integer.parseInt(thanks));
+        orderMaster.setLazyLoad(false);
+
+        OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
+
+        mav.addObject("orderMaster", newOrderMaster);
+
         return mav;
     }
 

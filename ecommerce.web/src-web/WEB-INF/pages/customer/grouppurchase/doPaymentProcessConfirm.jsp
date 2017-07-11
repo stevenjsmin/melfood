@@ -132,10 +132,6 @@
             var win_dialog = $("#askQuestionPopup").data("kendoWindow");
             win_dialog.close();
         }
-
-        function goHome1() {
-            document.location.href = "/";
-        }
     </script>
 
 </head>

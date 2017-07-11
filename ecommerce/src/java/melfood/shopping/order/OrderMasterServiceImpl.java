@@ -56,13 +56,16 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         List<OrderMasterProduct> orderMasterProducts = null;
         List<OrderMaster> orderMasters = orderMasterDAO.getOrderMasters(orderMaster);
 
-        for (int i = 0; i < orderMasters.size(); i++) {
-            // 소속된 모든 하위 상품 목록을 가저온다.
-            orderMasterProduct = new OrderMasterProduct();
-            orderMasterProduct.setOrderMasterId(orderMasters.get(i).getOrderMasterId());
-            orderMasterProducts = orderMasterProductService.getOrderMasterProducts(orderMasterProduct);
+        if (!orderMaster.isLazyLoad()) {
 
-            orderMasters.get(i).setOrderMasterProduct(orderMasterProducts);
+            for (int i = 0; i < orderMasters.size(); i++) {
+                // 소속된 모든 하위 상품 목록을 가저온다.
+                orderMasterProduct = new OrderMasterProduct();
+                orderMasterProduct.setOrderMasterId(orderMasters.get(i).getOrderMasterId());
+                orderMasterProducts = orderMasterProductService.getOrderMasterProducts(orderMasterProduct);
+
+                orderMasters.get(i).setOrderMasterProduct(orderMasterProducts);
+            }
         }
 
         return orderMasters;
@@ -77,7 +80,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
      */
     @Override
     public Integer getTotalCntForGetOrderMasters(OrderMaster orderMaster) throws Exception {
-        return null;
+        return orderMasterDAO.getTotalCntForGetOrderMasters(orderMaster);
     }
 
     /**

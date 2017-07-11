@@ -6,7 +6,6 @@ import java.util.List;
  * Created by Steven on 11/7/17.
  */
 public interface OrderMasterService {
-
     /**
      * 주문마스터상세 정보를 가져온다.
      *
@@ -25,6 +24,7 @@ public interface OrderMasterService {
      * @throws Exception
      */
     public List<OrderMaster> getOrderMasters(OrderMaster orderMaster) throws Exception;
+
 
 
     /**

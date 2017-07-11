@@ -78,6 +78,9 @@ public class OrderMaster extends BaseDto {
 
     private List<OrderMasterProduct> orderMasterProduct;
 
+    private boolean lazyLoad; // Default : false, [False:Load sub-objects(Product), True:Not load sub-objects(Product)]
+
+
     public OrderMaster() {
     }
 
@@ -634,6 +637,13 @@ public class OrderMaster extends BaseDto {
         this.groupPurchaseId = groupPurchaseId;
     }
 
+    public boolean isLazyLoad() {
+        return lazyLoad;
+    }
+
+    public void setLazyLoad(boolean lazyLoad) {
+        this.lazyLoad = lazyLoad;
+    }
 }
 
 
