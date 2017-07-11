@@ -48,6 +48,7 @@ public class OrderMasterUtil {
         List<OrderScreenItemDTO> items = screenDto.getItems(); // 주문된 상품목록
 
         GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+        orderMaster.setGroupPurchaseId(groupPurchaseId);
 
         Product product = null;
 
@@ -223,7 +224,7 @@ public class OrderMasterUtil {
         } else if (StringUtils.equalsIgnoreCase(groupPurchase.getDiscountMethod(), "FIXED")) {
             amountTotalDiscount = groupPurchase.getDiscountFixedAmount();
         }
-        orderMaster.setAmountTotalDiscount(groupPurchase.getDiscountFixedAmount());
+        orderMaster.setAmountTotalDiscount(amountTotalDiscount);
 
         orderMaster.setAmountTotalProduct(totalProductAmount);
         orderMaster.setAmountTotalProductOption(0.0f);

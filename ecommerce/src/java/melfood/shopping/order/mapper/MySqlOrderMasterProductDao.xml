@@ -30,9 +30,9 @@
 				,a.seller_address_state 'sellerAddressState'
 				,a.unit_price 'unitPrice'
 				,a.comission_fee 'comissionFee'
-				a.create_datetime 'createDatetime',
-				a.modify_datetime 'modifyDatetime',
-				a.creator 'creator'
+				,a.create_datetime 'createDatetime'
+				,a.modify_datetime 'modifyDatetime'
+				,a.creator 'creator'
              FROM order_master_product a
 	         WHERE 1 = 1
 				<if test="orderMasterProductId != null and orderMasterProductId != 0"> AND a.order_master_product_id = #{orderMasterProductId} </if>
@@ -54,6 +54,7 @@
 				<if test="sellerAddressState != null"> AND UPPER(a.seller_address_state) LIKE CONCAT('%', UPPER(#{sellerAddressState}), '%') </if>
 				<if test="unitPrice != null"> AND a.unit_price <![CDATA[ >= ]]> #{unitPrice} </if>
 				<if test="comissionFee != null"> AND a.comission_fee <![CDATA[ >= ]]> #{comissionFee} </if>
+				<if test="creator != null"> AND a.creator = #{creator} </if>
 	    	ORDER BY a.order_master_product_id ASC
 	</select>
 

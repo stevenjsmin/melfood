@@ -437,14 +437,14 @@ public class GroupPurchaseOrderMainController extends BaseController {
             OrderScreenDTO screenDto = gson.fromJson(JSONDocument, OrderScreenDTO.class);
             screenDto.setCustomer(sessionUser.getUser());
             orderMaster = orderUtil.settingOrderMasterInfoForGroupPurchase(screenDto);
+            orderMaster.setCreator(sessionUser.getUser().getUserId()); // 반드시 설정하도록 하여 다른 사용자가못보도록 한다.
 
-
-            orderMasterService.insertOrderMaster(orderMaster);
+            int insertedId = orderMasterService.insertOrderMaster(orderMaster);
 
             // 공동구매 기본정보를 얻어온다.
-            String sessOrderKey = orderService.addUserSessionOrder(request, orderMaster);
+            // String sessOrderKey = orderService.addUserSessionOrder(request, orderMaster);
 
-            model.put("sessOrderKey", sessOrderKey);
+            model.put("thanks", insertedId);
 
             model.put("resultCode", "0");
             model.put("message", "");
@@ -464,16 +464,21 @@ public class GroupPurchaseOrderMainController extends BaseController {
     @RequestMapping("/doPaymentProcessConfirm")
     public ModelAndView doPaymentProcessConfirm(HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/doPaymentProcessConfirm");
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
-        String sessOrderKey = request.getParameter("sessOrderKey");
+        String orderId = request.getParameter("thanks");
 
-        if (StringUtils.isBlank(sessOrderKey)) {
-            throw new Exception("[sessOrderKey]  이항목(들)은 빈 값이 될 수 없습니다.");
+        if (StringUtils.isBlank(orderId)) {
+            throw new Exception("[orderId]  이항목(들)은 빈 값이 될 수 없습니다.");
         }
 
-        OrderMaster orderMaster = orderService.getUserSessionOrder(request, sessOrderKey);
-        String groupPurchaseId = orderMaster.getGroupPurchaseId();
-        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
+        OrderMaster orderMaster = new OrderMaster(orderId);
+        orderMaster.setCreator(sessionUser.getUser().getUserId());
+
+        OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
+        mav.addObject("orderMaster", newOrderMaster);
+
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(newOrderMaster.getGroupPurchaseId()));
         mav.addObject("groupPurchase", groupPurchase);
 
         List<ProductImage> groupPurchaseImages = groupPurchaseService.getProductImages(new ProductImage(groupPurchase.getGroupPurchaseId()));
@@ -485,12 +490,8 @@ public class GroupPurchaseOrderMainController extends BaseController {
             mav.addObject("firstImageId", null);
         }
 
-        mav.addObject("orderMaster", orderMaster);
-
         return mav;
     }
-
-
 
 
 }

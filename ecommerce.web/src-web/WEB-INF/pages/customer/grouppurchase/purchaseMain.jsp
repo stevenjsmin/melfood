@@ -473,13 +473,13 @@
         function callbackDoPaymentProcessConfirm(data) {
             var message = data.message;
             var resultCode = data.resultCode;
-            var sessOrderKey = data.sessOrderKey;
+            var thanks = data.thanks;
 
             progress(false);
             if (resultCode != "0") {
                 warningPopup(message);
             } else {
-                document.location.href = "/grouppurchase/doPaymentProcessConfirm.yum?sessOrderKey=" + sessOrderKey;
+                document.location.href = "/grouppurchase/doPaymentProcessConfirm.yum?thanks=" + thanks;
             }
         }
     </script>

@@ -6,6 +6,17 @@ import java.util.List;
  * Created by Steven on 11/7/17.
  */
 public interface OrderMasterService {
+
+    /**
+     * 주문마스터상세 정보를 가져온다.
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    public OrderMaster getOrderMaster(OrderMaster orderMaster) throws Exception;
+
+
     /**
      * 주문마스터 정보 목록을 가져온다.
      *

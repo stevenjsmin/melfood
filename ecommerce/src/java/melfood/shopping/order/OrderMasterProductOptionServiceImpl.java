@@ -23,7 +23,7 @@ public class OrderMasterProductOptionServiceImpl implements OrderMasterProductOp
      */
     @Override
     public List<OrderMasterProductOption> getOrderMasterProductOptions(OrderMasterProductOption orderMasterProductOption) throws Exception {
-        return null;
+        return orderMasterProductOptionDAO.getOrderMasterProductOptions(orderMasterProductOption);
     }
 
     /**

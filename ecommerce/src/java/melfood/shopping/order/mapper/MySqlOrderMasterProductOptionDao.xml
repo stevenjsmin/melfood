@@ -7,14 +7,14 @@
 
 	<select id="getOrderMasterProductOptions" parameterType="OrderMasterProductOption" resultType="OrderMasterProductOption">
 		/* QUERY ID : getOrderMasterProductOptions */
-			SELECT a.order_master_product_option_id 'orderMasterProductOptionId',
-				 a.order_master_product_id 'orderMasterProductId',
-				 a.option_name 'optionName',
-				 a.option_value 'optionValue',
-				 a.addtional_price 'addtionalPrice',
-				,a.create_datetime 'createDatetime'
-				,a.modify_datetime 'modifyDatetime'
-				,a.creator 'creator'
+			SELECT   a.order_master_product_option_id 'orderMasterProductOptionId'
+					,a.order_master_product_id 'orderMasterProductId'
+					,a.option_name 'optionName'
+					,a.option_value 'optionValue'
+					,a.addtional_price 'addtionalPrice'
+					,a.create_datetime 'createDatetime'
+					,a.modify_datetime 'modifyDatetime'
+					,a.creator 'creator'
              FROM order_master_product_option a
 	         WHERE 1 = 1
 				<if test="orderMasterProductOptionId != null and orderMasterProductOptionId != 0"> AND a.order_master_product_option_id = #{orderMasterProductOptionId} </if>

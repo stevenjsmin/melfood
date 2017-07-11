@@ -25,6 +25,23 @@ public class OrderMasterServiceImpl implements OrderMasterService {
 
 
     /**
+     * 주문마스터상세 정보를 가져온다.
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public OrderMaster getOrderMaster(OrderMaster orderMaster) throws Exception {
+        List<OrderMaster> list = this.getOrderMasters(orderMaster);
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 주문마스터 정보 목록을 가져온다.
      *
      * @param orderMaster
@@ -33,7 +50,22 @@ public class OrderMasterServiceImpl implements OrderMasterService {
      */
     @Override
     public List<OrderMaster> getOrderMasters(OrderMaster orderMaster) throws Exception {
-        return null;
+
+        OrderMaster aOrder = null;
+        OrderMasterProduct orderMasterProduct = null;
+        List<OrderMasterProduct> orderMasterProducts = null;
+        List<OrderMaster> orderMasters = orderMasterDAO.getOrderMasters(orderMaster);
+
+        for (int i = 0; i < orderMasters.size(); i++) {
+            // 소속된 모든 하위 상품 목록을 가저온다.
+            orderMasterProduct = new OrderMasterProduct();
+            orderMasterProduct.setOrderMasterId(orderMasters.get(i).getOrderMasterId());
+            orderMasterProducts = orderMasterProductService.getOrderMasterProducts(orderMasterProduct);
+
+            orderMasters.get(i).setOrderMasterProduct(orderMasterProducts);
+        }
+
+        return orderMasters;
     }
 
     /**
@@ -49,7 +81,8 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     }
 
     /**
-     * 주문마스터 정보를 등록한다.
+     * 주문마스터 정보를 등록한다.<br/>
+     * 등록된후 등록된 주문 번호를 반환한다.
      *
      * @param orderMaster
      * @return
@@ -58,15 +91,15 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     @Override
     public Integer insertOrderMaster(OrderMaster orderMaster) throws Exception {
         int updateCnt = orderMasterDAO.insertOrderMaster(orderMaster);
-        int orderMasterId = orderMaster.getOrderMasterId();
+        int insertedId = orderMaster.getOrderMasterId();
 
         List<OrderMasterProduct> orderMasterProduct = orderMaster.getOrderMasterProduct();
         for (int i = 0; i < orderMasterProduct.size(); i++) {
-            orderMasterProduct.get(i).setOrderMasterId(orderMasterId);
+            orderMasterProduct.get(i).setOrderMasterId(insertedId);
         }
         orderMasterProductService.insertOrderMasterProducts(orderMasterProduct);
 
-        return updateCnt;
+        return insertedId;
     }
 
     /**

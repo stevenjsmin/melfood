@@ -26,7 +26,19 @@ public class OrderMasterProductServiceImpl implements OrderMasterProductService 
      */
     @Override
     public List<OrderMasterProduct> getOrderMasterProducts(OrderMasterProduct orderMasterProduct) throws Exception {
-        return null;
+
+        List<OrderMasterProductOption> orderMasterProductOptions = null;
+        OrderMasterProductOption orderProductOption = null;
+        List<OrderMasterProduct> orderMasterProducts = orderMasterProductDAO.getOrderMasterProducts(orderMasterProduct);
+        for (int i = 0; i < orderMasterProducts.size(); i++) {
+            orderProductOption = new OrderMasterProductOption();
+            orderProductOption.setOrderMasterProductId(orderMasterProducts.get(i).getOrderMasterProductId());
+
+            orderMasterProductOptions = orderMasterProductOptionService.getOrderMasterProductOptions(orderProductOption);
+            orderMasterProducts.get(i).setOrderMasterProductOptionList(orderMasterProductOptions);
+        }
+
+        return orderMasterProducts;
     }
 
     /**

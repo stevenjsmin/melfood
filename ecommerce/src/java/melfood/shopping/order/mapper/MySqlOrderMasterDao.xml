@@ -73,17 +73,7 @@
 				,a.amount_total_extra2 'amountTotalExtra2'
 				,a.amount_total_extra3 'amountTotalExtra3'
 				,a.amount_total_extra4 'amountTotalExtra4'
-				,(
-					 (SELECT SUM(unit_price) FROM order_master_product a WHERE order_master_id = a.order_master_id )
-		           + (SELECT SUM(a.amount_product_option) FROM order_master_product a WHERE order_master_id = a.order_master_id )
-		           + (a.delivery_base_charge + (a.delivery_fee_per_km * a.delivery_fee_per_km))
-		   		   + a.amount_total_discount
-				   + a.amount_total_payment_service_charge
-		 		   + a.amount_total_extra1
-		           + a.amount_total_extra2
-				   + a.amount_total_extra3
-				   + a.amount_total_extra4
-				 ) 'amountTotal'
+				,a.amount_total 'amountTotal'
 				,a.amount_total_commission 'amountTotalCommission'
 				,a.create_datetime 'createDatetime'
 				,a.modify_datetime 'modifyDatetime'
@@ -144,6 +134,7 @@
 		        <if test="paymentDatetime                   != null"> AND str_to_date(#{paymentDatetime}, '%Y-%m-%d') = str_to_date(a.payment_datetime, '%Y-%m-%d') </if>
 				<if test="searchDateFrom                    != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 				<if test="searchDateTo                      != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+				<if test="creator != null"> AND a.creator = #{creator} </if>
 	    	ORDER BY a.order_master_id ASC
 	</select>
 
@@ -207,6 +198,7 @@
 				<if test="paymentDatetime                   != null"> AND str_to_date(#{paymentDatetime}, '%Y-%m-%d') = str_to_date(a.payment_datetime, '%Y-%m-%d') </if>
 				<if test="searchDateFrom                    != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
 				<if test="searchDateTo                      != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+				<if test="creator != null"> AND a.creator = #{creator} </if>
 	</select>
 
 
