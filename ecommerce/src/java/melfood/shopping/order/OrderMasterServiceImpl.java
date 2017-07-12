@@ -221,4 +221,30 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         OrderMaster orderMaster = new OrderMaster(orderMasterId);
         return orderMasterDAO.modifyPaymentReceiptFileInfo(orderMaster);
     }
+
+    /**
+     * 배송상태 수정<br/>
+     * orderMasterId와 statusDelivery를 설정해야한다.
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer modifyStatusDelivery(OrderMaster orderMaster) throws Exception {
+        return orderMasterDAO.modifyStatusDelivery(orderMaster);
+    }
+
+    /**
+     * 결재상태 수정<br/>
+     * orderMasterId와 statusPayment를 설정해야한다.
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public Integer modifyStatusPayment(OrderMaster orderMaster) throws Exception {
+        return orderMasterDAO.modifyStatusPayment(orderMaster);
+    }
 }

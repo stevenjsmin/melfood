@@ -167,7 +167,7 @@
                     <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 20px;padding-top: 20px;">
 
                         <c:choose>
-                            <c:when test="${orderMaster.paymentMethod == '계좌이체'}">
+                            <c:when test="${orderMaster.paymentMethod == 'ACCOUNT_TRANSFER'}">
                                 <!-- 계좌이체 결재인경우 수금받을 계좌정보 -->
                                 <div id="detailinfo_for_acc_transfer" style="padding-bottom: 20px;">
                                     <table width="100%;" style="font-size: 5px;">
@@ -234,7 +234,7 @@
                                     </table>
                                 </div>
                             </c:when>
-                            <c:when test="${orderMaster.paymentMethod == '만나서결재'}">
+                            <c:when test="${orderMaster.paymentMethod == 'CASH'}">
                                 <div style="padding-bottom: 20px;">
                                     <table width="100%;" style="font-size: 5px;">
                                         <tr>
@@ -249,7 +249,7 @@
                                     </table>
                                 </div>
                             </c:when>
-                            <c:when test="${orderMaster.paymentMethod == '신용카드결재'}"></c:when>
+                            <c:when test="${orderMaster.paymentMethod == 'CREDIT_CARD'}"></c:when>
                             <c:when test="${orderMaster.paymentMethod == 'PAYPAL'}"></c:when>
                             <c:otherwise></c:otherwise>
                         </c:choose>

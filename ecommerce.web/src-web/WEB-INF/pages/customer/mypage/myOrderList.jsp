@@ -170,11 +170,11 @@
     </script>
 
     <script id="paymentMethod-template" type="text/x-kendo-template">
-        # if (paymentMethod == '계좌이체') { #
+        # if (paymentMethod == 'ACCOUNT_TRANSFER') { #
         #=  '<span style="color: 337AB7;">계좌이체</span>' #
-        # } else if (statusPayment == '만나서결재') { #
-        #=  '<span style="color: 006F3C;">결재처리중</span>' #
-        # } else if (statusPayment == '신용카드결재') { #
+        # } else if (statusPayment == 'CASH') { #
+        #=  '<span style="color: 006F3C;">만나서결재</span>' #
+        # } else if (statusPayment == 'CREDIT_CARD') { #
         #=  '<span style="color: 3E3637;">신용카드결재</span>' #
         # } else if (statusPayment == 'PAYPAL') { #
         #=  'PAYPAL' #

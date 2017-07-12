@@ -108,25 +108,24 @@
     </div>
 </div>
 
-<div class="row" style="text-align: center; padding-top: 20px;padding-bottom: 30px;">
+<div class="row" style="text-align: center; padding-top: 20px;padding-bottom: 20px;">
     <div class="col-sm-2 col-centered" style="text-align: right;">
         <img src="/resources/image/next-chef-org.jpg" style="width: 200px;">
     </div>
     <div class="col-sm-7 col-centered">
         <div class="panel panel-default">
             <div class="panel-heading" style="padding-top: 20px;padding-bottom: 20px;padding-left: 20px;">
-                <h3 class="panel-title" style="font-weight: bold;">맛있는 먹거리를 만들수있는 재주를 가지고 계신가요 ?</h3>
+                <h3 class="panel-title" style="font-weight: bold;color: #006F3C;">맛있는 먹거리를 만들수있는 재주를 가지고 계신가요 ?</h3>
             </div>
-            <div class="panel-body" style="padding-left: 20px;padding-bottom: 30px;padding-top: 10px;">
-                <span style="color: #575758;">그럼 함께 <b>공굴러</b>(공동구매 Organizer)가 되세요.</span>
-                <br/><br/>
+            <div class="panel-body" style="padding-left: 20px;padding-bottom: 5px;padding-top: 10px;">
+                <span style="color: #575758;">그럼 함께 <b>공굴러</b>(<i>공동구매 Organizer</i>)가 되세요.</span>
 
-                <table style="width: 100%;">
+                <table style="width: 100%;margin-top: 30px;">
                     <tr>
                         <td style="text-align: center;"><img src="/resources/image/map_marker.png" style="width: 30px;"></td>
                         <td style="width: 20px;"></td>
                         <td style="font-size: 15px;vertical-align: middle;font-weight: bold;color: #575758;">
-                            멜푸드는 지리기반 데이터에의해 소비자가 원하는 곳의 욕구도 통계적 분석을 통해 공굴러들이 활동 할 수 있도록 지원합니다.</td>
+                            멜푸드는 지리기반 데이터에의해 소비자가 원하는 수요를 통계적 분석을 통해 공굴러들이 활동 할 수 있도록 지원합니다.</td>
                     </tr>
                     <tr style="height: 20px;"><td colspan="3"></td></tr>
                     <tr>
@@ -144,11 +143,11 @@
                             멜푸드는 소비자와 소통할수있는 커뮤니케이션 체널을 다양한 방법으로 지원합니다.
                         </td>
                     </tr>
-                    <tr style="height: 50px;"><td colspan="3"></td></tr>
+                    <tr style="height: 20px;"><td colspan="3"></td></tr>
                     <tr>
                         <td colspan="3" style="text-align: right;color: #8B8A8A;">가입 신청 후 일정한 협의를 거처(특히 먹거리 아이템의 경우) 진행 될수 있습니다.</td>
                     </tr>
-                    <tr style="height: 50px;"><td colspan="3"></td></tr>
+                    <tr style="height: 20px;"><td colspan="3"></td></tr>
                     <tr>
                         <td style="text-align: center;"><i class="fa fa-hand-o-down fa-2x" aria-hidden="true" style="color: #8B8A8A;"></i></td>
                         <td style="width: 20px;"></td>

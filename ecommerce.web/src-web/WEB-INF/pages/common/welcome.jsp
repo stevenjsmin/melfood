@@ -389,10 +389,6 @@
 
                     </c:choose>
 
-
-
-
-
             </table>
         </div>
 
@@ -410,16 +406,16 @@
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div class="venueInfoWrapper">
 
-            <div class="row">
-                <div class="col-sm-6" style="padding: 0px 0px;">
+            <div class="row" style="text-align: right;">
+                <div class="col-sm-12" style="padding: 0px 0px;">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
                             <td></td>
+                            <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;">협동조합 파트너스</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;padding-left: 10px;height: 40px;font-size: 15px;">
+                            <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;height: 40px;font-size: 15px;">
                                 <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
                                 | <span style="font-weight: bold;text-decoration: underline">금.토일엔 삼겹살</span>
                                 | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>

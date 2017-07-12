@@ -73,4 +73,24 @@ public interface OrderMasterService {
      */
     public Integer removePaymentReceiptFileInfo(int orderMasterId) throws Exception;
 
+    /**
+     * 배송상태 수정<br/>
+     * orderMasterId와 statusDelivery를 설정해야한다.
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    public Integer modifyStatusDelivery(OrderMaster orderMaster) throws Exception;
+
+    /**
+     * 결재상태 수정<br/>
+     * orderMasterId와 statusPayment를 설정해야한다.
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    public Integer modifyStatusPayment(OrderMaster orderMaster) throws Exception;
+
 }

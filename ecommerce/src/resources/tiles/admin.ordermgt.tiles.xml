@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- ORDER MANAGEMENT -->
+	<definition name="tiles/admin/ordermgt/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="Order search" />
+		<put-attribute name="navigation" value="Admin > Order > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/order/orders.jsp" />
+	</definition>
+
+
+</tiles-definitions>

@@ -198,20 +198,14 @@ public class OrderMasterUtil {
 
         if (StringUtils.isNotBlank(screenDto.getPaymentMethod())) {
             if (StringUtils.equalsIgnoreCase(paymentMethod.getPaymentMethod(), "ACCOUNT_TRANSFER")) {
-                orderMaster.setPaymentMethod("계좌이체");
                 orderMaster.setPaymentBankName(paymentMethod.getBankName());
                 orderMaster.setPaymentBankBsb(paymentMethod.getBankBsb());
                 orderMaster.setPaymentAccountNo(paymentMethod.getBankAccountNo());
                 orderMaster.setPaymentAccountHolderName(paymentMethod.getBankAccountOwnerName());
-            } else if (StringUtils.equalsIgnoreCase(paymentMethod.getPaymentMethod(), "CASH")) {
-                orderMaster.setPaymentMethod("만나서결재");
-            } else if (StringUtils.equalsIgnoreCase(paymentMethod.getPaymentMethod(), "CREDIT_CARD")) {
-                orderMaster.setPaymentMethod("신용카드결재");
-            } else if (StringUtils.equalsIgnoreCase(paymentMethod.getPaymentMethod(), "PAYPAL")) {
-                orderMaster.setPaymentMethod("PAYPAL");
-            } else {
-
             }
+            orderMaster.setPaymentMethod(StringUtils.upperCase(screenDto.getPaymentMethod()));
+        } else {
+            orderMaster.setPaymentMethod(null);
         }
 
         Float discountRate = 0.0f;

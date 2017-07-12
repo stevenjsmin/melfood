@@ -41,6 +41,10 @@
                  $("#grouppurchase-000").addClass("homer");
 
 
+             } else if(pathName.startsWith("/admin/ordermgt")) {
+                 $("#ordermgt-000").addClass("homer");
+
+
              } else if(pathName.startsWith("/framework/communicationmanager")) {
                  $("#communication-000").addClass("homer");
 
@@ -91,6 +95,8 @@
 
 
                          <li><a id="grouppurchase-000" href="/admin/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공동구매 관리</a>
+
+                         <li><a id="ordermgt-000" href="/admin/ordermgt/Main.yum"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp; 주문 관리</a>
 
 
                          <li><a id="communication-000" href="#"><i class="fa fa-cogs fa-lg"></i>&nbsp; Communication 관리</a>

@@ -87,7 +87,6 @@
 				<if test="invoiceIssue                      != null"> AND a.invoice_issue = UPPER(#{invoiceIssue}) </if>
 				<if test="invoiceIssueDatetime              != null"> AND str_to_date(#{invoiceIssueDatetime}, '%Y-%m-%d') = str_to_date(a.invoice_issue_datetime, '%Y-%m-%d') </if>
 				<if test="customerName                      != null"> AND UPPER(a.customer_name) LIKE CONCAT('%', UPPER(#{customerName}), '%') </if>
-				<if test="customerName                      != null"> AND UPPER(a.customer_name)                         LIKE CONCAT('%', UPPER( #{customerName}), '%') </if>
 				<if test="customerMobile                    != null"> AND a.customer_mobile                              = #{customerMobile} </if>
 				<if test="customerPhone                     != null"> AND a.customer_phone                               = #{customerPhone} </if>
 				<if test="customerEmail                     != null"> AND UPPER(a.customer_email)                        LIKE CONCAT('%', UPPER( #{customerEmail}), '%') </if>
@@ -110,7 +109,7 @@
 				<if test="pickupAddressState                != null"> AND UPPER(a.pickup_address_state)                  LIKE CONCAT('%', UPPER( #{pickupAddressState}), '%') </if>
 				<if test="pickupAddressNote                 != null"> AND UPPER(a.pickup_address_note)                   LIKE CONCAT('%', UPPER( #{pickupAddressNote}), '%') </if>
 				<if test="isPickupOrDelivery                != null"> AND UPPER(a.is_pickup_or_delivery)                 = UPPER(#{isPickupOrDelivery}) </if>
-				<if test="normalOrGroupOrder                != null"> AND UPPER(a.normal_or_group_order)                 = #{normalOrGroupOrder} </if>
+				<if test="normalOrGroupOrder                != null"> AND UPPER(a.normal_or_group_order)                 = UPPER(#{normalOrGroupOrder}) </if>
 				<if test="groupPurchaseId                != null"> AND UPPER(a.group_purchase_id)                 = #{groupPurchaseId} </if>
 				<if test="isRefund                          != null"> AND UPPER(a.is_refund)                             = UPPER(#{isRefund}) </if>
 				<if test="refundDatetime                    != null"> AND str_to_date(#{refundDatetime}, '%Y-%m-%d') = str_to_date(a.refund_datetime, '%Y-%m-%d') </if>
@@ -127,7 +126,7 @@
 				<if test="deliveryToAddrState               != null"> AND UPPER(a.delivery_to_addr_state)                LIKE CONCAT('%', UPPER( #{deliveryToAddrState}), '%') </if>
 				<if test="deliveryToAddrPostcode            != null"> AND UPPER(a.delivery_to_addr_postcode)             LIKE CONCAT('%', UPPER( #{deliveryToAddrPostcode}), '%') </if>
 				<if test="paymentMethod                     != null"> AND UPPER(a.payment_method)                        = UPPER(#{paymentMethod}) </if>
-				<if test="paymentBankName                   != null"> AND UPPER(a.payment_bank_name)                     LIKE CONCAT('%', UPPER( #{paymentBankName}), '%') </if>
+				<if test="paymentBankName                   != null"> AND UPPER(a.payment_bank_name)                     = UPPER(#{paymentBankName}) </if>
 				<if test="paymentBankBsb                    != null"> AND a.payment_bank_bsb                             = #{paymentBankBsb} </if>
 				<if test="paymentAccountNo                  != null"> AND a.payment_account_no                           = #{paymentAccountNo} </if>
 				<if test="paymentAccountHolderName          != null"> AND UPPER(a.payment_account_holder_name)           LIKE CONCAT('%', UPPER( #{paymentAccountHolderName}), '%') </if>
@@ -152,7 +151,6 @@
 				<if test="invoiceIssue                      != null"> AND a.invoice_issue = UPPER(#{invoiceIssue}) </if>
 				<if test="invoiceIssueDatetime              != null"> AND str_to_date(#{invoiceIssueDatetime}, '%Y-%m-%d') = str_to_date(a.invoice_issue_datetime, '%Y-%m-%d') </if>
 				<if test="customerName                      != null"> AND UPPER(a.customer_name) LIKE CONCAT('%', UPPER(#{customerName}), '%') </if>
-				<if test="customerName                      != null"> AND UPPER(a.customer_name)                         LIKE CONCAT('%', UPPER( #{customerName}), '%') </if>
 				<if test="customerMobile                    != null"> AND a.customer_mobile                              = #{customerMobile} </if>
 				<if test="customerPhone                     != null"> AND a.customer_phone                               = #{customerPhone} </if>
 				<if test="customerEmail                     != null"> AND UPPER(a.customer_email)                        LIKE CONCAT('%', UPPER( #{customerEmail}), '%') </if>
@@ -192,7 +190,7 @@
 				<if test="deliveryToAddrState               != null"> AND UPPER(a.delivery_to_addr_state)                LIKE CONCAT('%', UPPER( #{deliveryToAddrState}), '%') </if>
 				<if test="deliveryToAddrPostcode            != null"> AND UPPER(a.delivery_to_addr_postcode)             LIKE CONCAT('%', UPPER( #{deliveryToAddrPostcode}), '%') </if>
 				<if test="paymentMethod                     != null"> AND UPPER(a.payment_method)                        = UPPER(#{paymentMethod}) </if>
-				<if test="paymentBankName                   != null"> AND UPPER(a.payment_bank_name)                     LIKE CONCAT('%', UPPER( #{paymentBankName}), '%') </if>
+				<if test="paymentBankName                   != null"> AND UPPER(a.payment_bank_name)                     = UPPER(#{paymentBankName}) </if>
 				<if test="paymentBankBsb                    != null"> AND a.payment_bank_bsb                             = #{paymentBankBsb} </if>
 				<if test="paymentAccountNo                  != null"> AND a.payment_account_no                           = #{paymentAccountNo} </if>
 				<if test="paymentAccountHolderName          != null"> AND UPPER(a.payment_account_holder_name)           LIKE CONCAT('%', UPPER( #{paymentAccountHolderName}), '%') </if>
@@ -366,4 +364,19 @@
 		WHERE order_master_id = #{orderMasterId}
 	</update>
 
+	<update id="modifyStatusDelivery" parameterType="OrderMaster">
+		/* QUERY ID : modifyStatusDelivery */
+		UPDATE order_master
+		SET modify_datetime = CURRENT_TIMESTAMP
+		<if test="statusDelivery != null">,status_delivery = #{statusDelivery} </if>
+		WHERE order_master_id = #{orderMasterId}
+	</update>
+
+	<update id="modifyStatusPayment" parameterType="OrderMaster">
+		/* QUERY ID : modifyStatusPayment */
+		UPDATE order_master
+		SET modify_datetime = CURRENT_TIMESTAMP
+		<if test="statusPayment != null">,status_payment = #{statusPayment} </if>
+		WHERE order_master_id = #{orderMasterId}
+	</update>
 </mapper>
