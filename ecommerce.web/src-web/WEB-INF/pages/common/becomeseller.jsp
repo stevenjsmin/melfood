@@ -117,8 +117,8 @@
             <div class="panel-heading" style="padding-top: 20px;padding-bottom: 20px;padding-left: 20px;">
                 <h3 class="panel-title" style="font-weight: bold;">맛있는 먹거리를 만들수있는 재주를 가지고 계신가요 ?</h3>
             </div>
-            <div class="panel-body" style="padding-left: 20px;padding-bottom: 30px;">
-                그럼 함께 <b>공굴러</b>(공동구매 Organizer)가 되세요.
+            <div class="panel-body" style="padding-left: 20px;padding-bottom: 30px;padding-top: 10px;">
+                <span style="color: #575758;">그럼 함께 <b>공굴러</b>(공동구매 Organizer)가 되세요.</span>
                 <br/><br/>
 
                 <table style="width: 100%;">
