@@ -54,7 +54,7 @@ function menuSelect() {
 <body>
 <div class="well well-sm" style="background-color: #E7F4E3;">
      <table style="width: 100%;">
-          <tr><td style="text-align: center;"><span style="color: #4C792D;font-weight: bold;">My푸드</span></td></tr>
+          <tr><td style="text-align: center;"><span style="color: #4C792D;font-weight: bold;">My 푸드</span></td></tr>
      </table>
 </div>
 <div id="treeview"></div>
