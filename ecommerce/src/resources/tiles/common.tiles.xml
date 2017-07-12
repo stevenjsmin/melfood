@@ -31,7 +31,7 @@
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- 공굴러 가입및 입점 -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-	<definition name="tiles/common/welcome/to" extends="layout/panel_200">
+	<definition name="tiles/common/welcome/you" extends="layout/panel_200">
 		<put-attribute name="body" value="/WEB-INF/pages/common/becomeseller.jsp" />
 	</definition>
 

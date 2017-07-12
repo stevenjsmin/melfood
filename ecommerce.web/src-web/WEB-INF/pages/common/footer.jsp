@@ -153,7 +153,7 @@
                 </td>
             </tr>
             <tr style="height: 20px;"><td></td></tr>
-            <tr><td><a href="/welcome/to.yum" style="font-size: 15px;font-weight: bold;color: #A2A4A4;text-decoration: underline;">공굴러가입 ::: 입점안내</a></td></tr>
+            <tr><td><a href="/welcome/you.yum" style="font-size: 15px;font-weight: bold;color: #A2A4A4;text-decoration: underline;">공굴러가입 ::: 입점안내</a></td></tr>
         </table>
 
     </div>

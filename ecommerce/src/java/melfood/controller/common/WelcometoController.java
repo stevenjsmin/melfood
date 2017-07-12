@@ -12,9 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/welcome")
 public class WelcometoController extends BaseController {
 
-    @RequestMapping("/to")
+    @RequestMapping("/you")
     public ModelAndView main() throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/common/welcome/to");
+        ModelAndView mav = new ModelAndView("tiles/common/welcome/you");
         return mav;
     }
 }
