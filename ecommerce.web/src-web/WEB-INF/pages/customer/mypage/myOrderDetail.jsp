@@ -155,8 +155,8 @@
                                      <span style="font-size: 15px;font-weight: bold;color: #575758;">
                                         <c:choose>
                                             <c:when test="${orderMaster.statusPayment == 'BEFORE_PAYMENT'}"> 결재 전</c:when>
-                                            <c:when test="${orderMaster.statusPayment == 'BEFORE_PAYMENT'}"> 결재 처리중</c:when>
-                                            <c:when test="${orderMaster.statusPayment == 'BEFORE_PAYMENT'}"> 결재 완료</c:when>
+                                            <c:when test="${orderMaster.statusPayment == 'ON_PROCESSING'}"> 결재 처리중</c:when>
+                                            <c:when test="${orderMaster.statusPayment == 'COMPLETED'}"> 결재 완료</c:when>
                                             <c:otherwise>-</c:otherwise>
                                         </c:choose>
                                      </span>

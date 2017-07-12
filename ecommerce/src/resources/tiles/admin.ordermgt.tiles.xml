@@ -12,5 +12,10 @@
 		<put-attribute name="body" value="/WEB-INF/pages/order/orders.jsp" />
 	</definition>
 
+	<definition name="tiles/admin/ordermgt/orderdetail" extends="tiles/admin/root">
+		<put-attribute name="title" value="Order detail" />
+		<put-attribute name="navigation" value="Admin > Order > detail" />
+		<put-attribute name="body" value="/WEB-INF/pages/order/orderdetail.jsp" />
+	</definition>
 
 </tiles-definitions>

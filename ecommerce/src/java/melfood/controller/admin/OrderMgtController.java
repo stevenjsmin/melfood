@@ -1,5 +1,6 @@
 package melfood.controller.admin;
 
+import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
@@ -240,5 +241,43 @@ public class OrderMgtController extends BaseController {
         }
 
         return model;
+    }
+
+    @RequestMapping("/orderdetail")
+    public ModelAndView orderdetail(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        ModelAndView mav = new ModelAndView("tiles/admin/ordermgt/orderdetail");
+
+        String userId = sessionUser.getUser().getUserId();
+        String orderMasterId = request.getParameter("orderMasterId"); // Order Id
+
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setCreator(userId);
+        orderMaster.setOrderMasterId(Integer.parseInt(orderMasterId));
+        orderMaster.setLazyLoad(false);
+
+        OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
+
+        mav.addObject("orderMaster", newOrderMaster);
+
+        if (newOrderMaster.getPaymentAccTransferReceipt() != null) {
+            AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(newOrderMaster.getPaymentAccTransferReceipt()));
+            if (receiptFile == null) {
+                orderMasterService.removePaymentReceiptFileInfo(Integer.parseInt(orderMasterId));
+                mav.addObject("receiptFileNo", null);
+                mav.addObject("receiptFileName", null);
+                mav.addObject("receiptFileCreateDate", null);
+            } else {
+                mav.addObject("receiptFileNo", receiptFile.getFileId());
+                mav.addObject("receiptFileName", receiptFile.getFileName());
+                mav.addObject("receiptFileCreateDate", receiptFile.getCreateDatetime());
+            }
+        } else {
+            mav.addObject("receiptFileNo", null);
+            mav.addObject("receiptFileName", null);
+            mav.addObject("receiptFileCreateDate", null);
+        }
+
+        return mav;
     }
 }

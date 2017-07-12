@@ -191,10 +191,9 @@
     </script>
 
 
-
     <script type="text/javascript">
         function myOrderDetailInfo(orderMasterId) {
-            document.location.href = "/customer/mypage/myorder/myorderdetail.yum?thanks=" + orderMasterId;
+            document.location.href = "/admin/ordermgt/orderdetail.yum?orderMasterId=" + orderMasterId;
         }
     </script>
 
