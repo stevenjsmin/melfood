@@ -91,10 +91,15 @@
                 <div class="col-sm-6" style="padding: 0px 0px;">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="text-align: left;color: #DDDEE0;padding-top: 0px;padding-left: 50px;">우와한 가족들 협동조합 파트너스가 되어주세요</td>
+                            <td style="text-align: left;color: #DDDEE0;padding-top: 0px;padding-left: 10px;">우와한 가족들 협동조합 파트너스가 되어주세요</td>
                         </tr>
                         <tr>
-                            <td style="text-align: left;color: #DDDEE0;padding-top: 0px;padding-left: 50px;">맛있는 것을 만드는 재주가 있다면 공굴러가 되어보세요. </td>
+                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;padding-left: 10px;height: 40px;font-size: 15px;">
+                                <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
+                                | <span style="font-weight: bold;text-decoration: underline">금.토일엔 삼겹살</span>
+                                | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>
+                                | <span style="font-weight: bold;text-decoration: underline">순이네 반찬</span>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -103,15 +108,55 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-sm-4">
-        <div class="well well-lg">
-            <img src="/resources/image/next-chef-org.jpg" style="width: 400px;">
-        </div>
+<div class="row" style="text-align: center; padding-top: 20px;padding-bottom: 30px;">
+    <div class="col-sm-2 col-centered" style="text-align: right;">
+        <img src="/resources/image/next-chef-org.jpg" style="width: 200px;">
     </div>
-    <div class="col-sm-4">
-        <div class="well well-lg">
-            가입절자..
+    <div class="col-sm-7 col-centered">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="padding-top: 20px;padding-bottom: 20px;padding-left: 20px;">
+                <h3 class="panel-title" style="font-weight: bold;">맛있는 먹거리를 만들수있는 재주를 가지고 계신가요 ?</h3>
+            </div>
+            <div class="panel-body" style="padding-left: 20px;padding-bottom: 30px;">
+                그럼 함께 <b>공굴러</b>(공동구매 Organizer)가 되세요.
+                <br/><br/>
+
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="text-align: center;"><img src="/resources/image/map_marker.png" style="width: 30px;"></td>
+                        <td style="width: 20px;"></td>
+                        <td style="font-size: 15px;vertical-align: middle;font-weight: bold;color: #575758;">
+                            멜푸드는 지리기반 데이터에의해 소비자가 원하는 곳의 욕구도 통계적 분석을 통해 공굴러들이 활동 할 수 있도록 지원합니다.</td>
+                    </tr>
+                    <tr style="height: 20px;"><td colspan="3"></td></tr>
+                    <tr>
+                        <td style="text-align: center;"><img src="/resources/image/trends.png" style="width: 30px;"></td>
+                        <td style="width: 20px;"></td>
+                        <td style="font-size: 15px;vertical-align: middle;font-weight: bold;color: #575758;">
+                            멜푸드는 지속적인 소비자 분석을 통해 마켓트랜드를 활용 할 수 있도록 공굴러들의 활동을 지원합니다.
+                        </td>
+                    </tr>
+                    <tr style="height: 30px;"><td colspan="3"></td></tr>
+                    <tr>
+                        <td style="text-align: center;"><img src="/resources/image/email.png" style="width: 30px;"></td>
+                        <td style="width: 20px;"></td>
+                        <td style="font-size: 15px;vertical-align: middle;font-weight: bold;color: #575758;">
+                            멜푸드는 소비자와 소통할수있는 커뮤니케이션 체널을 다양한 방법으로 지원합니다.
+                        </td>
+                    </tr>
+                    <tr style="height: 50px;"><td colspan="3"></td></tr>
+                    <tr>
+                        <td colspan="3" style="text-align: right;color: #8B8A8A;">가입 신청 후 일정한 협의를 거처(특히 먹거리 아이템의 경우) 진행 될수 있습니다.</td>
+                    </tr>
+                    <tr style="height: 50px;"><td colspan="3"></td></tr>
+                    <tr>
+                        <td style="text-align: center;"><i class="fa fa-hand-o-down fa-2x" aria-hidden="true" style="color: #8B8A8A;"></i></td>
+                        <td style="width: 20px;"></td>
+                        <td style="text-align: left;color: #8B8A8A;vertical-align: middle"> 아래 "<b>Contact us</b>" Form을 통해 가입문의 해주세요.</td>
+                    </tr>
+
+                </table>
+            </div>
         </div>
     </div>
 </div>

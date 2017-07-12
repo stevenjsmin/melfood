@@ -97,6 +97,9 @@
         function goList() {
             document.location.href = "/customer/mypage/myorder/Main.yum";
         }
+        function getInvoice() {
+            underDevelopment();
+        }
 
         function groupPurchaseOrganizer() {
 
@@ -193,9 +196,14 @@
                                 </div>
 
                                 <!-- 계좌이체 결재인경우 영수증 첨부 안내 -->
-                                <div id="notice_for_acc_transfer">
-                                    <div class="alert alert-warning" style="border-left: 6px solid #F15F4C;padding-left: 5px;">송금하신 후 <span style="text-decoration: underline;">영수증 이미지를 업로드</span>해 주시면 빠르게 처리해 드리겠습니다.</div>
-                                </div>
+                                <c:choose>
+                                    <c:when test="${orderMaster.paymentAccTransferReceipt == null || receiptFileNo == null}">
+                                        <!-- 계좌이체 결재인경우 영수증 첨부 안내 -->
+                                        <div id="notice_for_acc_transfer">
+                                            <div class="alert alert-warning" style="border-left: 6px solid #F15F4C;padding-left: 5px;">송금하신 후 <span style="text-decoration: underline;">영수증 이미지를 업로드</span>해 주시면 빠르게 처리해 드리겠습니다.</div>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
 
                                 <!-- 영수증 업로드 -->
                                 <div id="acc_transfer_receipt_upload" style="margin-bottom: 10px;">
@@ -440,6 +448,8 @@
         <table class="action_button_table">
             <tr>
                 <td style="text-align: right;padding-right: 15px;">
+                    <button type="button" class="btn btn-warning btn-sm" onclick="getInvoice()"><i class="fa fa-file-o" aria-hidden="true"></i> 인보이스발행</button>
+                    &nbsp;&nbsp;&nbsp;
                     <button type="button" class="btn btn-success btn-sm" onclick="goList()"><i class="fa fa-list" aria-hidden="true"></i> 이전화면</button>
                 </td>
             </tr>
