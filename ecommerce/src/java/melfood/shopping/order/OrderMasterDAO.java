@@ -43,4 +43,13 @@ public interface OrderMasterDAO {
      * @throws Exception
      */
     public Integer deleteOrderMaster(OrderMaster orderMaster) throws Exception;
+
+    /**
+     * Payment 영수증 파일 정보를 갱신한다.
+     *
+     * @param orderMaster : orderMasterId 와 paymentAccTransferReceipt이 설정되어져야 한다.
+     * @return
+     * @throws Exception
+     */
+    public Integer modifyPaymentReceiptFileInfo(OrderMaster orderMaster) throws Exception;
 }

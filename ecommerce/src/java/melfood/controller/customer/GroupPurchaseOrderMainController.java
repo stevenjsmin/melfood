@@ -10,6 +10,7 @@
 package melfood.controller.customer;
 
 import com.google.gson.Gson;
+import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.gmap.gson.dto.GMapResult;
@@ -488,6 +489,24 @@ public class GroupPurchaseOrderMainController extends BaseController {
             mav.addObject("firstImageId", Integer.toString(groupPurchaseImages.get(0).getImageFileId()));
         } else {
             mav.addObject("firstImageId", null);
+        }
+
+        if (newOrderMaster.getPaymentAccTransferReceipt() != null) {
+            AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(newOrderMaster.getPaymentAccTransferReceipt()));
+            if (receiptFile == null) {
+                orderMasterService.removePaymentReceiptFileInfo(Integer.parseInt(orderId));
+                mav.addObject("receiptFileNo", null);
+                mav.addObject("receiptFileName", null);
+                mav.addObject("receiptFileCreateDate", null);
+            } else {
+                mav.addObject("receiptFileNo", receiptFile.getFileId());
+                mav.addObject("receiptFileName", receiptFile.getFileName());
+                mav.addObject("receiptFileCreateDate", receiptFile.getCreateDatetime());
+            }
+        } else {
+            mav.addObject("receiptFileNo", null);
+            mav.addObject("receiptFileName", null);
+            mav.addObject("receiptFileCreateDate", null);
         }
 
         return mav;

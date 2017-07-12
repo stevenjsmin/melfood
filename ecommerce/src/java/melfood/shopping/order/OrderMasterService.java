@@ -26,7 +26,6 @@ public interface OrderMasterService {
     public List<OrderMaster> getOrderMasters(OrderMaster orderMaster) throws Exception;
 
 
-
     /**
      * 주문마스터 정보 목록의 레코드 갯수를 가져온다.
      *
@@ -54,5 +53,24 @@ public interface OrderMasterService {
      * @throws Exception
      */
     public Integer deleteOrderMaster(OrderMaster orderMaster) throws Exception;
+
+
+    /**
+     * * 주문 영수증을 데이터베이스에 기록한다.
+     *
+     * @param orderMasterId
+     * @return
+     * @throws Exception
+     */
+    public int transferPaymentReceiptToAttachementFileDb(int orderMasterId) throws Exception;
+
+    /**
+     * 첨부된 Payment 영수증 파일 정보를 삭제한다.
+     *
+     * @param orderMasterId
+     * @return
+     * @throws Exception
+     */
+    public Integer removePaymentReceiptFileInfo(int orderMasterId) throws Exception;
 
 }

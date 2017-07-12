@@ -38,8 +38,8 @@
         $(document).ready(function () {
             $("#fileUpload").kendoUpload({
                 async: {
-                    saveUrl: "/framework/usermanager/profileImageUpload.~~~~yum?userId=${user.userId}",
-                    removeUrl: "/framework/usermanager/removeFile.~~~~~yum",
+                    saveUrl: "/customer/mypage/myorder/acctransferreceiptUpload.yum?thanks=${orderMaster.orderMasterId}",
+                    removeUrl: "/customer/mypage/myorder/acctransferreceiptRemove.yum?thanks=${orderMaster.orderMasterId}",
                     removeField: "removeFile",
                     autoUpload: true,
                     batch: true,
@@ -58,16 +58,29 @@
             function onComplete(e) {
                 //search();
             }
+
             function onSuccess(e) {
                 var data = e.response;
-                if(data.resultCode != '0'){
-                    warningPopup("<b>프로파일 이미지 갱신 실패 : </b>" + data.message);
-                    $("#profilePhotoId", parent.document).attr("src","/resources/image/profile_photo.png");
+
+                if (data.resultCode != '0') {
+                    var htmlMessage = "<b>영수증파일 첨부 갱신 실패 : </b>" + data.message + "<br/> *** 나중에 '<b>My푸드 > 구매기록 조회</b>' 에서 첨부하셔도 됩니다.";
+                    warningPopup(htmlMessage);
+                    $("#paymentAccTransferReceiptMessage").html(htmlMessage);
+                    $("#paymentAccTransferReceipt").html("");
+
                 } else {
-                    infoPopup("정상적으로 프로파일 이미지가 갱신되었습니다. ");
-                    $("#profilePhotoId", parent.document).attr("src","/img/?f=" + data.user.profilePhotoId);
+                    $("#paymentAccTransferReceiptMessage").html("");
+
+                    if(data.receiptFileNo != undefined && data.receiptFileNo != '' ){
+                        infoPopup("정상적으로 영수증 파일이 등록되었습니다.");
+                        var htmlMessage = "첨부해주신 영수증 파일이 있습니다 : " +  data.receiptFileName
+                            + " &nbsp;&nbsp; "
+                            + "<a href=\"javascript:downloadFile('" + data.receiptFileNo + "');\"><img src=\"\/resources\/css/images\/gic\/ic_file_download_black_18dp_1x.png\"/>";
+                        $("#paymentAccTransferReceipt").html(htmlMessage);
+                    }
                 }
             }
+
             function onError(e) {
                 var files = e.files;
                 if (e.operation == "upload") {
@@ -475,6 +488,19 @@
                                                     <td class="value" style="padding-right: 0px;"><input type="file" name="files" id="fileUpload"/></td>
                                                 </tr>
                                             </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #8B8A8A;padding-top: 5px;padding-left: 20px; text-align: right;">
+                                            <div id="paymentAccTransferReceipt" style="font-size: 10px;">
+                                                <c:choose>
+                                                    <c:when test="${orderMaster.paymentAccTransferReceipt != null && receiptFileNo != null}">
+                                                        첨부해주신 영수증 파일이 있습니다 : ${receiptFileName} <a href="javascript:downloadFile('${receiptFileNo}');"><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"/></a>
+                                                    </c:when>
+                                                    <c:otherwise> *** 나중에 '<b>My푸드 > 구매기록 조회</b>' 에서 첨부하셔도 됩니다.</c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                            <div id="paymentAccTransferReceiptMessage"></div>
                                         </td>
                                     </tr>
                                 </table>

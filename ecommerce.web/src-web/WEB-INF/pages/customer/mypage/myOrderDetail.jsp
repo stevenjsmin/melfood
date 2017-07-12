@@ -16,8 +16,8 @@
         $(document).ready(function () {
             $("#fileUpload").kendoUpload({
                 async: {
-                    saveUrl: "/framework/usermanager/profileImageUpload.~~~~yum?userId=${user.userId}",
-                    removeUrl: "/framework/usermanager/removeFile.~~~~~yum",
+                    saveUrl: "/customer/mypage/myorder/acctransferreceiptUpload.yum?thanks=${orderMaster.orderMasterId}",
+                    removeUrl: "/customer/mypage/myorder/acctransferreceiptRemove.yum?thanks=${orderMaster.orderMasterId}",
                     removeField: "removeFile",
                     autoUpload: true,
                     batch: true,
@@ -39,12 +39,23 @@
 
             function onSuccess(e) {
                 var data = e.response;
+
                 if (data.resultCode != '0') {
-                    warningPopup("<b>프로파일 이미지 갱신 실패 : </b>" + data.message);
-                    $("#profilePhotoId", parent.document).attr("src", "/resources/image/profile_photo.png");
+                    var htmlMessage = "<b>영수증파일 첨부 갱신 실패 : </b>" + data.message;
+                    warningPopup(htmlMessage);
+                    $("#paymentAccTransferReceiptMessage").html(htmlMessage);
+                    $("#paymentAccTransferReceipt").html("");
+
                 } else {
-                    infoPopup("정상적으로 프로파일 이미지가 갱신되었습니다. ");
-                    $("#profilePhotoId", parent.document).attr("src", "/img/?f=" + data.user.profilePhotoId);
+                    $("#paymentAccTransferReceiptMessage").html("");
+
+                    if(data.receiptFileNo != undefined && data.receiptFileNo != '' ){
+                        infoPopup("정상적으로 영수증 파일이 등록되었습니다.");
+                        var htmlMessage = "첨부해주신 영수증 파일이 있습니다 : " +  data.receiptFileName
+                            + " &nbsp;&nbsp; "
+                            + "<a href=\"javascript:downloadFile('" + data.receiptFileNo + "');\"><img src=\"\/resources\/css/images\/gic\/ic_file_download_black_18dp_1x.png\"/>";
+                        $("#paymentAccTransferReceipt").html(htmlMessage);
+                    }
                 }
             }
 
@@ -121,7 +132,7 @@
     <div class="col-sm-9" style="padding-bottom: 10px;padding-right: 40px;">
         <table style="width: 100%;">
             <tr>
-                <td style="text-align: right;"><h3 style="color: #6F0E06;padding-top: 0px;margin-bottom: 0px;margin-top: 0px;"><i class="fa fa-shopping-cart" aria-hidden="true" style="color: #3c3c3c;"></i>&nbsp;: &nbsp; ${fn:substring(orderMaster.createDatetime, 0, 16)} </h3></td>
+                <td style="text-align: right;"><h3 style="color: #6F0E06;padding-top: 0px;margin-bottom: 0px;margin-top: 0px;"><i class="fa fa-shopping-cart" aria-hidden="true" style="color: #3c3c3c;"></i>&nbsp;&nbsp; ${fn:substring(orderMaster.createDatetime, 0, 16)} </h3></td>
             </tr>
         </table>
     </div>
@@ -133,7 +144,6 @@
         <!-- 결재정보 -->
         <div class="row">
             <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <table style="width: 100%;">
@@ -198,6 +208,19 @@
                                                         <td class="value" style="padding-right: 0px;"><input type="file" name="files" id="fileUpload"/></td>
                                                     </tr>
                                                 </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #6F0E06;padding-top: 20px;padding-left: 20px;">
+                                                <div id="paymentAccTransferReceipt">
+                                                    <c:choose>
+                                                        <c:when test="${orderMaster.paymentAccTransferReceipt != null && receiptFileNo != null}">
+                                                            첨부해주신 영수증 파일이 있습니다 : ${receiptFileName} <a href="javascript:downloadFile('${receiptFileNo}');"><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"/></a>
+                                                        </c:when>
+                                                        <c:otherwise> *** 현재 첨부된 영수증이 없습니다.</c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                                <div id="paymentAccTransferReceiptMessage"></div>
                                             </td>
                                         </tr>
                                     </table>

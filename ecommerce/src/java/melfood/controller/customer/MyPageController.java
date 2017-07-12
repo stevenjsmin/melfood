@@ -10,6 +10,7 @@
 package melfood.controller.customer;
 
 import melfood.framework.Ctx;
+import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.communication.Communication;
 import melfood.framework.communication.CommunicationService;
@@ -359,7 +360,7 @@ public class MyPageController extends BaseController {
         ModelAndView mav = new ModelAndView("tiles/customer/mypage/myorder/myorderdetail");
 
         String userId = sessionUser.getUser().getUserId();
-        String thanks = request.getParameter("thanks");
+        String thanks = request.getParameter("thanks"); // Order Id
 
         OrderMaster orderMaster = new OrderMaster();
         orderMaster.setCreator(userId);
@@ -370,8 +371,120 @@ public class MyPageController extends BaseController {
 
         mav.addObject("orderMaster", newOrderMaster);
 
+        if (newOrderMaster.getPaymentAccTransferReceipt() != null) {
+            AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(newOrderMaster.getPaymentAccTransferReceipt()));
+            if (receiptFile == null) {
+                orderMasterService.removePaymentReceiptFileInfo(Integer.parseInt(thanks));
+                mav.addObject("receiptFileNo", null);
+                mav.addObject("receiptFileName", null);
+                mav.addObject("receiptFileCreateDate", null);
+            } else {
+                mav.addObject("receiptFileNo", receiptFile.getFileId());
+                mav.addObject("receiptFileName", receiptFile.getFileName());
+                mav.addObject("receiptFileCreateDate", receiptFile.getCreateDatetime());
+            }
+        } else {
+            mav.addObject("receiptFileNo", null);
+            mav.addObject("receiptFileName", null);
+            mav.addObject("receiptFileCreateDate", null);
+        }
+
         return mav;
     }
+
+
+    @RequestMapping(value = "/myorder/acctransferreceiptUpload", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> acctransferreceiptUpload(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        Integer uploadedFileNo = 0;
+
+        String subDirectory = Ctx.getVar("PAYMENT.RECEIPT.TEMP.UPLOAD.DIR");
+
+        try {
+            String userId = sessionUser.getUser().getUserId();
+            String thanks = request.getParameter("thanks"); // Order Id
+
+            OrderMaster orderMaster = new OrderMaster();
+            orderMaster.setCreator(userId);
+            orderMaster.setOrderMasterId(Integer.parseInt(thanks));
+            orderMaster.setLazyLoad(false);
+
+            OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
+            if (newOrderMaster == null) throw new Exception("주문정보가 존재하지 않아, 영수증 첨부를 할 수 없습니다.");
+
+            Integer receiptFileNo = newOrderMaster.getPaymentAccTransferReceipt();
+
+            // 이미 등록된 파일이 있다면 삭제해준다.
+            if (receiptFileNo != null) {
+                attachmentFileService.deleteAttachmentFile(new AttachmentFile(receiptFileNo));
+                attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory); // 기존의 파일들을 지워준다.
+            }
+
+            // 파일을 임시 업로드 위치에 놓는다.
+            attachmentFileService.uploadFile(request, subDirectory);
+            Integer insertedFileId = orderMasterService.transferPaymentReceiptToAttachementFileDb(Integer.parseInt(thanks));
+
+            // 기존의 파일들을 (다시한번)지워준다.
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory);
+
+            AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(insertedFileId));
+
+            model.put("receiptFileNo", insertedFileId);
+            model.put("receiptFileName", receiptFile.getFileName());
+            model.put("receiptFileCreateDate", receiptFile.getCreateDatetime());
+            model.put("resultCode", "0");
+            model.put("message", "File uploaded successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory);
+
+            model.put("receiptFileNo", null);
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+        return model;
+
+    }
+
+    @RequestMapping(value = "/myorder/acctransferreceiptRemove", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> acctransferreceiptRemove(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        String userId = sessionUser.getUser().getUserId();
+        String thanks = request.getParameter("thanks"); // Order Id
+
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setCreator(userId);
+        orderMaster.setOrderMasterId(Integer.parseInt(thanks));
+        orderMaster.setLazyLoad(false);
+
+        OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
+        if (newOrderMaster == null) throw new Exception("주문정보가 존재하지 않아, 영수증 첨부를 할 수 없습니다.");
+
+        try {
+            // 물리적인 위치의 파일을 삭제하고, 첨부파일을 관리하는 테이블에서 또한 삭제해 준다.
+            attachmentFileService.deleteAttachmentFile(new AttachmentFile(newOrderMaster.getPaymentAccTransferReceipt()));
+
+            // 주문테이블의 영수증파일 아이디컬럼을 Null 처리해준다.
+            orderMasterService.removePaymentReceiptFileInfo(Integer.parseInt(thanks));
+
+            model.put("resultCode", "0");
+            model.put("message", "1개 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
 
     @RequestMapping("/myCommunication")
     public ModelAndView myQnAs(HttpServletRequest request) throws Exception {
@@ -423,6 +536,5 @@ public class MyPageController extends BaseController {
 
         return mav;
     }
-
 
 }

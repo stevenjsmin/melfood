@@ -357,4 +357,13 @@
 		       <if test="orderMasterProductId != null and orderMasterProductId != 0">, order_master_id = TRIM(#{orderMasterProductId}) </if>
 	</delete>
 
+	<update id="modifyPaymentReceiptFileInfo" parameterType="OrderMaster">
+		/* QUERY ID : modifyPaymentReceiptFileInfo */
+		UPDATE order_master
+		SET modify_datetime = CURRENT_TIMESTAMP
+			<if test="paymentAccTransferReceipt == null or paymentAccTransferReceipt == 0">,payment_acc_transfer_receipt = null </if>
+			<if test="paymentAccTransferReceipt != null and paymentAccTransferReceipt != 0">,payment_acc_transfer_receipt = #{paymentAccTransferReceipt} </if>
+		WHERE order_master_id = #{orderMasterId}
+	</update>
+
 </mapper>
