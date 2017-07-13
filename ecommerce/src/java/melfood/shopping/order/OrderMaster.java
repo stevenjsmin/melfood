@@ -76,6 +76,11 @@ public class OrderMaster extends BaseDto {
     private Float amountTotalExtra4;
     private Float amountTotal;
 
+    private String groupPurchaseOrganizerName;
+    private String groupPurchaseMarketGmapFormattedAddress;
+    private String groupPurchaseTitle;
+
+
     private List<OrderMasterProduct> orderMasterProduct;
 
     private boolean lazyLoad; // Default : false, [False:Load sub-objects(Product), True:Not load sub-objects(Product)]
@@ -643,6 +648,30 @@ public class OrderMaster extends BaseDto {
 
     public void setLazyLoad(boolean lazyLoad) {
         this.lazyLoad = lazyLoad;
+    }
+
+    public String getGroupPurchaseOrganizerName() {
+        return groupPurchaseOrganizerName;
+    }
+
+    public void setGroupPurchaseOrganizerName(String groupPurchaseOrganizerName) {
+        this.groupPurchaseOrganizerName = groupPurchaseOrganizerName;
+    }
+
+    public String getGroupPurchaseMarketGmapFormattedAddress() {
+        return groupPurchaseMarketGmapFormattedAddress;
+    }
+
+    public void setGroupPurchaseMarketGmapFormattedAddress(String groupPurchaseMarketGmapFormattedAddress) {
+        this.groupPurchaseMarketGmapFormattedAddress = groupPurchaseMarketGmapFormattedAddress;
+    }
+
+    public String getGroupPurchaseTitle() {
+        return groupPurchaseTitle;
+    }
+
+    public void setGroupPurchaseTitle(String groupPurchaseTitle) {
+        this.groupPurchaseTitle = groupPurchaseTitle;
     }
 }
 

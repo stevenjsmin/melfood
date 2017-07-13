@@ -12,9 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Steven on 11/7/17.
@@ -82,6 +80,43 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         }
 
         return orderMasters;
+    }
+
+    /**
+     * 공동구매의 주문마스터 정보 목록을 가져온다.(Distincted by groupPurchaseId, groupPurchaseTitle)
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<OrderMaster> getOrderMastersForGroupPurchaseCbx(OrderMaster orderMaster) throws Exception {
+
+        List<OrderMaster> list = orderMasterDAO.getOrderMastersForGroupPurchaseCbx(orderMaster);
+        List<OrderMaster> newList = new ArrayList<OrderMaster>();
+
+
+        // 아이디를 기준으로 중복을 제거하위함 : 중간에 공구 제목이 바뀌는 경우 중복되어서 나타날수 있기때문임.
+        Map<String, String> map = new HashMap<String, String>();
+        for (OrderMaster aOrder : list) {
+            if (aOrder != null) map.put(aOrder.getGroupPurchaseId(), (aOrder.getGroupPurchaseTitle() == null ? " n/a " : aOrder.getGroupPurchaseTitle()));
+        }
+
+        Iterator keyIter = map.keySet().iterator();
+        OrderMaster newOrderMaster = null;
+        String key = "";
+        String val = "";
+        while (keyIter.hasNext()) {
+            key = (String) keyIter.next();
+            val = map.get(key);
+            newOrderMaster = new OrderMaster();
+            newOrderMaster.setGroupPurchaseId(key);
+            newOrderMaster.setGroupPurchaseTitle(val);
+
+            newList.add(newOrderMaster);
+        }
+
+        return newList;
     }
 
     /**

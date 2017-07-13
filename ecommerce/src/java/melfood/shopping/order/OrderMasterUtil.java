@@ -52,6 +52,9 @@ public class OrderMasterUtil {
 
         GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(groupPurchaseId));
         orderMaster.setGroupPurchaseId(groupPurchaseId);
+        orderMaster.setGroupPurchaseMarketGmapFormattedAddress(groupPurchase.getMarketGmapFormattedAddress());
+        orderMaster.setGroupPurchaseOrganizerName(groupPurchase.getPurchaseOrganizerName());
+        orderMaster.setGroupPurchaseTitle(groupPurchase.getGroupPurchaseTitle());
 
         Product product = null;
 

@@ -6,6 +6,7 @@ import java.util.List;
  * Created by Steven on 4/7/17.
  */
 public interface OrderMasterDAO {
+
     /**
      * 주문마스터 정보 목록을 가져온다.
      *
@@ -24,6 +25,16 @@ public interface OrderMasterDAO {
      * @throws Exception
      */
     public Integer getTotalCntForGetOrderMasters(OrderMaster orderMaster) throws Exception;
+
+    /**
+     * 공동구매의 주문마스터 정보 목록을 가져온다.(Distincted by groupPurchaseId, groupPurchaseTitle)
+     *
+     * @param orderMaster
+     * @return
+     * @throws Exception
+     */
+    public List<OrderMaster> getOrderMastersForGroupPurchaseCbx(OrderMaster orderMaster) throws Exception;
+
 
     /**
      * 주문마스터 정보를 등록한다.

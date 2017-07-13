@@ -124,8 +124,9 @@
             <tr>
                 <td class="value" style="padding-bottom: 3px;color: #ACADAF;text-align: right;">80자</td>
             </tr>
+
             <c:choose>
-                <c:when test="${receiverUser.userId != null && fn:startsWith(receiverUser.userId, '04') && fn:length(receiverUser.userId) == 10}">
+                <c:when test="${receiverUser.userId != null && fn:startsWith(receiverUser.userId, '04') && fn:length(receiverUser.userId) == 10 && type == 'sms'}">
                     <tr style="height: 25px;">
                         <td style="text-align: right;">Send SMS <input type="checkbox" id="sendSMS" name="sendSMS"> </td>
                     </tr>
@@ -133,19 +134,24 @@
             </c:choose>
 
             <c:choose>
-                <c:when test="${receiverUser.email != null}">
+                <c:when test="${receiverUser.email != null && type == 'email'}">
                     <tr style="height: 25px;">
                         <td style="text-align: right;">Send Email <input type="checkbox" id="sendEmail" name="sendEmail"> </td>
                     </tr>
                 </c:when>
             </c:choose>
+
+
+
+
+
             <tr style="height: 10px;"><td>&nbsp;</td></tr>
         </table>
 
         <table class="action_button_table" width="100%">
             <tr>
                 <td>
-                    <a href="javascript:parent.closesendMessagePopup();" class="btn btn-info">&nbsp;&nbsp; Cancel &nbsp;&nbsp;</a>
+                    <a href="javascript:parent.closeSendMessagePopup();" class="btn btn-info">&nbsp;&nbsp; Cancel &nbsp;&nbsp;</a>
                     <a href="javascript:sendMessage();" class="btn btn-primary">Send</a>
                 </td>
             </tr>

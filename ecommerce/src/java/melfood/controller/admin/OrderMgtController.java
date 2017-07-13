@@ -8,6 +8,7 @@ import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.user.User;
+import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.order.OrderMaster;
 import melfood.shopping.order.OrderMasterProductService;
 import melfood.shopping.order.OrderMasterService;
@@ -42,6 +43,9 @@ public class OrderMgtController extends BaseController {
 
     @Autowired
     CommunicationService communicationService;
+
+    @Autowired
+    GroupPurchaseService groupPurchaseService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -256,15 +260,17 @@ public class OrderMgtController extends BaseController {
 
         String userId = sessionUser.getUser().getUserId();
         String orderMasterId = request.getParameter("orderMasterId"); // Order Id
+        String pageType = request.getParameter("pageType"); // 공동구매 | All
 
         OrderMaster orderMaster = new OrderMaster();
-        orderMaster.setCreator(userId);
+        // orderMaster.setCreator(userId);
         orderMaster.setOrderMasterId(Integer.parseInt(orderMasterId));
         orderMaster.setLazyLoad(false);
 
         OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
 
         mav.addObject("orderMaster", newOrderMaster);
+        mav.addObject("pageType", pageType);
 
         if (newOrderMaster.getPaymentAccTransferReceipt() != null) {
             AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(newOrderMaster.getPaymentAccTransferReceipt()));
@@ -388,4 +394,222 @@ public class OrderMgtController extends BaseController {
 
         return model;
     }
+
+    @RequestMapping(value = "/deleteOrderMaster", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> deleteOrderMaster(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String orderMasterId = request.getParameter("orderMasterId");
+
+        try {
+
+            OrderMaster orderMaster = orderMasterService.getOrderMaster(new OrderMaster(orderMasterId));
+            Integer receiptId = orderMaster.getPaymentAccTransferReceipt();
+            if (receiptId != null) {
+                // 영수증 첨부 파일을 지운다 : 첨부파일과 첨부파일저장정보 테이블의 정보를 삭제한다.
+                attachmentFileService.deleteAttachmentFile(new AttachmentFile(receiptId));
+            }
+            int deleteCnt = orderMasterService.deleteOrderMaster(new OrderMaster(orderMasterId));
+
+            model.put("resultCode", "0");
+            model.put("message", deleteCnt + " 의 정보가 삭제되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+
+    @RequestMapping("/grouppurchase/Main")
+    public ModelAndView grouppurchaseMain(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/ordermgt/grouppurchase/main");
+
+        // 인보이스 발행 여부
+        List<Option> invoiceIssueOptions = codeService.getValueCmbxOptions("ORDER", "INVOICE_ISSUE");
+        String htmlForInvoiceIssueOptionsCbx = HtmlCodeGenerator.generateComboboxForOptions("invoiceIssue", invoiceIssueOptions);
+        mav.addObject("cbxInvoiceIssue", htmlForInvoiceIssueOptionsCbx);
+
+        // [일반|공.구]
+        List<Option> normalOrGroupOrderOptions = codeService.getValueCmbxOptions("ORDER", "NORMAL_GROUP");
+        String htmlForNormalOrGroupOrderOptionsCbx = HtmlCodeGenerator.generateComboboxForOptions("normalOrGroupOrder", normalOrGroupOrderOptions);
+        mav.addObject("cbxNormalOrGroupOrder", htmlForNormalOrGroupOrderOptionsCbx);
+
+        // is_pickup_or_delivery
+        List<Option> isPickupOrDeliveryOptions = codeService.getValueCmbxOptions("ORDER", "PICKUP_DELIVERY");
+        String htmlForIsPickupOrDeliveryOptionsCbx = HtmlCodeGenerator.generateComboboxForOptions("isPickupOrDelivery", isPickupOrDeliveryOptions);
+        mav.addObject("cbxIsPickupOrDelivery", htmlForIsPickupOrDeliveryOptionsCbx);
+
+        // is_refund
+        List<Option> isRefundOptions = codeService.getValueCmbxOptions("ORDER", "IS_REFUND");
+        String htmlForIsRefundCbx = HtmlCodeGenerator.generateComboboxForOptions("isRefund", isRefundOptions);
+        mav.addObject("cbxIsRefund", htmlForIsRefundCbx);
+
+        // status_delivery
+        List<Option> statusDeliveryOptions = codeService.getValueCmbxOptions("ORDER", "STATUS_DELIVERY");
+        String htmlForStatusDeliveryCbx = HtmlCodeGenerator.generateComboboxForOptions("statusDelivery", statusDeliveryOptions);
+        mav.addObject("cbxStatusDelivery", htmlForStatusDeliveryCbx);
+
+        // status_payment
+        List<Option> statusPaymentOptions = codeService.getValueCmbxOptions("ORDER", "STATUS_PAYMENT");
+        String htmlForStatusPaymentCbx = HtmlCodeGenerator.generateComboboxForOptions("statusPayment", statusPaymentOptions);
+        mav.addObject("cbxStatusPayment", htmlForStatusPaymentCbx);
+
+        // 결재방법
+        List<Option> paymentMethodOptions = codeService.getValueCmbxOptions("COMM", "PAYMENT_METHOD");
+        String htmlForPaymentMethodCbx = HtmlCodeGenerator.generateComboboxForOptions("paymentMethod", paymentMethodOptions);
+        mav.addObject("cbxPaymentMethod", htmlForPaymentMethodCbx);
+
+        // 은행
+        List<Option> paymentBankNameOptions = codeService.getValueCmbxOptions("COMM", "BANK");
+        String htmlForPaymentBankNameCbx = HtmlCodeGenerator.generateComboboxForOptions("paymentBankName", paymentBankNameOptions);
+        mav.addObject("cbxPaymentBankName", htmlForPaymentBankNameCbx);
+
+
+        // 검색시작년월일이 존재하지 않을경우 현재날짜 기준으로 앞으로 예정된 일짜에 해당하는 목록만 가저오게한다.
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        mav.addObject("searchDateTo", df.format(cal.getTime()));
+        cal.add(Calendar.DAY_OF_MONTH, -30);
+        mav.addObject("searchDateFrom", df.format(cal.getTime()));
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/grouppurchase/grouporders", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> grouporders(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setLazyLoad(true); // 해당 제품 목록을 가저올 필요없다
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = null;
+
+        String searchDateFrom = request.getParameter("searchDateFrom");
+        String searchDateTo = request.getParameter("searchDateTo");
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String groupPurchaseMarketGmapFormattedAddress = request.getParameter("groupPurchaseMarketGmapFormattedAddress");
+
+        if (StringUtils.isBlank(searchDateTo)) {
+            cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            searchDateTo = df.format(cal.getTime());
+        }
+        orderMaster.setSearchDateTo(searchDateTo);
+
+        if (StringUtils.isBlank(searchDateFrom)) {
+            cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            searchDateFrom = df.format(cal.getTime());
+        }
+        orderMaster.setSearchDateFrom(searchDateFrom);
+
+        if (StringUtils.isNotBlank(groupPurchaseId)) orderMaster.setGroupPurchaseId(groupPurchaseId);
+        if (StringUtils.isNotBlank(groupPurchaseMarketGmapFormattedAddress)) orderMaster.setGroupPurchaseMarketGmapFormattedAddress(groupPurchaseMarketGmapFormattedAddress);
+
+        List<OrderMaster> orderList = null;
+
+        // For Pagination
+        orderMaster.setPagenationPage(getPage(request));
+        orderMaster.setPagenationPageSize(getPageSize(request));
+
+        try {
+            Integer totalCount = 0;
+            totalCount = orderMasterService.getTotalCntForGetOrderMasters(orderMaster);
+            orderList = orderMasterService.getOrderMasters(orderMaster);
+
+            model.put("list", orderList);
+            model.put("totalCount", totalCount);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+    @RequestMapping(value = "/grouppurchase/getGroupPurchaseCbx", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> getGroupPurchaseCbx(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        OrderMaster orderMaster = new OrderMaster();
+
+        Calendar cal = null;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        String searchDateFrom = request.getParameter("searchDateFrom");
+        String searchDateTo = request.getParameter("searchDateTo");
+        String groupPurchaseMarketGmapFormattedAddress = request.getParameter("groupPurchaseMarketGmapFormattedAddress");
+
+        if (StringUtils.isNotBlank(groupPurchaseMarketGmapFormattedAddress)) orderMaster.setGroupPurchaseMarketGmapFormattedAddress(groupPurchaseMarketGmapFormattedAddress);
+
+        if (StringUtils.isBlank(searchDateTo)) {
+            cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            searchDateTo = df.format(cal.getTime());
+        }
+        orderMaster.setSearchDateTo(searchDateTo);
+
+        if (StringUtils.isBlank(searchDateFrom)) {
+            cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DAY_OF_MONTH, -30);
+            searchDateFrom = df.format(cal.getTime());
+        }
+        orderMaster.setSearchDateFrom(searchDateFrom);
+
+        List<OrderMaster> orderMasterList = null;
+
+        // For Pagination
+        orderMaster.setPagenationPage(0);
+        orderMaster.setPagenationPageSize(99999);
+
+        orderMaster.setLazyLoad(true);
+
+        try {
+            orderMasterList = orderMasterService.getOrderMastersForGroupPurchaseCbx(orderMaster);
+            List<Option> groupPurchaseListOptions = this.getGroupPurchaseCmbxOptions(orderMasterList);
+            String htmlForGroupPurchaseIdCbx = HtmlCodeGenerator.generateComboboxForOptions("groupPurchaseId", groupPurchaseListOptions);
+            model.put("cbxGroupPurchaseId", htmlForGroupPurchaseIdCbx);
+
+            model.put("resultCode", "0");
+            model.put("message", "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+    private List<Option> getGroupPurchaseCmbxOptions(List<OrderMaster> orderMasterList) throws Exception {
+
+        List<Option> options = new ArrayList<Option>();
+
+        for (OrderMaster orderMaster : orderMasterList) {
+            options.add(new Option(orderMaster.getGroupPurchaseId(), "[" + orderMaster.getGroupPurchaseId() + "] " + ((orderMaster.getGroupPurchaseTitle() == null) ? " - " : orderMaster.getGroupPurchaseTitle()), false));
+        }
+        return options;
+    }
+
+
 }

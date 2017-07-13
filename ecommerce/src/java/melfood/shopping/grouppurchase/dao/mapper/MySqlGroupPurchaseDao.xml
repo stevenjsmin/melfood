@@ -64,8 +64,8 @@
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
             <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
             <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
-            <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
-            <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
+            <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
+            <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
             <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
@@ -75,6 +75,7 @@
             <if test="marketOpenStartDt != null"> AND str_to_date(#{marketOpenStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_start_dt, '%Y-%m-%d') </if>
             <if test="marketOpenEndDt != null"> AND str_to_date(#{marketOpenEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d') </if>
             <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
+            <if test="marketGmapFormattedAddress != null"> AND UPPER(a.market_gmap_formatted_address) LIKE CONCAT('%', UPPER(#{marketGmapFormattedAddress}), '%') </if>
             <if test="minimumPurchaseAmount != null"> AND a.minimum_purchase_amount = #{minimumPurchaseAmount} </if>
             <if test="maximumPurchaseAmount != null"> AND a.maximum_purchase_amount = #{maximumPurchaseAmount} </if>
             <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
@@ -86,8 +87,8 @@
             <if test="groupPurchaseNotice != null"> AND UPPER(a.group_purchase_notice) LIKE CONCAT('%', UPPER(#{groupPurchaseNotice}), '%') </if>
             <if test="mallMasterChecked != null"> AND UPPER(a.mall_master_checked) = UPPER(#{mallMasterChecked}) </if>
             <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
-            <if test="createDatetime != null"> AND str_to_date(#{createDatetime}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
-            <if test="modifyDatetime != null"> AND str_to_date(#{modifyDatetime}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.modify_datetime, '%Y-%m-%d') </if>
+            <if test="searchDateFrom  != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+            <if test="searchDateTo    != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
             <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
         ORDER BY a.group_purchase_id ASC
         LIMIT #{pagenationPage}, #{pagenationPageSize}
@@ -103,17 +104,18 @@
             <if test="purchaseOrganizer != null"> AND UPPER(a.purchase_organizer) = UPPER(#{purchaseOrganizer}) </if>
             <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
             <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
-            <if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
-            <if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
+            <if test="orderStartDt != null"> AND str_to_date(#{orderStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.order_start_dt, '%Y-%m-%d') </if>
+            <if test="orderEndDt != null"> AND str_to_date(#{orderEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.order_end_dt, '%Y-%m-%d') </if>
             <if test="stopSelling != null"> AND UPPER(a.stop_selling) = UPPER(#{stopSelling}) </if>
             <if test="stopSellingReason != null"> AND UPPER(a.stop_selling_reason) = UPPER(#{stopSellingReason}) </if>
             <if test="marketAddressStreet != null"> AND UPPER(a.market_address_street) LIKE CONCAT('%', UPPER(#{marketAddressStreet}), '%') </if>
             <if test="marketAddressSuburb != null"> AND UPPER(a.market_address_suburb) LIKE CONCAT('%', UPPER(#{marketAddressSuburb}), '%') </if>
             <if test="marketAddressState != null"> AND UPPER(a.market_address_state) LIKE CONCAT('%', UPPER(#{marketAddressState}), '%') </if>
             <if test="marketAddressPostcode != null"> AND UPPER(a.market_address_postcode) LIKE CONCAT('%', UPPER(#{marketAddressPostcode}), '%') </if>
-            <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
             <if test="marketOpenStartDt != null"> AND str_to_date(#{marketOpenStartDt}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.market_open_start_dt, '%Y-%m-%d') </if>
             <if test="marketOpenEndDt != null"> AND str_to_date(#{marketOpenEndDt}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.market_open_end_dt, '%Y-%m-%d') </if>
+            <if test="marketAddressComment != null"> AND UPPER(a.market_address_comment) LIKE CONCAT('%', UPPER(#{marketAddressComment}), '%') </if>
+            <if test="marketGmapFormattedAddress != null"> AND UPPER(a.market_gmap_formatted_address) LIKE CONCAT('%', UPPER(#{marketGmapFormattedAddress}), '%') </if>
             <if test="minimumPurchaseAmount != null"> AND a.minimum_purchase_amount = #{minimumPurchaseAmount} </if>
             <if test="maximumPurchaseAmount != null"> AND a.maximum_purchase_amount = #{maximumPurchaseAmount} </if>
             <if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
@@ -125,8 +127,8 @@
             <if test="groupPurchaseNotice != null"> AND UPPER(a.group_purchase_notice) LIKE CONCAT('%', UPPER(#{groupPurchaseNotice}), '%') </if>
             <if test="mallMasterChecked != null"> AND UPPER(a.mall_master_checked) = UPPER(#{mallMasterChecked}) </if>
             <if test="useYn != null"> AND UPPER(a.use_yn) = UPPER(#{useYn}) </if>
-            <if test="createDatetime != null"> AND str_to_date(#{createDatetime}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
-            <if test="modifyDatetime != null"> AND str_to_date(#{modifyDatetime}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.modify_datetime, '%Y-%m-%d') </if>
+            <if test="searchDateFrom  != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
+            <if test="searchDateTo    != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.create_datetime, '%Y-%m-%d') </if>
             <if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
     </select>
 

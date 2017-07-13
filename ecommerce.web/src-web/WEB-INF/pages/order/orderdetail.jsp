@@ -18,7 +18,12 @@
     </script>
     <script type="text/javascript">
         function goList() {
-            document.location.href = "/admin/ordermgt/Main.yum";
+            if('${pageType}' == 'group') {
+                document.location.href = "/admin/ordermgt/grouppurchase/Main.yum";
+
+            } else if('${pageType}' == 'all') {
+                document.location.href = "/admin/ordermgt/Main.yum";
+            }
         }
         function getInvoice() {
             underDevelopment();
@@ -28,7 +33,7 @@
         function sendMessagePopup(receiverUserId, type){
 
             $("#sendMessagePopup").kendoWindow({
-                content: "/framework/communicationmanager/sendMessageForm.yum?receiverUserId=" + receiverUserId + "&type=" + type ,
+                content: "/admin/ordermgt/sendMessageForm.yum?receiverUserId=" + receiverUserId + "&type=" + type ,
                 actions: [ "Minimize", "Maximize","Close" ],
                 title: "SEND MESSAGE",
                 modal: true,
@@ -38,9 +43,9 @@
             var popup_dialog = $("#sendMessagePopup").data("kendoWindow");
             popup_dialog.setOptions({
                 pinned: true,
-                width: 650,height: 350,
+                width: 650,height: 300,
                 open: function (e) {
-                    this.wrapper.css({ top: 100 });
+                    this.wrapper.css({ top: 600 });
                 }
             });
             popup_dialog.center().open();
@@ -52,6 +57,44 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function deleteOrderMaster(){
+
+            BootstrapDialog.confirm({
+                title: 'WARNING  :: 호주가 즐거운 이유, 멜푸드!!',
+                message: '정말 주문정보를 영구히 삭제하시겠습니까?',
+                type: BootstrapDialog.TYPE_WARNING, // [TYPE_DEFAULT | TYPE_INFO | TYPE_PRIMARY | TYPE_SUCCESS | TYPE_WARNING | TYPE_DANGER]
+                closable: true, // Default value is false
+                draggable: true, // Default value is false
+                btnCancelLabel: 'Cancel', // Default value is 'Cancel',
+                btnOKLabel: 'OK', // Default value is 'OK',
+                btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
+                callback: function(result) {
+                    if(result) {
+                        $.ajax({
+                            url  : "/admin/ordermgt/deleteOrderMaster.yum",
+                            data      : {
+                                orderMasterId : "${orderMaster.orderMasterId}"
+                            },
+                            success : callbackDeleteOrderMaster
+                        });
+                    }
+                }
+            });
+        }
+
+        function callbackDeleteOrderMaster(data) {
+            var message = data.message;
+            var resultCode = data.resultCode;
+
+            if (resultCode != "0") {
+                warningPopup(data.message);
+            } else {
+                goList();
+            }
+        }
+
+    </script>
 </head>
 
 <body>
@@ -335,10 +378,17 @@
                                             </c:when>
                                             <c:otherwise>${orderMaster.sellerMobile}</c:otherwise>
                                         </c:choose>
-
                                     </td>
                                     <td class="label">Email</td>
-                                    <td class="value">${orderMaster.sellerEmail}</td>
+                                    <td class="value">
+                                        ${orderMaster.sellerEmail}
+                                        <c:choose>
+                                            <c:when test="${orderMaster.sellerEmail != null}">
+                                                <a href="javascript:sendMessagePopup('${orderMaster.sellerMobile}', 'email');"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                                            </c:when>
+                                            <c:otherwise>${orderMaster.sellerEmail}</c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="label">Address</td>
@@ -379,13 +429,28 @@
                                 </colgroup>
                                 <tr>
                                     <td class="label">이름</td>
-                                    <td class="value"><b>${orderMaster.customerName}</b></td>
+                                    <td class="value">${orderMaster.customerName}</td>
                                     <td class="label">모바일</td>
-                                    <td class="value">${orderMaster.customerMobile}</td>
+                                    <td class="value">${orderMaster.customerMobile}
+                                        <c:choose>
+                                            <c:when test="${orderMaster.customerMobile != null}">
+                                                <a href="javascript:sendMessagePopup('${orderMaster.customerId}', 'sms');"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                                            </c:when>
+                                            <c:otherwise><b>${orderMaster.customerMobile}</b></c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="label">Email</td>
-                                    <td class="value">${orderMaster.customerEmail}</td>
+                                    <td class="value">${orderMaster.customerEmail}
+                                        <c:choose>
+                                            <c:when test="${orderMaster.customerEmail != null}">
+                                                <a href="javascript:sendMessagePopup('${orderMaster.customerId}', 'email');"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                                            </c:when>
+                                            <c:otherwise>${orderMaster.customerEmail}</c:otherwise>
+                                        </c:choose>
+
+                                    </td>
                                     <td class="label">주소</td>
                                     <td class="value">${orderMaster.customerAddressStreet} ${orderMaster.customerAddressSuburb} ${orderMaster.customerAddressPostcode} ${orderMaster.customerAddressState}</td>
                                 </tr>
@@ -397,7 +462,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- 기타 정보 -->
         <div class="row">
@@ -547,6 +611,7 @@
         <table class="action_button_table">
             <tr>
                 <td style="text-align: right;">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteOrderMaster()"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button> &nbsp;&nbsp;
                     <button type="button" class="btn btn-success btn-sm" onclick="goList()"><i class="fa fa-list" aria-hidden="true"></i> 이전화면</button>
                 </td>
             </tr>

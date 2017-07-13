@@ -10,9 +10,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style type="text/css">
-    </style>
-
 
     <script type="text/javascript">
         var KENDO_SELECTED_RECORD = null;
@@ -22,6 +19,8 @@
                 format: "yyyy-MM-dd",
                 start: "year"
             });
+            $("#searchDateFrom").attr("readonly","readonly");
+
             var datepicker1 = $("#searchDateFrom").data("kendoDatePicker");
             $("#searchDateFrom").click(function () {
                 datepicker1.open();
@@ -45,7 +44,7 @@
                 serverFiltering: true,
                 transport: {
                     read: {
-                        url: "/admin/ordermgt/orders.yum",
+                        url: "/admin/ordermgt/grouppurchase/grouporders.yum",
                         dataType: "json",
                         type: "POST"
                     },
@@ -55,14 +54,8 @@
                                 page: options.page,
                                 pageSize: options.pageSize,
                                 sellerName: $("#sellerName").val(),
-                                invoiceIssue: $("#invoiceIssue").val(),
-                                normalOrGroupOrder: $("#normalOrGroupOrder").val(),
-                                isPickupOrDelivery: $("#isPickupOrDelivery").val(),
-                                isRefund: $("#isRefund").val(),
-                                statusDelivery: $("#statusDelivery").val(),
-                                statusPayment: $("#statusPayment").val(),
-                                paymentMethod: $("#paymentMethod").val(),
-                                paymentBankName: $("#paymentBankName").val(),
+                                groupPurchaseId: $("#groupPurchaseId").val(),
+                                groupPurchaseMarketGmapFormattedAddress: $("#groupPurchaseMarketGmapFormattedAddress").val(),
                                 searchDateFrom: $("#searchDateFrom").val(),
                                 searchDateTo: $("#searchDateTo").val()
                             };
@@ -117,13 +110,11 @@
                 },
                 columns: [
                     {hidden: true, field: 'orderMasterId'},
-                    {title: '장본일자', field: 'createDatetime', attributes: {style: "color: e37200;"}},
-                    {title: '금액', field: 'amountTotal', width: 100, format: "{0:n} $", type: "number", attributes:{style:"text-align:right;"}},
-                    {title: '판매자', field: 'sellerName', width: 100},
+                    {title: 'ID', field: 'groupPurchaseId', width: 70},
+                    {title: '장본일자', template: kendo.template("#= createDatetime.substring(0,10)# "), width: 100},
+                    {title: '공동구매', template: kendo.template($("#groupPurchase-template").html())},
                     {title: '구매자', field: 'customerName', width: 150},
                     {title: '픽업/배달', template: kendo.template($("#isPickupOrDelivery-template").html()), filterable: false, width: 80},
-                    {title: '환불', template: kendo.template($("#isRefund-template").html()), filterable: false, width: 80},
-                    {title: '공구/일반', template: kendo.template($("#normalOrGroupOrder-template").html()), filterable: false, width: 100},
                     {title: '결재방법', template: kendo.template($("#paymentMethod-template").html()), width: 100},
                     {title: '배송상태', template: kendo.template($("#statusDelivery-template").html()), width: 100},
                     {title: '결재상태', template: kendo.template($("#statusPayment-template").html()), filterable: false, width: 100},
@@ -143,6 +134,8 @@
                 var gridRecord = e.sender;
                 KENDO_SELECTED_RECORD = gridRecord.dataItem(gridRecord.select());
             }
+
+            setGroupPurchaseIdCbx();
 
             search();
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -193,7 +186,7 @@
 
     <script type="text/javascript">
         function myOrderDetailInfo(orderMasterId) {
-            document.location.href = "/admin/ordermgt/orderdetail.yum?pageType=all&orderMasterId=" + orderMasterId;
+            document.location.href = "/admin/ordermgt/orderdetail.yum?pageType=group&orderMasterId=" + orderMasterId;
         }
     </script>
 
@@ -209,16 +202,10 @@
         #= (paymentAccTransferReceipt != null) ? '<a href=javascript:downloadFile(' + (paymentAccTransferReceipt) + ');><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"></a>':'' #
     </script>
 
-
-
-    <script id="normalOrGroupOrder-template" type="text/x-kendo-template">
-        # if (normalOrGroupOrder == 'G') { #
-        #=  '<span style="color: C14F51;">공.구</span>' #
-        # } else { #
-        #=  '-' #
-        # } #
-
+    <script id="groupPurchase-template" type="text/x-kendo-template">
+        #=  ((groupPurchaseTitle == null) ? '' : ('<span style="color: 008600;">' + groupPurchaseTitle + '</span>')) + ' @' + ((groupPurchaseMarketGmapFormattedAddress == null) ? '' : groupPurchaseMarketGmapFormattedAddress) #
     </script>
+
 
     <script id="statusPayment-template" type="text/x-kendo-template">
         # if (statusPayment == 'BEFORE_PAYMENT') { #
@@ -262,14 +249,6 @@
         # } #
     </script>
 
-    <script id="isRefund-template" type="text/x-kendo-template">
-        # if (isRefund == 'Y') { #
-        #=  '<span style="color: 337AB7;">환불</span>' #
-        # } else { #
-        #=  '-' #
-        # } #
-
-    </script>
 
     <script id="isPickupOrDelivery-template" type="text/x-kendo-template">
         # if (isPickupOrDelivery == 'P') { #
@@ -295,6 +274,30 @@
         # } #
     </script>
 
+    <script type="text/javascript">
+        function setGroupPurchaseIdCbx() {
+            var searchDateFrom = $('#searchDateFrom').val();
+            var searchDateTo = $('#searchDateTo').val();
+            var groupPurchaseId = $('#groupPurchaseId').val();
+            var groupPurchaseMarketGmapFormattedAddress = $('#groupPurchaseMarketGmapFormattedAddress').val();
+
+            $.ajax({
+                url : "/admin/ordermgt/grouppurchase/getGroupPurchaseCbx.yum",
+                data      : {
+                    searchDateFrom : searchDateFrom,
+                    searchDateTo : searchDateTo,
+                    groupPurchaseId : groupPurchaseId,
+                    groupPurchaseMarketGmapFormattedAddress : groupPurchaseMarketGmapFormattedAddress
+                },
+                success : callbackSetGroupPurchaseIdCbx,
+            });
+        }
+        function callbackSetGroupPurchaseIdCbx(data) {
+            $('#cbxGroupPurchaseId').empty();
+            $('#cbxGroupPurchaseId').html(data.cbxGroupPurchaseId);
+            search();
+        }
+    </script>
 
 </head>
 <body>
@@ -306,47 +309,22 @@
     <table class="search_table">
         <tr>
             <td class="label">조회 시작일 :</td>
-            <td class="value"><input id="searchDateFrom" name="searchDateFrom" value="${searchDateFrom}"></input></td>
+            <td class="value"><input id="searchDateFrom" name="searchDateFrom" value="${searchDateFrom}" onchange="setGroupPurchaseIdCbx()"></input></td>
 
             <td class="label">조회 종료 :</td>
-            <td class="value"><input id="searchDateTo" name="searchDateTo" value=""></input></td>
+            <td class="value"><input id="searchDateTo" name="searchDateTo" value="" onchange="setGroupPurchaseIdCbx()"></input></td>
 
-            <td class="label">인보이스발생 :  </td>
-            <td class="value"><c:out value="${cbxInvoiceIssue}" escapeXml="false"/></td>
+            <td class="label">공.구 제목 :  </td>
+            <td class="value"><div id="cbxGroupPurchaseId"></div></td>
 
-            <td class="label">일반/공.구 :  </td>
-            <td class="value"><c:out value="${cbxNormalOrGroupOrder}" escapeXml="false"/></td>
-
-            <td class="label">결재방법 :  </td>
-            <td class="value_end"><c:out value="${cbxPaymentMethod}" escapeXml="false"/></td>
-
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="label">픽업/배달 :  </td>
-            <td class="value"><c:out value="${cbxIsPickupOrDelivery}" escapeXml="false"/></td>
-
-            <td class="label">환불여부 :  </td>
-            <td class="value"><c:out value="${cbxIsRefund}" escapeXml="false"/></td>
-
-            <td class="label">제품배달여부 :  </td>
-            <td class="value"><c:out value="${cbxStatusDelivery}" escapeXml="false"/></td>
-
-            <td class="label">결재상태 :  </td>
-            <td class="value"><c:out value="${cbxStatusPayment}" escapeXml="false"/></td>
-
-            <td class="label">구매자 :  </td>
-            <td class="value_end"><input class="form-control" id="customerName" name="customerName"></input></td>
-
-            <td class="label">판매자 :  </td>
-            <td class="value_end"><input class="form-control" id="sellerName" name="sellerName"></input></td>
+            <td class="label">공.구 마켓장소 :  </td>
+            <td class="value_end"><input class="form-control" id="groupPurchaseMarketGmapFormattedAddress" name="groupPurchaseMarketGmapFormattedAddress"></input></td>
 
             <td class="find">
                 <button type="button" class="btn btn-info btn-sm" onclick="search();"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
             </td>
         </tr>
+
     </table>
 </div>
 
