@@ -24,10 +24,38 @@
             underDevelopment();
         }
     </script>
+    <script type="text/javascript">
+        function sendMessagePopup(receiverUserId, type){
+
+            $("#sendMessagePopup").kendoWindow({
+                content: "/framework/communicationmanager/sendMessageForm.yum?receiverUserId=" + receiverUserId + "&type=" + type ,
+                actions: [ "Minimize", "Maximize","Close" ],
+                title: "SEND MESSAGE",
+                modal: true,
+                iframe: true
+            });
+
+            var popup_dialog = $("#sendMessagePopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                pinned: true,
+                width: 650,height: 350,
+                open: function (e) {
+                    this.wrapper.css({ top: 100 });
+                }
+            });
+            popup_dialog.center().open();
+
+        }
+        function closeSendMessagePopup() {
+            var win_dialog = $("#sendMessagePopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
+
 </head>
 
 <body>
-
+<div id="sendMessagePopup"></div>
 <div class="row">
     <div class="col-sm-9" style="padding-bottom: 10px;padding-right: 40px;">
         <table style="width: 100%;">
@@ -299,7 +327,16 @@
                                 </tr>
                                 <tr>
                                     <td class="label">Mobile</td>
-                                    <td class="value">${orderMaster.sellerMobile}</td>
+                                    <td class="value">
+                                        ${orderMaster.sellerMobile}
+                                        <c:choose>
+                                            <c:when test="${orderMaster.sellerMobile != null}">
+                                                <a href="javascript:sendMessagePopup('${orderMaster.sellerMobile}', 'sms');"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+                                            </c:when>
+                                            <c:otherwise>${orderMaster.sellerMobile}</c:otherwise>
+                                        </c:choose>
+
+                                    </td>
                                     <td class="label">Email</td>
                                     <td class="value">${orderMaster.sellerEmail}</td>
                                 </tr>
@@ -315,6 +352,52 @@
                 </div>
             </div>
         </div>
+
+
+        <!-- 주문자 정보 -->
+        <div class="row">
+            <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="text-align: left;padding-left: 20px;">
+                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">주문자 정보</span></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 10px;">
+
+                        <div style="padding-bottom: 10px;">
+                            <table class="detail_table">
+                                <colgroup>
+                                    <col width="200px" />
+                                    <col width="300px" />
+                                    <col width="200px" />
+                                    <col width="300px" />
+                                </colgroup>
+                                <tr>
+                                    <td class="label">이름</td>
+                                    <td class="value"><b>${orderMaster.customerName}</b></td>
+                                    <td class="label">모바일</td>
+                                    <td class="value">${orderMaster.customerMobile}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Email</td>
+                                    <td class="value">${orderMaster.customerEmail}</td>
+                                    <td class="label">주소</td>
+                                    <td class="value">${orderMaster.customerAddressStreet} ${orderMaster.customerAddressSuburb} ${orderMaster.customerAddressPostcode} ${orderMaster.customerAddressState}</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
 
         <!-- 기타 정보 -->
         <div class="row">
@@ -385,27 +468,6 @@
                                     <td class="label">발행일자</td>
                                     <td class="value">${orderMaster.invoiceIssueDatetime}</td>
                                 </tr>
-
-                                <tr>
-                                    <td colspan="4" style="text-align: left;">
-                                        <br/><br/>
-                                        <span class="subtitle" style="color: #737273;text-align: left;">주문자 정보</span>
-                                        <hr class="subtitle"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="label">이름</td>
-                                    <td class="value"><b>${orderMaster.customerName}</b></td>
-                                    <td class="label">모바일</td>
-                                    <td class="value">${orderMaster.customerMobile}</td>
-                                </tr>
-                                <tr>
-                                    <td class="label">Email</td>
-                                    <td class="value">${orderMaster.customerEmail}</td>
-                                    <td class="label">주소</td>
-                                    <td class="value">${orderMaster.customerAddressStreet} ${orderMaster.customerAddressSuburb} ${orderMaster.customerAddressPostcode} ${orderMaster.customerAddressState}</td>
-                                </tr>
-
 
                                 <tr>
                                     <td colspan="4" style="text-align: left;">

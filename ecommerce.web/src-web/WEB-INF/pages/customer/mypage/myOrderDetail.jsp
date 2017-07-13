@@ -282,8 +282,8 @@
                                     <td style="width: 100px; text-align: right;font-size: 11px;color: #8D9999;">판매자</td>
                                     <td style="width: 20px;text-align: center">:</td>
                                     <td style="color: #514747;">
-                                        ${orderMaster.sellerName} &nbsp; &nbsp;
-                                        <i class="fa fa-comment" aria-hidden="true"></i>
+                                        ${orderMaster.sellerName}
+                                        &nbsp; &nbsp;<i class="fa fa-comment" aria-hidden="true"></i>
                                         <a href="javascript:askQuestion('${orderMaster.sellerId}')" style="color: #69B7F5;"> ?!! 물어보세요</a>
                                     </td>
                                 </tr>

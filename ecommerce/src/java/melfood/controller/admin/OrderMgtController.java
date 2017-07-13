@@ -2,9 +2,12 @@ package melfood.controller.admin;
 
 import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.communication.Communication;
+import melfood.framework.communication.CommunicationService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
 import melfood.framework.uitl.html.Option;
+import melfood.framework.user.User;
 import melfood.shopping.order.OrderMaster;
 import melfood.shopping.order.OrderMasterProductService;
 import melfood.shopping.order.OrderMasterService;
@@ -36,6 +39,9 @@ public class OrderMgtController extends BaseController {
 
     @Autowired
     OrderMasterProductService orderMasterProductService;
+
+    @Autowired
+    CommunicationService communicationService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -279,5 +285,107 @@ public class OrderMgtController extends BaseController {
         }
 
         return mav;
+    }
+
+    @RequestMapping("/sendMessageForm")
+    public ModelAndView sendMessageForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/ordermgt/sendSMSForm");
+
+        String type = request.getParameter("type");
+        String receiverUserId = request.getParameter("receiverUserId");
+        User receiverUser = userService.getUserInfo(receiverUserId);
+
+        if (StringUtils.equalsIgnoreCase(type, "email")) {
+            mav.setViewName("tiles/admin/ordermgt/sendEmailForm");
+
+        } else if (StringUtils.equalsIgnoreCase(type, "sms")) {
+            mav.setViewName("tiles/admin/ordermgt/sendSMSForm");
+        } else {
+            throw new Exception("Email 또는 SMS를 선택해주세요.");
+        }
+
+        if (StringUtils.isBlank(receiverUserId) || receiverUserId == null) throw new Exception("메시지의 수신자가 지정되어 있지 않습니다.");
+
+        mav.addObject("type", type);
+        mav.addObject("receiverUser", receiverUser);
+
+        return mav;
+    }
+
+    /**
+     * 메시지(Email, SMS)를 발송한다<br/>
+     * <p>
+     * 1. 발송하려는 메시지는 "contents" 파라미터로 전달되어야 한다.<br/>
+     * 2. Email로 메시지를 발송하고자하는 경우 "sendEmail" 파라미터에 true로 전달되어야한다<br/>
+     * 3. SMS로 메시지를 발송하고자하는 경우 "sendSMS" 파라미터에 true로 전달되어야한다<br/>
+     * <p>
+     * 4. 메시지를 발송자 정보는 세션사용자의 정보가 자동 설정된다.<br/>
+     * 5. 메시지를 수신자 정보는 "receiverUserId"로 전달된 사용자의 정보가 설정된다.<br/>
+     * <p>
+     * 6. 메시지의 종류는 "CAHT"으로 설정된다.
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/sendMessage", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> sendMessage(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String receiverUserId = request.getParameter("receiverUserId");
+        String contents = request.getParameter("contents");
+        String sendSMS = request.getParameter("sendSMS");
+        String sendEmail = request.getParameter("sendEmail");
+
+        Communication communication = new Communication();
+
+        try {
+            User receiverUser = userService.getUserInfo(receiverUserId);
+
+            String receiverUserEmail = receiverUser.getEmail();
+            String receiverUserMobile = receiverUser.getUserId();
+
+            communication.setCategory("CHAT");
+            if (StringUtils.isNotBlank(contents)) communication.setContents(contents);
+            communication.setWriter(sessionUser.getUser().getUserId());
+            communication.setWriterMobile(sessionUser.getUser().getUserId());
+            communication.setWriterEmail(sessionUser.getUser().getEmail());
+            communication.setWriteFrom(sessionUser.getUser().getUserId());
+
+            communication.setWriteTo(receiverUser.getUserId());
+
+            communication.setIsForAllSeller("N");
+            communication.setIsForAllCustomer("N");
+            communication.setProgressStatus(null);
+
+            // Notifiy 설정
+            if (StringUtils.isNotBlank(receiverUserMobile) && StringUtils.equalsIgnoreCase(sendSMS, "true")) {
+                communication.setNotifySmsNo(receiverUserMobile);
+            } else {
+                communication.setNotifySmsNo(null);
+            }
+
+            if (StringUtils.isNotBlank(receiverUserEmail) && StringUtils.equalsIgnoreCase(sendEmail, "true")) {
+                communication.setNotifyEmail(receiverUserEmail);
+            } else {
+                communication.setNotifyEmail(null);
+            }
+
+            int updateCnt = communicationService.registCommunication(communication);
+
+            model.put("resultCode", "0");
+            model.put("message", updateCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+
+        return model;
     }
 }

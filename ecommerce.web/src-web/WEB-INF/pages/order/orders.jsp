@@ -210,15 +210,6 @@
     </script>
 
 
-    <script id="command-statusDelivery-template" type="text/x-kendo-template">
-        # if (statusDelivery == 'BEFORE') { #
-        <a class="k-button" onclick="deliveryStatusToggle('#=orderMasterId#')" style="color: C2002F;">배송.완료 처리</a>
-        # } else if (statusDelivery == 'COMPLETE') { #
-        <a class="k-button" onclick="deliveryStatusToggle('#=orderMasterId#')" style="color: 737273;">배송.전 처리</a>
-        # } else { #
-        #=statusDelivery #
-        # } #
-    </script>
 
     <script id="normalOrGroupOrder-template" type="text/x-kendo-template">
         # if (normalOrGroupOrder == 'G') { #
@@ -258,9 +249,17 @@
         # } else if (statusDelivery == 'COMPLETE') { #
         #=  '<span style="color: 8B8A8A;">배송완료</span>' #
         # } else { #
-        #=  '-' #
+        #=  '<span style="color: C2002F;">배송전</span>' #
         # } #
-
+    </script>
+    <script id="command-statusDelivery-template" type="text/x-kendo-template">
+        # if (statusDelivery == 'BEFORE') { #
+        <a class="k-button" onclick="deliveryStatusToggle('#=orderMasterId#')" style="color: C2002F;">배송.완료 처리</a>
+        # } else if (statusDelivery == 'COMPLETE') { #
+        <a class="k-button" onclick="deliveryStatusToggle('#=orderMasterId#')" style="color: 737273;">배송.전 처리</a>
+        # } else { #
+        <a class="k-button" onclick="deliveryStatusToggle('#=orderMasterId#')" style="color: C2002F;">배송.완료 처리</a>
+        # } #
     </script>
 
     <script id="isRefund-template" type="text/x-kendo-template">

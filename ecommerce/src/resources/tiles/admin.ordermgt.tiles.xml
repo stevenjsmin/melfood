@@ -18,4 +18,16 @@
 		<put-attribute name="body" value="/WEB-INF/pages/order/orderdetail.jsp" />
 	</definition>
 
+	<definition name="tiles/admin/ordermgt/sendSMSForm" extends="layout/panel_100">
+		<put-attribute name="title" value="SMS 메시지보내기" />
+		<put-attribute name="navigation" value="Common > SMS 메시지발송" />
+		<put-attribute name="body" value="/WEB-INF/pages/order/sendMessageForm.jsp" />
+	</definition>
+
+	<definition name="tiles/admin/ordermgt/sendEmailForm" extends="layout/panel_100">
+		<put-attribute name="title" value="Email 메시지보내기" />
+		<put-attribute name="navigation" value="Common > Email 메시지발송" />
+		<put-attribute name="body" value="/WEB-INF/pages/order/sendMessageForm.jsp" />
+	</definition>
+
 </tiles-definitions>

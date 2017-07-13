@@ -1,5 +1,7 @@
 package melfood.shopping.order;
 
+import melfood.framework.code.Code;
+import melfood.framework.code.CodeService;
 import melfood.framework.system.BeanHelper;
 import melfood.framework.user.User;
 import melfood.framework.user.UserService;
@@ -24,6 +26,7 @@ public class OrderMasterUtil {
     private ProductService productService;
     private GroupPurchaseService groupPurchaseService;
     private UserService userService;
+    private CodeService codeService;
     private PaymentMethodService paymentMethodService;
 
 
@@ -31,6 +34,7 @@ public class OrderMasterUtil {
         this.productService = BeanHelper.getBean("productService", ProductService.class);
         this.groupPurchaseService = BeanHelper.getBean("groupPurchaseService", GroupPurchaseService.class);
         this.userService = BeanHelper.getBean("userService", UserService.class);
+        this.codeService = BeanHelper.getBean("codeService", CodeService.class);
         this.paymentMethodService = BeanHelper.getBean("paymentMethodService", PaymentMethodService.class);
     }
 
@@ -138,6 +142,8 @@ public class OrderMasterUtil {
         orderMaster.setIsRefund("N");
         orderMaster.setStatusPayment("BEFORE_PAYMENT");
 
+        orderMaster.setStatusDelivery("BEFORE_PAYMENT");
+
         orderMaster.setCustomerId(userCustomer.getUserId());
         orderMaster.setCustomerName(userCustomer.getUserName());
         orderMaster.setCustomerMobile(userCustomer.getMobile());
@@ -203,7 +209,8 @@ public class OrderMasterUtil {
                 orderMaster.setPaymentAccountNo(paymentMethod.getBankAccountNo());
                 orderMaster.setPaymentAccountHolderName(paymentMethod.getBankAccountOwnerName());
             }
-            orderMaster.setPaymentMethod(StringUtils.upperCase(screenDto.getPaymentMethod()));
+            Code code = codeService.getCode("COMM", "PAYMENT_METHOD", screenDto.getPaymentMethod());
+            if (code != null) orderMaster.setPaymentMethod(code.getLabel());
         } else {
             orderMaster.setPaymentMethod(null);
         }
