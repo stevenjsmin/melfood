@@ -14,6 +14,8 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.order.OrderMaster;
+import melfood.shopping.order.OrderMasterService;
 import melfood.shopping.product.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -58,6 +60,9 @@ public class GroupPurchaseMgtController extends BaseController {
 
     @Autowired
     private MelfoodGoogleMapService melfoodGoogleMapService;
+
+    @Autowired
+    private OrderMasterService orderMasterService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -245,6 +250,27 @@ public class GroupPurchaseMgtController extends BaseController {
         mav.addObject("cbxDeliverable", htmlForDeliverableCbx);
 
         mav.addObject("groupPurchase", groupPurchase);
+
+        OrderMaster orderMaster = new OrderMaster();
+        orderMaster.setGroupPurchaseId(Integer.toString(groupPurchase.getGroupPurchaseId()));
+        List<OrderMaster> orderMasterList = orderMasterService.getOrderMasters(orderMaster);
+        mav.addObject("orderMasterList", orderMasterList);
+
+        Float amountTotalProduct = 0.0f;
+        Float amountTotalDelivery = 0.0f;
+        Float amountTotalDiscount = 0.0f;
+        Float amountTotal = 0.0f;
+        for (OrderMaster order : orderMasterList) {
+            if (order.getAmountTotalProduct() != null) amountTotalProduct = amountTotalProduct + order.getAmountTotalProduct();
+            if (order.getAmountTotalDelivery() != null) amountTotalDelivery = amountTotalDelivery + order.getAmountTotalDelivery();
+            if (order.getAmountTotalDiscount() != null) amountTotalDiscount = amountTotalDiscount + order.getAmountTotalDiscount();
+            if (order.getAmountTotal() != null) amountTotal = amountTotal + order.getAmountTotal();
+        }
+
+        mav.addObject("amountTotalProduct", amountTotalProduct);
+        mav.addObject("amountTotalDelivery", amountTotalDelivery);
+        mav.addObject("amountTotalDiscount", amountTotalDiscount);
+        mav.addObject("amountTotal", amountTotal);
 
         return mav;
     }

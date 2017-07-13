@@ -560,7 +560,7 @@
                         <table class="action_button_table" width="100%">
                             <tr>
                                 <td>
-                                    <a href="javascript:openUpdateGroupPurchasePopup('${groupPurchase.groupPurchaseId}');" class="btn btn-default btn-sm">기본정보수정</a>
+                                    <a href="javascript:openUpdateGroupPurchasePopup('${groupPurchase.groupPurchaseId}');" class="btn btn-warning btn-sm"><i class="fa fa-info" aria-hidden="true"></i> 기본정보수정</a>
                                 </td>
                             </tr>
                         </table>
@@ -587,14 +587,76 @@
                         <table class="action_button_table" width="100%">
                             <tr>
                                 <td>
-                                    <a href="javascript:searchProductPopup('${groupPurchase.groupPurchaseId}');" class="btn btn-default btn-sm">공동구매 상품등록</a>
+                                    <a href="javascript:searchProductPopup('${groupPurchase.groupPurchaseId}');" class="btn btn-warning btn-sm"><i class="fa fa-gift" aria-hidden="true"></i> 공동구매 상품등록</a>
                                 </td>
                             </tr>
                         </table>
                     </td>
                 </tr>
 
+                <!-- 현재 주문현황 및 SMS/Email 발송 -->
+                <tr>
+                    <td colspan="4" style="padding-top: 40px;">
 
+                        <div class="row">
+                            <div class="col-sm-12" style="padding-right: 0px;padding-left: 0px;">
+
+                                <div class="panel panel-primary" style="border-color: #b3b3b3;">
+                                    <div class="panel-heading" style="background-color: #C8B7B0;border-color: #b3b3b3;">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td style="text-align: left;border: 0px;">
+                                                    <span style="font-size: 15px;font-weight: bold;color: #333333;padding-left: 10px;">현재주문현황</span></a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
+
+                                        <!-- 배송서비스 내역 -->
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th style="color: #575758;padding-left: 20px;">주문자</th>
+                                                <th style="width:100px;text-align: center;color: #575758;font-size: 13px;">ID</th>
+                                                <th style="width: 90px;text-align: right;color: #575758;font-size: 13px;">구매$</th>
+                                                <th style="width: 90px;text-align: right;color: #575758;font-size: 13px;">배송$</th>
+                                                <th style="width: 90px;text-align: right;color: #575758;font-size: 13px;">할인$</th>
+                                                <th style="width: 90px;text-align: right;color: #575758;font-size: 13px;">소계</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c:forEach var="orderMaster" items="${orderMasterList}" varStatus="count" begin="0">
+                                                <tr>
+                                                    <td style="color: #002F00;padding-left: 20px;">${orderMaster.customerName}</td>
+                                                    <td style="color: #797979;text-align: center;">${orderMaster.customerId}</td>
+                                                    <td style="color: #797979;text-align: right;"><fmt:formatNumber type="number" pattern="##0.00" value="${orderMaster.amountTotalProduct}" /></td>
+                                                    <td style="color: #797979;text-align: right;"><fmt:formatNumber type="number" pattern="##0.00" value="${orderMaster.amountTotalDelivery}" /></td>
+                                                    <td style="color: #797979;text-align: right;"><fmt:formatNumber type="number" pattern="##0.00" value="${orderMaster.amountTotalDiscount}" /></td>
+                                                    <td style="color: #797979;text-align: right;"><fmt:formatNumber type="number" pattern="##0.00" value="${orderMaster.amountTotal}" /></td>
+                                                </tr>
+                                            </c:forEach>
+                                            <tr>
+                                                <td style="color: #002F00;text-align: right;font-weight: bold;padding-right: 10px;" colspan="2">Total</td>
+                                                <td style="color: #797979;text-align: right;font-weight: bold"><fmt:formatNumber type="number" pattern="##0.00" value="${amountTotalProduct}" /></td>
+                                                <td style="color: #797979;text-align: right;font-weight: bold"><fmt:formatNumber type="number" pattern="##0.00" value="${amountTotalDelivery}" /></td>
+                                                <td style="color: #797979;text-align: right;font-weight: bold"><fmt:formatNumber type="number" pattern="##0.00" value="${amountTotalDiscount}" /></td>
+                                                <td style="color: #797979;text-align: right;font-weight: bold"><fmt:formatNumber type="number" pattern="##0.00" value="${amountTotal}" /></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table style="width: 100%;">
+                                            <tr><td style="text-align: right;padding-right: 0px;"><button type="button" class="btn btn-warning"><img src="/resources/css/images/gic/ic_sms_white_18dp_1x.png"> 모든주문자에게 SMS 보내기</button></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="4">&nbsp;</td>
                 </tr>
