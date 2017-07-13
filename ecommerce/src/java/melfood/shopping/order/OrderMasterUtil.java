@@ -1,6 +1,5 @@
 package melfood.shopping.order;
 
-import melfood.framework.code.Code;
 import melfood.framework.code.CodeService;
 import melfood.framework.system.BeanHelper;
 import melfood.framework.user.User;
@@ -142,7 +141,7 @@ public class OrderMasterUtil {
         orderMaster.setIsRefund("N");
         orderMaster.setStatusPayment("BEFORE_PAYMENT");
 
-        orderMaster.setStatusDelivery("BEFORE_PAYMENT");
+        orderMaster.setStatusDelivery("BEFORE");
 
         orderMaster.setCustomerId(userCustomer.getUserId());
         orderMaster.setCustomerName(userCustomer.getUserName());
@@ -160,10 +159,27 @@ public class OrderMasterUtil {
         orderMaster.setSellerMobile(userSeller.getMobile());
         orderMaster.setSellerPhone(userSeller.getTelephone());
         orderMaster.setSellerEmail(userSeller.getEmail());
-        orderMaster.setSellerAddressStreet(userSeller.getAddressBusinessStreet());
-        orderMaster.setSellerAddressSuburb(userSeller.getAddressBusinessSuburb());
-        orderMaster.setSellerAddressPostcode(userSeller.getAddressBusinessPostcode());
-        orderMaster.setSellerAddressState(userSeller.getAddressBusinessState());
+
+        if (!StringUtils.isBlank(userSeller.getAddressBusinessStreet())) {
+            orderMaster.setSellerAddressStreet(userSeller.getAddressBusinessStreet());
+        } else {
+            orderMaster.setSellerAddressStreet(userSeller.getAddressStreet());
+        }
+        if (!StringUtils.isBlank(userSeller.getAddressBusinessSuburb())) {
+            orderMaster.setSellerAddressSuburb(userSeller.getAddressBusinessSuburb());
+        } else {
+            orderMaster.setSellerAddressSuburb(userSeller.getAddressSuburb());
+        }
+        if (!StringUtils.isBlank(userSeller.getAddressBusinessPostcode())) {
+            orderMaster.setSellerAddressPostcode(userSeller.getAddressBusinessPostcode());
+        } else {
+            orderMaster.setSellerAddressPostcode(userSeller.getAddressPostcode());
+        }
+        if (!StringUtils.isBlank(userSeller.getAddressBusinessState())) {
+            orderMaster.setSellerAddressState(userSeller.getAddressBusinessState());
+        } else {
+            orderMaster.setSellerAddressState(userSeller.getAddressState());
+        }
 
         if (StringUtils.equalsIgnoreCase(screenDto.getDeliveryService(), "no")) {
             orderMaster.setPickupAddressStreet(groupPurchase.getMarketAddressStreet());
@@ -209,8 +225,8 @@ public class OrderMasterUtil {
                 orderMaster.setPaymentAccountNo(paymentMethod.getBankAccountNo());
                 orderMaster.setPaymentAccountHolderName(paymentMethod.getBankAccountOwnerName());
             }
-            Code code = codeService.getCode("COMM", "PAYMENT_METHOD", screenDto.getPaymentMethod());
-            if (code != null) orderMaster.setPaymentMethod(code.getLabel());
+            //orderMaster.setPaymentMethod(paymentMethod.getPaymentMethodCodeName());
+            orderMaster.setPaymentMethod(paymentMethod.getPaymentMethod());
         } else {
             orderMaster.setPaymentMethod(null);
         }
