@@ -18,7 +18,7 @@
     </script>
     <script type="text/javascript">
         function goList() {
-            document.location.href = "/customer/mypage/myorder/Main.yum";
+            document.location.href = "/admin/ordermgt/Main.yum";
         }
         function getInvoice() {
             underDevelopment();
@@ -27,8 +27,7 @@
 </head>
 
 <body>
-<div id="askQuestionPopup"></div>
-<div id="purchaseOrganizerPopup"></div>
+
 <div class="row">
     <div class="col-sm-9" style="padding-bottom: 10px;padding-right: 40px;">
         <table style="width: 100%;">
@@ -45,12 +44,13 @@
         <!-- 결재정보 -->
         <div class="row">
             <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;padding-left: 20px;">
-                                     <span style="font-size: 15px;font-weight: bold;color: #575758;">
+                                     <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">
+                                        결재정보 :
                                         <c:choose>
                                             <c:when test="${orderMaster.statusPayment == 'BEFORE_PAYMENT'}"> 결재 전</c:when>
                                             <c:when test="${orderMaster.statusPayment == 'ON_PROCESSING'}"> 결재 처리중</c:when>
@@ -102,7 +102,7 @@
                                                 <div id="paymentAccTransferReceipt">
                                                     <c:choose>
                                                         <c:when test="${orderMaster.paymentAccTransferReceipt != null && receiptFileNo != null}">
-                                                            첨부해주신 영수증 파일이 있습니다 : ${receiptFileName} <a href="javascript:downloadFile('${receiptFileNo}');"><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"/></a>
+                                                            첨부된 영수증 파일이 있습니다 : ${receiptFileName} <a href="javascript:downloadFile('${receiptFileNo}');"><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"/></a>
                                                         </c:when>
                                                         <c:otherwise> *** 현재 첨부된 영수증이 없습니다.</c:otherwise>
                                                     </c:choose>
@@ -138,62 +138,16 @@
             </div>
         </div>
 
-        <!-- 판매자 정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;padding-left: 20px;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;">판매자 정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
-
-                        <div style="padding-bottom: 10px;">
-                            <table class="detail_table">
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">판매자</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.sellerName}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">Mobile</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.sellerMobile}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">Email</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #8D9999;">${orderMaster.sellerEmail}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">Address</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #8D9999;">${orderMaster.sellerAddressStreet} ${orderMaster.sellerAddressSuburb} ${orderMaster.sellerAddressPostcode} ${orderMaster.sellerAddressState}</td>
-                                </tr>
-                            </table>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
         <!-- 주문내용 -->
         <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
+            <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
 
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">배송서비스</span></a>
+                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;padding-left: 20px;">주요 주문</span></a>
                                 </td>
                             </tr>
                         </table>
@@ -234,7 +188,7 @@
                             </tbody>
                         </table>
 
-
+                        <!-- 배송서비스 내역 -->
                         <table class="table table-striped">
                             <thead>
                             <tr>
@@ -267,7 +221,7 @@
                         <table class="table table-striped" border="0">
                             <thead>
                             <tr>
-                                <th style="text-align: right;color: #575758;">할인 (<i class="fa fa-arrow-down" aria-hidden="true" style="color: #575758;"></i><i class="fa fa-arrow-down" aria-hidden="true" style="color: #575758;"></i>)</th>
+                                <th style="text-align: left;color: #575758;padding-left: 20px;">할인 (<i class="fa fa-arrow-down" aria-hidden="true" style="color: #575758;"></i><i class="fa fa-arrow-down" aria-hidden="true" style="color: #575758;"></i>)</th>
                                 <th style="width: 130px;text-align: right;color: #575758;">할인금액</th>
                             </tr>
                             </thead>
@@ -281,11 +235,32 @@
 
                         <!-- Total -->
                         <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th style="text-align: left;color: #575758;padding-left: 20px;">Total</th>
+                                <th style="width: 130px;text-align: right;color: #575758;"></th>
+                            </tr>
+                            </thead>
                             <tbody>
                             <tr>
                                 <td></td>
-                                <td style="color: #737273;text-align: right;font-weight: bold;font-size: 15px;">Total</td>
                                 <td style="color: #737273;text-align: right;font-weight: bold;font-size: 15px;width: 100px;text-decoration: underline;">${orderMaster.amountTotal} $</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- 주문메모 -->
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th style="width: 200px;text-align:left;color: #575758;padding-left: 20px;">주문메모</th>
+                                <th style="text-align: right;color: #575758;"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td style="color: #737273;font-weight: bold;font-size: 13px;">${orderMaster.customerOrderNote}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -295,282 +270,221 @@
             </div>
         </div>
 
-        <!-- 주문메모 -->
+        <!-- 판매자 정보 -->
         <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
+            <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">주문메모</span></a>
+                                <td style="text-align: left;padding-left: 20px;">
+                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">판매자 정보</span></a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
-                        ${orderMaster.customerOrderNote}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 상품 배송지정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">상품 배송지정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
+                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 10px;">
 
                         <div style="padding-bottom: 10px;">
                             <table class="detail_table">
+                                <colgroup>
+                                    <col width="200px" />
+                                    <col width="300px" />
+                                    <col width="200px" />
+                                    <col width="300px" />
+                                </colgroup>
                                 <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">배송 출발지 주소</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">
-                                        ${orderMaster.deliveryFromAddrStreet} ${orderMaster.deliveryFromAddrSuburb} ${orderMaster.deliveryFromAddrState} ${orderMaster.deliveryFromAddrPostcode}
-                                    </td>
+                                    <td class="label">판매자 </td>
+                                    <td class="value" colspan="3"><span style="color: #dc0a5e;font-weight: bold;font-size: 15px;">${orderMaster.sellerName}</span></td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">배송 도착지 주소</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">
-                                        ${orderMaster.deliveryToAddrStreet} ${orderMaster.deliveryToAddrSuburb} ${orderMaster.deliveryToAddrState} ${orderMaster.deliveryToAddrPostcode}
-                                    </td>
+                                    <td class="label">Mobile</td>
+                                    <td class="value">${orderMaster.sellerMobile}</td>
+                                    <td class="label">Email</td>
+                                    <td class="value">${orderMaster.sellerEmail}</td>
                                 </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 상품 픽업지정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">상품픽업지 정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
-
-                        <div style="padding-bottom: 10px;">
-                            <table class="detail_table">
                                 <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">상품픽업지 주소</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">
-                                        ${orderMaster.pickupAddressStreet} ${orderMaster.pickupAddressSuburb} ${orderMaster.pickupAddressPostcode} ${orderMaster.pickupAddressState}
-                                    </td>
+                                    <td class="label">Address</td>
+                                    <td class="value" colspan="3">${orderMaster.sellerAddressStreet} ${orderMaster.sellerAddressSuburb} ${orderMaster.sellerAddressPostcode} ${orderMaster.sellerAddressState}</td>
                                 </tr>
                             </table>
                         </div>
+
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- 인보이스 발행정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">인보이스 발행정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
-
-                        <div style="padding-bottom: 10px;">
-                            <table class="detail_table">
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">발행여부</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.invoiceIssue}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">발행일자</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.invoiceIssueDatetime}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 주문자 정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">주문자 정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
-
-                        <div style="padding-bottom: 10px;">
-                            <table class="detail_table">
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">이름</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.customerName}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">모바일</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.customerMobile}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">Email</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.customerEmail}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">주소</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.customerAddressStreet}, ${orderMaster.customerAddressSuburb}, ${orderMaster.customerAddressPostcode} ${orderMaster.customerAddressState}</td>
-                                </tr>
-
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 환불처리 정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">환불처리 정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
-
-                        <div style="padding-bottom: 10px;">
-                            <table class="detail_table">
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">환불여부</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.isRefund}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">환불처일시</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.refundDatetime}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">환불이유</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.refundReason}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">환불 서비스</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.refundAmount}</td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">환불이유</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.refundReason}</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
 
         <!-- 기타 정보 -->
         <div class="row">
-            <div class="col-sm-12" style="padding-left: 10px; padding-top: 20px;">
-
-                <div class="panel panel-default">
+            <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
                         <table style="width: 100%;">
                             <tr>
-                                <td style="text-align: left;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #575758;padding-left: 20px;">기타 정보</span></a>
+                                <td style="text-align: left;padding-left: 20px;">
+                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">기타 정보</span></a>
                                 </td>
                             </tr>
                         </table>
                     </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 20px;">
+                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 10px;">
 
                         <div style="padding-bottom: 10px;">
                             <table class="detail_table">
+                                <colgroup>
+                                    <col width="200px" />
+                                    <col width="300px" />
+                                    <col width="200px" />
+                                    <col width="300px" />
+                                </colgroup>
                                 <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">픽업/배달서비스</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.isPickupOrDelivery}</td>
+                                    <td colspan="4" style="text-align: left;">
+                                        <span class="subtitle" style="color: #737273;text-align: left;">상품 배송지정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">일반/공구</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.normalOrGroupOrder}</td>
+                                    <td class="label">배송 출발지 주소</td>
+                                    <td class="value" colspan="3">${orderMaster.deliveryFromAddrStreet} ${orderMaster.deliveryFromAddrSuburb} ${orderMaster.deliveryFromAddrState} ${orderMaster.deliveryFromAddrPostcode}</td>
                                 </tr>
                                 <tr>
-                                    <td style="width: 200px; text-align: right;color: #8D9999;">공구인경우 공구번호</td>
-                                    <td style="width: 20px;text-align: center">:</td>
-                                    <td style="color: #514747;">${orderMaster.groupPurchaseId}</td>
+                                    <td class="label">배송 도착지 주소</td>
+                                    <td class="value" colspan="3">${orderMaster.deliveryToAddrStreet} ${orderMaster.deliveryToAddrSuburb} ${orderMaster.deliveryToAddrState} ${orderMaster.deliveryToAddrPostcode}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <br/><br/>
+                                        <span class="subtitle" style="color: #737273;text-align: left;">상품 픽업 장소 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">상품픽업 주소</td>
+                                    <td class="value" colspan="3">${orderMaster.pickupAddressStreet} ${orderMaster.pickupAddressSuburb} ${orderMaster.pickupAddressPostcode} ${orderMaster.pickupAddressState}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <br/><br/>
+                                        <span class="subtitle" style="color: #737273;text-align: left;">인보이스 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">발행여부</td>
+                                    <td class="value">
+                                        <c:choose>
+                                            <c:when test="${orderMaster.invoiceIssue == 'Y'}">인보이스 발행됨</c:when>
+                                            <c:when test="${orderMaster.invoiceIssue == 'N'}">인보이스 미발행</c:when>
+                                            <c:otherwise>-</c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="label">발행일자</td>
+                                    <td class="value">${orderMaster.invoiceIssueDatetime}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <br/><br/>
+                                        <span class="subtitle" style="color: #737273;text-align: left;">주문자 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">이름</td>
+                                    <td class="value"><b>${orderMaster.customerName}</b></td>
+                                    <td class="label">모바일</td>
+                                    <td class="value">${orderMaster.customerMobile}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Email</td>
+                                    <td class="value">${orderMaster.customerEmail}</td>
+                                    <td class="label">주소</td>
+                                    <td class="value">${orderMaster.customerAddressStreet} ${orderMaster.customerAddressSuburb} ${orderMaster.customerAddressPostcode} ${orderMaster.customerAddressState}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <br/><br/>
+                                        <span class="subtitle" style="color: #737273;text-align: left;">환불처리 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">환불여부</td>
+                                    <td class="value"><b>
+                                        <c:choose>
+                                            <c:when test="${orderMaster.isRefund == 'Y'}">환불처리</c:when>
+                                            <c:when test="${orderMaster.isRefund == 'N'}">미 환불</c:when>
+                                            <c:otherwise>-</c:otherwise>
+                                        </c:choose>
+                                        </b>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="label">환불처일시</td>
+                                    <td class="value">${orderMaster.refundDatetime}</td>
+                                    <td class="label">환불 서비스비(패널티)</td>
+                                    <td class="value"><b>${orderMaster.refundAmount}</b></td>
+                                </tr>
+                                <tr>
+                                    <td class="label">환불이유</td>
+                                    <td class="value" colspan="3">${orderMaster.refundReason}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <br/><br/>
+                                        <span class="subtitle" style="color: #737273;text-align: left;">기타 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">픽업/배달서비스</td>
+                                    <td class="value">
+                                        <c:choose>
+                                            <c:when test="${orderMaster.isPickupOrDelivery == 'D'}">배송서비스 이용</c:when>
+                                            <c:when test="${orderMaster.isPickupOrDelivery == 'P'}">픽업</c:when>
+                                            <c:otherwise>-</c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td class="label">일반/공구</td>
+                                    <td class="value">
+                                        <c:choose>
+                                            <c:when test="${orderMaster.normalOrGroupOrder == 'G'}">공동구매</c:when>
+                                            <c:when test="${orderMaster.normalOrGroupOrder == 'P'}">일반</c:when>
+                                            <c:otherwise>-</c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">공구인경우 공구번호</td>
+                                    <td class="value">${orderMaster.groupPurchaseId}</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </table>
                         </div>
+
                     </div>
+
                 </div>
             </div>
         </div>
 
-    </div>
-</div>
-
-
 
 <!-- 화면 하단 버튼 -->
 <div class="row">
-    <div class="col-sm-9" style="padding-bottom: 30px;padding-top: 20px;">
+    <div class="col-sm-12" style="padding-bottom: 30px;padding-top: 10px;padding-right: 20px;">
         <table class="action_button_table">
             <tr>
-                <td style="text-align: right;padding-right: 15px;">
-                    <button type="button" class="btn btn-warning btn-sm" onclick="getInvoice()"><i class="fa fa-file-o" aria-hidden="true"></i> 인보이스발행</button>
-                    &nbsp;&nbsp;&nbsp;
+                <td style="text-align: right;">
                     <button type="button" class="btn btn-success btn-sm" onclick="goList()"><i class="fa fa-list" aria-hidden="true"></i> 이전화면</button>
                 </td>
             </tr>
