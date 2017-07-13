@@ -45,7 +45,7 @@
                 pinned: true,
                 width: 650,height: 300,
                 open: function (e) {
-                    this.wrapper.css({ top: 600 });
+                    this.wrapper.css({ top: 300 });
                 }
             });
             popup_dialog.center().open();

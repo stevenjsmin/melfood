@@ -96,7 +96,8 @@
                     btnOKClass: 'btn-warning', // If you didn't specify it, dialog type will be used,
                     callback: function(result) {
                         if(result) {
-                            parent.closesendMessagePopup();
+                            //parent.closesendMessagePopup();
+                            window.close();
                         }
                     }
                 });
@@ -104,7 +105,6 @@
             }
         }
     </script>
-
 
 </head>
 
