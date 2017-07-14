@@ -391,7 +391,7 @@
 
 
     <script type="text/javascript">
-        function doPaymentProcessConfirm() {
+        function paymentProcessConfirm() {
 
             if(validateForm() == false) return;
 
@@ -467,10 +467,10 @@
                 data: {
                     JSONDocument    : JSONDocument
                 },
-                success: callbackDoPaymentProcessConfirm
+                success: callbackPaymentProcessConfirm
             });
         }
-        function callbackDoPaymentProcessConfirm(data) {
+        function callbackPaymentProcessConfirm(data) {
             var message = data.message;
             var resultCode = data.resultCode;
             var thanks = data.thanks;
@@ -479,7 +479,7 @@
             if (resultCode != "0") {
                 warningPopup(message);
             } else {
-                document.location.href = "/grouppurchase/doPaymentProcessConfirm.yum?thanks=" + thanks;
+                document.location.href = "/grouppurchase/paymentProcessConfirm.yum?thanks=" + thanks;
             }
         }
     </script>
@@ -1016,7 +1016,7 @@
 
 
                         <tr style="height: 25px;">
-                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="javascript:doPaymentProcessConfirm();" style="color: #FFFFFF;font-weight: bold;font-size: 15px;"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp; 결재하기 </a>
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="javascript:paymentProcessConfirm();" style="color: #FFFFFF;font-weight: bold;font-size: 15px;"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp; 결재하기 </a>
                             </td>
                         </tr>
                     </tbody>

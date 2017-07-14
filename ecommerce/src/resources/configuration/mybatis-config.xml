@@ -56,6 +56,7 @@
 		<typeAlias type="melfood.framework.workdays.WorkDays" alias="WorkDays" />
 
 		<typeAlias type="melfood.framework.communication.Communication" alias="Communication" />
+		<typeAlias type="melfood.shopping.survey.PreferGrpPurchaseMarketDay" alias="PreferGrpPurchaseMarketDay" />
 
 
 		

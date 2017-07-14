@@ -27,9 +27,9 @@
 		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/groupPurchaseImageViewer.jsp" />
 	</definition>
 
-	<definition name="tiles/customer/grouppurchase/doPaymentProcessConfirm" extends="tiles/customer/grouppurchase/main">
+	<definition name="tiles/customer/grouppurchase/paymentProcessConfirm" extends="tiles/customer/grouppurchase/main">
 		<put-attribute name="title" value="주문확인" />
-		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/doPaymentProcessConfirm.jsp" />
+		<put-attribute name="body" value="/WEB-INF/pages/customer/grouppurchase/paymentProcessConfirm.jsp" />
 	</definition>
 
 

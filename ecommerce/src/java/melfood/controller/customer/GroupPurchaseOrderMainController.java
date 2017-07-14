@@ -462,9 +462,9 @@ public class GroupPurchaseOrderMainController extends BaseController {
     }
 
 
-    @RequestMapping("/doPaymentProcessConfirm")
-    public ModelAndView doPaymentProcessConfirm(HttpServletRequest request) throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/doPaymentProcessConfirm");
+    @RequestMapping("/paymentProcessConfirm")
+    public ModelAndView paymentProcessConfirm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/paymentProcessConfirm");
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
 
         String orderId = request.getParameter("thanks");

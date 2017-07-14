@@ -76,7 +76,7 @@
                     <a id="resp-menu" class="responsive-menu" href="#"><i class="fa fa-reorder"></i> Menu</a>
 
                     <ul class="menu">
-                         <li><a id="home-000" href="#"><i class="fa fa-home fa-lg"></i>&nbsp; HOME</a>
+                         <li><a id="home-000" href="/"><i class="fa fa-home fa-lg"></i>&nbsp; HOME</a>
                          <li><a id="product-000" href="#"><i class="fa fa-gift fa-lg" aria-hidden="true"></i>&nbsp; 상품관리</a>
                               <ul class="sub-menu">
                                    <li><a id="product-110" href="/admin/categorymgt/Main.yum"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp; 카테고리 관리</a></li>

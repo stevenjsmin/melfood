@@ -147,6 +147,39 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function goMainPage() {
+
+            progress(true);
+
+
+            var whatday = $("input[name='survey_for_next']:checked").val();
+            var ampm = $("input[name='survey_for_next_ampm']:checked").val();
+
+
+            $.ajax({
+                url: "/survey/preferNextGroupPurchaseDay.yum",
+                data: {
+                    whatday    : whatday,
+                    ampm    : ampm
+                },
+                success: callbackGoMainPage
+            });
+        }
+        function callbackGoMainPage(data) {
+            var message = data.message;
+            var resultCode = data.resultCode;
+            var thanks = data.thanks;
+
+            progress(false);
+
+            if (resultCode != "0") {
+                document.location.href = "/";
+            } else {
+                document.location.href = "/";
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -538,7 +571,7 @@
 
 
                 <!-- 설문조사 -->
-                <div id="survey_for_next" style="margin-bottom: 10px;padding-top: 40px;">
+                <div style="margin-bottom: 10px;padding-top: 40px;">
                     <table width="100%;" style="font-size: 5px;" border="0">
                         <tr>
                             <td colspan="6" style="text-align: right;">
@@ -549,43 +582,43 @@
                         <tr>
                             <td style="text-align: right;font-size: 13px;color: #333333;">월 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Monday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="월"> </td>
 
                             <td style="text-align: right;font-size: 13px;color: #A6D364;width: 70px;">토 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Saturday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="토"> </td>
                         </tr>
                         <tr>
                             <td style="text-align: right;font-size: 13px;color: #333333;">화 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Tuesday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="화"> </td>
 
                             <td style="text-align: right;font-size: 13px;color: #A6D364;">일 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Sunday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="일"> </td>
                         </tr>
                         <tr>
                             <td style="text-align: right;font-size: 13px;color: #333333;">수 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Wednesday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="수"> </td>
                             <td colspan="3"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;font-size: 13px;color: #333333;">목 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Thursday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="목"> </td>
                             <td colspan="3"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;font-size: 13px;color: #333333;">금 요일</td>
                             <td style="width: 20px;text-align: center">:</td>
-                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="Friday"> </td>
+                            <td style="width: 20px;color: #514747;vertical-align: middle;"><input type="radio" name="survey_for_next" value="금"> </td>
                             <td colspan="3"></td>
                         </tr>
                         <tr>
                             <td style="text-align: right;font-size: 13px;color: #333333;padding-right: 7px;" colspan="6">
-                                오전 <input type="radio" name="survey_for_next_ampm" value="AM">&nbsp;&nbsp;
-                                오후 <input type="radio" name="survey_for_next_ampm" value="PM">
+                                오전 <input type="radio" name="survey_for_next_ampm" value="오전">&nbsp;&nbsp;
+                                오후 <input type="radio" name="survey_for_next_ampm" value="오후">
                             </td>
                         </tr>
 
@@ -597,7 +630,7 @@
                     <table style="width: 100%;">
                         <tr>
                             <td style="text-align: right;">
-                                <button type="button" class="btn btn-default" style="color: #FFFFFF;background-color: #F15F4C;" onclick="javascript:document.location.href = '/';"><i class="fa fa-home" aria-hidden="true"></i> 메인페이지로 가기</button>
+                                <button type="button" class="btn btn-default" style="color: #FFFFFF;background-color: #F15F4C;" onclick="goMainPage();"><i class="fa fa-home" aria-hidden="true"></i> 메인페이지로 가기</button>
                             </td>
                         </tr>
                     </table>

@@ -315,3 +315,73 @@ function infoWindow(marker, map, message) {
         iw.open(map, marker);
     });
 }
+
+
+
+function markPointsOnGHeatMap(mapPoints, melGmap){
+    var pointarray, heatmap;
+
+    var melFoodMapType = 'HEAT'; // SIMPLE | HEAT
+    var melFoodMapStyle = MAPSTYLE_UNSATURATED_BROWNS;
+    var melFoodMapStyleNo = null;
+    var melFoodMapName = "Mel푸드 Map";
+    var ussBindObjID = "map_canvas";
+    var melFoodMapZoomLevel = 10;
+
+    var moreThan1Point = true;
+    if(mapPoints == null || mapPoints.length < 2) moreThan1Point = false;
+
+    var ussHeatGradient = ['rgba(0, 255, 255, 0)', 'rgba(0, 255, 255, 1)','rgba(0, 191, 255, 1)','rgba(0, 127, 255, 1)','rgba(0, 63, 255, 1)','rgba(0, 0, 255, 1)','rgba(0, 0, 223, 1)','rgba(0, 0, 191, 1)','rgba(0, 0, 159, 1)','rgba(0, 0, 127, 1)','rgba(63, 0, 91, 1)','rgba(127, 0, 63, 1)','rgba(191, 0, 31, 1)','rgba(255, 0, 0, 1)'];
+    var ussHeatOpacity = 1;
+    var ussHeatRadius = 20;
+
+    if (typeof melGmap.mapName != 'undefined') melFoodMapName = melGmap.mapName;
+    if (typeof melGmap.mapBindObjID != 'undefined') ussBindObjID = melGmap.mapBindObjID;
+    if (typeof melGmap.mapZoomLevel != 'undefined') melFoodMapZoomLevel = melGmap.mapZoomLevel;
+    if (typeof melGmap.mapHeatRadius != 'undefined') ussHeatRadius = melGmap.mapHeatRadius;
+    if (typeof melGmap.mapHeatOpacity != 'undefined') ussHeatOpacity = melGmap.mapHeatOpacity;
+
+    // Create an array of styles.
+    var styledMap = new google.maps.StyledMapType(melFoodMapStyle, {name: melFoodMapName});
+
+    var bounds = new google.maps.LatLngBounds();
+
+    // Create an array of styles.
+    var mapoptions = {
+        zoom: melFoodMapZoomLevel,
+        maxZoom: 12,
+        //center: new google.maps.LatLng(39.193299893443, -76.834862),
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: true
+    };
+
+    var map = new google.maps.Map(document.getElementById(ussBindObjID), mapoptions);
+    map.mapTypes.set('map_style', styledMap);
+    map.setMapTypeId('map_style');
+
+    var taxiData = new Array();
+    var mapPoint = null;
+    for(var i=0;i<mapPoints.length; i++){
+        mapPoint = mapPoints[i];
+        taxiData.push(new google.maps.LatLng(parseFloat(mapPoint.marketGmapLatitude), parseFloat(mapPoint.marketGmapLongitude)));
+        bounds.extend(new google.maps.LatLng(parseFloat(mapPoint.marketGmapLatitude), parseFloat(mapPoint.marketGmapLongitude)));
+    }
+
+    pointArray = new google.maps.MVCArray(taxiData);
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        data: pointArray
+    });
+
+    if(moreThan1Point == false) {
+        map.setZoom(parseInt(melFoodMapZoomLevel));
+        map.setCenter(bounds.getCenter());
+    } else {
+        map.fitBounds(bounds); //Sets the viewport to contain the given bounds.
+    }
+
+    heatmap.setMap(map);
+    heatmap.setOptions({radius: heatmap.get('radius') ? null : ussHeatRadius});
+    heatmap.setOptions({opacity: heatmap.get('opacity') ? null : ussHeatOpacity});
+    heatmap.setOptions({gradient: heatmap.get('gradient') ? null : ussHeatGradient});
+}
