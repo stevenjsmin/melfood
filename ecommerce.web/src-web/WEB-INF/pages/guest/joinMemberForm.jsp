@@ -356,7 +356,7 @@
 
                 <tr><td colspan="4" style="height: 20px;"></td></tr>
                 <tr>
-                    <td class="label1">이름/닉네임</td>
+                    <td class="label">이름/닉네임</td>
                     <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #1AAF54;" type="text" id="_userNameReal" name="_userNameReal" placeholder="당신의 이름을 입력해주세요" value='${userDefaultName}' maxlength="30"/></td>
                     <td colspan="2"><span style="color: #BFBEC5;"><b>이름</b>/<b>닉네임</b>에 기본으로 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
                 </tr>
@@ -371,7 +371,7 @@
                     <td colspan="4">
                         <table class="action_button_table" width="100%">
                             <tr>
-                                <td><a href="javascript:openMemberAgreementStmt();" class="btn btn-default">회원정보 보호에 관한 약속</a> <a href="javascript:registerMember();" class="btn btn-primary">회원가입</a> </td>
+                                <td><a href="javascript:openMemberAgreementStmt();" class="btn btn-warning">회원정보 보호에 관한 약속</a> <a href="javascript:registerMember();" class="btn btn-primary">회원가입</a> </td>
                             </tr>
                         </table>
                     </td>
