@@ -229,6 +229,10 @@
             $('#cbx_' + objName).html('<input class="form-control" type="text" id="' + objName + '" name="' + objName + '" value=""/>');
         }
     }
+
+    function checkPostcode() {
+        warningPopup('Postcode를 입력하시고 <img src="/resources/image/lookup.png"> 아이콘을 클릭하여 Suburb를 선택해주세요');
+    }
 </script>
 
 <script type="text/javascript">
@@ -341,7 +345,7 @@
                     <td class="label1">Suburb</td>
                     <td class="value">
                         <div id="cbx_addressSuburb">
-                            <input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressSuburb" name="addressSuburb" value=''/>
+                            <input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressSuburb" name="addressSuburb" value='' onkeypress="checkPostcode()"/>
                         </div>
                     </td>
                 </tr>
@@ -351,13 +355,13 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td class="value" colspan="4" style="color: #337AB7;text-align: right;">** 입력한 주소정보는 다음 공.구일정을 계획/배달하는데 사용됩니다.</td>
+                    <td class="value" colspan="4" style="color: #337AB7;text-align: right;">** 입력한 주소정보는 다음 공.구일정을 계획/<b>배달</b>하는데 사용됩니다.</td>
                 </tr>
 
                 <tr><td colspan="4" style="height: 20px;"></td></tr>
                 <tr>
                     <td class="label">이름/닉네임</td>
-                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #1AAF54;" type="text" id="_userNameReal" name="_userNameReal" placeholder="당신의 이름을 입력해주세요" value='${userDefaultName}' maxlength="30"/></td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #1AAF54;" type="text" id="_userNameReal" name="_userNameReal" placeholder="당신의 이름/닉네임을 입력해주세요" value='${userDefaultName}' maxlength="30"/></td>
                     <td colspan="2"><span style="color: #BFBEC5;"><b>이름</b>/<b>닉네임</b>에 기본으로 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
                 </tr>
                 <tr>

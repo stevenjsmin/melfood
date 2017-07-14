@@ -169,7 +169,7 @@
                                                     <td style="font-weight: bold;font-size: 18px;color: #737273;">AM</td>
                                                     <td style="width: 30px;text-align: center;">:</td>
                                                     <td style="font-weight: bold;font-size: 18px;color: #737273;">89 %</td>
-                                                    <td style="width: 50px;">,</td>
+                                                    <td style="width: 50px;">&nbsp;</td>
                                                     <td style="font-weight: bold;font-size: 18px;color: #737273;">PM</td>
                                                     <td style="width: 30px;text-align: center;">:</td>
                                                     <td style="font-weight: bold;font-size: 18px;color: #737273;">11 %</td>
