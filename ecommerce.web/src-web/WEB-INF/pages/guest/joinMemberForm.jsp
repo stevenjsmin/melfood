@@ -161,7 +161,8 @@
 
     function registerMember() {
         var userId = $('#_userId').val();
-        var userName = $('#_userName').val();
+        // var userName = $('#_userName').val();
+        var userName = '';
         var userNameReal = $('#_userNameReal').val();
         if (userNameReal == '') userNameReal = userName;
         var password = $('#_password').val();
@@ -321,34 +322,11 @@
                         <hr class="subtitle"/>
                     </td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td colspan="3" style="padding-left: 10px;"><span style="color: #BFBEC5;"><b>닉네임</b>, <b>실명</b>에 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
-                </tr>
-                <tr>
-                    <td class="label1">닉네임</td>
-                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #BFBEC5;" type="text" id="_userName" name="_userName" placeholder="닉네임" value='${userDefaultName}' maxlength="30" st/></td>
-                    <td colspan="2"></td>
-                </tr>
-                <tr>
-                    <td class="label1">실명</td>
-                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #BFBEC5;" type="text" id="_userNameReal" name="_userNameReal" placeholder="실명" value='${userDefaultName}' maxlength="30"/></td>
-                    <td colspan="2"><span style="color: #BFBEC5;">인보이스 발송시에 이용됩니다.</span></td>
-                </tr>
 
-                <tr><td colspan="4" style="height: 10px;"></td></tr>
-                <tr>
-                    <td class="label1">이메일</td>
-                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소 @" value='' maxlength="50"/></td>
-                    <td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
-                </tr>
-
-                <tr><td colspan="4" style="height: 10px;"></td></tr>
                 <tr>
                     <td class="label1">State</td>
                     <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
-                    <td></td>
-                    <td></td>
+                    <td colspan="2"><span style="color: #BFBEC5;">고객님께 상품을 배달해 드려야하는 경우 사용됩니다.</span></td>
                 </tr>
                 <tr>
                     <td class="label1">Postcode</td>
@@ -373,12 +351,22 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td colspan="3" class="value" style="padding-top: 5px;"><span style="color: #BFBEC5;">고객님께 상품을 배달해 드려야하는 경우 사용됩니다.</span></td>
+                    <td class="value" colspan="4" style="color: #337AB7;text-align: right;">** 입력한 주소정보는 다음 공.구일정을 계획/배달하는데 사용됩니다.</td>
+                </tr>
+
+                <tr><td colspan="4" style="height: 20px;"></td></tr>
+                <tr>
+                    <td class="label1">이름/닉네임</td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #1AAF54;" type="text" id="_userNameReal" name="_userNameReal" placeholder="당신의 이름을 입력해주세요" value='${userDefaultName}' maxlength="30"/></td>
+                    <td colspan="2"><span style="color: #BFBEC5;"><b>이름</b>/<b>닉네임</b>에 기본으로 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="height: 20px;"></td>
+                    <td class="label1">이메일</td>
+                    <td class="value"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="_email" name="_email" placeholder="이메일 주소 @" value='' maxlength="50"/></td>
+                    <td colspan="2"><span style="color: #BFBEC5;">아이디,비밀번호 분실시 또는 인보이스 발송시 필요한 정보입니다.</span></td>
                 </tr>
+
+                <tr><td colspan="4" style="height: 20px;"></td></tr>
                 <tr>
                     <td colspan="4">
                         <table class="action_button_table" width="100%">

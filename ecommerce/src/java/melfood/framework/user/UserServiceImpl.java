@@ -9,9 +9,11 @@
 
 package melfood.framework.user;
 
+import com.google.maps.model.GeocodingResult;
 import melfood.framework.Ctx;
 import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.attachement.AttachmentFileService;
+import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.role.Role;
 import melfood.framework.system.AwsSNSUtils;
 import melfood.framework.uitl.html.Option;
@@ -42,6 +44,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AttachmentFileService attachmentFileService;
+
+    @Autowired
+    private MelfoodGoogleMapService melfoodGoogleMapService;
 
     @Override
     public String changeUserStatus(String userId, String useYn) throws Exception {
@@ -423,5 +428,57 @@ public class UserServiceImpl implements UserService {
     @Override
     public int validateMobileCheck(User user) throws Exception {
         return userDAO.updateMobileValidCheckCode(user);
+    }
+
+    /**
+     * 사용자의 홈주소 구글 좌표주소를 갱신한다.<br/>
+     * user객체에 사용자ID, addressHomeGmapLatitude, addressHomeGmapLongitude, addressHomeGmapFormattedAddress를 설정해줘야 한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int updateHomeAddressGmapCoordinate(User user) throws Exception {
+
+        String addressState = user.getAddressState();
+        String addressPostcode = user.getAddressPostcode();
+        String addressSuburb = user.getAddressSuburb();
+        String addressStreet = user.getAddressStreet();
+
+        GeocodingResult geoResult = null;
+        String gmapLatitude = null;
+        String gmapLongitude = null;
+
+        int updateCnt = 0;
+
+        // 사용자의 주소가 존재한다면 사용자 주소의 좌표를 읽어서 저장한다.
+        if (StringUtils.isNotBlank(user.getUserId())
+                && StringUtils.isNotBlank(addressSuburb)
+                && StringUtils.isNotBlank(addressPostcode)
+                && StringUtils.isNotBlank(addressState)) {
+
+            try {
+                geoResult = melfoodGoogleMapService.lookupGMap(addressStreet + " " + addressSuburb + " " + addressState + " " + addressPostcode);
+                if (geoResult != null) {
+                    gmapLatitude = Double.toString(geoResult.geometry.location.lat);
+                    gmapLongitude = Double.toString(geoResult.geometry.location.lng);
+
+                    user.setAddressHomeGmapLatitude(gmapLatitude);
+                    user.setAddressHomeGmapLongitude(gmapLongitude);
+                    user.setAddressHomeGmapFormattedAddress(geoResult.formattedAddress);
+
+                    updateCnt = userDAO.updateHomeAddressGmapCoordinate(user);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.info("[" + addressStreet + " " + addressSuburb + " " + addressState + " " + addressPostcode + "] 에대한 죄표를 구하는데 실패하였습니다. :" + e.getMessage());
+            }
+        } else {
+                logger.info("[" + addressStreet + " " + addressSuburb + " " + addressState + " " + addressPostcode + "] 에대한 죄표를 계산 할 수 없습니다.");
+        }
+
+        return updateCnt;
     }
 }

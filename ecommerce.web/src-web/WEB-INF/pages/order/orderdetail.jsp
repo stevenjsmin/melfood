@@ -213,8 +213,8 @@
         <div class="row">
             <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
 
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
+                <div class="panel panel-success" style="border-color: #575758;">
+                    <div class="panel-heading" style="background-color: #575758;border-color: #575758;">
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;">
@@ -333,6 +333,7 @@
                                 <td></td>
                                 <td style="color: #737273;font-weight: bold;font-size: 13px;">${orderMaster.customerOrderNote}</td>
                             </tr>
+
                             </tbody>
                         </table>
 
@@ -341,15 +342,15 @@
             </div>
         </div>
 
-        <!-- 판매자 정보 -->
+        <!-- 판매자/판매자 정보 -->
         <div class="row">
             <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
+                <div class="panel panel-primary" style="border-color: #b3b3b3;">
+                    <div class="panel-heading" style="background-color: #C8B7B0;border-color: #b3b3b3;">
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;padding-left: 20px;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">판매자 정보</span></a>
+                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">판매자/판매자 정보</span></a>
                                 </td>
                             </tr>
                         </table>
@@ -364,6 +365,12 @@
                                     <col width="200px" />
                                     <col width="300px" />
                                 </colgroup>
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <span class="subtitle" style="color: #737273;text-align: left;">판매자 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="label">판매자 </td>
                                     <td class="value" colspan="3"><span style="color: #dc0a5e;font-weight: bold;font-size: 15px;">${orderMaster.sellerName}</span></td>
@@ -394,39 +401,16 @@
                                     <td class="label">Address</td>
                                     <td class="value" colspan="3">${orderMaster.sellerAddressStreet} ${orderMaster.sellerAddressSuburb} ${orderMaster.sellerAddressPostcode} ${orderMaster.sellerAddressState}</td>
                                 </tr>
-                            </table>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
 
 
-        <!-- 주문자 정보 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="text-align: left;padding-left: 20px;">
-                                    <span style="font-size: 15px;font-weight: bold;color: #FFFFFF;">주문자 정보</span></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 10px;padding-right: 10px;padding-bottom: 10px;padding-top: 10px;">
-
-                        <div style="padding-bottom: 10px;">
-                            <table class="detail_table">
-                                <colgroup>
-                                    <col width="200px" />
-                                    <col width="300px" />
-                                    <col width="200px" />
-                                    <col width="300px" />
-                                </colgroup>
+                                <tr>
+                                    <td colspan="4" style="text-align: left;">
+                                        <br/>
+                                        <br/>
+                                        <span class="subtitle" style="color: #737273;text-align: left;">주문자 정보</span>
+                                        <hr class="subtitle"/>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td class="label">이름</td>
                                     <td class="value">${orderMaster.customerName}</td>
@@ -454,6 +438,7 @@
                                     <td class="label">주소</td>
                                     <td class="value">${orderMaster.customerAddressStreet} ${orderMaster.customerAddressSuburb} ${orderMaster.customerAddressPostcode} ${orderMaster.customerAddressState}</td>
                                 </tr>
+
                             </table>
                         </div>
 
@@ -466,8 +451,8 @@
         <!-- 기타 정보 -->
         <div class="row">
             <div class="col-sm-12" style="padding-right: 20px;padding-left: 10px;">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
+                <div class="panel panel-primary" style="border-color: #C8B7B0;">
+                    <div class="panel-heading" style="background-color: #C8B7B0;border-color: #b3b3b3;">
                         <table style="width: 100%;">
                             <tr>
                                 <td style="text-align: left;padding-left: 20px;">

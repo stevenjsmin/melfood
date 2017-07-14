@@ -41,5 +41,11 @@
 		<put-attribute name="title" value="상품 판매정지 설정" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/stopSellingForm.jsp" />
 	</definition>
+	<definition name="tiles/admin/grouppurchase/sendGroupMessageForm" extends="layout/panel_100">
+		<put-attribute name="title" value="단체 메시지보내기" />
+		<put-attribute name="navigation" value="Common > 단체 메시지발송" />
+		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/popup/sendGroupMessageForm.jsp" />
+	</definition>
+
 
 </tiles-definitions>

@@ -261,6 +261,7 @@ public class MyPageController extends BaseController {
             }
 
             updateUserId = userService.modifyUser(user);
+            userService.updateHomeAddressGmapCoordinate(user); // 사용자의 집주소 좌표를 개신한다.
 
             if (!StringUtils.isBlank(user.getEmail()) && StringUtils.equalsIgnoreCase(Ctx.getVar("EMAIL.AFTR.CHANGE.MYINFO"), "Y")) {
 

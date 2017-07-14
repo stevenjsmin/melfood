@@ -97,10 +97,10 @@
                          <li><a id="grouppurchase-000" href="/admin/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공동구매 관리</a>
 
 
-                         <li><a id="ordermgt-000" href="#"><i class="fa fa-calculator fa-lg"></i>&nbsp; 주문 관리</a>
+                         <li><a id="ordermgt-000" href="#"><i class="fa fa-calculator fa-lg"></i>&nbsp; 주문조회</a>
                               <ul class="sub-menu">
-                                   <li><a id="ordermgt-110" href="/admin/ordermgt/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공.구 주문</a></li>
-                                   <li><a id="ordermgt-120" href="/admin/ordermgt/Main.yum"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;  모든 주문</a></li>
+                                   <li><a id="ordermgt-110" href="/admin/ordermgt/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공.구주문 조회</a></li>
+                                   <li><a id="ordermgt-120" href="/admin/ordermgt/Main.yum"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;  모든주문 조회</a></li>
                               </ul>
                          </li>
 

@@ -11,6 +11,7 @@ package melfood.controller.guest;
 
 import melfood.framework.Ctx;
 import melfood.framework.email.EmailServices;
+import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.html.Option;
 import melfood.framework.uitl.html.Properties;
@@ -43,6 +44,9 @@ public class JoinMemberController extends BaseController {
 
     @Autowired
     private JoinMemberService joinMemberService;
+
+    @Autowired
+    private MelfoodGoogleMapService melfoodGoogleMapService;
 
     @RequestMapping("/join")
     public ModelAndView join(HttpServletRequest request) throws Exception {
@@ -101,14 +105,14 @@ public class JoinMemberController extends BaseController {
         String userId = request.getParameter("userId");
         String password = request.getParameter("password");
         String password2 = request.getParameter("password2");
-        String userName = request.getParameter("userName");
+        // String userName = request.getParameter("userName");
         String userNameReal = request.getParameter("userNameReal");
+        String userName = userNameReal;
         String email = request.getParameter("email");
         String addressState = request.getParameter("addressState");
         String addressPostcode = request.getParameter("addressPostcode");
         String addressSuburb = request.getParameter("addressSuburb");
         String addressStreet = request.getParameter("addressStreet");
-
 
         try {
             if (!StringUtils.equals(password, password2)) throw new Exception("입력하신 비밀번호와 재입력하신 비밀번호가 일치하지않습니다.");
@@ -161,6 +165,9 @@ public class JoinMemberController extends BaseController {
 
             // SMS로 인증코드를 보내고, 인증코드를 사용자테이블에 업데이트 한다.
             userService.updateMobileValidCheckCode(user);
+
+            // 사용자의 집주소의 좌표를 구한다.
+            userService.updateHomeAddressGmapCoordinate(user);
 
             model.put("user", userService.getUserInfo(userId));
             model.put("resultCode", "0");

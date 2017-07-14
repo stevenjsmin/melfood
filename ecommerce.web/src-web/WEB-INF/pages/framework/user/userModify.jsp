@@ -42,7 +42,7 @@ $(document).ready(function() {
 <body>
 <div id="userProfilePhotoPopup"></div>
 <div id="errorWindow"></div>
-     <table>
+     <table id="main_contents_table">
           <tr>
                <td valign="top">
                     <table class="detail_table">

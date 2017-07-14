@@ -4,6 +4,8 @@ import com.google.maps.model.GeocodingResult;
 import melfood.framework.Ctx;
 import melfood.framework.MelfoodConstants;
 import melfood.framework.auth.SessionUserInfo;
+import melfood.framework.communication.Communication;
+import melfood.framework.communication.CommunicationService;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
 import melfood.framework.uitl.HtmlCodeGenerator;
@@ -63,6 +65,9 @@ public class GroupPurchaseMgtController extends BaseController {
 
     @Autowired
     private OrderMasterService orderMasterService;
+
+    @Autowired
+    CommunicationService communicationService;
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -843,6 +848,105 @@ public class GroupPurchaseMgtController extends BaseController {
             model.put("resultCode", "-1");
             model.put("message", StringUtils.abbreviate(e.getMessage(), 100));
         }
+
+        return model;
+    }
+
+    @RequestMapping("/sendGroupMessageForm")
+    public ModelAndView sendGroupMessageForm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/admin/grouppurchase/sendGroupMessageForm");
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+
+        if (StringUtils.isBlank(groupPurchaseId)) throw new Exception("groupPurchaseId 는 빈값이 될수 없습니다.");
+
+        mav.addObject("groupPurchaseId", groupPurchaseId);
+
+        return mav;
+    }
+
+
+    @RequestMapping(value = "/sendGroupMessage", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> sendGroupMessage(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String groupPurchaseId = request.getParameter("groupPurchaseId");
+        String contents = request.getParameter("contents");
+        // String sendSMS = request.getParameter("sendSMS");
+        // String sendEmail = request.getParameter("sendEmail");
+        String sendSMS = "true";
+
+        if (StringUtils.isBlank(groupPurchaseId) || StringUtils.isBlank(contents)) throw new Exception("groupPurchaseId || contents 는 빈값이 될 수 없습니다.");
+
+        Communication communication = new Communication();
+
+        try {
+            // String receiverUserEmail = receiverUser.getEmail();
+            // String receiverUserMobile = receiverUser.getUserId();
+
+            //String receiverUserEmail = receiverUser.getEmail();
+            //String receiverUserMobile = receiverUser.getUserId();
+
+            OrderMaster paramOrderMaster = new OrderMaster();
+            paramOrderMaster.setGroupPurchaseId(groupPurchaseId);
+            List<OrderMaster> groupPurchaseList = orderMasterService.getOrderMasters(paramOrderMaster);
+            List<String> receiverIds = new ArrayList<String>();
+            Set receiverSet = new HashSet<String>();
+            String customerId = "";
+            boolean setOk = true;
+            for (OrderMaster a : groupPurchaseList) {
+                customerId = a.getCustomerId();
+
+                if (StringUtils.isNotBlank(customerId)
+                        && StringUtils.startsWith(customerId, "04")
+                        && StringUtils.isNumeric(customerId)
+                        && customerId.length() == 10) {
+
+                    setOk = receiverSet.add(a.getCustomerId());
+                    if (!setOk) logger.info(a.getCustomerId() + " 은 이미등록된 모바일번호입니다.");
+                }
+            }
+
+            String receiverId = null;
+            Iterator customerMobileIter = receiverSet.iterator();
+            int sendCnt = 0;
+            int totSendCnt = 0;
+            while (customerMobileIter.hasNext()) {
+                receiverId = (String) customerMobileIter.next();
+
+                communication.setCategory("CHAT");
+                if (StringUtils.isNotBlank(contents)) communication.setContents(contents);
+                communication.setWriter(sessionUser.getUser().getUserId());
+                communication.setWriterMobile(sessionUser.getUser().getUserId());
+                communication.setWriterEmail(sessionUser.getUser().getEmail());
+                communication.setWriteFrom(sessionUser.getUser().getUserId());
+
+                communication.setWriteTo(receiverId);
+
+                communication.setIsForAllSeller("N");
+                communication.setIsForAllCustomer("N");
+                communication.setProgressStatus(null);
+
+                communication.setNotifySmsNo(receiverId);
+                communication.setNotifyEmail(null);
+
+                sendCnt = communicationService.registCommunication(communication);
+
+                totSendCnt = totSendCnt + sendCnt;
+            }
+
+            model.put("resultCode", "0");
+            model.put("message", totSendCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
 
         return model;
     }

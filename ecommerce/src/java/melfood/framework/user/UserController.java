@@ -529,6 +529,15 @@ public class UserController extends BaseController {
 				updateUserId = userService.modifyUser(user);
 			}
 
+			try{
+				// 사용자의 집 주소를 갱신한다.
+				User newUser = userService.getUserInfo(updateUserId);
+				userService.updateHomeAddressGmapCoordinate(newUser);
+
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+
 			try {
 				roleService.removeMyRoles(userId);
 				String[] userTypeArray = StringUtils.split(userTypes, ",");

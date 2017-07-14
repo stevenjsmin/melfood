@@ -370,10 +370,39 @@
             판매중
         # }#
     </script>
+
+    <script type="text/javascript">
+        function sendGroupMessagePopup(receiverUserId, type){
+
+            $("#sendMessagePopup").kendoWindow({
+                content: "/admin/grouppurchase/sendGroupMessageForm.yum?groupPurchaseId=${groupPurchase.groupPurchaseId}",
+                actions: [ "Minimize", "Maximize","Close" ],
+                title: "SEND MESSAGE",
+                modal: true,
+                iframe: true
+            });
+
+            var popup_dialog = $("#sendMessagePopup").data("kendoWindow");
+            popup_dialog.setOptions({
+                pinned: true,
+                width: 650,height: 300,
+                open: function (e) {
+                    this.wrapper.css({ top: 300 });
+                }
+            });
+            popup_dialog.center().open();
+
+        }
+        function closeSendGroupMessagePopup() {
+            var win_dialog = $("#sendMessagePopup").data("kendoWindow");
+            win_dialog.close();
+        }
+    </script>
 </head>
 
 
 <body>
+<div id="sendMessagePopup"></div>
 <div id="productImagePopup"></div>
 <div id="groupPurchasePopup"></div>
 <div id="productOverviewPopup"></div>
@@ -438,13 +467,13 @@
                 </tr>
                 <tr>
                     <td class="label">최소 참여금액 :</td>
-                    <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.minimumPurchaseAmount}"/></td>
+                    <td class="value"><span style="color: #D54F3C;font-weight: bold;">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.minimumPurchaseAmount}"/></span></td>
                     <td class="label">최대 참여금액 :</td>
                     <td class="value">$ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.maximumPurchaseAmount}"/></td>
                 </tr>
                 <tr>
                     <td class="label">주문받는 기간 :</td>
-                    <td class="value">${groupPurchase.orderStartDt} ~ ${groupPurchase.orderEndDt}</td>
+                    <td class="value"><span style="color: #337AB7">${groupPurchase.orderStartDt}</span> ~ ${groupPurchase.orderEndDt}</td>
                     <td class="label">할인 비율/금액 :</td>
                     <td class="value">
                         <c:choose>
@@ -470,7 +499,7 @@
                     <td class="value">
                             <c:choose>
                                 <c:when test="${groupPurchase.deliverable == 'Y'}">
-                                    배달가능
+                                    <span style="color: #008600;font-weight: bold;">배달가능</span>
                                 </c:when>
                                 <c:when test="${groupPurchase.deliverable == 'N'}">
                                     배달 서비스없음
@@ -504,10 +533,10 @@
                     <td class="value">
                         <c:choose>
                             <c:when test="${groupPurchase.stopSelling == 'Y'}">
-                                판매 정지
+                                <span style="color: #6F0E06;font-weight: bold;">판매 정지</span>
                             </c:when>
                             <c:when test="${groupPurchase.stopSelling == 'N'}">
-                                판매 중
+                                <span style="color: #337AB7;font-weight: bold;">판매 중</span>
                             </c:when>
                         </c:choose>
 
@@ -532,7 +561,7 @@
 
                 <tr>
                     <td class="label">마켓오픈 시간 :</td>
-                    <td class="value">${groupPurchase.marketOpenStartDt} ~ ${groupPurchase.marketOpenEndDt}</td>
+                    <td class="value"><span style="color: #337AB7">${groupPurchase.marketOpenStartDt}</span> ~ ${groupPurchase.marketOpenEndDt}</td>
                 </tr>
                 <tr>
                     <td class="label">장소</td>
@@ -647,7 +676,7 @@
                                         </table>
 
                                         <table style="width: 100%;">
-                                            <tr><td style="text-align: right;padding-right: 0px;"><button type="button" class="btn btn-warning"><img src="/resources/css/images/gic/ic_sms_white_18dp_1x.png"> 모든주문자에게 SMS 보내기</button></td></tr>
+                                            <tr><td style="text-align: right;padding-right: 0px;"><button type="button" class="btn btn-warning" onclick="sendGroupMessagePopup()"><img src="/resources/css/images/gic/ic_sms_white_18dp_1x.png"> 모든주문자에게 SMS 보내기</button></td></tr>
                                         </table>
                                     </div>
                                 </div>
