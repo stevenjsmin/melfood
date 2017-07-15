@@ -254,7 +254,15 @@
             win_dialog.close();
         }
     </script>
+
+    <script type="text/javascript">
+        function goPartnersShop() {
+            document.location.href = "/shop/Main.yum";
+        }
+    </script>
 </head>
+
+
 
 <body>
 <div id="groupPurchaseImagePopup"></div>
@@ -416,10 +424,10 @@
                         <tr>
                             <td></td>
                             <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;height: 40px;font-size: 15px;">
-                                <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
-                                | <span style="font-weight: bold;text-decoration: underline">금.토일엔 삼겹살</span>
-                                | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>
-                                | <span style="font-weight: bold;text-decoration: underline">순이네 반찬</span>
+                                <span style="font-weight: bold;text-decoration: underline"><a href="javascript:goPartnersShop();" style="color: #DCDEE0;">로즈베이커리</a></span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">금.토일엔 삼겹살</span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">족발과의 동침</span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">순이네 반찬</span>
                             </td>
                         </tr>
                     </table>
