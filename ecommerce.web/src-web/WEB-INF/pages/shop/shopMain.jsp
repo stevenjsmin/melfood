@@ -44,6 +44,20 @@
             line-height: 32px;
             padding-left: 3px;
         }
+        #grid_panel_main {
+            border: 0px;
+        }
+        .k-grid tbody tr {
+            height: 35px;
+        }
+        .k-grid-content>table>tbody>tr>td {
+            font-size: 13px;
+            border-left: 0px;
+        }
+        .k-grid-pager {
+            height: 30px;
+            padding-top: 5px;
+        }
     </style>
     <script type="text/javascript">
         var KENDO_SELECTED_RECORD = null;
@@ -199,7 +213,7 @@
                     </div>
 
                     <!-- Table -->
-                    <div id="grid_panel_main"></div>
+                    <div id="grid_panel_main" style="margin-right: 20px;margin-left: 20px;"></div>
                 </div>
             </div>
         </div>
