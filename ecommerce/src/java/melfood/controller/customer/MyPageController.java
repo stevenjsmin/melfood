@@ -488,7 +488,7 @@ public class MyPageController extends BaseController {
 
 
     @RequestMapping("/myCommunication")
-    public ModelAndView myQnAs(HttpServletRequest request) throws Exception {
+    public ModelAndView myCommunication(HttpServletRequest request) throws Exception {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
         ModelAndView mav = new ModelAndView("tiles/customer/mypage/customer/myCommunication");
         String userId = sessionUser.getUser().getUserId();

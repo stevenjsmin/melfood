@@ -26,9 +26,17 @@ public class ShopMasterDAOImpl extends BaseDAO implements ShopMasterDAO {
         return sqlSession.selectOne("mySqlShopMasterDao.getTotalCntForGetShopMasters", shopMaster);
     }
 
+    /**
+     * 샵 정보를 저장 후, 저장된 샵ID를 반환한다.
+     *
+     * @param shopMaster
+     * @return
+     * @throws Exception
+     */
     @Override
     public Integer insertShopMaster(ShopMaster shopMaster) throws Exception {
-        return sqlSession.insert("mySqlShopMasterDao.insertShopMaster", shopMaster);
+        int updateCnt  = sqlSession.insert("mySqlShopMasterDao.insertShopMaster", shopMaster);
+        return shopMaster.getShopId();
     }
 
     @Override
@@ -39,5 +47,10 @@ public class ShopMasterDAOImpl extends BaseDAO implements ShopMasterDAO {
     @Override
     public Integer deleteShopMaster(ShopMaster shopMaster) throws Exception {
         return sqlSession.delete("mySqlShopMasterDao.deleteShopMaster", shopMaster);
+    }
+
+    @Override
+    public Integer modifyShopGateImageFileInfo(ShopMaster shopMaster) throws Exception {
+        return sqlSession.update("mySqlShopMasterDao.modifyShopGateImageFileInfo", shopMaster);
     }
 }

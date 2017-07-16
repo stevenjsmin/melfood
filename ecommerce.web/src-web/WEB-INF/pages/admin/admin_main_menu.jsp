@@ -35,7 +35,9 @@
              } else if(pathName.startsWith("/admin/paymentmethodmgt")) {
                  $("#seller-000").addClass("homer");
                  $("#seller-130").addClass("homer");
-
+             } else if(pathName.startsWith("/admin/shopmastermgt")) {
+                 $("#seller-000").addClass("homer");
+                 $("#seller-140").addClass("homer");
 
              } else if(pathName.startsWith("/admin/grouppurchase")) {
                  $("#grouppurchase-000").addClass("homer");
@@ -90,6 +92,7 @@
                                    <li><a id="seller-110" href="/admin/contractmgt/Main.yum"><i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; 계약 관리</a></li>
                                    <li><a id="seller-120" href="/admin/deliverycalendarmgt/Main.yum"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp; 배송일정 관리</a></li>
                                    <li><a id="seller-130" href="/admin/paymentmethodmgt/Main.yum"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;  결재수단 관리</a></li>
+                                   <li><a id="seller-140" href="/admin/shopmastermgt/Main.yum"><i class="fa fa-industry" aria-hidden="true"></i>&nbsp;  Shop 관리</a></li>
                               </ul>
                          </li>
 

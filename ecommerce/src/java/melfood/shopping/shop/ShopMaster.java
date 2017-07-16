@@ -12,9 +12,11 @@ public class ShopMaster extends BaseDto {
     private Integer shopCredit;
     private String shopName;
     private String shopOwner;
-    private Integer headerBgImagefileId;
+    private String shopOwnerName;
+    private Integer shopGateImageFileId;
     private String notice;
     private Integer templateId;
+    private String templateName;
     private String addressStreet;
     private String addressSuburb;
     private String addressState;
@@ -85,12 +87,12 @@ public class ShopMaster extends BaseDto {
         this.shopOwner = shopOwner;
     }
 
-    public Integer getHeaderBgImagefileId() {
-        return headerBgImagefileId;
+    public Integer getShopGateImageFileId() {
+        return shopGateImageFileId;
     }
 
-    public void setHeaderBgImagefileId(Integer headerBgImagefileId) {
-        this.headerBgImagefileId = headerBgImagefileId;
+    public void setShopGateImageFileId(Integer shopGateImageFileId) {
+        this.shopGateImageFileId = shopGateImageFileId;
     }
 
     public String getNotice() {
@@ -299,5 +301,21 @@ public class ShopMaster extends BaseDto {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public String getShopOwnerName() {
+        return shopOwnerName;
+    }
+
+    public void setShopOwnerName(String shopOwnerName) {
+        this.shopOwnerName = shopOwnerName;
+    }
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 }

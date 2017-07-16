@@ -10,10 +10,12 @@
 		SELECT   a.shop_id                                      'shopId'
 				,a.shop_owner                                   'shopOwner'
 				,a.shop_name                                    'shopName'
+		        ,(SELECT user_name FROM cmm_user WHERE user_id = a.shop_owner) 'shopOwnerName'
 				,a.shop_credit                                  'shopCredit'
-				,a.header_bg_imagefile_id                       'headerBgImagefileId'
+				,a.shop_gate_image_file_id                       'shopGateImageFileId'
 				,a.notice                                       'notice'
 				,a.template_id                                  'templateId'
+				,(SELECT template_name FROM shop_template WHERE template_id = a.template_id) 'templateName'
 				,a.address_street                               'addressStreet'
 				,a.address_suburb                               'addressSuburb'
 				,a.address_state                                'addressState'
@@ -42,7 +44,7 @@
 				<if test="shopOwner != null"> AND a.shop_owner = #{shopOwner} </if>
 				<if test="shopName != null"> AND UPPER(a.shop_name) LIKE CONCAT('%', UPPER(#{shopName}), '%') </if>
 		        <if test="shopCredit != null and shopCredit != 0"> AND a.shop_credit = #{shopCredit} </if>
-		        <if test="headerBgImagefileId != null and headerBgImagefileId != 0"> AND a.header_bg_imagefile_id = #{headerBgImagefileId} </if>
+		        <if test="shopGateImageFileId != null and shopGateImageFileId != 0"> AND a.shop_gate_image_file_id = #{shopGateImageFileId} </if>
 				<if test="notice != null"> AND UPPER(a.notice) LIKE CONCAT('%', UPPER(#{notice}), '%') </if>
 		        <if test="templateId != null and templateId != 0"> AND a.template_id = #{templateId} </if>
 				<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
@@ -70,7 +72,7 @@
 				<if test="shopOwner != null"> AND a.shop_owner = #{shopOwner} </if>
 				<if test="shopName != null"> AND UPPER(a.shop_name) LIKE CONCAT('%', UPPER(#{shopName}), '%') </if>
 				<if test="shopCredit != null and shopCredit != 0"> AND a.shop_credit = #{shopCredit} </if>
-				<if test="headerBgImagefileId != null and headerBgImagefileId != 0"> AND a.header_bg_imagefile_id = #{headerBgImagefileId} </if>
+				<if test="shopGateImageFileId != null and shopGateImageFileId != 0"> AND a.shop_gate_image_file_id = #{shopGateImageFileId} </if>
 				<if test="notice != null"> AND UPPER(a.notice) LIKE CONCAT('%', UPPER(#{notice}), '%') </if>
 				<if test="templateId != null and templateId != 0"> AND a.template_id = #{templateId} </if>
 				<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
@@ -89,13 +91,13 @@
 	</select>
 
 
-	<insert id="insertShopMaster" parameterType="ShopMaster">
+	<insert id="insertShopMaster" parameterType="ShopMaster" useGeneratedKeys="true" keyProperty="shopMaster.shopId" keyColumn="shop_id">
 		/* QUERY ID : insertShopMaster */
 		INSERT INTO shop_master (
                        shop_credit
                        ,shop_name
                        ,shop_owner
-                       ,header_bg_imagefile_id
+                       ,shop_gate_image_file_id
                        ,notice
                        ,template_id
                        ,address_street
@@ -123,7 +125,7 @@
                                 #{shopCredit}
                                ,#{shopName}
                                ,#{shopOwner}
-                               ,#{headerBgImagefileId}
+                               ,#{shopGateImageFileId}
                                ,#{notice}
                                ,#{templateId}
                                ,#{addressStreet}
@@ -148,6 +150,11 @@
                                ,#{discountMethod}
                                ,#{discountFixedAmount}
                                ,#{discountRateValue}   )
+
+
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="shopId">
+			SELECT LAST_INSERT_ID() as shopId
+		</selectKey>
 	</insert>
 
 	<update id="modifyShopMaster" parameterType="ShopMaster">
@@ -157,7 +164,7 @@
                ,shop_credit                                  =   #{shopCredit}
                ,shop_name                                    =   #{shopName}
                ,shop_owner                                   =   #{shopOwner}
-               ,header_bg_imagefile_id                       =   #{headerBgImagefileId}
+               ,shop_gate_image_file_id                      =   #{shopGateImageFileId}
                ,notice                                       =   #{notice}
                ,template_id                                  =   #{templateId}
                ,address_street                               =   #{addressStreet}
@@ -196,7 +203,7 @@
 				,a.template_name   'templateName'
 				,a.template_desc   'templateDesc'
 				,a.tiles_id        'tilesId'
-		FROM shop_master a
+		FROM shop_template a
 		WHERE 1 = 1
 			<if test="templateId != null and templateId != 0"> AND a.template_id = #{templateId} </if>
 			<if test="templateName != null"> AND UPPER(a.template_name) LIKE CONCAT('%', UPPER(#{templateName}), '%') </if>
@@ -204,5 +211,14 @@
 			<if test="tilesId != null"> AND a.tiles_id = #{tilesId} </if>
 			<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 	</select>
+
+	<update id="modifyShopGateImageFileInfo" parameterType="ShopMaster">
+		/* QUERY ID : modifyShopGateImageFileInfo */
+		UPDATE shop_master
+		SET modify_datetime = CURRENT_TIMESTAMP
+		<if test="shopGateImageFileId == null or shopGateImageFileId == 0">,shop_gate_image_file_id = null </if>
+		<if test="shopGateImageFileId != null and shopGateImageFileId != 0">,shop_gate_image_file_id = #{shopGateImageFileId} </if>
+		WHERE shop_id = #{shopId}
+	</update>
 
 </mapper>

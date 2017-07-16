@@ -114,7 +114,7 @@
                     {hidden: true, field: 'id'},
                     {title: '장본일자', field: 'createDatetime', attributes: {style: "color: e37200;"}},
                     {title: '판매자', field: 'sellerName', width: 100},
-                    {title: '공구ㅣ일반', template: kendo.template($("#normalOrGroupOrder-template").html()), filterable: false, width: 100},
+                    {title: '공구/일반', template: kendo.template($("#normalOrGroupOrder-template").html()), filterable: false, width: 100},
                     {title: '결재방법', template: kendo.template($("#paymentMethod-template").html()), width: 100},
                     {title: '결재상태', template: kendo.template($("#statusPayment-template").html()), filterable: false, width: 100}
                 ] // End of Columns

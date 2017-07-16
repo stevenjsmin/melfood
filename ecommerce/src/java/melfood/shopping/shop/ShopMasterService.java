@@ -14,6 +14,13 @@ public interface ShopMasterService {
 
     public Integer getTotalCntForGetShopMasters(ShopMaster shopMaster);
 
+    /**
+     * 샵 정보를 저장 후, 저장된 샵ID를 반환한다.
+     *
+     * @param shopMaster
+     * @return
+     * @throws Exception
+     */
     public Integer insertShopMaster(ShopMaster shopMaster) throws Exception;
 
     public Integer modifyShopMaster(ShopMaster shopMaster) throws Exception;
@@ -25,5 +32,10 @@ public interface ShopMasterService {
     public List<Option> getShopTemplateOptions(ShopTemplate shopTemplate) throws Exception;
 
     public List<Option> getShopTemplateOptions(ShopTemplate shopTemplate, int selectedTemplateId) throws Exception;
+
+    public int transferToAttachementFileDb(int shopId) throws Exception;
+
+    public Integer removeShopGateImageFileInfo(int shopId) throws Exception;
+
 
 }

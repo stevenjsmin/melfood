@@ -9,7 +9,9 @@
 package melfood.controller.admin;
 
 import com.google.maps.model.GeocodingResult;
+import melfood.framework.Ctx;
 import melfood.framework.MelfoodConstants;
+import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.system.BaseController;
@@ -80,9 +82,9 @@ public class ShopMasterMgtController extends BaseController {
         return model;
     }
 
-    @RequestMapping("/shopMaster")
+    @RequestMapping("/detailInfo")
     public ModelAndView shopMaster(HttpServletRequest request) throws Exception {
-        ModelAndView mav = new ModelAndView("tiles/admin/shopmaster/shopMaster");
+        ModelAndView mav = new ModelAndView("tiles/admin/shopmaster/detailInfo");
 
         String shopId = request.getParameter("shopId");
         ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
@@ -131,8 +133,9 @@ public class ShopMasterMgtController extends BaseController {
         String shopId = request.getParameter("shopId");
 
         ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
+        mav.addObject("shopMaster", shopMaster);
 
-        List<Option> templateOptions = shopMasterService.getShopTemplateOptions(new ShopTemplate(), shopMaster.getShopId());
+        List<Option> templateOptions = shopMasterService.getShopTemplateOptions(new ShopTemplate(), shopMaster.getTemplateId());
         htmlProperty = new Properties("templateId");
         htmlProperty.setCssClass("form-control");
         mav.addObject("cbxTemplateId", codeService.generateCmbx(templateOptions, htmlProperty, true));
@@ -142,20 +145,20 @@ public class ShopMasterMgtController extends BaseController {
         htmlProperty.setCssClass("form-control");
         mav.addObject("cbxShopOwner", contractInfoService.generateCmbx(shopOwnerOptions, htmlProperty, true));
 
-        List<Option> addressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE");
+        List<Option> addressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", shopMaster.getAddressState());
         htmlProperty = new Properties("addressState");
         htmlProperty.setCssClass("form-control");
         mav.addObject("cbxAddressState", codeService.generateCmbx(addressStateOptions, htmlProperty));
 
+        List<Option> forDeliverCalcAddressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", shopMaster.getForDeliverCalcAddressState());
         htmlProperty = new Properties("forDeliverCalcAddressState");
         htmlProperty.setCssClass("form-control");
-        mav.addObject("cbxForDeliverCalcAddressState", codeService.generateCmbx(addressStateOptions, htmlProperty));
+        mav.addObject("cbxForDeliverCalcAddressState", codeService.generateCmbx(forDeliverCalcAddressStateOptions, htmlProperty));
 
         // 배달가능여부 : 기본값 : N
         List<Option> deliverableOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DELIVERABLE", "N");
         String htmlForDeliverableCbx = HtmlCodeGenerator.generateComboboxForOptions("deliveryService", deliverableOptions);
         mav.addObject("cbxDeliveryService", htmlForDeliverableCbx);
-
 
         return mav;
     }
@@ -230,7 +233,13 @@ public class ShopMasterMgtController extends BaseController {
                 shopMaster.setForDeliverCalcAddressSuburb(shopMaster.getAddressSuburb());
                 shopMaster.setForDeliverCalcAddressState(shopMaster.getAddressState());
                 shopMaster.setForDeliverCalcAddressPostcode(shopMaster.getAddressPostcode());
+            } else {
+                shopMaster.setForDeliverCalcAddressStreet(forDeliverCalcAddressStreet);
+                shopMaster.setForDeliverCalcAddressSuburb(forDeliverCalcAddressSuburb);
+                shopMaster.setForDeliverCalcAddressState(forDeliverCalcAddressState);
+                shopMaster.setForDeliverCalcAddressPostcode(forDeliverCalcAddressPostcode);
             }
+
 
             if (StringUtils.isNotBlank(deliveryService)) shopMaster.setDeliveryService(deliveryService);
             if (StringUtils.isNotBlank(deliveryFeePerKm)) shopMaster.setDeliveryFeePerKm(deliveryFeePerKm);
@@ -287,10 +296,118 @@ public class ShopMasterMgtController extends BaseController {
 
             } else {
                 updateCnt = shopMasterService.modifyShopMaster(shopMaster);
+                updateCnt = Integer.parseInt(shopId);
             }
+
+            model.put("shopId", updateCnt); // updateCnt --> 추가된 Shop ID
 
             model.put("resultCode", "0");
             model.put("message", updateCnt + " 의 정보가 반영되었습니다.");
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+
+        return model;
+    }
+
+    @RequestMapping(value = "/deleteShopMaster", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> deleteShopMaster(HttpServletRequest request) throws Exception {
+
+        Map<String, Object> model = new HashMap<String, Object>();
+
+        String shopId = request.getParameter("shopId");
+        if (StringUtils.isBlank(shopId)) {
+            throw new Exception("[shopId]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        try {
+            shopMasterService.deleteShopMaster(new ShopMaster(shopId));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.info(e.getMessage());
+        }
+        return model;
+
+    }
+
+
+    @RequestMapping(value = "/shopGateImageUpload", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> shopGateImageUpload(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        Integer uploadedFileNo = 0;
+
+        String subDirectory = Ctx.getVar("SHOP.GATEIMAGE.TEMP.UPLOAD.DIR");
+
+        try {
+            String userId = sessionUser.getUser().getUserId();
+            String shopId = request.getParameter("shopId"); // Order Id
+
+            ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
+            if (shopMaster == null) throw new Exception("샵정보가 존재하지 않아, 이미지를 첨부 할 수 없습니다.");
+
+            Integer imageFileId = shopMaster.getShopGateImageFileId();
+
+            // 이미 등록된 파일이 있다면 삭제해준다.
+            if (imageFileId != null) {
+                attachmentFileService.deleteAttachmentFile(new AttachmentFile(imageFileId));
+            }
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory); // 기존의 파일들을 지워준다.
+
+            // 파일을 임시 업로드 위치에 놓는다.
+            attachmentFileService.uploadFile(request, subDirectory);
+            Integer insertedFileId = shopMasterService.transferToAttachementFileDb(Integer.parseInt(shopId));
+
+            // 기존의 파일들을 (다시한번)지워준다.
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory);
+
+            AttachmentFile attachedFile = attachmentFileService.getAttachmentFile(new AttachmentFile(insertedFileId));
+
+            model.put("attachedFileNo", insertedFileId);
+            model.put("attachedFileName", attachedFile.getFileName());
+            model.put("attachedFileCreateDate", attachedFile.getCreateDatetime());
+            model.put("resultCode", "0");
+            model.put("message", "File uploaded successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            attachmentFileService.deleteAllfilesForTempUploadDir(subDirectory);
+
+            model.put("receiptFileNo", null);
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+        }
+        return model;
+
+    }
+
+    @RequestMapping(value = "/shopGateImageRemove", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> shopGateImageRemove(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        Map<String, Object> model = new HashMap<String, Object>();
+        String userId = sessionUser.getUser().getUserId();
+        String shopId = request.getParameter("shopId"); // Order Id
+
+        ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
+        if (shopMaster == null) throw new Exception("샵정보가 존재하지 않아, 영수증 첨부를 삭제 할 수 없습니다.");
+
+        try {
+            // 물리적인 위치의 파일을 삭제하고, 첨부파일을 관리하는 테이블에서 또한 삭제해 준다.
+            attachmentFileService.deleteAttachmentFile(new AttachmentFile(shopMaster.getShopGateImageFileId()));
+
+            // 주문테이블의 영수증파일 아이디컬럼을 Null 처리해준다.
+            shopMasterService.removeShopGateImageFileInfo(Integer.parseInt(shopId));
+
+            model.put("resultCode", "0");
+            model.put("message", "1개 의 정보가 반영되었습니다.");
 
         } catch (Exception e) {
             logger.info(e.getMessage());
