@@ -161,4 +161,19 @@ public class UserDAOImpl extends BaseDAO implements UserDAO {
         int updateCnt = sqlSession.update("mySqlUserDao.updateMobileValidCheckCode", user);
         return updateCnt;
     }
+
+
+    /**
+     * 사용자의 홈주소 구글 좌표주소를 갱신한다.<br/>
+     * user객체에 사용자ID, addressHomeGmapLatitude, addressHomeGmapLongitude, addressHomeGmapFormattedAddress를 설정해줘야 한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public int updateHomeAddressGmapCoordinate(User user) throws Exception {
+        int updateCnt = sqlSession.update("mySqlUserDao.updateHomeAddressGmapCoordinate", user);
+        return updateCnt;
+    }
 }

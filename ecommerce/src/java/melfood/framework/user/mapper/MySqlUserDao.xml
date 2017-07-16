@@ -22,6 +22,9 @@
 		       ,a.address_suburb   'addressSuburb'
 		       ,a.address_state    'addressState'
 		       ,a.address_postcode 'addressPostcode'
+		       ,a.address_home_gmap_latitude 'addressHomeGmapLatitude'
+		       ,a.address_home_gmap_longitude 'addressHomeGmapLongitude'
+		       ,a.address_home_gmap_formatted_address 'addressHomeGmapFormattedAddress'
 		       ,CONCAT(a.address_street, ', ', a.address_suburb, ', ', a.address_state, ' ',  a.address_postcode)       'address'
 		       ,a.use_social_messenger_id    'useSocialMessengerId'
 		       ,a.use_social_messenger    'useSocialMessenger'
@@ -161,6 +164,9 @@
 		                 address_suburb,
 		                 address_state,
 		                 address_postcode,
+		                 address_home_gmap_latitude,
+		                 address_home_gmap_longitude,
+		                 address_home_gmap_formatted_address,
 		                 photo_file,
 		                 abn,
 		                 acn,
@@ -200,6 +206,9 @@
 		        #{addressSuburb},
 		        #{addressState},
 		        #{addressPostcode},
+		        #{addressHomeGmapLatitude},
+		        #{addressHomeGmapLongitude},
+		        #{addressHomeGmapFormattedAddress},
 		        #{photoFile},
 		        #{abn},
 		        #{acn},
@@ -292,8 +301,11 @@
 					,address_street = #{addressStreet} 
 					,address_suburb = #{addressSuburb} 
 					,address_state = #{addressState} 
-					,address_postcode = #{addressPostcode} 
-					,photo_file = #{photoFile} 
+					,address_postcode = #{addressPostcode}
+					,address_home_gmap_latitude = #{addressHomeGmapLatitude}
+					,address_home_gmap_longitude = #{addressHomeGmapLongitude}
+					,address_home_gmap_formatted_address = #{addressHomeGmapFormattedAddress}
+					,photo_file = #{photoFile}
 					,abn = #{abn} 
 					,acn = #{acn} 
 					,address_business_samewith_home = #{addressBusinessSamewithHome} 
@@ -341,7 +353,10 @@
 					<if test="addressSuburb != null">,address_suburb = #{addressSuburb} </if>
 					<if test="addressState != null">,address_state = #{addressState} </if>
 					<if test="addressPostcode != null">,address_postcode = #{addressPostcode} </if>
-					<if test="photoFile != null">,photo_file = #{photoFile} </if>
+					<if test="addressHomeGmapLatitude != null">,address_home_gmap_latitude = #{addressHomeGmapLatitude} </if>
+					<if test="addressHomeGmapLongitude != null">,address_home_gmap_longitude = #{addressHomeGmapLongitude} </if>
+					<if test="addressHomeGmapFormattedAddress != null">,address_home_gmap_formatted_address = #{addressHomeGmapFormattedAddress} </if>
+	   		 		<if test="photoFile != null">,photo_file = #{photoFile} </if>
 					<if test="abn != null">,abn = #{abn} </if>
 					<if test="acn != null">,acn = #{acn} </if>
 					<if test="addressBusinessSamewithHome != null">,address_business_samewith_home = #{addressBusinessSamewithHome} </if>
@@ -428,6 +443,16 @@
 				        ,mobile_valid_code_issue_date = CURRENT_TIMESTAMP
 			    </if>
 			    <if test="applyStatus != null">,apply_status = #{applyStatus} </if>
+		 WHERE user_id = #{userId}
+	</update>
+
+	<update id="updateHomeAddressGmapCoordinate" parameterType="User">
+		/* QUERY ID : updateHomeAddressGmapCoordinate */
+		UPDATE cmm_user
+		   SET  modify_datetime = CURRENT_TIMESTAMP
+			    <if test="addressHomeGmapLatitude != null">,address_home_gmap_latitude = #{addressHomeGmapLatitude} </if>
+			    <if test="addressHomeGmapLongitude != null">,address_home_gmap_longitude = #{addressHomeGmapLongitude} </if>
+			    <if test="addressHomeGmapFormattedAddress != null">,address_home_gmap_formatted_address = #{addressHomeGmapFormattedAddress} </if>
 		 WHERE user_id = #{userId}
 	</update>
 

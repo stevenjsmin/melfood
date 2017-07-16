@@ -1,8 +1,8 @@
-/** 
+/**
  * 2016 Option.java
  * Created by steven.min
- *  
- * For use this source code, you must obtain proper permission. 
+ * <p>
+ * For use this source code, you must obtain proper permission.
  * Or enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.
  */
 
@@ -15,51 +15,57 @@ package melfood.framework.uitl.html;
  *
  */
 public class Option {
-	private String value;
-	private String name;
-	private boolean isSelected = false;
+    private String value;
+    private String name;
+    private boolean isSelected = false;
 
-	public Option() {
-	}
+    public Option() {
+    }
 
-	public Option(String value) {
-		this.value = value;
-		this.name = value;
-	}
+    public Option(String value) {
+        this.value = value;
+        this.name = value;
+    }
 
-	public Option(String value, String name) {
-		this.value = value;
-		this.name = name;
-	}
+    public Option(String value, String name) {
+        this.value = value;
+        this.name = name;
+    }
 
-	public Option(String value, String name, boolean isSelected) {
-		this.value = value;
-		this.name = name;
-		this.isSelected = isSelected;
-	}
+    public Option(String value, String name, boolean isSelected) {
+        this.value = value;
+        this.name = name;
+        this.isSelected = isSelected;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public Option(int value, String name, boolean isSelected) {
+        this.value = Integer.toString(value);
+        this.name = name;
+        this.isSelected = isSelected;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public boolean isSelected() {
-		return isSelected;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
-	}
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
 
 }

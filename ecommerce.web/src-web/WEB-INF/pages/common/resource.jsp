@@ -35,6 +35,8 @@
 <script src="/resources/js/bootstrap.min.js?ver=<%=Ctx.releaseVersion%>"></script>
 <script src="/resources/js/bootstrap-dialog.min.js?ver=<%=Ctx.releaseVersion%>"></script>
 
+<script src="/resources/highcharts-5.0.12/highcharts.js"></script>
+
 <!-- https://owlcarousel2.github.io/OwlCarousel2/docs/api-options.html -->
 <link href="/resources/owlcarousel/owl.carousel.min.css" rel="stylesheet" media="screen">
 <link href="/resources/owlcarousel/owl.theme.default.min.css" rel="stylesheet" media="screen">

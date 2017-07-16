@@ -192,7 +192,8 @@ function save(){
       if(sellerIsMandatoryChooseDeliveryPickupDate == '' || sellerIsMandatoryChooseDeliveryPickupDate == undefined ) sellerIsMandatoryChooseDeliveryPickupDate = 'Y';
       
       if(validateForm() == false) return;
-      
+
+      progressWithId(true, 'main_contents_table')
       $.ajax({
            url  : "/framework/usermanager/saveUser.yum",
            data      : {
@@ -240,6 +241,8 @@ function save(){
 function callbackSave(data) {
       var message = data.message;
       var resultCode = data.resultCode;
+
+      progressWithId(false, 'main_contents_table')
 
       if (resultCode != "0") {
            warningPopup(data.message);

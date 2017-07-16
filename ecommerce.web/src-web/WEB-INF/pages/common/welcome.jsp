@@ -44,9 +44,11 @@
         }
         .gppurchase {
             border: 2px solid transparent;
+            border-left: 6px solid #F15F4C;
         }
         .gppurchase:hover {
             border: 2px solid #0099FF;
+            border-left: 6px solid #008600;
         }
 
         .gppurchaseimage {
@@ -149,7 +151,7 @@
                         message = message + "</tr>";
                     } else {
                         message = message + "<tr style='height: 20px;'>";
-                        message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #EB7D3C;'>공.구 마감 </b>: 주문기간 종료됬습니다.</td>";
+                        message = message + "  <td style='text-align: right;padding-top: 15px;' colspan='2'><b style='color: #EB7D3C;'>공.구 마감 </b>: 주문기간 종료됐습니다.</td>";
                         message = message + "</tr>";
                     }
 
@@ -176,7 +178,7 @@
                 } else if( '${entry.status}' == '4_WILL_BE_ORDER') {
                     message = message + "<tr style='height: 20px;'>";
                     message = message + "  <td style='width: 25px;text-align: center;'><i class='fa fa-clock-o fa-lg' aria-hidden='true' style='color:#008600;'></i></td>";
-                    message = message + "  <td style='height: 35px;color:#008600;'><span style='font-weight: bold;'>[Coming soon..]</span> ${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문</span></td>";
+                    message = message + "  <td style='height: 35px;color:#008600;'><span style='font-weight: bold;color: #C2002F;'>Coming soon..</span> ${entry.orderStartDt} <span style='text-decoration: underline;'>부터 주문</span></td>";
                     message = message + "</tr>";
 
                 } else {
@@ -252,7 +254,15 @@
             win_dialog.close();
         }
     </script>
+
+    <script type="text/javascript">
+        function goPartnersShop() {
+            document.location.href = "/shop/Main.yum";
+        }
+    </script>
 </head>
+
+
 
 <body>
 <div id="groupPurchaseImagePopup"></div>
@@ -289,7 +299,7 @@
 <!-- 공동구매목록-->
 <c:forEach var="groupPurchase" items="${groupPurchaselist}" varStatus="count" begin="0">
 
-    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;border-left: 6px solid #F15F4C;margin-bottom: 5px;">
+    <div class="row gppurchase" style="height: 170px;text-align: center; padding-top: 5px; padding-bottom: 5px;margin-bottom: 5px;">
 
         <div class="col-sm-2 col-centered" style="padding-right: 40px;text-align: right;">
             <c:choose>
@@ -387,10 +397,6 @@
 
                     </c:choose>
 
-
-
-
-
             </table>
         </div>
 
@@ -408,19 +414,20 @@
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div class="venueInfoWrapper">
 
-            <div class="row">
-                <div class="col-sm-6" style="padding: 0px 0px;">
+            <div class="row" style="text-align: right;">
+                <div class="col-sm-12" style="padding: 0px 0px;">
                     <table style="width: 100%;">
                         <tr>
-                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;width: 150px;padding-left: 50px;">협동조합 파트너스</td>
                             <td></td>
+                            <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;">협동조합 파트너스</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td style="text-align: left;color: #DDDEE0;padding-top: 5px;padding-left: 10px;height: 40px;font-size: 15px;">
-                                <span style="font-weight: bold;text-decoration: underline">로즈베이커리</span>
-                                | <span style="font-weight: bold;text-decoration: underline">족발과의 동침</span>
-                                | <span style="font-weight: bold;text-decoration: underline">조선김치</span>
+                            <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;height: 40px;font-size: 15px;">
+                                <span style="font-weight: bold;text-decoration: underline"><a href="javascript:goPartnersShop();" style="color: #DCDEE0;">로즈베이커리</a></span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">금.토일엔 삼겹살</span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">족발과의 동침</span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">순이네 반찬</span>
                             </td>
                         </tr>
                     </table>

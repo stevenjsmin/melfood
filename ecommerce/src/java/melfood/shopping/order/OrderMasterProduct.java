@@ -2,13 +2,15 @@ package melfood.shopping.order;
 
 import melfood.framework.common.dto.BaseDto;
 
+import java.util.List;
+
 /**
  * Created by Steven on 4/7/17.
  */
 public class OrderMasterProduct extends BaseDto {
 
     private int orderMasterProductId;
-    private int orderMasterId;
+    private int orderMasterId; // order_master 테이블의 참조
     private int productId;
     private String productName;
     private String productDescription;
@@ -26,6 +28,9 @@ public class OrderMasterProduct extends BaseDto {
     private String sellerAddressState;
     private Float unitPrice;
     private Float comissionFee;
+    private Integer numberOfOrder;
+
+    private List<OrderMasterProductOption> orderMasterProductOptionList;
 
     public OrderMasterProduct() {
     }
@@ -200,29 +205,20 @@ public class OrderMasterProduct extends BaseDto {
         this.comissionFee = comissionFee;
     }
 
-    @Override
-    public String toString() {
-        return "OrderMasterProduct{" +
-                "orderMasterProductId=" + orderMasterProductId +
-                ", orderMasterId=" + orderMasterId +
-                ", productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", productDescription='" + productDescription + '\'' +
-                ", productCategory='" + productCategory + '\'' +
-                ", hasProductOption='" + hasProductOption + '\'' +
-                ", amountProductOption=" + amountProductOption +
-                ", sellerId='" + sellerId + '\'' +
-                ", sellerName='" + sellerName + '\'' +
-                ", sellerMobile='" + sellerMobile + '\'' +
-                ", sellerPhone='" + sellerPhone + '\'' +
-                ", sellerEmail='" + sellerEmail + '\'' +
-                ", sellerAddressStreet='" + sellerAddressStreet + '\'' +
-                ", sellerAddressSuburb='" + sellerAddressSuburb + '\'' +
-                ", sellerAddressPostcode='" + sellerAddressPostcode + '\'' +
-                ", sellerAddressState='" + sellerAddressState + '\'' +
-                ", unitPrice=" + unitPrice +
-                ", comissionFee=" + comissionFee +
-                '}';
+    public List<OrderMasterProductOption> getOrderMasterProductOptionList() {
+        return orderMasterProductOptionList;
+    }
+
+    public void setOrderMasterProductOptionList(List<OrderMasterProductOption> orderMasterProductOptionList) {
+        this.orderMasterProductOptionList = orderMasterProductOptionList;
+    }
+
+    public Integer getNumberOfOrder() {
+        return numberOfOrder;
+    }
+
+    public void setNumberOfOrder(Integer numberOfOrder) {
+        this.numberOfOrder = numberOfOrder;
     }
 }
 

@@ -381,12 +381,16 @@ function underDevelopment(){
 function warningPopup(message){
 	if(message != null && message != ''){
 		$("#warningPopupMessage").html(message);
+	} else {
+		$("#warningPopupMessage").html('Unknown error : 관리자에게 문의해주세요');
 	}
 	$("#warningPopupWindow").modal();
 }
 function infoPopup(message){
 	if(message != null && message != ''){
 		$("#infoPopupMessage").html(message);
+	} else {
+        $("#infoPopupMessage").html('Unknown error');
 	}
 	$("#infoPopupWindow").modal()
 }

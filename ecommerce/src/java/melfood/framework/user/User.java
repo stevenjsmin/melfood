@@ -18,7 +18,6 @@ import java.util.List;
  * Persistence model for User
  *
  * @author Steven J.S Min
- *
  */
 public class User extends BaseDto {
 
@@ -44,6 +43,11 @@ public class User extends BaseDto {
     private String addressSuburb;
     private String addressState;
     private String addressPostcode;
+
+    private String addressHomeGmapLatitude;
+    private String addressHomeGmapLongitude;
+    private String addressHomeGmapFormattedAddress;
+
     private String addressBusinessSuburb;
     private String addressBusinessStreet;
     private String addressBusinessState;
@@ -546,5 +550,29 @@ public class User extends BaseDto {
 
     public void setMobileValidCodeIssueDate(String mobileValidCodeIssueDate) {
         this.mobileValidCodeIssueDate = mobileValidCodeIssueDate;
+    }
+
+    public String getAddressHomeGmapLatitude() {
+        return addressHomeGmapLatitude;
+    }
+
+    public void setAddressHomeGmapLatitude(String addressHomeGmapLatitude) {
+        this.addressHomeGmapLatitude = addressHomeGmapLatitude;
+    }
+
+    public String getAddressHomeGmapLongitude() {
+        return addressHomeGmapLongitude;
+    }
+
+    public void setAddressHomeGmapLongitude(String addressHomeGmapLongitude) {
+        this.addressHomeGmapLongitude = addressHomeGmapLongitude;
+    }
+
+    public String getAddressHomeGmapFormattedAddress() {
+        return addressHomeGmapFormattedAddress;
+    }
+
+    public void setAddressHomeGmapFormattedAddress(String addressHomeGmapFormattedAddress) {
+        this.addressHomeGmapFormattedAddress = addressHomeGmapFormattedAddress;
     }
 }

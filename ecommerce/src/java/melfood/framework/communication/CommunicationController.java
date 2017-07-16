@@ -429,6 +429,22 @@ public class CommunicationController extends BaseController {
         return mav;
     }
 
+    /**
+     * 메시지(Email, SMS)를 발송한다<br/>
+     * <p>
+     * 1. 발송하려는 메시지는 "contents" 파라미터로 전달되어야 한다.<br/>
+     * 2. Email로 메시지를 발송하고자하는 경우 "sendEmail" 파라미터에 true로 전달되어야한다<br/>
+     * 3. SMS로 메시지를 발송하고자하는 경우 "sendSMS" 파라미터에 true로 전달되어야한다<br/>
+     * <p>
+     * 4. 메시지를 발송자 정보는 세션사용자의 정보가 자동 설정된다.<br/>
+     * 5. 메시지를 수신자 정보는 "receiverUserId"로 전달된 사용자의 정보가 설정된다.<br/>
+     *
+     * 6. 메시지의 종류는 "CAHT"으로 설정된다.
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/sendMessage", produces = "application/json")
     @ResponseBody
     public Map<String, Object> sendMessage(HttpServletRequest request) throws Exception {
@@ -516,7 +532,8 @@ public class CommunicationController extends BaseController {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
-        cal.add(Calendar.MONTH, -1);
+        // cal.add(Calendar.MONTH, -1); // One month ago
+        cal.add(Calendar.DAY_OF_MONTH, -7); // 7 Days ago
         communication.setSearchDateFrom(df.format(cal.getTime()));
 
         // For Pagination
@@ -525,7 +542,6 @@ public class CommunicationController extends BaseController {
 
         List<Communication> list = communicationService.getMyCommunicationListWithPerson(communication);
         mav.addObject("communicationList", list);
-
 
 
         return mav;

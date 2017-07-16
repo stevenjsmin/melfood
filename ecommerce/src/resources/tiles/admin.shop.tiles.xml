@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+    "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+	<!-- ORDER MANAGEMENT -->
+	<definition name="tiles/admin/shopmaster/main" extends="tiles/admin/root">
+		<put-attribute name="title" value="All shop search" />
+		<put-attribute name="navigation" value="Admin > Shop > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/shops.jsp" />
+	</definition>
+
+	<definition name="tiles/admin/shopmaster/detailInfo" extends="tiles/admin/root">
+		<put-attribute name="title" value="Detail info" />
+		<put-attribute name="navigation" value="Admin > Shop > Detail info" />
+		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/detailInfoShopMaster.jsp" />
+	</definition>
+
+	<definition name="tiles/admin/shopmaster/regist" extends="tiles/admin/root">
+		<put-attribute name="title" value="Register Shop" />
+		<put-attribute name="navigation" value="Admin > Shop > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/registerShopMaster.jsp" />
+	</definition>
+
+	<definition name="tiles/admin/shopmaster/modify" extends="tiles/admin/root">
+		<put-attribute name="title" value="Modify Shop" />
+		<put-attribute name="navigation" value="Admin > Shop > Search" />
+		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/modifyShopMaster.jsp" />
+	</definition>
+
+</tiles-definitions>

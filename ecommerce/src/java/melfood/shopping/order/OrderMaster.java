@@ -2,6 +2,8 @@ package melfood.shopping.order;
 
 import melfood.framework.common.dto.BaseDto;
 
+import java.util.List;
+
 /**
  * Created by Steven on 4/7/17.
  */
@@ -36,6 +38,7 @@ public class OrderMaster extends BaseDto {
     private String pickupAddressNote;
     private String isPickupOrDelivery;
     private String normalOrGroupOrder;
+    private String groupPurchaseId;
     private String isRefund;
     private String refundDatetime;
     private String refundServiceCharge;
@@ -72,6 +75,16 @@ public class OrderMaster extends BaseDto {
     private Float amountTotalExtra3;
     private Float amountTotalExtra4;
     private Float amountTotal;
+
+    private String groupPurchaseOrganizerName;
+    private String groupPurchaseMarketGmapFormattedAddress;
+    private String groupPurchaseTitle;
+
+
+    private List<OrderMasterProduct> orderMasterProduct;
+
+    private boolean lazyLoad; // Default : false, [False:Load sub-objects(Product), True:Not load sub-objects(Product)]
+
 
     public OrderMaster() {
     }
@@ -611,6 +624,54 @@ public class OrderMaster extends BaseDto {
 
     public void setPaymentAccTransferReceipt(Integer paymentAccTransferReceipt) {
         this.paymentAccTransferReceipt = paymentAccTransferReceipt;
+    }
+
+    public List<OrderMasterProduct> getOrderMasterProduct() {
+        return orderMasterProduct;
+    }
+
+    public void setOrderMasterProduct(List<OrderMasterProduct> orderMasterProduct) {
+        this.orderMasterProduct = orderMasterProduct;
+    }
+
+    public String getGroupPurchaseId() {
+        return groupPurchaseId;
+    }
+
+    public void setGroupPurchaseId(String groupPurchaseId) {
+        this.groupPurchaseId = groupPurchaseId;
+    }
+
+    public boolean isLazyLoad() {
+        return lazyLoad;
+    }
+
+    public void setLazyLoad(boolean lazyLoad) {
+        this.lazyLoad = lazyLoad;
+    }
+
+    public String getGroupPurchaseOrganizerName() {
+        return groupPurchaseOrganizerName;
+    }
+
+    public void setGroupPurchaseOrganizerName(String groupPurchaseOrganizerName) {
+        this.groupPurchaseOrganizerName = groupPurchaseOrganizerName;
+    }
+
+    public String getGroupPurchaseMarketGmapFormattedAddress() {
+        return groupPurchaseMarketGmapFormattedAddress;
+    }
+
+    public void setGroupPurchaseMarketGmapFormattedAddress(String groupPurchaseMarketGmapFormattedAddress) {
+        this.groupPurchaseMarketGmapFormattedAddress = groupPurchaseMarketGmapFormattedAddress;
+    }
+
+    public String getGroupPurchaseTitle() {
+        return groupPurchaseTitle;
+    }
+
+    public void setGroupPurchaseTitle(String groupPurchaseTitle) {
+        this.groupPurchaseTitle = groupPurchaseTitle;
     }
 }
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlPreferGrpPurchaseMarketDayDao">
+
+
+	<insert id="insertPreferGrpPurchaseMarketDay" parameterType="PreferGrpPurchaseMarketDay">
+		/* QUERY ID : insertPreferGrpPurchaseMarketDay */
+		INSERT INTO survey_prefer_grppurchase_marketday (
+					  survey_yyyy
+	                 ,survey_mm
+	                 ,survey_dd
+	                 ,answer_value
+	                 ,answer_type
+	                 ,respondent
+	                 ,respondent_latitude
+	                 ,respondent_longitude
+	                 ,respondent_suburb
+	                 ,respondent_postcode
+	                 ,creator)
+		   VALUES (
+					<if test="surveyYyyy == null"> YEAR(now()) </if>
+					<if test="surveyYyyy != null"> #{surveyYyyy} </if>
+					<if test="surveyMm == null">, LPAD(MONTH(now()), 2, '0') </if>
+					<if test="surveyMm != null">, #{surveyMm} </if>
+					<if test="surveyDd == null">, LPAD(DAY(now()), 2, '0') </if>
+					<if test="surveyDd != null">, #{surveyDd} </if>
+		             ,#{answerValue}
+		             ,#{answerType}
+		             ,#{respondent}
+		             ,#{respondentLatitude}
+		             ,#{respondentLongitude}
+		             ,#{respondentSuburb}
+		             ,#{respondentPostcode}
+		             ,#{creator})		
+	</insert>
+
+
+</mapper>

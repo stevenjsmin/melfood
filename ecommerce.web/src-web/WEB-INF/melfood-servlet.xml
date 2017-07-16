@@ -134,5 +134,8 @@
 	<bean id="userService" class="melfood.framework.user.UserServiceImpl" />
 	<bean id="attachmentFileService" class="melfood.framework.attachement.AttachmentFileServiceImpl" />
 	<bean id="productService" class="melfood.shopping.product.ProductServiceImpl" />
+	<bean id="groupPurchaseService" class="melfood.shopping.grouppurchase.GroupPurchaseServiceImpl" />
+	<bean id="paymentMethodService" class="melfood.shopping.payment.PaymentMethodServiceImpl" />
+	<bean id="codeService" class="melfood.framework.code.CodeServiceImpl" />
 	<bean class="melfood.framework.system.BeanHelper" />
 </beans>

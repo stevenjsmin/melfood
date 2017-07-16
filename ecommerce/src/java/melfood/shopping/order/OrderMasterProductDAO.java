@@ -15,6 +15,14 @@ public interface OrderMasterProductDAO {
      */
     public List<OrderMasterProduct> getOrderMasterProducts(OrderMasterProduct orderMasterProductOption) throws Exception;
 
+    /**
+     * 주문상품을 등록한다.
+     *
+     * @param orderMasterProductOption
+     * @return
+     * @throws Exception
+     */
+    public Integer insertOrderMasterProduct(OrderMasterProduct orderMasterProductOption) throws Exception;
 
     /**
      * 주문상품(들)을 등록한다.
@@ -23,7 +31,7 @@ public interface OrderMasterProductDAO {
      * @return
      * @throws Exception
      */
-    public Integer insertOrderMasterProducts(List<OrderMasterProduct> orderMasterProductOptions) throws Exception;
+    public Integer insertOrderMasterProduct(List<OrderMasterProduct> orderMasterProductOptions) throws Exception;
 
     /**
      * 주문상품을 수정한다.

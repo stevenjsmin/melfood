@@ -35,10 +35,16 @@
              } else if(pathName.startsWith("/admin/paymentmethodmgt")) {
                  $("#seller-000").addClass("homer");
                  $("#seller-130").addClass("homer");
-
+             } else if(pathName.startsWith("/admin/shopmastermgt")) {
+                 $("#seller-000").addClass("homer");
+                 $("#seller-140").addClass("homer");
 
              } else if(pathName.startsWith("/admin/grouppurchase")) {
                  $("#grouppurchase-000").addClass("homer");
+
+
+             } else if(pathName.startsWith("/admin/ordermgt")) {
+                 $("#ordermgt-000").addClass("homer");
 
 
              } else if(pathName.startsWith("/framework/communicationmanager")) {
@@ -72,7 +78,7 @@
                     <a id="resp-menu" class="responsive-menu" href="#"><i class="fa fa-reorder"></i> Menu</a>
 
                     <ul class="menu">
-                         <li><a id="home-000" href="#"><i class="fa fa-home fa-lg"></i>&nbsp; HOME</a>
+                         <li><a id="home-000" href="/"><i class="fa fa-home fa-lg"></i>&nbsp; HOME</a>
                          <li><a id="product-000" href="#"><i class="fa fa-gift fa-lg" aria-hidden="true"></i>&nbsp; 상품관리</a>
                               <ul class="sub-menu">
                                    <li><a id="product-110" href="/admin/categorymgt/Main.yum"><i class="fa fa-tag" aria-hidden="true"></i>&nbsp; 카테고리 관리</a></li>
@@ -86,11 +92,21 @@
                                    <li><a id="seller-110" href="/admin/contractmgt/Main.yum"><i class="fa fa-handshake-o" aria-hidden="true"></i>&nbsp; 계약 관리</a></li>
                                    <li><a id="seller-120" href="/admin/deliverycalendarmgt/Main.yum"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp; 배송일정 관리</a></li>
                                    <li><a id="seller-130" href="/admin/paymentmethodmgt/Main.yum"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;  결재수단 관리</a></li>
+                                   <li><a id="seller-140" href="/admin/shopmastermgt/Main.yum"><i class="fa fa-industry" aria-hidden="true"></i>&nbsp;  Shop 관리</a></li>
                               </ul>
                          </li>
 
 
                          <li><a id="grouppurchase-000" href="/admin/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공동구매 관리</a>
+
+
+                         <li><a id="ordermgt-000" href="#"><i class="fa fa-calculator fa-lg"></i>&nbsp; 주문조회</a>
+                              <ul class="sub-menu">
+                                   <li><a id="ordermgt-110" href="/admin/ordermgt/grouppurchase/Main.yum"><i class="fa fa-users" aria-hidden="true"></i>&nbsp; 공.구주문 조회</a></li>
+                                   <li><a id="ordermgt-120" href="/admin/ordermgt/Main.yum"><i class="fa fa-calculator" aria-hidden="true"></i>&nbsp;  모든주문 조회</a></li>
+                              </ul>
+                         </li>
+
 
 
                          <li><a id="communication-000" href="#"><i class="fa fa-cogs fa-lg"></i>&nbsp; Communication 관리</a>

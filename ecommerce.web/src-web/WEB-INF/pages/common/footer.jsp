@@ -145,13 +145,15 @@
             <tr>
                 <td style="color: #A2A4A4;font-size: 13px">
                     4 Torresdale Road, South Morang VIC 3752, Australia<br/>
-                    ABN : 1234 54 5554 333<br/><br/>
+                    ABN : 25 879 723 890 :: <a href="http://abr.business.gov.au/SearchByAbn.aspx?SearchText=25879723890" style="color: #337AB7;">http://abr.business.gov.au/</a><br/><br/>
                     <table style="color: #A2A4A4;font-size: 13px">
-                        <tr><td>1300 599 888 (Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</td></tr>
+                        <tr><td>Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</td></tr>
                         <tr><td>0422 육삼이 삼삼팔</td></tr>
                     </table>
                 </td>
             </tr>
+            <tr style="height: 20px;"><td></td></tr>
+            <tr><td><a href="/welcome/you.yum" style="font-size: 15px;font-weight: bold;color: #A2A4A4;">공굴러가입 ::: 입점안내</a></td></tr>
         </table>
 
     </div>

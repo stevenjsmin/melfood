@@ -5,8 +5,12 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
+<%@ page import="melfood.framework.Ctx" %>
+
 <!doctype html>
 <head>
+    <script src="/resources/js/melfood/framework/grouppurchasepayment.js?ver=<%=Ctx.releaseVersion%>"></script>
+
     <style>
         .content {
             width: 100%;
@@ -67,6 +71,9 @@
                 $("#cutomerAddress").html(cutomerAddress);
                 $("#estimatedDeliveryTime").html(estimatedDeliveryTime);
                 $("#distance").html(distance);
+
+                $("#delivery_distance").val(distance);
+
                 $("#deliveryFee").html(deliveryFee);
                 $("#deliveryServiceFee").val(deliveryFee);
 
@@ -82,7 +89,6 @@
                 $("#unknownErrorCutomerAddress").html(cutomerAddress);
                 $("#unknownErrorMessage").html(mapResultMessage);
             }
-
 
         }
 
@@ -287,7 +293,7 @@
             var paymentMethod = data.paymentMethod.paymentMethod;
 
             if (resultCode != "0") {
-                warningPopup(data.message);
+                warningPopup(message);
             } else {
                 if(paymentMethod == 'ACCOUNT_TRANSFER') {
                     $('#detail_info_back_account').show();
@@ -333,13 +339,150 @@
         }
     </script>
 
-
     <script type="text/javascript">
-        function doPaymentProcess() {
 
+        function validateForm(){
+
+            var validation = true;
+            var prefix = "- &nbsp;&nbsp;";
+            var message = "";
+
+            var totalOrderAmount = 0;
+            var minimumPurchaseAmount = ${groupPurchase.minimumPurchaseAmount};
+            var paymentMethod = $('#paymentMethod').val();
+
+            var orderAmount = 0;
+            var unitPrice = 0;
+
+            <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count" begin="0">
+                    orderAmount = $("#amountOfOrder_${groupPurchaseProduct.product.prodId}").val();
+                    unitPrice = ${groupPurchaseProduct.unitPrice};
+
+                    totalOrderAmount = Number(totalOrderAmount) + Number((Number(orderAmount) * Number(unitPrice)));
+            </c:forEach>
+
+            if(totalOrderAmount == 0) {
+                message = message + prefix + "현재 주문된 내용이 없습니다.<br>";
+                validation = false;
+            }
+
+            if(parseFloat(minimumPurchaseAmount) > 0) {
+                if(parseFloat(totalOrderAmount) < parseFloat(minimumPurchaseAmount)){
+                    message = message + prefix + "최소 주문금액은" + toCurrency(minimumPurchaseAmount) + "입니다.<br>";
+                    validation = false;
+                }
+            }
+
+            if(paymentMethod == "") {
+                message = message + prefix + "결재방법을 선택해주세요<br>";
+                validation = false;
+            }
+
+            if(validation == false){
+                // 오류가 있는 경우 경고 창을 보여준다.
+                warningPopup(message);
+            }
+
+            return validation;
         }
+
+
     </script>
 
+
+    <script type="text/javascript">
+        function paymentProcessConfirm() {
+
+            if(validateForm() == false) return;
+
+            var amount = 0;
+            var totalProdAmount = 50.5;
+            var deliveryFee = 200;
+            var subTotal = 0.0;
+            var toBeDiscountAmount = 0.0;
+            var finalAmount = 0.0;
+
+            var orderAmount = "";
+            var optionValue = "";
+
+            var prodCnt = 0;
+
+            var JSONDocument = "{"
+            JSONDocument = JSONDocument + '"groupPurchaseId":' + '"${groupPurchase.groupPurchaseId}"' + ",";
+            JSONDocument = JSONDocument + '"items" : [';
+
+            <c:forEach var="groupPurchaseProduct" items="${groupPurchaseProducts}" varStatus="count" begin="0">
+                orderAmount = $("#amountOfOrder_${groupPurchaseProduct.product.prodId}").val();
+                if(orderAmount > 0){
+                    JSONDocument = JSONDocument + '{"productOrder" : [{' + '"${groupPurchaseProduct.product.prodId}" : "' + orderAmount + '"}]';
+                    prodCnt++;
+
+                    if(${fn:length(groupPurchaseProduct.product.productOptionGroups)} > 0) {
+                        JSONDocument = JSONDocument + ',';
+                        JSONDocument = JSONDocument + '"options" : ';
+                        JSONDocument = JSONDocument + '[';
+                        <c:forEach var="productOptionGroup" items="${groupPurchaseProduct.product.productOptionGroups}" varStatus="count1" begin="0">
+                            optionValue = $("#" + ${groupPurchaseProduct.product.prodId} + "_" + ${count1.index + 1}).val();
+                            <c:choose>
+                                <c:when test="${fn:length(groupPurchaseProduct.product.productOptionGroups) gt 0 }">
+                                    <c:choose>
+                                        <c:when test="${(count1.index + 1) < fn:length(groupPurchaseProduct.product.productOptionGroups) }">
+                                                JSONDocument = JSONDocument + '{' + '"${productOptionGroup.optionLabel}" : "' + optionValue + '"},' ;
+                                        </c:when>
+                                        <c:otherwise>
+                                                JSONDocument = JSONDocument + '{' + '"${productOptionGroup.optionLabel}" : "' + optionValue + '"}' ;
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
+                        JSONDocument = JSONDocument + ']';
+                    } else {
+                        JSONDocument = JSONDocument + ', "options" : []';
+                    }
+                    JSONDocument = JSONDocument + '},';
+                }
+            </c:forEach>
+
+            if(prodCnt > 0) JSONDocument = JSONDocument.substring(0, JSONDocument.length - 1); // Remove last comma.
+            JSONDocument = JSONDocument + ']'
+
+            JSONDocument = JSONDocument + ', "customerOrderNote" : "' + $('#customerOrderNote').val() + '"';
+            JSONDocument = JSONDocument + ', "paymentMethod" : "' + $('#paymentMethod').val() + '"';
+
+            if($("#useDeliveryService_${groupPurchase.groupPurchaseId}").prop('checked') == true) {
+                JSONDocument = JSONDocument + ', "deliveryService" :' + '"yes"'
+                JSONDocument = JSONDocument + ', "deliveryDistance" :' + '"' + $('#delivery_distance').val() + '"';
+            } else {
+                JSONDocument = JSONDocument + ', "deliveryService" :' + '"no"'
+                JSONDocument = JSONDocument + ', "deliveryDistance" :' + '"0"'
+            }
+            JSONDocument = JSONDocument + '}'
+
+            console.log(JSONDocument);
+
+            progress(true);
+            $.ajax({
+                url: "/grouppurchase/doPaymentProcess.yum",
+                data: {
+                    JSONDocument    : JSONDocument
+                },
+                success: callbackPaymentProcessConfirm
+            });
+        }
+        function callbackPaymentProcessConfirm(data) {
+            var message = data.message;
+            var resultCode = data.resultCode;
+            var thanks = data.thanks;
+
+            progress(false);
+            if (resultCode != "0") {
+                warningPopup(message);
+            } else {
+                document.location.href = "/grouppurchase/paymentProcessConfirm.yum?thanks=" + thanks;
+            }
+        }
+    </script>
 
 </head>
 
@@ -389,7 +532,7 @@
                                         <tr style="height: 50px;">
                                             <td style="padding-right: 20px;">
                                                 <table style="color: #FFFFFF;width: 100%;">
-                                                    <tr>
+                                                    <tr style="height: 20px;">
                                                         <td style="width: 25px;text-align: center;"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></td>
                                                         <td>
                                                             ${groupPurchase.marketOpenStartDate}
@@ -401,13 +544,13 @@
                                                         <c:when test="${groupPurchase.discountMethod != '' && groupPurchase.discountMethod != null}">
                                                             <c:choose>
                                                                 <c:when test="${groupPurchase.discountMethod == 'FIXED' && groupPurchase.discountFixedAmount != '' && groupPurchase.discountFixedAmount != null}">
-                                                                    <tr>
+                                                                    <tr style="height: 20px;">
                                                                         <td style="width: 25px;text-align: center;"><i class="fa fa-usd" aria-hidden="true"></i></td>
                                                                         <td style="padding-top: 5px;"><fmt:formatNumber type="number" pattern="###.00" value="${groupPurchase.discountFixedAmount}" /> Discount</td>
                                                                     </tr>
                                                                 </c:when>
                                                                 <c:when test="${groupPurchase.discountMethod == 'RATE' && groupPurchase.discountRateValue != '' && groupPurchase.discountRateValue != null}">
-                                                                    <tr>
+                                                                    <tr style="height: 20px;">
                                                                         <td style="width: 25px;text-align: center;"><i class="fa fa-percent" aria-hidden="true"></i></td>
                                                                         <td style="padding-top: 5px;"><fmt:formatNumber type="number" pattern="###" value="${groupPurchase.discountRateValue * 100}" /> (Percent) Discount</td>
                                                                     </tr>
@@ -418,7 +561,7 @@
 
                                                     <c:choose>
                                                         <c:when test="${groupPurchase.deliverable == 'Y'}">
-                                                            <tr>
+                                                            <tr style="height: 20px;">
                                                                 <td style="width: 25px;text-align: center;"><i class="fa fa-truck" aria-hidden="true"></i></td>
                                                                 <td style="padding-top: 5px;color: #AFB1B1;">배달 가능</td>
                                                             </tr>
@@ -432,12 +575,12 @@
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
                                                 <table>
-                                                    <tr>
+                                                    <tr style="height: 25px;">
                                                         <td style="width: 20px;text-align: center;"><i class="fa fa-address-card-o" aria-hidden="true" style="color: #FFFFFF;"></i></td>
                                                         <td style="width: 10px;"></td>
                                                         <td><a href="javascript:groupPurchaseOrganizer()" style="color: #69B7F5;">공동구매 진행자정보</a><br/></td>
                                                     </tr>
-                                                    <tr>
+                                                    <tr style="height: 25px;">
                                                         <td style="width: 20px;text-align: center;"><i class="fa fa-comment" aria-hidden="true" style="color: #FFFFFF;"></i></td>
                                                         <td style="width: 10px;"></td>
                                                         <td><a href="javascript:askQuestion('${groupPurchase.purchaseOrganizer}')" style="color: #69B7F5;"> ?!! 물어보세요</a><br/></td>
@@ -559,12 +702,6 @@
 
 
 
-
-
-
-
-
-
                                             </td>
                                         </tr>
                                     </table>
@@ -646,7 +783,10 @@
                                         <tr>
                                             <td style="color: #797979; text-align: right;">거리</td>
                                             <td>:</td>
-                                            <td><span id="distance">0</span> Km</td>
+                                            <td>
+                                                <span id="distance">0</span> Km
+                                                <input type="hidden" name="delivery_distance" id="delivery_distance" value="0" />
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td style="color: #797979; text-align: right;">배송예정시간</td>
@@ -869,14 +1009,14 @@
                         <tr>
                             <td colspan="3">
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="3" id="comment" placeholder="주문시 메모하고 싶은 내용을 입력해주세요."></textarea>
+                                    <textarea class="form-control" rows="3" id="customerOrderNote" placeholder="주문시 메모하고 싶은 내용을 입력해주세요."></textarea>
                                 </div>
                             </td>
                         </tr>
 
 
                         <tr style="height: 25px;">
-                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="#" style="color: #FFFFFF;font-weight: bold;font-size: 15px;">결재하기 > </a>
+                            <td colspan="3" style="background-color: #F15F4C;text-align: center;"><a href="javascript:paymentProcessConfirm();" style="color: #FFFFFF;font-weight: bold;font-size: 15px;"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp; 결재하기 </a>
                             </td>
                         </tr>
                     </tbody>

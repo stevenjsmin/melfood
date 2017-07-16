@@ -9,6 +9,8 @@
 
 package melfood.controller.customer;
 
+import com.google.gson.Gson;
+import melfood.framework.attachement.AttachmentFile;
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.gmap.gson.dto.GMapResult;
@@ -22,6 +24,11 @@ import melfood.shopping.grouppurchase.GroupPurchaseProductService;
 import melfood.shopping.grouppurchase.GroupPurchaseService;
 import melfood.shopping.grouppurchase.dto.GroupPurchase;
 import melfood.shopping.grouppurchase.dto.GroupPurchaseProduct;
+import melfood.shopping.order.OrderMaster;
+import melfood.shopping.order.OrderMasterService;
+import melfood.shopping.order.OrderMasterUtil;
+import melfood.shopping.order.OrderService;
+import melfood.shopping.order.screenDto.OrderScreenDTO;
 import melfood.shopping.payment.PaymentMethod;
 import melfood.shopping.payment.PaymentMethodService;
 import melfood.shopping.product.*;
@@ -71,7 +78,13 @@ public class GroupPurchaseOrderMainController extends BaseController {
     private DeliveryCalendarService deliveryCalendarService;
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private PaymentMethodService paymentMethodService;
+
+    @Autowired
+    private OrderMasterService orderMasterService;
 
     @RequestMapping("/Main")
     public ModelAndView orderProduct(HttpServletRequest request) throws Exception {
@@ -93,7 +106,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
             // 공동구매 상품정보(목록)
             groupPurchaseProducts = groupPurchaseProductService.getGroupPurchaseProducts(groupPurchaseId);
 
-            if(!StringUtils.equalsIgnoreCase(groupPurchase.getStatus(), "1_ON_ORDER")) throw new Exception("주문 가능하지 않은 공동구매 입니다.");
+            if (!StringUtils.equalsIgnoreCase(groupPurchase.getStatus(), "1_ON_ORDER")) throw new Exception("주문 가능하지 않은 공동구매 입니다.");
 
 
             // GroupPurchase --> GroupPurchaseProduct/(s) --> Product/(s) --> ProductImage/(s)
@@ -395,5 +408,109 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
         return mav;
     }
+
+    /**
+     * 주문한 내역을 최종적으로 결재하기전에 상세주문 내역과 비용계산결과를 만들어서 세션에 저장해 놓는다.<br/>
+     * 주문을 저장하기 전에 주문 내용이 유효한지 체크한다. 만일 유효하지 않는 경우 오류코드와 오류내용을 반환한다.
+     * <p/>
+     * Session = HashMap<(자용자ID:SESSION_ORDER, MasterOrder.java)>
+     *
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/doPaymentProcess", produces = "application/json")
+    @ResponseBody
+    public Map<String, Object> doPaymentProcess(HttpServletRequest request) throws Exception {
+        Map<String, Object> model = new HashMap<String, Object>();
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        String JSONDocument = request.getParameter("JSONDocument");
+
+        OrderMaster orderMaster = new OrderMaster();
+        Gson gson = new Gson();
+
+        OrderMasterUtil orderUtil = new OrderMasterUtil();
+
+        try {
+            // Convertiong JSON --> OrderScreenDTO.class
+            logger.info("JSONDocument :" + JSONDocument);
+            OrderScreenDTO screenDto = gson.fromJson(JSONDocument, OrderScreenDTO.class);
+            screenDto.setCustomer(sessionUser.getUser());
+            orderMaster = orderUtil.settingOrderMasterInfoForGroupPurchase(screenDto);
+            orderMaster.setCreator(sessionUser.getUser().getUserId()); // 반드시 설정하도록 하여 다른 사용자가못보도록 한다.
+
+            int insertedId = orderMasterService.insertOrderMaster(orderMaster);
+
+            // 공동구매 기본정보를 얻어온다.
+            // String sessOrderKey = orderService.addUserSessionOrder(request, orderMaster);
+
+            model.put("thanks", insertedId);
+
+            model.put("resultCode", "0");
+            model.put("message", "");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            model.put("resultCode", "-1");
+            model.put("message", e.getMessage());
+
+        }
+
+        return model;
+    }
+
+
+    @RequestMapping("/paymentProcessConfirm")
+    public ModelAndView paymentProcessConfirm(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/customer/grouppurchase/paymentProcessConfirm");
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+
+        String orderId = request.getParameter("thanks");
+
+        if (StringUtils.isBlank(orderId)) {
+            throw new Exception("[orderId]  이항목(들)은 빈 값이 될 수 없습니다.");
+        }
+
+        OrderMaster orderMaster = new OrderMaster(orderId);
+        orderMaster.setCreator(sessionUser.getUser().getUserId());
+
+        OrderMaster newOrderMaster = orderMasterService.getOrderMaster(orderMaster);
+        mav.addObject("orderMaster", newOrderMaster);
+
+        GroupPurchase groupPurchase = groupPurchaseService.getGroupPurchase(Integer.parseInt(newOrderMaster.getGroupPurchaseId()));
+        mav.addObject("groupPurchase", groupPurchase);
+
+        List<ProductImage> groupPurchaseImages = groupPurchaseService.getProductImages(new ProductImage(groupPurchase.getGroupPurchaseId()));
+        groupPurchase.setGroupPurchaseImages(groupPurchaseImages);
+        if (groupPurchaseImages.size() > 0 && groupPurchaseImages.get(0).getImageFileId() != 0) {
+            // 등록된 첫번째 이미지를 대표이미지로 사용한다.
+            mav.addObject("firstImageId", Integer.toString(groupPurchaseImages.get(0).getImageFileId()));
+        } else {
+            mav.addObject("firstImageId", null);
+        }
+
+        if (newOrderMaster.getPaymentAccTransferReceipt() != null) {
+            AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(newOrderMaster.getPaymentAccTransferReceipt()));
+            if (receiptFile == null) {
+                orderMasterService.removePaymentReceiptFileInfo(Integer.parseInt(orderId));
+                mav.addObject("receiptFileNo", null);
+                mav.addObject("receiptFileName", null);
+                mav.addObject("receiptFileCreateDate", null);
+            } else {
+                mav.addObject("receiptFileNo", receiptFile.getFileId());
+                mav.addObject("receiptFileName", receiptFile.getFileName());
+                mav.addObject("receiptFileCreateDate", receiptFile.getCreateDatetime());
+            }
+        } else {
+            mav.addObject("receiptFileNo", null);
+            mav.addObject("receiptFileName", null);
+            mav.addObject("receiptFileCreateDate", null);
+        }
+
+        return mav;
+    }
+
 
 }

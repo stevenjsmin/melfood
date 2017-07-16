@@ -188,7 +188,7 @@ public interface UserService {
     public List<Option> getUsersByRoleId(String userRule) throws Exception;
 
     /**
-     *주어진 Role에 해당하는 사용자정보를 Html 콤보박스에서 이용할수 있도록 Option 객체목록으로 받아온다
+     * 주어진 Role에 해당하는 사용자정보를 Html 콤보박스에서 이용할수 있도록 Option 객체목록으로 받아온다
      *
      * @param userRule
      * @param defaultSelectedValue
@@ -235,4 +235,13 @@ public interface UserService {
      */
     public int validateMobileCheck(User user) throws Exception;
 
+    /**
+     * 사용자의 홈주소 구글 좌표주소를 갱신한다.<br/>
+     * user객체에 사용자ID, addressHomeGmapLatitude, addressHomeGmapLongitude, addressHomeGmapFormattedAddress를 설정해줘야 한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    public int updateHomeAddressGmapCoordinate(User user) throws Exception;
 }

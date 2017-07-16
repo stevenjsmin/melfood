@@ -17,7 +17,6 @@ import java.util.List;
  * Framwork User data access interface.
  *
  * @author Steven J.S Min
- *
  */
 public interface UserDAO {
 
@@ -77,5 +76,14 @@ public interface UserDAO {
     public int updateMobileValidCheckCode(User user) throws Exception;
 
 
+    /**
+     * 사용자의 홈주소 구글 좌표주소를 갱신한다.<br/>
+     * user객체에 사용자ID, addressHomeGmapLatitude, addressHomeGmapLongitude, addressHomeGmapFormattedAddress를 설정해줘야 한다.
+     *
+     * @param user
+     * @return
+     * @throws Exception
+     */
+    public int updateHomeAddressGmapCoordinate(User user) throws Exception;
 
 }

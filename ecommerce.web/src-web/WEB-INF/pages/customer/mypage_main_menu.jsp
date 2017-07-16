@@ -17,11 +17,11 @@ function menuSelect() {
 	if (pathName.startsWith("/customer/mypage/passwordChangeForm")) {
 		barElement = view.findByText("비밀번호 변경");
 	} else if(pathName.startsWith("/customer/mypage/myDetailInfo")){
-		barElement = view.findByText("개인정보 변경");
+		barElement = view.findByText("내정보 변경");
 	} else if(pathName.startsWith("/customer/mypage/modifyUserInfoForm")){
-		barElement = view.findByText("개인정보 변경");
-	} else if(pathName.startsWith("/customer/mypage/myOrderList")) {
-		barElement = view.findByText("상품구매 목록조회");
+		barElement = view.findByText("내정보 변경");
+	} else if(pathName.startsWith("/customer/mypage/myorder")) {
+		barElement = view.findByText("구매기록 조회");
 	} else if(pathName.startsWith("/customer/mypage/myQnAs")) {
 		barElement = view.findByText("My Communication");
 	} 
@@ -36,8 +36,8 @@ function menuSelect() {
     $(document).ready(function () {
         var items = [
             {id: 100, text: "비밀번호 변경", LinksTo: "/customer/mypage/passwordChangeForm.yum", image: "/resources/css/images/gic/ic_security_black_18dp_1x.png" },
-            {id: 200, text: "개인정보 변경", LinksTo: "/customer/mypage/myDetailInfo.yum", image: "/resources/css/images/gic/ic_person_black_18dp_1x.png" },
-            {id: 300, text: "상품구매 목록조회", LinksTo: "/customer/mypage/myOrderList.yum", image: "/resources/css/images/gic/ic_history_black_18dp_1x.png" },
+            {id: 200, text: "내정보 변경", LinksTo: "/customer/mypage/myDetailInfo.yum", image: "/resources/css/images/gic/ic_person_black_18dp_1x.png" },
+            {id: 300, text: "구매기록 조회", LinksTo: "/customer/mypage/myorder/Main.yum", image: "/resources/css/images/gic/ic_history_black_18dp_1x.png" },
             {id: 400, text: "My Communication", LinksTo: "/customer/mypage/myCommunication.yum", image: "/resources/css/images/gic/ic_question_answer_black_18dp_1x.png" }     ];
 
         var treeview = $("#treeview").kendoTreeView({
@@ -54,7 +54,7 @@ function menuSelect() {
 <body>
 <div class="well well-sm" style="background-color: #E7F4E3;">
      <table style="width: 100%;">
-          <tr><td style="text-align: center;"><span style="color: #4C792D;font-weight: bold;">My푸드</span></td></tr>
+          <tr><td style="text-align: center;"><span style="color: #4C792D;font-weight: bold;">My 푸드</span></td></tr>
      </table>
 </div>
 <div id="treeview"></div>
