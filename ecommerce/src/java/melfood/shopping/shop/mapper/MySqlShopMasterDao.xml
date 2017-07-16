@@ -164,7 +164,6 @@
                ,shop_credit                                  =   #{shopCredit}
                ,shop_name                                    =   #{shopName}
                ,shop_owner                                   =   #{shopOwner}
-               ,shop_gate_image_file_id                      =   #{shopGateImageFileId}
                ,notice                                       =   #{notice}
                ,template_id                                  =   #{templateId}
                ,address_street                               =   #{addressStreet}

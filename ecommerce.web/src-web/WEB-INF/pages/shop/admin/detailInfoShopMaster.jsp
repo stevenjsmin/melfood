@@ -160,8 +160,8 @@
                     <td class="value" colspan="3">
                         <div id="shopGateImageFileId" style="font-size: 10px;">
                             <c:choose>
-                                <c:when test="${shopMaster.shopGateImageFileId != null && shopMaster.shopGateImageFileId != null}">
-                                    업로드된 이미지 파일이 있습니다 : ${attachedFileName} <a href="javascript:downloadFile('${shopMaster.shopGateImageFileId}');"><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"/></a>
+                                <c:when test="${shopMaster.shopGateImageFileId != null && attachedFileNo != null}">
+                                    업로드된 이미지 파일이 있습니다 : ${attachedFileName} <a href="javascript:downloadFile('${attachedFileNo}');"><img src="/resources/css/images/gic/ic_file_download_black_18dp_1x.png"/></a>
                                     &nbsp;&nbsp;
                                     <a href="javascript:deleteShopGateImageFile();">delete</a>
                                 </c:when>
@@ -198,7 +198,7 @@
                     <td class="value">
                         <c:choose>
                             <c:when test="${shopMaster.deliveryService == 'Y'}">배송가능</c:when>
-                            <c:when test="${shopMaster.deliveryService == 'N'}">새송서비스 없음</c:when>
+                            <c:when test="${shopMaster.deliveryService == 'N'}">배송서비스 없음</c:when>
                             <c:otherwise>-</c:otherwise>
                         </c:choose>
                     </td>

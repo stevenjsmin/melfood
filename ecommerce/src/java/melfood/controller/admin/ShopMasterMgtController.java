@@ -88,6 +88,27 @@ public class ShopMasterMgtController extends BaseController {
 
         String shopId = request.getParameter("shopId");
         ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
+        if(shopMaster.getShopGateImageFileId() != null) {
+
+        }
+        if (shopMaster.getShopGateImageFileId() != null) {
+            AttachmentFile receiptFile = attachmentFileService.getAttachmentFile(new AttachmentFile(shopMaster.getShopGateImageFileId()));
+            if (receiptFile == null) {
+                shopMasterService.removeShopGateImageFileInfo(Integer.parseInt(shopId));
+                mav.addObject("attachedFileNo", null);
+                mav.addObject("attachedFileName", null);
+                mav.addObject("attachedFileCreateDate", null);
+            } else {
+                mav.addObject("attachedFileNo", receiptFile.getFileId());
+                mav.addObject("attachedFileName", receiptFile.getFileName());
+                mav.addObject("attachedFileCreateDate", receiptFile.getCreateDatetime());
+            }
+        } else {
+            mav.addObject("attachedFileNo", null);
+            mav.addObject("attachedFileName", null);
+            mav.addObject("attachedFileCreateDate", null);
+        }
+
         mav.addObject("shopMaster", shopMaster);
 
         return mav;
