@@ -41,8 +41,8 @@
 		<typeAlias type="melfood.shopping.order.OrderMasterProduct" alias="OrderMasterProduct" />
 		<typeAlias type="melfood.shopping.order.OrderMasterProductOption" alias="OrderMasterProductOption" />
 
+		<typeAlias type="melfood.shopping.shop.ShopMaster" alias="ShopMaster" />
 		<typeAlias type="melfood.shopping.shop.ShopTemplate" alias="ShopTemplate" />
-		<typeAlias type="melfood.shopping.shop.ShopTemplateSection" alias="ShopTemplateSection" />
 
 		<typeAlias type="melfood.shopping.grouppurchase.dto.GroupPurchase" alias="GroupPurchase" />
 		<typeAlias type="melfood.shopping.grouppurchase.dto.GroupPurchaseProduct" alias="GroupPurchaseProduct" />

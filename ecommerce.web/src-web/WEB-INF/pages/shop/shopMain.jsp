@@ -70,7 +70,7 @@
             border-left: 0px;
         }
         .k-grid-pager {
-            height: 30px;
+            height: 35px;
             padding-top: 5px;
             border-top: solid 6px #D54F3C;
             background-color: transparent;
@@ -81,6 +81,16 @@
         .k-grid-header{
             padding-right: 0px;
             display: none;
+        }
+        .k-grid .k-state-selected  {
+            background-color: #FFC2AE !important;
+            color: #000000;
+            border: solid 6px #F15F4C;
+        }
+        .k-grid .k-alt.k-state-selected {
+            background-color: #FFC2AE !important;
+            color: #000000;
+            border: solid 6px #F15F4C;
         }
     </style>
 

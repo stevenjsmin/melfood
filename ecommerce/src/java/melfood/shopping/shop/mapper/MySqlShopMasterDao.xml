@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mySqlShopMasterDao">
+
+	<select id="getShopMasters" parameterType="ShopMaster" resultType="ShopMaster">
+	 /* QUERY ID : getShopMasters */
+		SELECT   a.shop_id                                      'shopId'
+				,a.shop_owner                                   'shopOwner'
+				,a.shop_name                                    'shopName'
+				,a.shop_credit                                  'shopCredit'
+				,a.header_bg_imagefile_id                       'headerBgImagefileId'
+				,a.notice                                       'notice'
+				,a.template_id                                  'templateId'
+				,a.address_street                               'addressStreet'
+				,a.address_suburb                               'addressSuburb'
+				,a.address_state                                'addressState'
+				,a.address_postcode                             'addressPostcode'
+				,a.address_latitude                             'addressLatitude'
+				,a.address_longitude                            'addressLongitude'
+				,a.address_formatted_address                    'addressFormattedAddress'
+				,a.for_deliver_calc_address_street              'forDeliverCalcAddressStreet'
+				,a.for_deliver_calc_address_suburb              'forDeliverCalcAddressSuburb'
+				,a.for_deliver_calc_address_state               'forDeliverCalcAddressState'
+				,a.for_deliver_calc_address_postcode            'forDeliverCalcAddressPostcode'
+				,a.for_deliver_calc_address_latitude            'forDeliverCalcAddressLatitude'
+				,a.for_deliver_calc_address_longitude           'forDeliverCalcAddressLongitude'
+				,a.for_deliver_calc_address_formatted_address   'forDeliverCalcAddressFormattedAddress'
+				,a.delivery_service                             'deliveryService'
+				,a.delivery_fee_per_km                          'deliveryFeePerKm'
+				,a.delivery_base_charge                         'deliveryBaseCharge'
+				,a.minimum_purchase_amount                      'minimumPurchaseAmount'
+				,a.maximum_purchase_amount                      'maximumPurchaseAmount'
+				,a.discount_method                              'discountMethod'
+				,a.discount_fixed_amount                        'discountFixedAmount'
+				,a.discount_rate_value                          'discountRateValue'
+		FROM shop_master a
+	   WHERE 1 = 1
+		        <if test="shopId != null and shopId != 0"> AND a.shop_id = #{shopId} </if>
+				<if test="shopOwner != null"> AND a.shop_owner = #{shopOwner} </if>
+				<if test="shopName != null"> AND UPPER(a.shop_name) LIKE CONCAT('%', UPPER(#{shopName}), '%') </if>
+		        <if test="shopCredit != null and shopCredit != 0"> AND a.shop_credit = #{shopCredit} </if>
+		        <if test="headerBgImagefileId != null and headerBgImagefileId != 0"> AND a.header_bg_imagefile_id = #{headerBgImagefileId} </if>
+				<if test="notice != null"> AND UPPER(a.notice) LIKE CONCAT('%', UPPER(#{notice}), '%') </if>
+		        <if test="templateId != null and templateId != 0"> AND a.template_id = #{templateId} </if>
+				<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
+				<if test="addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%') </if>
+				<if test="addressState != null"> AND UPPER(a.address_state) LIKE CONCAT('%', UPPER(#{addressState}), '%') </if>
+				<if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>
+				<if test="addressFormattedAddress != null"> AND UPPER(a.address_formatted_address) LIKE CONCAT('%', UPPER(#{addressFormattedAddress}), '%') </if>
+				<if test="forDeliverCalcAddressStreet != null"> AND UPPER(a.for_deliver_calc_address_street) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressStreet}), '%') </if>
+				<if test="forDeliverCalcAddressSuburb != null"> AND UPPER(a.for_deliver_calc_address_suburb) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressSuburb}), '%') </if>
+				<if test="forDeliverCalcAddressState != null"> AND UPPER(a.for_deliver_calc_address_state) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressState}), '%') </if>
+				<if test="forDeliverCalcAddressPostcode != null"> AND a.for_deliver_calc_address_postcode = #{forDeliverCalcAddressPostcode} </if>
+				<if test="forDeliverCalcAddressFormattedAddress != null"> AND UPPER(a.for_deliver_calc_address_formatted_address) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressFormattedAddress}), '%') </if>
+				<if test="deliveryService != null"> AND UPPER(a.delivery_service) = UPPER(#{deliveryService}) </if>
+				<if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	    	ORDER BY a.shop_credit DESC, a.shop_id ASC
+		  LIMIT #{pagenationPage}, #{pagenationPageSize}
+	</select>
+	<select id="getTotalCntForGetShopMasters" parameterType="ShopMaster" resultType="java.lang.Integer">
+	 /* QUERY ID : getTotalCntForGetShopMasters */
+		SELECT COUNT(*)
+		  FROM shop_master a
+  	         WHERE 1 = 1
+				<if test="shopId != null and shopId != 0"> AND a.shop_id = #{shopId} </if>
+				<if test="shopOwner != null"> AND a.shop_owner = #{shopOwner} </if>
+				<if test="shopName != null"> AND UPPER(a.shop_name) LIKE CONCAT('%', UPPER(#{shopName}), '%') </if>
+				<if test="shopCredit != null and shopCredit != 0"> AND a.shop_credit = #{shopCredit} </if>
+				<if test="headerBgImagefileId != null and headerBgImagefileId != 0"> AND a.header_bg_imagefile_id = #{headerBgImagefileId} </if>
+				<if test="notice != null"> AND UPPER(a.notice) LIKE CONCAT('%', UPPER(#{notice}), '%') </if>
+				<if test="templateId != null and templateId != 0"> AND a.template_id = #{templateId} </if>
+				<if test="addressStreet != null"> AND UPPER(a.address_street) LIKE CONCAT('%', UPPER(#{addressStreet}), '%') </if>
+				<if test="addressSuburb != null"> AND UPPER(a.address_suburb) LIKE CONCAT('%', UPPER(#{addressSuburb}), '%') </if>
+				<if test="addressState != null"> AND UPPER(a.address_state) LIKE CONCAT('%', UPPER(#{addressState}), '%') </if>
+				<if test="addressPostcode != null"> AND a.address_postcode = #{addressPostcode} </if>
+				<if test="addressFormattedAddress != null"> AND UPPER(a.address_formatted_address) LIKE CONCAT('%', UPPER(#{addressFormattedAddress}), '%') </if>
+				<if test="forDeliverCalcAddressStreet != null"> AND UPPER(a.for_deliver_calc_address_street) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressStreet}), '%') </if>
+				<if test="forDeliverCalcAddressSuburb != null"> AND UPPER(a.for_deliver_calc_address_suburb) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressSuburb}), '%') </if>
+				<if test="forDeliverCalcAddressState != null"> AND UPPER(a.for_deliver_calc_address_state) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressState}), '%') </if>
+				<if test="forDeliverCalcAddressPostcode != null"> AND a.for_deliver_calc_address_postcode = #{forDeliverCalcAddressPostcode} </if>
+				<if test="forDeliverCalcAddressFormattedAddress != null"> AND UPPER(a.for_deliver_calc_address_formatted_address) LIKE CONCAT('%', UPPER(#{forDeliverCalcAddressFormattedAddress}), '%') </if>
+				<if test="deliveryService != null"> AND UPPER(a.delivery_service) = UPPER(#{deliveryService}) </if>
+				<if test="discountMethod != null"> AND UPPER(a.discount_method) = UPPER(#{discountMethod}) </if>
+				<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+
+
+	<insert id="insertShopMaster" parameterType="ShopMaster">
+		/* QUERY ID : insertShopMaster */
+		INSERT INTO shop_master (
+                       shop_credit
+                       ,shop_name
+                       ,shop_owner
+                       ,header_bg_imagefile_id
+                       ,notice
+                       ,template_id
+                       ,address_street
+                       ,address_suburb
+                       ,address_state
+                       ,address_postcode
+                       ,address_latitude
+                       ,address_longitude
+                       ,address_formatted_address
+                       ,for_deliver_calc_address_street
+                       ,for_deliver_calc_address_suburb
+                       ,for_deliver_calc_address_state
+                       ,for_deliver_calc_address_postcode
+                       ,for_deliver_calc_address_latitude
+                       ,for_deliver_calc_address_longitude
+                       ,for_deliver_calc_address_formatted_address
+                       ,delivery_service
+                       ,delivery_fee_per_km
+                       ,delivery_base_charge
+                       ,minimum_purchase_amount
+                       ,maximum_purchase_amount
+                       ,discount_method
+                       ,discount_fixed_amount
+                       ,discount_rate_value ) VALUES (
+                                #{shopCredit}
+                               ,#{shopName}
+                               ,#{shopOwner}
+                               ,#{headerBgImagefileId}
+                               ,#{notice}
+                               ,#{templateId}
+                               ,#{addressStreet}
+                               ,#{addressSuburb}
+                               ,#{addressState}
+                               ,#{addressPostcode}
+                               ,#{addressLatitude}
+                               ,#{addressLongitude}
+                               ,#{addressFormattedAddress}
+                               ,#{forDeliverCalcAddressStreet}
+                               ,#{forDeliverCalcAddressSuburb}
+                               ,#{forDeliverCalcAddressState}
+                               ,#{forDeliverCalcAddressPostcode}
+                               ,#{forDeliverCalcAddressLatitude}
+                               ,#{forDeliverCalcAddressLongitude}
+                               ,#{forDeliverCalcAddressFormattedAddress}
+                               ,#{deliveryService}
+                               ,#{deliveryFeePerKm}
+                               ,#{deliveryBaseCharge}
+                               ,#{minimumPurchaseAmount}
+                               ,#{maximumPurchaseAmount}
+                               ,#{discountMethod}
+                               ,#{discountFixedAmount}
+                               ,#{discountRateValue}   )
+	</insert>
+
+	<update id="modifyShopMaster" parameterType="ShopMaster">
+		/* QUERY ID : modifyShopMaster */
+		UPDATE shop_master
+		   SET modify_datetime = CURRENT_TIMESTAMP
+               ,shop_credit                                  =   #{shopCredit}
+               ,shop_name                                    =   #{shopName}
+               ,shop_owner                                   =   #{shopOwner}
+               ,header_bg_imagefile_id                       =   #{headerBgImagefileId}
+               ,notice                                       =   #{notice}
+               ,template_id                                  =   #{templateId}
+               ,address_street                               =   #{addressStreet}
+               ,address_suburb                               =   #{addressSuburb}
+               ,address_state                                =   #{addressState}
+               ,address_postcode                             =   #{addressPostcode}
+               ,address_latitude                             =   #{addressLatitude}
+               ,address_longitude                            =   #{addressLongitude}
+               ,address_formatted_address                    =   #{addressFormattedAddress}
+               ,for_deliver_calc_address_street              =   #{forDeliverCalcAddressStreet}
+               ,for_deliver_calc_address_suburb              =   #{forDeliverCalcAddressSuburb}
+               ,for_deliver_calc_address_state               =   #{forDeliverCalcAddressState}
+               ,for_deliver_calc_address_postcode            =   #{forDeliverCalcAddressPostcode}
+               ,for_deliver_calc_address_latitude            =   #{forDeliverCalcAddressLatitude}
+               ,for_deliver_calc_address_longitude           =   #{forDeliverCalcAddressLongitude}
+               ,for_deliver_calc_address_formatted_address   =   #{forDeliverCalcAddressFormattedAddress}
+               ,delivery_service                             =   #{deliveryService}
+               ,delivery_fee_per_km                          =   #{deliveryFeePerKm}
+               ,delivery_base_charge                         =   #{deliveryBaseCharge}
+               ,minimum_purchase_amount                      =   #{minimumPurchaseAmount}
+               ,maximum_purchase_amount                      =   #{maximumPurchaseAmount}
+               ,discount_method                              =   #{discountMethod}
+               ,discount_fixed_amount                        =   #{discountFixedAmount}
+               ,discount_rate_value		                     =   #{discountRateValue}
+		 WHERE shop_id = #{shopId}
+	</update>
+
+	<delete id="deleteShopMaster" parameterType="ShopMaster">
+		/* QUERY ID : deleteShopMaster */
+		DELETE FROM shop_master WHERE shop_id = #{shopId}
+	</delete>
+
+	<select id="getShopTemplates" parameterType="ShopTemplate" resultType="ShopTemplate">
+		/* QUERY ID : getShopTemplates */
+		SELECT   a.template_id     'templateId'
+				,a.template_name   'templateName'
+				,a.template_desc   'templateDesc'
+				,a.tiles_id        'tilesId'
+		FROM shop_master a
+		WHERE 1 = 1
+			<if test="templateId != null and templateId != 0"> AND a.template_id = #{templateId} </if>
+			<if test="templateName != null"> AND UPPER(a.template_name) LIKE CONCAT('%', UPPER(#{templateName}), '%') </if>
+			<if test="templateDesc != null"> AND UPPER(a.template_desc) LIKE CONCAT('%', UPPER(#{templateDesc}), '%') </if>
+			<if test="tilesId != null"> AND a.tiles_id = #{tilesId} </if>
+			<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
+	</select>
+
+</mapper>
