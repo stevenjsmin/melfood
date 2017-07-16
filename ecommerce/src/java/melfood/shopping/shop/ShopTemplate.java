@@ -18,6 +18,8 @@ public class ShopTemplate extends BaseDto {
     private String templateDesc;
     private String tilesId;
 
+    public ShopTemplate() {
+    }
 
     public ShopTemplate(int templateId) {
         this.templateId = templateId;

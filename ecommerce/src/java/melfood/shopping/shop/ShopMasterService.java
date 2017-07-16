@@ -1,5 +1,7 @@
 package melfood.shopping.shop;
 
+import melfood.framework.uitl.html.Option;
+
 import java.util.List;
 
 /**
@@ -19,4 +21,9 @@ public interface ShopMasterService {
     public Integer deleteShopMaster(ShopMaster shopMaster) throws Exception;
 
     public List<ShopTemplate> getShopTemplates(ShopTemplate shopTemplate) throws Exception;
+
+    public List<Option> getShopTemplateOptions(ShopTemplate shopTemplate) throws Exception;
+
+    public List<Option> getShopTemplateOptions(ShopTemplate shopTemplate, int selectedTemplateId) throws Exception;
+
 }
