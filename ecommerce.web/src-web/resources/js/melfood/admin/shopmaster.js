@@ -186,6 +186,8 @@ function save() {
 
     if (validateForm() == false) return;
 
+    progress(true);
+
     $.ajax({
         url: "/admin/shopmastermgt/saveShopMaster.yum",
         data: {
@@ -219,6 +221,8 @@ function callbackSave(data) {
     var message = data.message;
     var resultCode = data.resultCode;
     var shopId = data.shopId;
+
+    progress(false);
 
     if (resultCode != "0") {
         warningPopup(data.message);
