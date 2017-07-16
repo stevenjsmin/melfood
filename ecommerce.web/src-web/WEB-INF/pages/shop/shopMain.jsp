@@ -12,10 +12,6 @@
     <script src="/resources/js/melfood/framework/grouppurchasepayment.js?ver=<%=Ctx.releaseVersion%>"></script>
 
     <style>
-        .content {
-            width: 100%;
-            padding: 0px 0px 0px 0px
-        }
         .venueInfoWrapper {
             background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)),url(/resources/image/top-bg-bakery_1.jpg);
             background-size: cover;
@@ -28,10 +24,10 @@
 
         .product-photo {
             display: inline-block;
-            width: 32px;
-            height: 32px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background-size: 32px 35px;
+            background-size: 52px 55px;
             background-position: center center;
             vertical-align: middle;
             line-height: 32px;
@@ -42,13 +38,32 @@
             display: inline-block;
             vertical-align: middle;
             line-height: 32px;
-            padding-left: 3px;
+            padding-left: 20px;
+            font-size: 15px;
         }
+    </style>
+    <style>
+        /**
+         * Bootstrap Customizing
+         */
+        .content {
+            width: 100%;
+            padding: 0px 0px 0px 0px
+        }
+        .pull-right {
+            float: right !important;
+        }
+    </style>
+    <style>
+        /**
+         * KENDO Customizing
+         */
         #grid_panel_main {
             border: 0px;
         }
         .k-grid tbody tr {
-            height: 35px;
+            height: 80px;
+            color: #5e5e5e;
         }
         .k-grid-content>table>tbody>tr>td {
             font-size: 13px;
@@ -57,8 +72,20 @@
         .k-grid-pager {
             height: 30px;
             padding-top: 5px;
+            border-top: solid 6px #D54F3C;
+            background-color: transparent;
+        }
+        .k-grid-content {
+            overflow: hidden;
+        }
+        .k-grid-header{
+            padding-right: 0px;
+            display: none;
         }
     </style>
+
+
+
     <script type="text/javascript">
         var KENDO_SELECTED_RECORD = null;
         $(document).ready(function () {
@@ -66,7 +93,7 @@
             // DEFINE DATASOURCE
             // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             var dataSource = new kendo.data.DataSource({
-                pageSize: 5,
+                pageSize: 10,
                 serverPaging: true,
                 serverFiltering: true,
                 transport: {
@@ -111,7 +138,7 @@
             $("#grid_panel_main").kendoGrid({
                 dataSource: dataSource,
                 selectable: true,
-                sortable: true,
+                sortable: false,
                 editable: false,
                 change: onChange,
                 filterable: {
@@ -135,7 +162,8 @@
                     {hidden: true, field: 'prodId'},
                     {title: '상품명', template: kendo.template($("#name-template").html()), width: 300},
                     {title: '설명', field: 'description'},
-                    {title: '가격', field: 'unitPrice', width: 100}
+                    {title: '가격', field: 'unitPrice', format:"{0:c2}", width: 100},
+                    {title: '', template: kendo.template($("#order-template").html()), attributes:{style:"text-align:center;"}, width: 130}
                 ] // End of Columns
             }); // End of GRID
 
@@ -165,6 +193,15 @@
         #=   "<div class='product-photo' style='background-image: url(/resources/image/sample/8.jpg);'></div><div class='product-name'>" + name + "</div>" #
     </script>
 
+    <script id="order-template" type="text/x-kendo-template">
+        #=  '<a href="javascript:doOrder();"><i class="fa fa-cart-plus fa-2x" aria-hidden="true" style="color: D54F3C;"></i></a>' #
+    </script>
+
+    <script type="text/javascript">
+        function doOrder() {
+            console.log('do Order.....');
+        }
+    </script>
 </head>
 
 <body>
@@ -190,30 +227,38 @@
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <!-- 페이지 중간 [시작] :: 오른쪽:아이템목록 왼쪽:주문내역 -->
-<div class="row" style="padding-top: 10px;">
+<div class="row" style="padding-top: 10px;padding-bottom: 30px;">
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- 페이지 중간 [시작] :: 왼쪽:아이템목록 -->
-    <div class="col-sm-6" style="padding-right: 5px;padding-left: 5px;">
+    <div class="col-sm-6">
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-gift fa-2x" aria-hidden="true" style="color:#6F0E06;"></i></td>
-                                <td style="text-align: left;"><span style="font-size: 13px;font-weight: bold;">로즈 베이커리 상품</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 20px;">
-                        <p>어쩌고 저쩌고..</p>
-                    </div>
 
-                    <!-- Table -->
-                    <div id="grid_panel_main" style="margin-right: 20px;margin-left: 20px;"></div>
+        <div class="well well-lg" style="background-color: transparent;padding: 10px 10px 40px 10px;">
+
+            <div class="row">
+
+                <!-- 검색버튼 -->
+                <div class="col-sm-12" style="padding-bottom: 10px;">
+                    <div class="row">
+                        <div class="col-sm-6 pull-right" style="padding-right: 40px;">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search for..." style="height: 40px;font-size: 16px;">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" style="height: 40px;font-size: 16px;"><i class="fa fa-search" aria-hidden="true"></i> 찾기</button>
+                                </span>
+                            </div><!-- /input-group -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 검색결과 -->
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="grid_panel_main" style="margin-right: 20px;margin-left: 20px;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
