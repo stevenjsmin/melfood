@@ -86,6 +86,29 @@ function validateForm(){
         }
     }
 
+    if(addressSuburb == "") {
+        message = message + prefix + "주소정보:addressSuburb를 올바르게 넣어주세요<br>";
+        checkObject[checkObject.length] = "addressSuburb";
+        validation = false;
+    }
+    if(addressPostcode != "") {
+        if(!validatePostcode(addressPostcode)) {
+            message = message + prefix + "우편번호가 올바른 형식이 아닙니다.<br>";
+            checkObject[checkObject.length] = "addressPostcode";
+            validation = false;
+        }
+    } else {
+        message = message + prefix + "주소정보:addressPostcode를 올바르게 넣어주세요<br>";
+        checkObject[checkObject.length] = "addressPostcode";
+        validation = false;
+    }
+    if(addressStreet == "") {
+        message = message + prefix + "주소정보:addressStreet를 올바르게 넣어주세요<br>";
+        checkObject[checkObject.length] = "addressStreet";
+        validation = false;
+    }
+
+
  	// 검증된 필드들을 마킹한다.
 	for(count=0; count < checkObject.length; count++ ){
 		elementObj = "#" + checkObject[count];

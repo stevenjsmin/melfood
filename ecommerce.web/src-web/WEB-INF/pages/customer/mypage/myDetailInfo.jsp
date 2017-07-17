@@ -89,7 +89,7 @@
                               <td align="left">
                               </td>
                               <td>
-                                   <a href="javascript:goModify();" class="btn btn-primary">Modify</a>
+                                   <a href="javascript:goModify();" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i> 수정</a>
                               </td>
                          </tr>
                     </table>
