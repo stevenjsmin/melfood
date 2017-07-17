@@ -255,7 +255,6 @@
 
                     <c:choose>
                         <c:when test="${shopMaster.deliveryService == 'Y'}">
-                            <td style="width: 2px;background-color: #FFFFFF;"></td>
                             <td style="padding-left: 30px;padding-right: 20px;">
                                 <table style="width: 100%;">
                                     <tr style="height: 25px;">
@@ -264,7 +263,7 @@
                                         <td style="color: #FFFFFF;">배송서비스</td>
                                     </tr>
                                     <tr style="height: 25px;">
-                                        <td></td>
+                                        <td><i class="fa fa-check-square-o" aria-hidden="true" style="color: #FFFFFF;"></i></td>
                                         <td style="width: 10px;"></td>
                                         <td style="color: #FFFFFF;">최소 주문금액 : <fmt:formatNumber type="number" pattern="##0.00" value="${shopMaster.minimumPurchaseAmount}" /> $</td>
                                     </tr>
@@ -290,7 +289,7 @@
     <!-- 페이지 중간 [시작] :: 왼쪽:아이템목록 -->
     <div class="col-sm-6">
 
-        <div class="alert alert-info" style="color: #0052A4;margin-bottom: 20px;padding: 10px;">
+        <div class="alert alert-warning" style="color: #0052A4;margin-bottom: 20px;padding: 10px;border-left: solid 6px #E37000;">
             <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> ${shopMaster.notice}
         </div>
 

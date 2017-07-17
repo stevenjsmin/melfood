@@ -287,4 +287,19 @@ public class JoinMemberController extends BaseController {
 
         return model;
     }
+
+    @RequestMapping("/findSuburb")
+    public ModelAndView findSuburb(HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView("tiles/guest/joinmember/findSuburb");
+
+        Properties htmlProperty = new Properties();
+        List<Option> addressStateOptions = codeService.getValueCmbxOptions("COMM", "ADDR_STATE", "VIC");
+        htmlProperty = new Properties("addressState");
+        htmlProperty.setCssClass("form-control");
+        htmlProperty.setCssStyle("background-color: #FFFFFF;");
+        mav.addObject("cbxAddressState", codeService.generateCmbx(addressStateOptions, htmlProperty));
+
+        return mav;
+    }
+
 }

@@ -25,24 +25,14 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-              // Member join form
             $("#joinMemberForm").collapse('show');
             $("#mobileValidateCheckForm").collapse();
             $("#mobileValidateCheckForm").addClass("hide");
-
-            // Mobile validation
-            //$("#mobileValidateCheckForm").collapse('show');
-            //$("#joinMemberForm").collapse();
-            //$("#joinMemberForm").addClass("hide");
-
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
-    <style type="text/css">
-        #addressState {
-            color: #BFBEC5;
-        }
-    </style>
+
 </head>
+
 
 <script type="text/javascript">
     function openMemberAgreementStmt() {
@@ -58,7 +48,7 @@
         var popupwid_dialog = $("#agreementStmtPopup").data("kendoWindow");
         popupwid_dialog.setOptions({
             width: 700,
-            height: 320
+            height: 350
         });
         //popupwid_dialog.center();
 
@@ -94,6 +84,9 @@
         var password = $('#_password').val();
         var password2 = $('#_password2').val();
         var addressPostcode = $('#addressPostcode').val();
+        var addressState = $('#addressState').val();
+        var addressSuburb = $('#addressSuburb').val();
+        var addressStreet = $('#addressStreet').val();
 
         if (userId == "") {
             message = message + prefix + "사용자ID(모바일번호)는 필수입니다.<br>";
@@ -135,13 +128,34 @@
             }
         }
 
+        if(addressState == "") {
+            message = message + prefix + "주소정보:State를 올바르게 넣어주세요<br>";
+            checkObject[checkObject.length] = "addressState";
+            validation = false;
+        }
+
+        if(addressSuburb == "") {
+            message = message + prefix + "주소정보:addressSuburb를 올바르게 넣어주세요<br>";
+            checkObject[checkObject.length] = "addressSuburb";
+            validation = false;
+        }
         if(addressPostcode != "") {
             if(!validatePostcode(addressPostcode)) {
                 message = message + prefix + "우편번호가 올바른 형식이 아닙니다.<br>";
                 checkObject[checkObject.length] = "addressPostcode";
                 validation = false;
             }
+        } else {
+            message = message + prefix + "주소정보:addressPostcode를 올바르게 넣어주세요<br>";
+            checkObject[checkObject.length] = "addressPostcode";
+            validation = false;
         }
+        if(addressStreet == "") {
+            message = message + prefix + "주소정보:addressStreet를 올바르게 넣어주세요<br>";
+            checkObject[checkObject.length] = "addressStreet";
+            validation = false;
+        }
+
 
         // 검증된 필드들을 마킹한다.
         for (count = 0; count < checkObject.length; count++) {
@@ -213,26 +227,6 @@
         }
     }
 
-    function setSuburbCbx(postcodeObjId, objName) {
-        var postcode = $('#' + postcodeObjId).val();
-        $.ajax({
-            url: "/common/postcode/suburbCmbx.yum?postcode=" + postcode + "&objName=" + objName,
-            success: callbackSetSuburbCbx
-        });
-    }
-    function callbackSetSuburbCbx(data) {
-        var objName = data.objName;
-
-        if (data.objValue != "" && data.objValue != null) {
-            $('#cbx_' + objName).html(data.objValue);
-        } else {
-            $('#cbx_' + objName).html('<input class="form-control" type="text" id="' + objName + '" name="' + objName + '" value=""/>');
-        }
-    }
-
-    function checkPostcode() {
-        warningPopup('Postcode를 입력하시고 <img src="/resources/image/lookup.png"> 아이콘을 클릭하여 Suburb를 선택해주세요');
-    }
 </script>
 
 <script type="text/javascript">
@@ -276,11 +270,36 @@
     }
 </script>
 
+<script type="text/javascript">
+    function findSubub() {
+        $("#findSububPopup").kendoWindow({
+            content: "/guest/joinmember/findSuburb.yum",
+            actions: [ "Minimize", "Maximize","Close" ],
+            title: "Suburb 찾기",
+            modal: true,
+            iframe: true
+        });
+
+        var popupwid_dialog = $("#findSububPopup").data("kendoWindow");
+        popupwid_dialog.setOptions({
+            width: 700,
+            height: 550
+        });
+        popupwid_dialog.center();
+
+        $("#findSububPopup").data("kendoWindow").open();
+    }
+    function closeFindSububPopup() {
+        var win_dialog = $("#findSububPopup").data("kendoWindow");
+        win_dialog.close();
+    }
+</script>
 
 <body>
 
 <div class="collapse" id="joinMemberForm">
 
+    <div id="findSububPopup"></div>
     <div id="agreementStmtPopup"></div>
     <div class="row">
         <div class="col-sm-8">
@@ -315,6 +334,30 @@
                     <td class="label"><span class="required">* </span>비밀번호 재확인</td>
                     <td class="value"><input class="form-control" type="password" id="_password2" name="_password2" placeholder="입력하신 비밀번호를 다시한번 입력해주세요" value='' maxlength="20"/></td>
                 </tr>
+                <tr><td colspan="4" style="height: 20px;"></td></tr>
+
+
+
+                <tr>
+                    <td class="label" rowspan="2"><span class="required">* </span>주소</td>
+                    <td class="value" colspan="3">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 150px;"><input class="form-control" style="background-color: #EDEDED;" type="text" id="addressState" name="addressState" value='' placeholder="State" onclick="findSubub()" readonly/></td>
+                                <td><input class="form-control" style="background-color: #EDEDED;" type="text" id="addressSuburb" name="addressSuburb" value='' placeholder="Suburb" onclick="findSubub()" readonly/></td>
+                                <td style="width: 100px;"><input class="form-control" style="background-color: #EDEDED;" type="text" id="addressPostcode" name="addressPostcode" value='' onclick="findSubub()" placeholder="Postcode" readonly/></td>
+                                <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="findSubub()"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="value" colspan="2" style="padding-right: 50px;"><input class="form-control" type="text" id="addressStreet" name="addressStreet" value=''  placeholder="Street address"/></td>
+                    <td></td>
+                </tr>
+
+
+
 
 
                 <tr>
@@ -322,45 +365,22 @@
                         <br/>
                         <br/>
                         <br/>
+                    </td>
+                </tr>
+
+
+
+
+
+                <tr>
+                    <td colspan="4">
                         <span class="subtitle">선택 사항</span>
                         <hr class="subtitle"/>
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="label1">State</td>
-                    <td class="value"><c:out value="${cbxAddressState}" escapeXml="false"/></td>
-                    <td colspan="2"><span style="color: #BFBEC5;">고객님께 상품을 배달해 드려야하는 경우 사용됩니다.</span></td>
-                </tr>
-                <tr>
-                    <td class="label1">Postcode</td>
-                    <td class="value" style="padding-left: 3px;">
-                        <table>
-                            <tr>
-                                <td><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressPostcode" name="addressPostcode" value='${user.addressPostcode}' style="width: 80px;" maxlength="4"/></td>
-                                <td><img src="/resources/image/lookup.png" style="cursor: pointer;" onclick="setSuburbCbx('addressPostcode', 'addressSuburb')"></td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td class="label1">Suburb</td>
-                    <td class="value">
-                        <div id="cbx_addressSuburb">
-                            <input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressSuburb" name="addressSuburb" value='' onkeypress="checkPostcode()"/>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label1">Street</td>
-                    <td class="value" colspan="2"><input class="form-control" style="background-color: #FFFFFF;" type="text" id="addressStreet" name="addressStreet" value=''/></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td class="value" colspan="4" style="color: #337AB7;text-align: right;">** 입력한 주소정보는 다음 공.구일정을 계획/<b>배달</b>하는데 사용됩니다.</td>
-                </tr>
-
-                <tr><td colspan="4" style="height: 20px;"></td></tr>
-                <tr>
-                    <td class="label">이름/닉네임</td>
+                    <td class="label1">이름/닉네임</td>
                     <td class="value"><input class="form-control" style="background-color: #FFFFFF;color: #1AAF54;" type="text" id="_userNameReal" name="_userNameReal" placeholder="당신의 이름/닉네임을 입력해주세요" value='${userDefaultName}' maxlength="30"/></td>
                     <td colspan="2"><span style="color: #BFBEC5;"><b>이름</b>/<b>닉네임</b>에 기본으로 입력된 이름은 소설 태백산맥 등장인물 중 한사람입니다.</span></td>
                 </tr>
@@ -402,10 +422,13 @@
                     <td colspan="4">
                         <div class="panel panel-success">
                             <div class="panel-heading"><b>모바일 번호 인증</b></div>
-                            <div class="panel-body">
+                            <div class="panel-body" style="padding: 20px;">
                                 회원으로 가입해주셔서 감사합니다. <br/><br/>
                                 <b>Melfood</b> 에서는 건전하고 투명한 거래를 위하여 등록하신 모바일번호(사용자ID)에 대해서 간단한 인증절차가 필요합니다.<br/><br/>
-                                감사합니다.
+                                감사합니다.<br/>
+                                <br/>
+                                <span style="color: #34B3E4; font-weight: bold;"><i class="fa fa-bell" aria-hidden="true"></i> 가입하신 회원ID(모바일번호)로 인증번호 숫자 4자리를 보내드렸습니다. 받으신 인증번호를 아래 입력필드에 입력 하여주세요.</span>
+
                             </div>
                         </div>
                     </td>
@@ -435,7 +458,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td style="padding-left: 5px;"><a href="javascript:validateMobileNumber();" class="btn btn-primary">모바일 번호인증</a></td>
+                    <td style="padding-left: 5px;"><a href="javascript:validateMobileNumber();" class="btn btn-primary">회원가입완료</a></td>
                     <td colspan="2"></td>
                 </tr>
             </table>
