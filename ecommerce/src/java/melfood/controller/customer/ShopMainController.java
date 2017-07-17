@@ -65,10 +65,12 @@ public class ShopMainController extends BaseController {
         Map<String, Object> model = new HashMap<String, Object>();
 
         // String userId = sessionUser.getUser().getUserId();
-        String seller = request.getParameter("seller");
+        String shopOwner = request.getParameter("shopOwner");
+        String searchWord = request.getParameter("searchWord");
 
         Product product = new Product();
-        product.setSeller(seller);
+        product.setSeller(shopOwner);
+        product.setName(searchWord);
 
         List<Product> productList = null;
 

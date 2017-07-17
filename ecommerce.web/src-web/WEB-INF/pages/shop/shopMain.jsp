@@ -119,7 +119,8 @@
                             return {
                                 page: options.page,
                                 pageSize: options.pageSize,
-                                seller: "0412778646"
+                                shopOwner: "${shopMaster.shopOwner}",
+                                searchWord: $('#searchWord').val()
                             };
                         } else if (operation == "destroy") {
                             console.log(options);
@@ -298,9 +299,9 @@
                     <div class="row">
                         <div class="col-sm-6 pull-right" style="padding-right: 40px;">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for..." style="height: 40px;font-size: 16px;">
+                                <input type="text" class="form-control" placeholder="Search for..." id="searchWord" style="height: 40px;font-size: 16px;">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" style="height: 40px;font-size: 16px;"><i class="fa fa-search" aria-hidden="true"></i> 찾기</button>
+                                    <button class="btn btn-default" type="button" style="height: 40px;font-size: 16px;" onclick="search()"><i class="fa fa-search" aria-hidden="true"></i> 찾기</button>
                                 </span>
                             </div><!-- /input-group -->
                         </div>
