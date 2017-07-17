@@ -469,14 +469,29 @@ public class UserServiceImpl implements UserService {
                     user.setAddressHomeGmapFormattedAddress(geoResult.formattedAddress);
 
                     updateCnt = userDAO.updateHomeAddressGmapCoordinate(user);
+
+                } else {
+                    // 상세주소를 제외한 주소로 다시한번 시도해본다.
+                    geoResult = melfoodGoogleMapService.lookupGMap(addressSuburb + " " + addressState + " " + addressPostcode);
+
+                    gmapLatitude = Double.toString(geoResult.geometry.location.lat);
+                    gmapLongitude = Double.toString(geoResult.geometry.location.lng);
+
+                    user.setAddressHomeGmapLatitude(gmapLatitude);
+                    user.setAddressHomeGmapLongitude(gmapLongitude);
+                    user.setAddressHomeGmapFormattedAddress(geoResult.formattedAddress);
+
+                    updateCnt = userDAO.updateHomeAddressGmapCoordinate(user);
+
                 }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.info("[" + addressStreet + " " + addressSuburb + " " + addressState + " " + addressPostcode + "] 에대한 죄표를 구하는데 실패하였습니다. :" + e.getMessage());
             }
         } else {
-                logger.info("[" + addressStreet + " " + addressSuburb + " " + addressState + " " + addressPostcode + "] 에대한 죄표를 계산 할 수 없습니다.");
+            logger.info("[" + addressStreet + " " + addressSuburb + " " + addressState + " " + addressPostcode + "] 에대한 죄표를 계산 할 수 없습니다.");
         }
 
         return updateCnt;
