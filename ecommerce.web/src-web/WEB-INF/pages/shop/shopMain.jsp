@@ -72,7 +72,7 @@
         .k-grid-pager {
             height: 35px;
             padding-top: 5px;
-            border-top: solid 6px #1AAF54;
+            border-top: solid 6px #BE0712;
             background-color: transparent;
         }
         .k-grid-content {
@@ -86,7 +86,7 @@
             background-color: #FFF2DC !important;
             color: #EF604C;
             font-weight: bold;
-            border: solid 6px #F1FFB6;
+            border: solid 6px #BE0712;
         }
         .k-grid .k-alt.k-state-selected {
             background-color: #FFF2DC !important;
@@ -94,6 +94,7 @@
             font-weight: bold;
             border: solid 6px #F15F4C;
         }
+
     </style>
 
 
@@ -289,7 +290,7 @@
     <!-- 페이지 중간 [시작] :: 왼쪽:아이템목록 -->
     <div class="col-sm-6">
 
-        <div class="alert alert-info" style="color: #0052A4;margin-bottom: 20px;">
+        <div class="alert alert-info" style="color: #0052A4;margin-bottom: 20px;padding: 10px;">
             <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> ${shopMaster.notice}
         </div>
 
