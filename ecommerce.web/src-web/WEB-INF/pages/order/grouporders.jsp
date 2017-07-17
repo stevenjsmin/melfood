@@ -86,6 +86,11 @@
             // DEFINE GRID TABLE
             // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             $("#grid_panel_main").kendoGrid({
+                excel:{
+                    fileName:"group_purchase_orders.xlsx",
+                    allPages:true,
+                    filterable:true
+                },
                 dataSource: dataSource,
                 selectable: true,
                 sortable: true,
@@ -111,13 +116,13 @@
                 columns: [
                     {hidden: true, field: 'orderMasterId'},
                     {title: 'ID', field: 'groupPurchaseId', width: 70},
-                    {title: '장본일자', template: kendo.template("#= createDatetime.substring(0,10)# "), width: 100},
-                    {title: '공동구매', template: kendo.template($("#groupPurchase-template").html())},
+                    {title: '장본일자', field: 'createDatetime', template: kendo.template("#= createDatetime.substring(0,10)# "), width: 100},
+                    {title: '공동구매', field: 'groupPurchaseTitle', template: kendo.template($("#groupPurchase-template").html())},
                     {title: '구매자', field: 'customerName', width: 150},
-                    {title: '픽업/배달', template: kendo.template($("#isPickupOrDelivery-template").html()), filterable: false, width: 80},
-                    {title: '결재방법', template: kendo.template($("#paymentMethod-template").html()), width: 100},
-                    {title: '배송상태', template: kendo.template($("#statusDelivery-template").html()), width: 100},
-                    {title: '결재상태', template: kendo.template($("#statusPayment-template").html()), filterable: false, width: 100},
+                    {title: '픽업/배달', field: 'isPickupOrDelivery', template: kendo.template($("#isPickupOrDelivery-template").html()), filterable: false, width: 80},
+                    {title: '결재방법', field: 'paymentMethod', template: kendo.template($("#paymentMethod-template").html()), width: 100},
+                    {title: '배송상태', field: 'statusDelivery', template: kendo.template($("#statusDelivery-template").html()), width: 100},
+                    {title: '결재상태', field: 'statusPayment', template: kendo.template($("#statusPayment-template").html()), filterable: false, width: 100},
                     {title: '송금영수증', attributes: {style: "text-align: center;" }, template: kendo.template($("#paymentAccTransferReceipt-template").html()), width: 80},
                     {title: '배송상태', template: kendo.template($("#command-statusDelivery-template").html()),width: 120, attributes:{style:"text-align:right;"}},
                     {title: '결재상태', template: kendo.template($("#command-statusPayment-template").html()),width: 130, attributes:{style:"text-align:right;"}}
@@ -299,6 +304,11 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function downlaodexcel() {
+            $("#grid_panel_main").getKendoGrid().saveAsExcel();
+        }
+    </script>
 </head>
 <body>
 <div id="QnAInfoPopup"></div>
@@ -334,6 +344,12 @@
 <div id="grid_panel_main"></div>
 
 <br/>
-
+<table class="action_button_table">
+    <tr>
+        <td align="right">
+            <button type="button" onclick="downlaodexcel()" class="btn btn-info btn-sm"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel export</button>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

@@ -426,8 +426,8 @@
                             <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;height: 40px;font-size: 15px;">
                                 <span style="font-weight: bold;text-decoration: underline"><a href="javascript:goPartnersShop('146');" style="color: #DCDEE0;">로즈베이커리</a></span>
                                 | <span style="font-weight: bold;text-decoration: underline;color: #929497;">금.토일엔 삼겹살</span>
-                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">족발과의 동침</span>
-                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">순이네 반찬</span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">정씨네 족발</span>
+                                | <span style="font-weight: bold;text-decoration: underline;color: #929497;">지영이네 반찬</span>
                             </td>
                         </tr>
                     </table>
