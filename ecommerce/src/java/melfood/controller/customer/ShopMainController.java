@@ -11,8 +11,11 @@ package melfood.controller.customer;
 
 import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.system.BaseController;
+import melfood.framework.user.User;
 import melfood.shopping.product.Product;
 import melfood.shopping.product.ProductService;
+import melfood.shopping.shop.ShopMaster;
+import melfood.shopping.shop.ShopMasterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +40,20 @@ public class ShopMainController extends BaseController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    ShopMasterService shopMasterService;
+
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView("tiles/customer/shop/main");
+        String shopId = request.getParameter("shopId");
+
+        ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
+        User shopOwner = userService.getUserInfo(shopMaster.getShopOwner());
+
+        mav.addObject("shopMaster", shopMaster);
+        mav.addObject("owner", shopOwner);
+
         return mav;
     }
 

@@ -256,8 +256,8 @@
     </script>
 
     <script type="text/javascript">
-        function goPartnersShop() {
-            document.location.href = "/shop/Main.yum";
+        function goPartnersShop(shopId) {
+            document.location.href = "/shop/Main.yum?shopId=" + shopId;
         }
     </script>
 </head>
@@ -317,7 +317,7 @@
 
         <div class="col-sm-3 col-centered" style="padding-left: 10px;">
             <table style="width: 100%;color: #606060;">
-                <tr style="height: 30px;"><td colspan="3" style="font-size: 15px;font-weight: bold;color: #2A2A2A;">${groupPurchase.groupPurchaseTitle}</td></tr>
+                <tr style="height: 30px;"><td colspan="3" style="font-size: 15px;font-weight: bold;color: #2A2A2A;">[공.구]  ${groupPurchase.groupPurchaseTitle}</td></tr>
                 <tr style="height: 25px;">
                     <td style="width: 25px;text-align: center;"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></td>
                     <td style="font-weight: bold;height: 25px;">${groupPurchase.marketAddressSuburb}</td>
@@ -424,7 +424,7 @@
                         <tr>
                             <td></td>
                             <td style="text-align: right;color: #DDDEE0;padding-top: 5px;padding-right: 10px;height: 40px;font-size: 15px;">
-                                <span style="font-weight: bold;text-decoration: underline"><a href="javascript:goPartnersShop();" style="color: #DCDEE0;">로즈베이커리</a></span>
+                                <span style="font-weight: bold;text-decoration: underline"><a href="javascript:goPartnersShop('146');" style="color: #DCDEE0;">로즈베이커리</a></span>
                                 | <span style="font-weight: bold;text-decoration: underline;color: #929497;">금.토일엔 삼겹살</span>
                                 | <span style="font-weight: bold;text-decoration: underline;color: #929497;">족발과의 동침</span>
                                 | <span style="font-weight: bold;text-decoration: underline;color: #929497;">순이네 반찬</span>

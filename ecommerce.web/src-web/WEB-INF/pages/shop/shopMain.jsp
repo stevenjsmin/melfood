@@ -13,13 +13,13 @@
 
     <style>
         .venueInfoWrapper {
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)),url(/resources/image/top-bg-bakery_1.jpg);
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.5)),url(/img/?f=${shopMaster.shopGateImageFileId});
             background-size: cover;
             background-repeat: no-repeat;
             background-color: #797876;
             box-sizing: border-box;
             padding: 20px 0;
-            height: 100px;
+            height: 110px;
         }
 
         .product-photo {
@@ -72,7 +72,7 @@
         .k-grid-pager {
             height: 35px;
             padding-top: 5px;
-            border-top: solid 6px #D54F3C;
+            border-top: solid 6px #1AAF54;
             background-color: transparent;
         }
         .k-grid-content {
@@ -83,13 +83,15 @@
             display: none;
         }
         .k-grid .k-state-selected  {
-            background-color: #FFC2AE !important;
-            color: #000000;
-            border: solid 6px #F15F4C;
+            background-color: #FFF2DC !important;
+            color: #EF604C;
+            font-weight: bold;
+            border: solid 6px #F1FFB6;
         }
         .k-grid .k-alt.k-state-selected {
-            background-color: #FFC2AE !important;
-            color: #000000;
+            background-color: #FFF2DC !important;
+            color: #EF604C;
+            font-weight: bold;
             border: solid 6px #F15F4C;
         }
     </style>
@@ -204,7 +206,7 @@
     </script>
 
     <script id="order-template" type="text/x-kendo-template">
-        #=  '<a href="javascript:doOrder();"><i class="fa fa-cart-plus fa-2x" aria-hidden="true" style="color: D54F3C;"></i></a>' #
+        #=  '<a href="javascript:doOrder();"><i class="fa fa-cart-plus fa-2x" aria-hidden="true" style="color: 3B3B3B;"></i></a>' #
     </script>
 
     <script type="text/javascript">
@@ -220,14 +222,57 @@
 <!-- 페이지 상단 [시작] :: 공동구매 개요 -->
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 0px;">
-        <div class="venueInfoWrapper">
-            <table align="center">
+        <div class="venueInfoWrapper" style="padding-left: 30px;">
+            <table align="left"  style="color: #FFFFFF;height: 100%;" >
                 <tr>
-                    <td style="padding: 0px 30px 0px 0px;">
-                        ...
+                    <td style="padding-right: 30px;">
+                        <div style="font-weight: bold;font-size: 25px;">${shopMaster.shopName}</div>
+                        <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;
+                        <span style="font-size: 13px;font-weight: bold;">
+                            ${shopMaster.addressStreet} ${shopMaster.addressSuburb} ${shopMaster.addressState} ${shopMaster.addressPostcode}
+                        </span><br/>
+
+                        <div style="font-size: 13px;padding-top: 10px">ABN ${owner.abn}</div>
+
                     </td>
-                    <td>...</td>
+                    <td style="width: 2px;background-color: #FFFFFF;"></td>
+                    <td style="padding-left: 30px;padding-right: 20px;">
+                        <table>
+                            <tr style="height: 25px;">
+                                <td style="width: 20px;text-align: center;"><i class="fa fa-address-card-o" aria-hidden="true" style="color: #FFFFFF;"></i></td>
+                                <td style="width: 10px;"></td>
+                                <td><a href="javascript:groupPurchaseOrganizer()" style="color: #FFFFFF;">Seller 정보</a><br/></td>
+                            </tr>
+                            <tr style="height: 25px;">
+                                <td style="width: 20px;text-align: center;"><i class="fa fa-comment" aria-hidden="true" style="color: #FFFFFF;"></i></td>
+                                <td style="width: 10px;"></td>
+                                <td><a href="javascript:askQuestion('${shopMaster.shopOwner}')" style="color: #FFFFFF;"> ?!! 물어보세요</a><br/></td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <td style="width: 2px;background-color: #FFFFFF;"></td>
+                    <td style="padding-left: 30px;padding-right: 20px;">
+                        <c:choose>
+                            <c:when test="${shopMaster.deliveryService == 'Y'}">
+                                <table style="width: 100%;">
+                                    <tr style="height: 25px;">
+                                        <td><i class="fa fa-truck" aria-hidden="true" style="color: #FFFFFF;"></i></td>
+                                        <td style="width: 10px;"></td>
+                                        <td style="color: #FFFFFF;">배송서비스</td>
+                                    </tr>
+                                    <tr style="height: 25px;">
+                                        <td></td>
+                                        <td style="width: 10px;"></td>
+                                        <td style="color: #FFFFFF;">최소 주문금액 : <fmt:formatNumber type="number" pattern="##0.00" value="${shopMaster.minimumPurchaseAmount}" /> $</td>
+                                    </tr>
+                                </table>
+                            </c:when>
+                        </c:choose>
+                    </td>
+
                 </tr>
+
             </table>
         </div>
     </div>

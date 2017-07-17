@@ -506,7 +506,7 @@
                             <tr>
                                 <td>
                                     <div style="font-weight: bold;font-size: 25px;">
-                                        ${groupPurchase.groupPurchaseTitle}
+                                        [공.구] ${groupPurchase.groupPurchaseTitle}
                                     </div>
                                     <i class="fa fa-map-marker fa-lg" aria-hidden="true"></i>&nbsp;&nbsp;
                                     <span style="font-size: 13px;font-weight: bold;">
