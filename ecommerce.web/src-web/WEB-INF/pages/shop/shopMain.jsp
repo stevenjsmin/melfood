@@ -242,7 +242,7 @@
                             <tr style="height: 25px;">
                                 <td style="width: 20px;text-align: center;"><i class="fa fa-address-card-o" aria-hidden="true" style="color: #FFFFFF;"></i></td>
                                 <td style="width: 10px;"></td>
-                                <td><a href="javascript:groupPurchaseOrganizer()" style="color: #FFFFFF;">Seller 정보</a><br/></td>
+                                <td><a href="javascript:groupPurchaseOrganizer()" style="color: #FFFFFF;">판매자 정보</a><br/></td>
                             </tr>
                             <tr style="height: 25px;">
                                 <td style="width: 20px;text-align: center;"><i class="fa fa-comment" aria-hidden="true" style="color: #FFFFFF;"></i></td>
@@ -252,10 +252,10 @@
                         </table>
                     </td>
 
-                    <td style="width: 2px;background-color: #FFFFFF;"></td>
-                    <td style="padding-left: 30px;padding-right: 20px;">
-                        <c:choose>
-                            <c:when test="${shopMaster.deliveryService == 'Y'}">
+                    <c:choose>
+                        <c:when test="${shopMaster.deliveryService == 'Y'}">
+                            <td style="width: 2px;background-color: #FFFFFF;"></td>
+                            <td style="padding-left: 30px;padding-right: 20px;">
                                 <table style="width: 100%;">
                                     <tr style="height: 25px;">
                                         <td><i class="fa fa-truck" aria-hidden="true" style="color: #FFFFFF;"></i></td>
@@ -268,9 +268,9 @@
                                         <td style="color: #FFFFFF;">최소 주문금액 : <fmt:formatNumber type="number" pattern="##0.00" value="${shopMaster.minimumPurchaseAmount}" /> $</td>
                                     </tr>
                                 </table>
-                            </c:when>
-                        </c:choose>
-                    </td>
+                            </td>
+                        </c:when>
+                    </c:choose>
 
                 </tr>
 
@@ -289,11 +289,12 @@
     <!-- 페이지 중간 [시작] :: 왼쪽:아이템목록 -->
     <div class="col-sm-6">
 
+        <div class="alert alert-info" style="color: #0052A4;margin-bottom: 20px;">
+            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> ${shopMaster.notice}
+        </div>
 
         <div class="well well-lg" style="background-color: transparent;padding: 10px 10px 40px 10px;">
-
             <div class="row">
-
                 <!-- 검색버튼 -->
                 <div class="col-sm-12" style="padding-bottom: 10px;">
                     <div class="row">
@@ -319,9 +320,73 @@
             </div>
         </div>
 
+        <!-- 배송서비스 -->
+        <div class="row">
+            <div class="col-sm-12" style="padding: 10px 0px 10px 0px;">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#514747;"></i></td>
+                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배송 서비스</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;padding-right: 100px;" id="dilivery_service_row">
+
+                        <div id="DELIVERY_SERVICE_DETAIL">
+                            <div style="text-align: right;font-size: 10px;color: #58A578;" align="right"> 배송비는 '<b>${shopMaster.forDeliverCalcAddressSuburb} ${shopMaster.forDeliverCalcAddressPostcode}</b>'를 기준으로 Drive거리(Km)에 따라 계산됩니다.(Avoid toll road)  </div>
+                            <table class="table table-striped">
+                                <colgroup>
+                                    <col style="width: 100px;">
+                                    <col style="width: 10px;">
+                                    <col style="width: *;">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td style="color: #797979; text-align: right;">고객님주소</td>
+                                    <td>:</td>
+                                    <td><span id="cutomerAddress"></span> &nbsp;&nbsp;<a href="/customer/mypage/myDetailInfo.yum" style="font-size: 10px;">주소변경</a></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #797979; text-align: right;">거리</td>
+                                    <td>:</td>
+                                    <td>
+                                        <span id="distance">0</span> Km
+                                        <input type="hidden" name="delivery_distance" id="delivery_distance" value="0" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #797979; text-align: right;">배송예정시간</td>
+                                    <td>:</td>
+                                    <td><span id="estimatedDeliveryTime"></span></td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #797979; text-align: right;">배송비</td>
+                                    <td>:</td>
+                                    <td>$ <span id="deliveryFee">0.00</span> (기본서비스 + 서비스비/KM)</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
+                                        <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" id="useDeliveryService_${groupPurchase.groupPurchaseId}" value="" style="transform: scale(1.5);" onchange="parseProductOrderValue()"></label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- 페이지 중간 [끝] :: 왼쪽:아이템목록 -->
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+
+
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- 페이지 중간 [시작] :: 오른쪽:주문내역 -->
