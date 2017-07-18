@@ -223,6 +223,8 @@
 
     <script type="text/javascript">
         function checkDeliverable() {
+            $("#UNKNOWN_ERROR").hide();
+
             if('${shopMaster.deliveryService}' == 'Y'){
 
                 progressWithId(true, 'dilivery_service_row');
@@ -236,6 +238,7 @@
             }
         }
         function callbackCheckDeliverable(data) {
+
             var resultCode = data.resultCode;
             var mapResultCode = data.mapResultCode;
             var mapResultMessage = data.mapResultMessage;
@@ -245,9 +248,13 @@
 
             var distance = data.distance;
             var duration = data.duration;
-            var deliveryLimitKm = data.shopMaster.deliveryLimitKm;
+            var deliveryLimitKm = 0;
+            if(data.shopMaster != null){
+                deliveryLimitKm = data.shopMaster.deliveryLimitKm;
+            }
 
             progressWithId(false, 'dilivery_service_row');
+
             if(resultCode == "OK"){
 
                 if(deliveryLimitKm != 0 && deliveryLimitKm < distance) {
@@ -274,7 +281,7 @@
                     if(deliveryFee == 0) {
                         $("#deliveryFee").html("<span style='color: #EF604C;font-weight: bold;'>없음 - 무료</span></span>");
                     } else {
-                        $("#deliveryFee").html("$ <span style='color: #EF604C;'>" + deliveryFee + "</span><span style='font-size: 10px;'> (기본서비스 + 서비스비/Km)</span>");
+                        $("#deliveryFee").html("$ <span style='color: #EF604C;'>" + deliveryFee + "</span><span style='font-size: 10px;'> (${shopMaster.deliveryBaseCharge} $ 기본서비스 + ${shopMaster.deliveryFeePerKm} $ 서비스비/Km)</span>");
                     }
                     $("#deliveryServiceFee").val(deliveryFee);
                 }

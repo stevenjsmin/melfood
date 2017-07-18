@@ -100,7 +100,7 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
     @Override
     public GMapResult getLookupGmapDistance(String originAddress, String destinationAddress, boolean includeToll) throws Exception {
         String googleapisUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?";
-        
+
         StringBuffer options = new StringBuffer();
 
         String orgAddr[] = StringUtils.split(originAddress);
@@ -125,24 +125,33 @@ public class MelfoodGoogleMapServiceImpl implements MelfoodGoogleMapService {
 
         if (!includeToll) options.append("&avoid=tolls");
 
-        URL url = new URL(googleapisUrl + options.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        String line, outputString = "";
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        while ((line = reader.readLine()) != null) {
-            outputString += line;
+        GMapResult mapResult = null;
+        try {
+
+            URL url = new URL(googleapisUrl + options.toString());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            String line, outputString = "";
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                outputString += line;
+            }
+
+            mapResult = new Gson().fromJson(outputString, GMapResult.class);
+
+            if(StringUtils.equalsIgnoreCase(mapResult.getRows()[0].getElements()[0].getStatus(), "NOT_FOUND")) return null;
+            // Ref: https://developers.google.com/maps/documentation/distance-matrix/
+            //Top-level Status Codes : [ "OK" | "INVALID_REQUEST" | "MAX_ELEMENTS_EXCEEDED" | "REQUEST_DENIED" | "UNKNOWN_ERROR" ]
+            logger.info("Top-level Status : " + mapResult.getStatus());
+            //Element level status code : ["OK" | "NOT_FOUND" |  "ZERO_RESULTS" | "MAX_ROUTE_LENGTH_EXCEEDED" ]
+            logger.info("Element Status : " + mapResult.getRows()[0].getElements()[0].getStatus());
+            logger.info("Distance : " + mapResult.getRows()[0].getElements()[0].getDistance().getText());
+            logger.info("Duration : " + mapResult.getRows()[0].getElements()[0].getDuration().getText());
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        GMapResult mapResult = new Gson().fromJson(outputString, GMapResult.class);
-
-        // Ref: https://developers.google.com/maps/documentation/distance-matrix/
-        //Top-level Status Codes : [ "OK" | "INVALID_REQUEST" | "MAX_ELEMENTS_EXCEEDED" | "REQUEST_DENIED" | "UNKNOWN_ERROR" ]
-        logger.info("Top-level Status : " + mapResult.getStatus());
-        //Element level status code : ["OK" | "NOT_FOUND" |  "ZERO_RESULTS" | "MAX_ROUTE_LENGTH_EXCEEDED" ]
-        logger.info("Element Status : " + mapResult.getRows()[0].getElements()[0].getStatus());
-        logger.info("Distance : " + mapResult.getRows()[0].getElements()[0].getDistance().getText());
-        logger.info("Duration : " + mapResult.getRows()[0].getElements()[0].getDuration().getText());
 
         return mapResult;
     }
