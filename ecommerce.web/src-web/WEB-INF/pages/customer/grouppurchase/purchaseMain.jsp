@@ -593,8 +593,8 @@
                                             </td>
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
-                                                <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;">
-                                                     <span style="color: #606060;">최소주문 금액 : $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}" />
+                                                <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;background-color: transparent;border: solid 4px #F2DEDE;">
+                                                     <span style="color: #F2DEDE;">최소주문 금액 : $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}" />
                                                 </div>
                                             </td>
                                         </tr>

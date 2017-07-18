@@ -172,7 +172,7 @@
     <script id="paymentMethod-template" type="text/x-kendo-template">
         # if (paymentMethod == 'ACCOUNT_TRANSFER') { #
         #=  '<span style="color: 337AB7;">계좌이체</span>' #
-        # } else if (statusPayment == 'CASH') { #
+        # } else if (paymentMethod == 'CASH') { #
         #=  '<span style="color: 006F3C;">만나서결재</span>' #
         # } else if (statusPayment == 'CREDIT_CARD') { #
         #=  '<span style="color: 3E3637;">신용카드결재</span>' #

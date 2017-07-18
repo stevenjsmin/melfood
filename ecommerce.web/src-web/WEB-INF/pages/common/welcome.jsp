@@ -97,13 +97,11 @@
             background: #fff;
             padding: 10px;
             margin: 10px;
-            border: 3px solid #000;
-        }
-        #legend h3 {
-            margin-top: 0;
+            border: 3px solid #8a6d3b;
         }
         #legend img {
             vertical-align: middle;
+            height:15px; width:15px;
         }
     </style>
 

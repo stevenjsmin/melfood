@@ -55,6 +55,7 @@
                                 page: options.page,
                                 pageSize: options.pageSize,
                                 sellerName: $("#sellerName").val(),
+                                customerName: $("#customerName").val(),
                                 invoiceIssue: $("#invoiceIssue").val(),
                                 normalOrGroupOrder: $("#normalOrGroupOrder").val(),
                                 isPickupOrDelivery: $("#isPickupOrDelivery").val(),

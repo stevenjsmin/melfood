@@ -286,8 +286,8 @@
                                             </td>
                                             <td style="width: 2px;background-color: #AFB1B1;"></td>
                                             <td style="padding: 20px 20px;">
-                                                <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;">
-                                                     <span style="color: #606060;">최소주문 금액 : $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}"/>
+                                                <div class="alert alert-danger" role="alert" style="padding: 5px 20px 5px 20px;background-color: transparent;border: solid 4px #F2DEDE;">
+                                                     <span style="color: #F2DEDE;">최소주문 금액 : $ <fmt:formatNumber type="number" pattern="##0.00" value="${groupPurchase.minimumPurchaseAmount}" />
                                                 </div>
                                             </td>
                                         </tr>
@@ -469,8 +469,8 @@
             <div class="panel-heading" style="background-color: #C8E297;">
                 <table style="width: 100%;">
                     <tr>
-                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-bell fa-3x" aria-hidden="true"></i></td>
-                        <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">고맙습니다.</span></td>
+                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-bell fa-3x" aria-hidden="true" style="color: #F15F4C;"></i></td>
+                        <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;color: #F15F4C;">고맙습니다.</span></td>
                     </tr>
                 </table>
             </div>
