@@ -27,12 +27,15 @@ var prev_gmap_infowindow = false;
 function getMapStyle(melGmap, mapType){
 	var mapStyleNo = null;
 	
-	// Default MAP style select
-	var mapStyle = MAPSTYLE_UNSATURATED_BROWNS;
 	if(mapType == 'HEAT') mapStyle = MAPSTYLE_BENTLEY;
-	
-	if (typeof melGmap.mapStyleNo != 'undefined') mapStyleNo = melGmap.mapStyleNo;
-	
+
+
+	if (typeof melGmap.mapStyleNo == 'undefined') {
+        mapStyleNo = 7; // 기본 스타일을 MAPSTYLE_BRIGHT_BUBBLY 로 설정한다.
+    } else {
+        mapStyleNo = melGmap.mapStyleNo;
+    }
+
 	if(mapStyleNo == '1')  mapStyle  = MAPSTYLE_NEUTRAL_BLUE;
 	if(mapStyleNo == '2')  mapStyle  = MAPSTYLE_GOWALLA;
 	if(mapStyleNo == '3')  mapStyle  = MAPSTYLE_UNSATURATED_MAPBOX;
@@ -57,17 +60,18 @@ function markAddressOnGMap(melGmap){
 	var mapBindObjID = "map-canvas";
 	var mapZoomLevel = 11;
 	var mapAddress = "Melbourne, VIC";
-	var mapStyleNo = getMapStyle(melGmap,'HEAT');
 	var message = "";
 	var mapIsMultipleMark = "no";
+    var mapTypeId = "map_style"; // [roadmap | satellite | hybrid | terrain | map_style]
 
 	if (typeof melGmap.mapName != 'undefined') mapName = melGmap.mapName;
 	if (typeof melGmap.mapBindObjID != 'undefined') mapBindObjID = melGmap.mapBindObjID;
 	if (typeof melGmap.mapZoomLevel != 'undefined') mapZoomLevel = parseInt(melGmap.mapZoomLevel);
 	if (typeof melGmap.mapAddress != 'undefined') mapAddress = melGmap.mapAddress;
 	if (typeof melGmap.message != 'undefined') message = melGmap.message;
+	console.log("mapName:" + mapName);
 
-	var styledMap = new google.maps.StyledMapType(mapStyleNo, {name: mapName});
+	var styledMap = new google.maps.StyledMapType(getMapStyle(melGmap, 'SIMPLE'), {name: mapName});
 	var latlng = new google.maps.LatLng( -37.818449, 145.124889 );	// Box Hill VIC
 	
 	// Map options for how to display the Google map
@@ -75,17 +79,39 @@ function markAddressOnGMap(melGmap){
        zoom: mapZoomLevel,
        maxZoom: 20,
        center: latlng,
-       mapTypeId: google.maps.MapTypeId.ROADMAP,
+       //mapTypeId: google.maps.MapTypeId.ROADMAP,
        mapTypeControl: true,
-	   scrollwheel: false
+	   scrollwheel: false,
+        mapTypeControl: false,
      }; 	
 	
 	// Show the Google map in the div with the attribute id 'map-canvas'.
 	map = new google.maps.Map(document.getElementById(mapBindObjID), mapOptions);
- 	map.mapTypes.set('map_style', styledMap);
- 	map.setMapTypeId('map_style');
 
-    markingByCoordinate(melGmap);
+	markingByCoordinate(melGmap);
+
+ 	map.mapTypes.set('map_style', styledMap);
+ 	map.setMapTypeId(mapTypeId);
+
+
+
+ 	if(melGmap.mapLegend != null && melGmap.mapLegend != '' && (typeof melGmap.mapLegend != 'undefined')) {
+ 	    $('#legend').show();
+        var legend = document.getElementById('legend');
+        var legendIcons = melGmap.mapLegend;
+        for (var key in legendIcons) {
+            var type = legendIcons[key];
+            var name = type.name;
+            var icon = type.icon;
+            var div = document.createElement('div');
+            div.style.padding='3px';
+            div.innerHTML = '<img src="' + icon + '" style="height:15px; width:15px;"> <span style="font-size:9px;color:#929497;">' + name + '</span>';
+            legend.appendChild(div);
+        }
+
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(legend);
+    }
+
 }
 
 

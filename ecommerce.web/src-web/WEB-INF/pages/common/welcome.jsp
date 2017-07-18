@@ -88,7 +88,25 @@
             margin-right:-4px;
             vertical-align: top;
         }
+
+        /**
+         * Google Map
+         */
+        #legend {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            padding: 10px;
+            margin: 10px;
+            border: 3px solid #000;
+        }
+        #legend h3 {
+            margin-top: 0;
+        }
+        #legend img {
+            vertical-align: middle;
+        }
     </style>
+
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -116,6 +134,26 @@
             MelfoodGmap.mapIsMultipleMark = 'Y';
             MelfoodGmap.mapZoomLevel = 10;
             MelfoodGmap.mapAddress = '4 Torresdale Road, South Morang VIC 3752';
+
+            var mapLegend = {
+                ON_ORDER: {
+                    name: '주문접수 중',
+                    icon: 'http://maps.google.com/mapfiles/ms/micons/red.png'
+                },
+                WILL_BE_ORDER: {
+                    name: '주문접수 예정',
+                    icon: 'http://maps.google.com/mapfiles/ms/micons/red-pushpin.png'
+                },
+                ORDER_CLOSED: {
+                    name: '주문접수 마감',
+                    icon: 'http://maps.google.com/mapfiles/ms/micons/yellow.png'
+                },
+                ON_SELLING: {
+                    name: '현재진행 중',
+                        icon: 'http://www.google.com/mapfiles/arrow.png'
+                }
+            };
+            MelfoodGmap.mapLegend = mapLegend;
 
             //groupPurchaseAlllist
             var points = [];
@@ -265,6 +303,7 @@
 
 
 <body>
+<div id="legend" style="display: none;"></div>
 <div id="groupPurchaseImagePopup"></div>
 <div class="row">
     <div class="col-sm-12" align="right">

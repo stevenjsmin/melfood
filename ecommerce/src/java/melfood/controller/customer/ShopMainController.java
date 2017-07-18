@@ -130,7 +130,7 @@ public class ShopMainController extends BaseController {
         if(sessionUser == null) {
             model.put("resultCode", "UNKNOWN_ERROR");
             model.put("mapResultCode", "UNKNOWN_ERROR");
-            model.put("mapResultMessage", "로그인을 하셔야 고객님위치에 따라 배송비 정보가 제공됩니다.");
+            model.put("mapResultMessage", "로그인을 하셔야 고객님위치에 따라 배송비 정보가 제공됩니다. :" + "&nbsp;&nbsp;&nbsp;[ <a href=\"javascript:doLoginPopup();\" style=\"font-size: 9px;\">로그인</a> ]");
 
             model.put("deliveryFee", "0.00");
             model.put("cutomerAddress", "");
