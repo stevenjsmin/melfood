@@ -88,7 +88,7 @@ public class ShopMasterMgtController extends BaseController {
 
         String shopId = request.getParameter("shopId");
         ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
-        if(shopMaster.getShopGateImageFileId() != null) {
+        if (shopMaster.getShopGateImageFileId() != null) {
 
         }
         if (shopMaster.getShopGateImageFileId() != null) {
@@ -177,7 +177,7 @@ public class ShopMasterMgtController extends BaseController {
         mav.addObject("cbxForDeliverCalcAddressState", codeService.generateCmbx(forDeliverCalcAddressStateOptions, htmlProperty));
 
         // 배달가능여부 : 기본값 : N
-        List<Option> deliverableOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DELIVERABLE", "N");
+        List<Option> deliverableOptions = codeService.getValueCmbxOptions("GRP_PURCHASE", "DELIVERABLE", shopMaster.getDeliveryService());
         String htmlForDeliverableCbx = HtmlCodeGenerator.generateComboboxForOptions("deliveryService", deliverableOptions);
         mav.addObject("cbxDeliveryService", htmlForDeliverableCbx);
 
@@ -215,6 +215,7 @@ public class ShopMasterMgtController extends BaseController {
         String deliveryService = request.getParameter("deliveryService");
         String deliveryFeePerKm = request.getParameter("deliveryFeePerKm");
         String deliveryBaseCharge = request.getParameter("deliveryBaseCharge");
+        String deliveryLimitKm = request.getParameter("deliveryLimitKm");
         String minimumPurchaseAmount = request.getParameter("minimumPurchaseAmount");
         String maximumPurchaseAmount = request.getParameter("maximumPurchaseAmount");
         String discountRateValue = request.getParameter("discountRateValue");
@@ -265,11 +266,27 @@ public class ShopMasterMgtController extends BaseController {
             if (StringUtils.isNotBlank(deliveryService)) shopMaster.setDeliveryService(deliveryService);
             if (StringUtils.isNotBlank(deliveryFeePerKm)) shopMaster.setDeliveryFeePerKm(deliveryFeePerKm);
             if (StringUtils.isNotBlank(deliveryBaseCharge)) shopMaster.setDeliveryBaseCharge(Float.parseFloat(deliveryBaseCharge));
+            if (StringUtils.isNotBlank(deliveryLimitKm)) shopMaster.setDeliveryLimitKm(Integer.parseInt(deliveryLimitKm));
             if (StringUtils.isNotBlank(minimumPurchaseAmount)) shopMaster.setMinimumPurchaseAmount(Float.parseFloat(minimumPurchaseAmount));
             if (StringUtils.isNotBlank(maximumPurchaseAmount)) shopMaster.setMaximumPurchaseAmount(Float.parseFloat(maximumPurchaseAmount));
             if (StringUtils.isNotBlank(discountRateValue)) shopMaster.setDiscountRateValue(Float.parseFloat(discountRateValue));
             shopMaster.setDiscountMethod("RATE");
             shopMaster.setDiscountFixedAmount(0.00f);
+
+            if (!StringUtils.equalsIgnoreCase(deliveryService, "Y")) {
+                shopMaster.setDeliveryFeePerKm("0");
+                shopMaster.setDeliveryLimitKm(0);
+                shopMaster.setDeliveryBaseCharge(0.0f);
+            }
+
+            // 배송제한 거리가 0인경우 배송서비스 하지 않는 것으로 처리
+            if (StringUtils.equalsIgnoreCase(deliveryLimitKm, "0") || StringUtils.isBlank(deliveryLimitKm)) {
+                shopMaster.setDeliveryService("N");
+                shopMaster.setDeliveryLimitKm(0);
+                shopMaster.setDeliveryFeePerKm("0");
+                shopMaster.setDeliveryBaseCharge(0.0f);
+            }
+
 
             GeocodingResult geoResult = null;
             // 20-24 Ellingworth Parade, Box Hill VIC 3128

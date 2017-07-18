@@ -6,6 +6,10 @@ $(document).ready(function () {
         format: "0", decimals: 0, min: 0, max: 5000
     });
 
+    $("#deliveryLimitKm").kendoNumericTextBox({
+        format: "0", decimals: 0, min: 0, max: 2000
+    });
+
     $("#minimumPurchaseAmount").kendoNumericTextBox({
         max: 99999,
         min: 0.00,
@@ -178,6 +182,7 @@ function save() {
     var deliveryService = $('#deliveryService').val();
     var deliveryBaseCharge = $('#deliveryBaseCharge').val();
     var deliveryFeePerKm = $('#deliveryFeePerKm').val();
+    var deliveryLimitKm = $('#deliveryLimitKm').val();
     var forDeliverCalcAddressState = $('#forDeliverCalcAddressState').val();
     var forDeliverCalcAddressPostcode = $('#forDeliverCalcAddressPostcode').val();
     var forDeliverCalcAddressSuburb = $('#forDeliverCalcAddressSuburb').val();
@@ -205,6 +210,7 @@ function save() {
             deliveryService: deliveryService,
             deliveryBaseCharge: deliveryBaseCharge,
             deliveryFeePerKm: deliveryFeePerKm,
+            deliveryLimitKm: deliveryLimitKm,
             forDeliverCalcAddressState: forDeliverCalcAddressState,
             forDeliverCalcAddressPostcode: forDeliverCalcAddressPostcode,
             forDeliverCalcAddressSuburb: forDeliverCalcAddressSuburb,

@@ -193,6 +193,9 @@
             }
 
             search();
+
+            checkDeliverable();
+
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
 
@@ -215,6 +218,83 @@
         function doOrder() {
             console.log('do Order.....');
         }
+    </script>
+
+
+    <script type="text/javascript">
+        function checkDeliverable() {
+            if('${shopMaster.deliveryService}' == 'Y'){
+
+                progressWithId(true, 'dilivery_service_row');
+                $.ajax({
+                    url: "/shop/checkDeliverable.yum",
+                    data: {
+                        shopId: ${shopMaster.shopId}
+                    },
+                    success: callbackCheckDeliverable
+                });
+            }
+        }
+        function callbackCheckDeliverable(data) {
+            var resultCode = data.resultCode;
+            var mapResultCode = data.mapResultCode;
+            var mapResultMessage = data.mapResultMessage;
+
+            var cutomerAddress = data.cutomerAddress;
+            var deliveryFee = data.deliveryFee;
+
+            var distance = data.distance;
+            var duration = data.duration;
+            var deliveryLimitKm = data.shopMaster.deliveryLimitKm;
+
+            progressWithId(false, 'dilivery_service_row');
+            if(resultCode == "OK"){
+
+                if(deliveryLimitKm != 0 && deliveryLimitKm < distance) {
+                    // 배달할수 없는 거리인경우
+
+                    $("#DELIVERY_SERVICE_DETAIL").show();
+                    $("#cutomerAddress").html(cutomerAddress);
+                    $("#distance").html(distance);
+
+                    $("#delivery_distance").val(distance);
+
+                    $("#useDeliveryService").prop("disabled", true);
+                    $("#deliveryFee").html("<span style='color: #EF604C;'>죄송합니다. " + deliveryLimitKm + "Km 이상되는 거리는 배송해 드릴 수 없습니다</span></span>");
+
+                    $("#deliveryServiceFee").val(0);
+
+                } else {
+                    $("#DELIVERY_SERVICE_DETAIL").show();
+                    $("#cutomerAddress").html(cutomerAddress);
+                    $("#distance").html(distance);
+
+                    $("#delivery_distance").val(distance);
+
+                    if(deliveryFee == 0) {
+                        $("#deliveryFee").html("<span style='color: #EF604C;font-weight: bold;'>없음 - 무료</span></span>");
+                    } else {
+                        $("#deliveryFee").html("$ <span style='color: #EF604C;'>" + deliveryFee + "</span><span style='font-size: 10px;'> (기본서비스 + 서비스비/Km)</span>");
+                    }
+                    $("#deliveryServiceFee").val(deliveryFee);
+                }
+
+
+            } else if(resultCode == "CUSTOMER_ADDR_INVALID"){
+                $("#CUSTOMER_ADDR_INVALID").show();
+                $("#customerAddrInvalidddress").html(cutomerAddress);
+
+            } else  if(resultCode == "NO_DELIVERABLE_SERVICE_AREA") {
+                $("#NO_DELIVERABLE_SERVICE_AREA").show();
+                $("#noDeliverableServiceAreaMessage").html(mapResultMessage);
+            } else {
+                $("#UNKNOWN_ERROR").show();
+                $("#unknownErrorCutomerAddress").html(cutomerAddress);
+                $("#unknownErrorMessage").html(mapResultMessage);
+            }
+
+        }
+
     </script>
 </head>
 
@@ -289,9 +369,11 @@
     <!-- 페이지 중간 [시작] :: 왼쪽:아이템목록 -->
     <div class="col-sm-6">
 
-        <div class="alert alert-warning" style="color: #0052A4;margin-bottom: 20px;padding: 10px;border-left: solid 6px #E37000;">
-            <strong><i class="fa fa-info-circle" aria-hidden="true"></i></strong> ${shopMaster.notice}
-        </div>
+        <c:choose>
+            <c:when test="${shopMaster.notice != null && shopMaster.notice != '' }">
+                <div class="alert alert-warning" style="color: #0052A4;margin-bottom: 20px;padding: 10px;border-left: solid 6px #E37000;">${shopMaster.notice}</div>
+            </c:when>
+        </c:choose>
 
         <div class="well well-lg" style="background-color: transparent;padding: 10px 10px 40px 10px;">
             <div class="row">
@@ -320,73 +402,123 @@
             </div>
         </div>
 
+
         <!-- 배송서비스 -->
-        <div class="row">
-            <div class="col-sm-12" style="padding: 10px 0px 10px 0px;">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#514747;"></i></td>
-                                <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배송 서비스</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;padding-right: 100px;" id="dilivery_service_row">
+        <c:choose>
+            <c:when test="${shopMaster.deliveryService == 'Y'}">
+                <div class="row">
+                    <div class="col-sm-12" style="padding: 10px 0px 10px 0px;">
+                        <div class="panel panel-default">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">
+                                <table style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 80px;padding-left: 20px;text-align: left;"><i class="fa fa-truck fa-3x" aria-hidden="true" style="color:#514747;"></i></td>
+                                        <td style="text-align: left;"><span style="font-size: 15px;font-weight: bold;">배송 서비스</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body" style="padding-left: 20px;padding-bottom: 20px;padding-top: 20px;padding-right: 100px;" id="dilivery_service_row">
 
-                        <div id="DELIVERY_SERVICE_DETAIL">
-                            <div style="text-align: right;font-size: 10px;color: #58A578;" align="right"> 배송비는 '<b>${shopMaster.forDeliverCalcAddressSuburb} ${shopMaster.forDeliverCalcAddressPostcode}</b>'를 기준으로 Drive거리(Km)에 따라 계산됩니다.(Avoid toll road)  </div>
-                            <table class="table table-striped">
-                                <colgroup>
-                                    <col style="width: 100px;">
-                                    <col style="width: 10px;">
-                                    <col style="width: *;">
-                                </colgroup>
-                                <tbody>
-                                <tr>
-                                    <td style="color: #797979; text-align: right;">고객님주소</td>
-                                    <td>:</td>
-                                    <td><span id="cutomerAddress"></span> &nbsp;&nbsp;<a href="/customer/mypage/myDetailInfo.yum" style="font-size: 10px;">주소변경</a></td>
-                                </tr>
-                                <tr>
-                                    <td style="color: #797979; text-align: right;">거리</td>
-                                    <td>:</td>
-                                    <td>
-                                        <span id="distance">0</span> Km
-                                        <input type="hidden" name="delivery_distance" id="delivery_distance" value="0" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="color: #797979; text-align: right;">배송예정시간</td>
-                                    <td>:</td>
-                                    <td><span id="estimatedDeliveryTime"></span></td>
-                                </tr>
-                                <tr>
-                                    <td style="color: #797979; text-align: right;">배송비</td>
-                                    <td>:</td>
-                                    <td>$ <span id="deliveryFee">0.00</span> (기본서비스 + 서비스비/KM)</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
-                                        <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" id="useDeliveryService_${groupPurchase.groupPurchaseId}" value="" style="transform: scale(1.5);" onchange="parseProductOrderValue()"></label>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                <div id="DELIVERY_SERVICE_DETAIL"  style="display: none;">
+                                    <div style="text-align: right;font-size: 10px;color: #58A578;" align="right"> 배송비는 '<b>${shopMaster.forDeliverCalcAddressSuburb} ${shopMaster.forDeliverCalcAddressPostcode}</b>'를 기준으로 Drive거리(Km)에 따라 계산됩니다.(Avoid toll road)  </div>
+                                    <table class="table table-striped">
+                                        <colgroup>
+                                            <col style="width: 150px;">
+                                            <col style="width: 10px;">
+                                            <col style="width: *;">
+                                        </colgroup>
+                                        <tbody>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">고객님주소</td>
+                                            <td>:</td>
+                                            <td><span id="cutomerAddress">${customerUser.addressHomeGmapFormattedAddress}</span> &nbsp;&nbsp;<a href="/customer/mypage/myDetailInfo.yum" style="font-size: 10px;">주소변경</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">고객님댁 까지의 거리</td>
+                                            <td>:</td>
+                                            <td>
+                                                <span id="distance">0</span> Km
+                                                <input type="hidden" name="delivery_distance" id="delivery_distance" value="0" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="color: #797979; text-align: right;">배송비</td>
+                                            <td>:</td>
+                                            <td><span id="deliveryFee"> - </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
+                                                <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" id="useDeliveryService" value="" style="transform: scale(1.5);" onchange="parseProductOrderValue()"></label>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div id="CUSTOMER_ADDR_INVALID" class="alert alert-warning"  style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 40px; text-align: center;"><i class="fa fa-info" aria-hidden="true" style="color: #900C3E;"></i></td>
+                                            <td style="color: #900C3E;">현재 고객님의 주소가 유효하지 않습니다.</td>
+                                        </tr>
+                                        <tr><td colspan="2"></td></tr>
+                                        <tr style="height: 30px;">
+                                            <td></td>
+                                            <td><span style="color: #A2A4A4;">현재 고객님의 주소 :</span> <span id="customerAddrInvalidddress" style="color: #505050;"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td style="text-align: right;"> <a href="/customer/mypage/myDetailInfo.yum">My 푸드 > 개인정보 변경</a> 에서 주소를 수정하실수 있습니다.</td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div id="NO_DELIVERABLE_SERVICE_AREA" class="alert alert-warning"  style="display: none;">
+                                    <table style="width: 100%;">
+                                        <colgroup>
+                                            <col style="width: 80px;">
+                                            <col style="width: 10px;">
+                                            <col>
+                                        </colgroup>
+                                        <tr>
+                                            <td style="width: 40px; text-align: center;"><i class="fa fa-info fa-2x" aria-hidden="true" style="color: #900C3E;"></i></td>
+                                            <td></td>
+                                            <td style="color: #F15F4C;"><span id="noDeliverableServiceAreaMessage"></span></td>
+                                        </tr>
+                                        <tr style="height: 30px;">
+                                            <td style="text-align: right" colspan="3"><a href="javascript:deliverySchedulePopup();">배송가능 지역보기</a></td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div id="UNKNOWN_ERROR" class="alert alert-warning" style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td style="width: 40px; text-align: center;"><i class="fa fa-info" aria-hidden="true" style="color: #900C3E;"></i></td>
+                                            <td style="color: #900C3E;">죄송합니다. 배송비를 계산할 수가 없어 배송서비스를 이용하실수 없습니다.</td>
+                                        </tr>
+                                        <tr><td colspan="2"></td></tr>
+                                        <tr style="height: 30px;">
+                                            <td></td>
+                                            <td><span style="color: #A2A4A4;" id="unknownErrorMessage"></span></td>
+                                        </tr>
+                                        <tr><td colspan="2"></td></tr>
+
+                                    </table>
+                                    <input type="hidden" id="deliveryServiceFee" value="${deliveryFee}">
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
-            </div>
-        </div>
+            </c:when>
+        </c:choose>
+
+
     </div>
     <!-- 페이지 중간 [끝] :: 왼쪽:아이템목록 -->
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-
-
-
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
     <!-- 페이지 중간 [시작] :: 오른쪽:주문내역 -->

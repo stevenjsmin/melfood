@@ -197,8 +197,8 @@
                     <td class="label">배달가능여부</td>
                     <td class="value">
                         <c:choose>
-                            <c:when test="${shopMaster.deliveryService == 'Y'}">배송가능</c:when>
-                            <c:when test="${shopMaster.deliveryService == 'N'}">배송서비스 없음</c:when>
+                            <c:when test="${shopMaster.deliveryService == 'Y'}"><span style="color: #2F88CB;">배송가능</span></c:when>
+                            <c:when test="${shopMaster.deliveryService == 'N'}"><span style="color: #EF604C;">배송서비스 없음</span></c:when>
                             <c:otherwise>-</c:otherwise>
                         </c:choose>
                     </td>
@@ -220,6 +220,17 @@
                 <tr>
                     <td class="label">주소</td>
                     <td class="value" colspan="3">${shopMaster.forDeliverCalcAddressFormattedAddress}</td>
+                </tr>
+                <tr>
+                    <td class="label">배송제한거리</td>
+                    <td class="value">
+                            <c:choose>
+                                <c:when test="${shopMaster.deliveryLimitKm == 0}"><span style="color: #2F88CB;">배송서비스 하지않음</span></c:when>
+                                <c:otherwise><span style="color: #EF604C;">${shopMaster.deliveryLimitKm} Km</span></c:otherwise>
+                            </c:choose>
+                    </td>
+                    <td></td>
+                    <td></td>
                 </tr>
 
                 <tr>

@@ -14,7 +14,11 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-
+            $("#notice").kendoEditor({
+                tools :["bold","italic","underline","justifyLeft","justifyCenter","justifyRight","insertUnorderedList","insertOrderedList","createLink","unlink","insertImage","createTable","formatting","fontSize","foreColor"],
+                messages: {fontSizeInherit: "Default"},
+                encoded: false
+            });
         }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     </script>
 
@@ -151,6 +155,12 @@
                 <tr>
                     <td class="label">Street</td>
                     <td class="value" colspan="2"><input class="form-control" type="text" id="forDeliverCalcAddressStreet" name="forDeliverCalcAddressStreet" value=''/></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td class="label">배송제한거리(Km)</td>
+                    <td class="value"><input id="deliveryLimitKm" name="deliveryLimitKm" value="100"></input></td>
+                    <td></td>
                     <td></td>
                 </tr>
 

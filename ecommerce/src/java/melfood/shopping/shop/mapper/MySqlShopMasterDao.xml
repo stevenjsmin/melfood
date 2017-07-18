@@ -33,6 +33,7 @@
 				,a.delivery_service                             'deliveryService'
 				,a.delivery_fee_per_km                          'deliveryFeePerKm'
 				,a.delivery_base_charge                         'deliveryBaseCharge'
+				,a.delivery_limit_km                         	'deliveryLimitKm'
 				,a.minimum_purchase_amount                      'minimumPurchaseAmount'
 				,a.maximum_purchase_amount                      'maximumPurchaseAmount'
 				,a.discount_method                              'discountMethod'
@@ -117,6 +118,7 @@
                        ,delivery_service
                        ,delivery_fee_per_km
                        ,delivery_base_charge
+                       ,delivery_limit_km
                        ,minimum_purchase_amount
                        ,maximum_purchase_amount
                        ,discount_method
@@ -145,6 +147,7 @@
                                ,#{deliveryService}
                                ,#{deliveryFeePerKm}
                                ,#{deliveryBaseCharge}
+                               ,#{deliveryLimitKm}
                                ,#{minimumPurchaseAmount}
                                ,#{maximumPurchaseAmount}
                                ,#{discountMethod}
@@ -183,6 +186,7 @@
                ,delivery_service                             =   #{deliveryService}
                ,delivery_fee_per_km                          =   #{deliveryFeePerKm}
                ,delivery_base_charge                         =   #{deliveryBaseCharge}
+               ,delivery_limit_km                         =   #{deliveryLimitKm}
                ,minimum_purchase_amount                      =   #{minimumPurchaseAmount}
                ,maximum_purchase_amount                      =   #{maximumPurchaseAmount}
                ,discount_method                              =   #{discountMethod}

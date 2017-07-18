@@ -34,6 +34,7 @@ public class ShopMaster extends BaseDto {
     private String deliveryService;
     private String deliveryFeePerKm;
     private Float deliveryBaseCharge;
+    private Integer deliveryLimitKm;
     private Float minimumPurchaseAmount;
     private Float maximumPurchaseAmount;
     private String discountMethod;
@@ -317,5 +318,13 @@ public class ShopMaster extends BaseDto {
 
     public void setTemplateName(String templateName) {
         this.templateName = templateName;
+    }
+
+    public Integer getDeliveryLimitKm() {
+        return deliveryLimitKm;
+    }
+
+    public void setDeliveryLimitKm(Integer deliveryLimitKm) {
+        this.deliveryLimitKm = deliveryLimitKm;
     }
 }
