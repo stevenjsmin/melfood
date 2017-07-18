@@ -456,7 +456,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3" style="text-align: right; padding-right: 20px;color: #505050;font-weight: bold;">
-                                                <label style="color: #117899;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" id="useDeliveryService" value="" style="transform: scale(1.5);" onchange="parseProductOrderValue()"></label>
+                                                <label style="color: #F15F4C;">배송서비스를 이용하시겠습니까 ? &nbsp;&nbsp;&nbsp;<input type="checkbox" id="useDeliveryService" value="" style="transform: scale(1.5);" onchange="parseProductOrderValue()"></label>
                                             </td>
                                         </tr>
                                         </tbody>
