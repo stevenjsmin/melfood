@@ -8,15 +8,15 @@
 	<contact-info>
 		<default-customer-service>
 			<name>멜푸드</name>
-			<email>steven.jsmin@gmail.com</email>
-			<phone>1300 599 888 / (Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</phone>
-			<mobile>0422632338</mobile>
+			<email>customer.service@melfood.com.au</email>
+			<phone>Monday to Friday 8.30am to 5:30pm (AEST/AEDT)</phone>
+			<mobile>0422 632 338</mobile>
 		</default-customer-service>
 		<system-administrator>
 			<name>Steven Min</name>
-			<email>steven.jsmin@gmail.com</email>
-			<phone>(03) 8888 3307</phone>
-			<mobile>0422632338</mobile>
+			<email>sysadmin@melfood.com.au</email>
+			<phone>0422 632 338</phone>
+			<mobile>0422 632 338</mobile>
 		</system-administrator>
 	</contact-info>
 
