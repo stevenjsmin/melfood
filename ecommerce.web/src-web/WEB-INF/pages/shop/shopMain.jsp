@@ -9,7 +9,7 @@
 
 <!doctype html>
 <head>
-    <script src="/resources/js/melfood/framework/grouppurchasepayment.js?ver=<%=Ctx.releaseVersion%>"></script>
+    <script src="/resources/js/melfood/framework/shopmain.js?ver=<%=Ctx.releaseVersion%>"></script>
 
     <style>
         .venueInfoWrapper {
@@ -40,6 +40,16 @@
             line-height: 32px;
             padding-left: 20px;
             font-size: 15px;
+        }
+        .openProductOrderPopup {
+            color: 3B3B3B;
+        }
+        .openProductOrderPopup:hover {
+            color: #F15F4C;
+            cursor: hand;
+        }
+        #grid_panel_main > div.k-grid-content > table > tbody > tr:hover {
+            color: #F15F4C;
         }
     </style>
     <style>
@@ -211,15 +221,8 @@
     </script>
 
     <script id="order-template" type="text/x-kendo-template">
-        #=  '<a href="javascript:doOrder();"><i class="fa fa-cart-plus fa-2x" aria-hidden="true" style="color: 3B3B3B;"></i></a>' #
+        #=  "<a href='javascript:openProductOrderPopup(\"" + prodId + "\");'><i class='fa fa-cart-plus fa-2x openProductOrderPopup' aria-hidden='true'></i></a>" #
     </script>
-
-    <script type="text/javascript">
-        function doOrder() {
-            console.log('do Order.....');
-        }
-    </script>
-
 
     <script type="text/javascript">
         function checkDeliverable() {
@@ -306,9 +309,10 @@
 </head>
 
 <body>
+<div id="productOrderPopup"></div>
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<!-- 페이지 상단 [시작] :: 공동구매 개요 -->
+<!-- 페이지 상단 [시작] :: 샵설명 개요 -->
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 0px;">
         <div class="venueInfoWrapper" style="padding-left: 30px;">
@@ -365,11 +369,11 @@
         </div>
     </div>
 </div>
-<!-- 페이지 상단 [끝]:: 공동구매 개요 -->
+<!-- 페이지 상단 [끝]:: 샵설명 개요 -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<!-- 페이지 중간 [시작] :: 오른쪽:아이템목록 왼쪽:주문내역 -->
+<!-- 페이지 중간 [시작] :: 왼쪽:아이템목록 오른쪽:주문내역 -->
 <div class="row" style="padding-top: 10px;padding-bottom: 30px;">
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -644,8 +648,11 @@
 
 
 </div>
-<!-- 페이지 중간 [끝] :: :: 오른쪽:아이템목록 왼쪽:주문내역  -->
+<!-- 페이지 중간 [끝] :: :: 왼쪽:아이템목록 오른쪽:주문내역  -->
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
+<script type="text/javascript">
+    var SHOP_ID = "${shopMaster.shopId}";
+</script>
 </body>
 </html>

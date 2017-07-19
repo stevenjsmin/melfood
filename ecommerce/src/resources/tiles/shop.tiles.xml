@@ -12,4 +12,11 @@
 		<put-attribute name="body" value="/WEB-INF/pages/shop/shopMain.jsp" />
 	</definition>
 
+	<definition name="tiles/customer/shop/productOrderPopup" extends="layout/panel_100">
+		<put-attribute name="title" value="상품주문" />
+		<put-attribute name="body" value="/WEB-INF/pages/shop/purchaseOrganizerPopup.jsp" />
+	</definition>
+
+
+
 </tiles-definitions>

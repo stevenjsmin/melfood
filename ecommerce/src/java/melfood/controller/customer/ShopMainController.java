@@ -127,7 +127,7 @@ public class ShopMainController extends BaseController {
         ShopMaster shopMaster = null;
         String shopId = request.getParameter("shopId");
 
-        if(sessionUser == null) {
+        if (sessionUser == null) {
             model.put("resultCode", "UNKNOWN_ERROR");
             model.put("mapResultCode", "UNKNOWN_ERROR");
             model.put("mapResultMessage", "로그인을 하셔야 고객님위치에 따라 배송비 정보가 제공됩니다. :" + "&nbsp;&nbsp;&nbsp;[ <a href=\"javascript:doLoginPopup();\" style=\"font-size: 9px;\">로그인</a> ]");
@@ -221,7 +221,7 @@ public class ShopMainController extends BaseController {
                 if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID") && !StringUtils.equals(resultCode, "NO_DELIVERABLE_SERVICE_AREA")) {
                     // 마켓주소와 고객의 주소에 일단 내용이 존재한다면 지도정보를 조회한다.
                     mapResult = melfoodGoogleMapService.getLookupGmapDistance(shopAddress.toString(), cutomerAddress.toString());
-                    if(mapResult == null) throw new Exception("거리를 계산하는 도중 문제가 발생하여 배송서비스를 이용하실 수 없습니다.");
+                    if (mapResult == null) throw new Exception("거리를 계산하는 도중 문제가 발생하여 배송서비스를 이용하실 수 없습니다.");
                     mapResultCode = mapResult.getRows()[0].getElements()[0].getStatus();
 
                     if (!StringUtils.equalsIgnoreCase(mapResultCode, "OK")) {
@@ -307,4 +307,22 @@ public class ShopMainController extends BaseController {
 //        return mav;
 //    }
 
+
+    @RequestMapping("/productOrderPopup")
+    public ModelAndView productOrderPopup(HttpServletRequest request) throws Exception {
+        SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
+        ModelAndView mav = new ModelAndView("tiles/customer/shop/productOrderPopup");
+        String shopId = request.getParameter("shopId");
+        String prodId = request.getParameter("prodId");
+
+        ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
+        User shopOwner = userService.getUserInfo(shopMaster.getShopOwner());
+        Product product = productService.getProduct(new Product(prodId));
+
+        mav.addObject("shopMaster", shopMaster);
+        mav.addObject("shopOwner", shopOwner);
+        mav.addObject("product", product);
+
+        return mav;
+    }
 }

@@ -8,10 +8,10 @@
 
 package melfood.shopping.product;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * TODO: Class description
@@ -69,4 +69,6 @@ public class ProductServiceImpl implements ProductService {
 	public boolean existProduct(Product product) throws Exception {
 		return (this.getProduct(product) != null) ? true : false;
 	}
+
+
 }
