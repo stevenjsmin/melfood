@@ -13,10 +13,10 @@ import melfood.framework.auth.SessionUserInfo;
 import melfood.framework.gmap.MelfoodGoogleMapService;
 import melfood.framework.gmap.gson.dto.GMapResult;
 import melfood.framework.system.BaseController;
+import melfood.framework.uitl.html.Properties;
 import melfood.framework.user.User;
 import melfood.shopping.delivery.DeliveryCalendarService;
-import melfood.shopping.product.Product;
-import melfood.shopping.product.ProductService;
+import melfood.shopping.product.*;
 import melfood.shopping.shop.ShopMaster;
 import melfood.shopping.shop.ShopMasterService;
 import org.apache.commons.lang.StringUtils;
@@ -53,6 +53,13 @@ public class ShopMainController extends BaseController {
 
     @Autowired
     MelfoodGoogleMapService melfoodGoogleMapService;
+
+    @Autowired
+    private ProductImageService productImageService;
+
+    @Autowired
+    private ProductOptionService productOptionService;
+
 
     @RequestMapping("/Main")
     public ModelAndView main(HttpServletRequest request) throws Exception {
@@ -318,6 +325,25 @@ public class ShopMainController extends BaseController {
         ShopMaster shopMaster = shopMasterService.getShopMaster(new ShopMaster(shopId));
         User shopOwner = userService.getUserInfo(shopMaster.getShopOwner());
         Product product = productService.getProduct(new Product(prodId));
+
+        List<ProductImage> productImages = null;
+        List<ProductOptionGroup> productOptionGroups = null;
+
+        // 상품에 소속된 이미지를 가저와서 설정한다.
+        productImages = productImageService.getProductImages(new ProductImage(product.getProdId()));
+        product.setProductionImages(productImages);
+
+        // 상품에 소속된 옵션정보를 가저오서 설정한다.
+        Properties htmlProperty = new Properties();
+        productOptionGroups = productOptionService.generateCmbxForOptionAndValue(htmlProperty, Integer.parseInt(prodId), false);
+        product.setProductOptionGroups(productOptionGroups);
+
+        if (productImages.size() > 0 && productImages.get(0).getImageFileId() != 0) {
+            // 등록된 첫번째 이미지를 대표이미지로 사용한다.
+            mav.addObject("firstImageId", Integer.toString(productImages.get(0).getImageFileId()));
+        } else {
+            mav.addObject("firstImageId", null);
+        }
 
         mav.addObject("shopMaster", shopMaster);
         mav.addObject("shopOwner", shopOwner);

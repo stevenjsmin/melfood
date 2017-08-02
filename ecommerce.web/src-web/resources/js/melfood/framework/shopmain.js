@@ -7,10 +7,9 @@ function openProductOrderPopup(prodId) {
     $("#productOrderPopup").kendoWindow({
         content: "/shop/productOrderPopup.yum?shopId=" + SHOP_ID + "&prodId=" + prodId,
         actions: ["Minimize", "Maximize", "Close"],
-        title: "내가잘사는 방법:: MelFood",
+        title: false,
         modal: true,
-        iframe: true,
-        position:{ top:"20", left:"25%"}
+        iframe: true
     });
 
     var popup_dialog = $("#productOrderPopup").data("kendoWindow");
@@ -20,10 +19,16 @@ function openProductOrderPopup(prodId) {
     });
     popup_dialog.center();
 
+    $('#productOrderPopup').closest(".k-window").css({
+        position: 'fixed',
+        margin: 'auto',
+        top: '5%'
+    });
+
     $("#productOrderPopup").data("kendoWindow").open();
 }
 
 function closeOpenProductOrderPopup() {
-    var win_dialog = $("#purchaseOrganizerPopup").data("kendoWindow");
+    var win_dialog = $("#productOrderPopup").data("kendoWindow");
     win_dialog.close();
 }
