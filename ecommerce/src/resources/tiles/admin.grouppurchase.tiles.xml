@@ -7,7 +7,7 @@
 
 	<!-- GROUP PURCHASE MANAGEMENT -->
 	<definition name="tiles/admin/grouppurchase/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="공동구매 검색" />
+		<put-attribute name="title" value="공동구매 목록" />
 		<put-attribute name="navigation" value="Admin > Group Purchase > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/grouppurchase/groupPurchaseList.jsp" />
 	</definition>

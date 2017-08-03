@@ -7,7 +7,7 @@
 
 	<!-- ORDER MANAGEMENT -->
 	<definition name="tiles/admin/shopmaster/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="판매자 Shop 검색" />
+		<put-attribute name="title" value="판매자 Shop" />
 		<put-attribute name="navigation" value="Admin > Shop > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/shops.jsp" />
 	</definition>

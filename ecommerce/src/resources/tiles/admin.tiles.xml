@@ -23,7 +23,7 @@
 	
 	<!-- CONTRACT MANAGEMENT -->
 	<definition name="tiles/admin/contractmgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="판매자계약 검색" />
+		<put-attribute name="title" value="판매자계약" />
 		<put-attribute name="navigation" value="Admin > Contract Management > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractList.jsp" />
 	</definition>
@@ -197,7 +197,7 @@
 	
     <!-- Payment Method > List -->	
 	<definition name="tiles/admin/paymentmgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="판매자 결재수단 검색" />
+		<put-attribute name="title" value="판매자 결재수단" />
 		<put-attribute name="navigation" value="Admin > Seller Payment > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/payment/paymentMethodList.jsp" />
 	</definition>
