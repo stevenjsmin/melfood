@@ -7,42 +7,42 @@
 
 
 	<definition name="tiles/framework/communicationmanager/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Communication item Search" />
+		<put-attribute name="title" value="Communication 항목 검색" />
 		<put-attribute name="navigation" value="Admin > Communication > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/communicationList.jsp" />
 	</definition>
 
 	<definition name="tiles/framework/communicationmanager/getCommunication" extends="tiles/admin/root">
-		<put-attribute name="title" value="Communication Detail Info" />
+		<put-attribute name="title" value="Communication 항목 상세정보" />
         <put-attribute name="navigation" value="Admin > Communication > Detail Info" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/communicationDetailInfo.jsp" />
 	</definition>
 
 	<definition name="tiles/framework/communicationmanager/regist" extends="tiles/admin/root">
-		<put-attribute name="title" value="Communication Register" />
+		<put-attribute name="title" value="Communication 항목 등록" />
 		<put-attribute name="navigation" value="Admin > Communication > register" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/communicationRegister.jsp" />
 	</definition>
 
 	<definition name="tiles/framework/communicationmanager/modify" extends="tiles/admin/root">
-		<put-attribute name="title" value="Communication Modify" />
+		<put-attribute name="title" value="Communication 항목 수정" />
 		<put-attribute name="navigation" value="Admin > Communication > modify" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/communicationModify.jsp" />
 	</definition>
 
 	<definition name="tiles/framework/communicationmanager/findUserForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Find User" />
+		<put-attribute name="title" value="사용자 검색" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/communication/findUser.jsp" />
 	</definition>
 
     <definition name="tiles/framework/communicationmanager/qna/main" extends="tiles/admin/root">
-        <put-attribute name="title" value="QnA Search" />
+        <put-attribute name="title" value="QnA 검색" />
         <put-attribute name="navigation" value="Admin > Communication > QnA Search" />
         <put-attribute name="body" value="/WEB-INF/pages/framework/communication/qnAList.jsp" />
     </definition>
 
     <definition name="tiles/framework/communicationmanager/qna/qnADetailInfo" extends="layout/panel_100">
-        <put-attribute name="title" value="Communication Detail Info" />
+        <put-attribute name="title" value="Communication QnA 상세내용" />
         <put-attribute name="navigation" value="Admin > Communication > Detail Info" />
         <put-attribute name="body" value="/WEB-INF/pages/framework/communication/qnADetailInfo.jsp" />
     </definition>

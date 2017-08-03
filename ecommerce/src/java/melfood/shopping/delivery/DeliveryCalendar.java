@@ -47,8 +47,8 @@ public class DeliveryCalendar extends BaseDto {
         this.deliveryCalendarId = deliveryCalendarId;
     }
 
-    public DeliveryCalendar(String sellerId) {
-        this.sellerId = sellerId;
+    public DeliveryCalendar(String deliveryCalendarId) {
+        this.deliveryCalendarId = Integer.parseInt(deliveryCalendarId);
     }
 
     public DeliveryCalendar(String sellerId, String yyyyMmDd) {

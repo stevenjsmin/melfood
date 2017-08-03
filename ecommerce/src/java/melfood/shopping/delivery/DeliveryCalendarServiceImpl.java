@@ -9,19 +9,18 @@
 
 package melfood.shopping.delivery;
 
+import melfood.framework.uitl.html.Option;
+import melfood.framework.uitl.html.Properties;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import melfood.framework.uitl.html.Option;
-import melfood.framework.uitl.html.Properties;
 
 /**
  * @author steven.min
@@ -86,10 +85,6 @@ public class DeliveryCalendarServiceImpl implements DeliveryCalendarService {
 		return deliveryCalendarDAO.insertDeliveryCalendar(deliveryCalendar);
 	}
 
-	@Override
-	public Integer modifyDeliveryCalendar(DeliveryCalendar deliveryCalendar) throws Exception {
-		return deliveryCalendarDAO.modifyDeliveryCalendar(deliveryCalendar);
-	}
 
 	@Override
 	public Integer modifyDeliveryCalendarForNotNull(DeliveryCalendar deliveryCalendar) throws Exception {
@@ -111,7 +106,7 @@ public class DeliveryCalendarServiceImpl implements DeliveryCalendarService {
 
 		List<DeliveryCalendar> deliveryCalendars = this.getDeliveryCalendars(deliveryCalendar);
 		for (DeliveryCalendar area : deliveryCalendars) {
-			options.add(new Option(area.getAddressPostcode(), area.getAddressSuburb()));
+			options.add(new Option(area.getDeliveryBaseAddressPostcode(), area.getDeliveryBaseAddressSuburb()));
 		}
 		return options;
 	}
@@ -152,15 +147,6 @@ public class DeliveryCalendarServiceImpl implements DeliveryCalendarService {
 		return selectHtml.toString();
 	}
 
-	@Override
-	public List<DeliveryCalendar> getDeliveryCalendarsForGuestOrder(DeliveryCalendar deliveryCalendar) throws Exception {
-		return deliveryCalendarDAO.getDeliveryCalendarsForGuestOrder(deliveryCalendar);
-	}
-
-	@Override
-	public Integer getTotalCntForDeliveryCalendarsForGuestOrder(DeliveryCalendar deliveryCalendar) {
-		return deliveryCalendarDAO.getTotalCntForDeliveryCalendarsForGuestOrder(deliveryCalendar);
-	}
 
 	
 	

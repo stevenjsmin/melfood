@@ -9,12 +9,11 @@
 
 package melfood.shopping.delivery;
 
-import java.util.List;
-
+import melfood.framework.core.BaseDAO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 
-import melfood.framework.core.BaseDAO;
+import java.util.List;
 
 /**
  * @author steven.min
@@ -34,24 +33,11 @@ public class DeliveryCalendarDAOImpl extends BaseDAO implements DeliveryCalendar
 	}
 
 	@Override
-	public Integer nextDeliverySeq(DeliveryCalendar deliveryCalendar) {
-		return sqlSession.selectOne("mySqlDeliveryCalendarDao.nextDeliverySeq", deliveryCalendar);
-	}
-
-	@Override
 	public Integer insertDeliveryCalendar(DeliveryCalendar deliveryCalendar) throws Exception {
 		if (StringUtils.isBlank(deliveryCalendar.getSellerId()) || StringUtils.isBlank(deliveryCalendar.getYyyyMmDd())) {
 			throw new Exception("SELLER_ID or YYYY_MM_DD are mandatory fields for insert");
 		}
-
-		int nextSeq = sqlSession.selectOne("mySqlDeliveryCalendarDao.nextDeliverySeq", deliveryCalendar);
-		deliveryCalendar.setDeliverySeq(nextSeq);
 		return sqlSession.insert("mySqlDeliveryCalendarDao.insertDeliveryCalendar", deliveryCalendar);
-	}
-
-	@Override
-	public Integer modifyDeliveryCalendar(DeliveryCalendar deliveryCalendar) throws Exception {
-		return sqlSession.update("mySqlDeliveryCalendarDao.modifyDeliveryCalendar", deliveryCalendar);
 	}
 
 	@Override
@@ -64,16 +50,6 @@ public class DeliveryCalendarDAOImpl extends BaseDAO implements DeliveryCalendar
 		return sqlSession.delete("mySqlDeliveryCalendarDao.deleteDeliveryCalendar", deliveryCalendar);
 	}
 
-	@Override
-	public List<DeliveryCalendar> getDeliveryCalendarsForGuestOrder(DeliveryCalendar deliveryCalendar) throws Exception {
-		return sqlSession.selectList("mySqlDeliveryCalendarDao.getDeliveryCalendarsForGuestOrder", deliveryCalendar);
-	}
 
-	@Override
-	public Integer getTotalCntForDeliveryCalendarsForGuestOrder(DeliveryCalendar deliveryCalendar) {
-		return sqlSession.selectOne("mySqlDeliveryCalendarDao.getTotalCntForDeliveryCalendarsForGuestOrder", deliveryCalendar);
-	}
-	
-	
 
 }

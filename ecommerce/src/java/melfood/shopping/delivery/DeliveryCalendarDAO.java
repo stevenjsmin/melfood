@@ -20,14 +20,7 @@ import java.util.List;
 public interface DeliveryCalendarDAO {
 	public List<DeliveryCalendar> getDeliveryCalendars(DeliveryCalendar deliveryCalendar) throws Exception;
 	public Integer getTotalCntForDeliveryCalendars(DeliveryCalendar deliveryCalendar);
-	
-	public List<DeliveryCalendar> getDeliveryCalendarsForGuestOrder(DeliveryCalendar deliveryCalendar) throws Exception;
-	public Integer getTotalCntForDeliveryCalendarsForGuestOrder(DeliveryCalendar deliveryCalendar);
-	
-	public Integer nextDeliverySeq(DeliveryCalendar deliveryCalendar);
-	
 	public Integer insertDeliveryCalendar(DeliveryCalendar deliveryCalendar) throws Exception;
-	public Integer modifyDeliveryCalendar(DeliveryCalendar deliveryCalendar) throws Exception;
 	public Integer modifyDeliveryCalendarForNotNull(DeliveryCalendar deliveryCalendar) throws Exception;
 	public Integer deleteDeliveryCalendar(DeliveryCalendar deliveryCalendar) throws Exception;
 }

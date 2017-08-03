@@ -23,22 +23,22 @@
 	
 	<!-- CONTRACT MANAGEMENT -->
 	<definition name="tiles/admin/contractmgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Contract search" />
+		<put-attribute name="title" value="판매자계약 검색" />
 		<put-attribute name="navigation" value="Admin > Contract Management > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractList.jsp" />
 	</definition>
 	<definition name="tiles/admin/contractmgt/regist" extends="tiles/admin/root">
-		<put-attribute name="title" value="Contract Register" />
+		<put-attribute name="title" value="판매자계약 등록" />
 		<put-attribute name="navigation" value="Admin > Contract Management > register" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractRegister.jsp" />
 	</definition>
 	<definition name="tiles/admin/contractmgt/modify" extends="tiles/admin/root">
-		<put-attribute name="title" value="Contract Modify" />
+		<put-attribute name="title" value="판매자계약 수정" />
 		<put-attribute name="navigation" value="Admin > Contract Management > modify" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractModify.jsp" />
 	</definition>
 	<definition name="tiles/admin/contractmgt/detailInfo" extends="tiles/admin/root">
-		<put-attribute name="title" value="Contract Detail" />
+		<put-attribute name="title" value="판매자계약 상세정보" />
 		<put-attribute name="navigation" value="Admin > Contract Management > Detail" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/contract/contractDetailInfo.jsp" />
 	</definition>
@@ -46,22 +46,22 @@
 		
 	<!-- CATEGORY MANAGEMENT -->
 	<definition name="tiles/admin/product/categorymgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Category search" />
+		<put-attribute name="title" value="상품분류 검색" />
 		<put-attribute name="navigation" value="Admin > Product > Category Management > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryList.jsp" />
 	</definition>
 	<definition name="tiles/admin/product/categorymgt/regist" extends="tiles/admin/root">
-		<put-attribute name="title" value="Category Register" />
+		<put-attribute name="title" value="상품분류 등록" />
 		<put-attribute name="navigation" value="Admin > Product > Category Management > register" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryRegister.jsp" />
 	</definition>
 	<definition name="tiles/admin/product/categorymgt/modify" extends="tiles/admin/root">
-		<put-attribute name="title" value="Category Modify" />
+		<put-attribute name="title" value="상품분류 수정" />
 		<put-attribute name="navigation" value="Admin > Product > Category Management > modify" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryModify.jsp" />
 	</definition>
 	<definition name="tiles/admin/product/categorymgt/detailInfo" extends="tiles/admin/root">
-		<put-attribute name="title" value="Category Detail" />
+		<put-attribute name="title" value="상품분류 상세정보" />
 		<put-attribute name="navigation" value="Admin > Product > Category Management > Detail" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/categoryDetailInfo.jsp" />
 	</definition>
@@ -81,14 +81,14 @@
 	
 	<!-- Product > List -->	
 	<definition name="tiles/admin/product/productmgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Product search" />
+		<put-attribute name="title" value="상품 검색" />
 		<put-attribute name="navigation" value="Admin > Product > Product Management > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productList.jsp" />
 	</definition>
 
 	<!-- Product > MasterInfo > Overview -->	
 	<definition name="tiles/admin/product/productmgt/overviewProductInfo" extends="tiles/admin/prod/root">
-		<put-attribute name="title" value="Product overview" />
+		<put-attribute name="title" value="상품 overview" />
 		<put-attribute name="navigation" value="Admin > Product > Product Management > Product overview" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOverview.jsp" />
 	</definition>
@@ -101,54 +101,54 @@
 	</definition>
 	<!-- Product > MasterInfo > Modify -->
 	<definition name="tiles/admin/product/productmgt/modifyProductMasterInfo" extends="tiles/admin/prod/root">
-		<put-attribute name="title" value="Product Modify" />
+		<put-attribute name="title" value="상품정보 수정" />
 		<put-attribute name="navigation" value="Admin > Product > Product Management > modify" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productMasterInfoModify.jsp" />
 	</definition>	
 
 	<!-- Product > Option > Item > List -->	
 	<definition name="tiles/admin/product/productmgt/option/main" extends="tiles/admin/prod/root">
-		<put-attribute name="title" value="Product Item search" />
+		<put-attribute name="title" value="상품옵션 목록" />
 		<put-attribute name="navigation" value="Admin > Product > Product Management > Option Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOptionList.jsp" />
 	</definition>	
 	<!-- Product > Option > Item > Regist -->	
 	<definition name="tiles/admin/product/productmgt/option/registForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Product Option Register" />
+		<put-attribute name="title" value="상품옵션 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productOptionRegister.jsp" />
 	</definition>	
 	<!-- Product > Option > Item > Modify -->	
 	<definition name="tiles/admin/product/productmgt/option/modifyForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Product Option Modify" />
+		<put-attribute name="title" value="상품옵션 수정" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productOptionModify.jsp" />
 	</definition>
 		
 	<!-- Product > Option > Value > List -->	
 	<definition name="tiles/admin/product/productmgt/option/optionValue/main" extends="tiles/admin/prod/root">
-		<put-attribute name="title" value="Product Item value Register/Modify" />
+		<put-attribute name="title" value="상품옵션 항목 조회" />
 		<put-attribute name="navigation" value="Admin > Product > Product Management > Option Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productOptionValuesList.jsp" />
 	</definition>	
 	<!-- Product > Option > Value > Regist -->	
 	<definition name="tiles/admin/product/productmgt/option/optionValue/registForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Product Option-Values Register" />
+		<put-attribute name="title" value="상품옵션 항목 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productOptionValuesRegister.jsp" />
 	</definition>	
 
 	<!-- Product > Image > List -->	
 	<definition name="tiles/admin/product/productmgt/image/main" extends="tiles/admin/prod/root">
-		<put-attribute name="title" value="Product Image search" />
+		<put-attribute name="title" value="상품이미지 검색" />
 		<put-attribute name="navigation" value="Admin > Product > Product Management > Image Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/productImageList.jsp" />
 	</definition>	
 	<!-- Product > Image > Modify -->	
 	<definition name="tiles/admin/product/productmgt/image/modifyForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Product Image Modify" />
+		<put-attribute name="title" value="상품이미지 수정" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productImageModify.jsp" />
 	</definition>
 	<!-- Product > Image > Image Viewer -->	
 	<definition name="tiles/admin/product/productmgt/image/imageViewer" extends="layout/panel_100">
-		<put-attribute name="title" value="Product Image Viewer" />
+		<put-attribute name="title" value="상품이미지 Viewer" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/product/popup/productImageViewer.jsp" />
 	</definition>
 	
@@ -186,23 +186,23 @@
 	
 	<!-- Seller Delivery Calendar > List -->	
 	<definition name="tiles/admin/deliverycalendarmgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Deliverable schedule search" />
+		<put-attribute name="title" value="판매자 배송일정 검색" />
 		<put-attribute name="navigation" value="Admin > Deliverable schedule Management > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/deliveryCalendar/deliveryCalendarList.jsp" />
 	</definition>	
 	<definition name="tiles/admin/deliverycalendarmgt/addCalendarForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Add Delivery Area" />
+		<put-attribute name="title" value="판매자 배송일정 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/deliveryCalendar/popup/addCalendarForm.jsp" />
 	</definition>	
 	
     <!-- Payment Method > List -->	
 	<definition name="tiles/admin/paymentmgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Seller's Payment method search" />
+		<put-attribute name="title" value="판매자 결재수단 검색" />
 		<put-attribute name="navigation" value="Admin > Seller Payment > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/payment/paymentMethodList.jsp" />
 	</definition>
 	<definition name="tiles/admin/paymentmgt/registPaymentMethodForm" extends="layout/panel_100">
-		<put-attribute name="title" value="Add Payment Method" />
+		<put-attribute name="title" value="판매자 결재수단 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/admin/payment/popup/registPaymentMethodForm.jsp" />
 	</definition>	
 	

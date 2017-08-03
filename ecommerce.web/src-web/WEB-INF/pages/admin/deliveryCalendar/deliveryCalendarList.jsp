@@ -44,21 +44,16 @@ $(document).ready(function () {
                     } else if (operation == "destroy") {
                         console.log(options);
                         return {
-                        	sellerId : options.sellerId,
-                        	yyyyMmDd : options.yyyyMmDd,
-                        	deliverySeq : options.deliverySeq
+                            deliveryCalendarId : options.deliveryCalendarId
                         };
                     }
                 }
             }, 
             schema: {
                 model: {
-                    id: "sellerId",
+                    id: "deliveryCalendarId",
                     fields: {
-                    	sellerId : { type: "string"},
-                    	yyyyMmDd : { type: "string"},
-                    	amPm : { type: "string"},
-                    	postcodeId : { type: "string"}
+                        deliveryCalendarId : { type: "string"}
                     }
                 },
                 data: function(response) {
@@ -96,17 +91,18 @@ $(document).ready(function () {
             } 
         },         
 		columns: [
+				  { hidden : true, field: 'deliveryCalendarId'},
 				  { hidden : true, field: 'sellerId'},
 				  { hidden : true, field: 'yyyyMmDd'},
-				  { hidden : true, field: 'deliverySeq'},
 		          { title : 'Seller', field: 'seller.userName',width: 120},
 		          { title : 'Date', field: 'yyyyMmDd', attributes: {style: "color: 606000; font-weight: bolder;" },width: 120},
-		          { title : 'Time', template: kendo.template($("#time-template").html()), width: 150},
-		          { title : 'Pickup/Deliver', template: kendo.template($("#deliverMethod-template").html()), width: 200},
-		          { title : 'Postcode', template: kendo.template($("#addressPostcode-template").html()), width: 100},
-		          { title : 'Suburb', template: kendo.template($("#suburb-address-template").html())},
-		          { title : 'Street', template: kendo.template($("#street-address-template").html())},
-		          { title : 'Enabled', field: 'useYn', template: kendo.template($("#useYn-template").html()), width: 100, attributes: {style: "text-align: center;" }},
+		          { title : '배송지역이름', field: 'deliveryBaseAddressNote', attributes: {style: "color: 606000;" },width: 150},
+		          { title : 'AM/PM', template: kendo.template($("#ampm-template").html()), width: 100},
+		          { title : 'Base Address', field: 'deliveryBaseAddressGmapFormattedAddress', width: 400},
+		          { title : '배송반경 Km', template: kendo.template($("#deliveryLimitKm-template").html()), width: 100, attributes: {style: "text-align: right;" }},
+		          { title : '기본 배송비', template: kendo.template($("#deliveryBasicFee-template").html()), width: 100, attributes: {style: "text-align: right;" }},
+		          { title : '배송비/Km', template: kendo.template($("#deliveryFeePerKm-template").html()), width: 100, attributes: {style: "text-align: right;" }},
+		          { title : '활성/비활성', template: kendo.template($("#useYn-template").html()), width: 100, attributes: {style: "text-align: right;" }},
 		          { command: [ {text : "Delete", name: "destory", click: deleteItem}, {text : "Enable/Disable", name: "modify", click: enableAndDisable}]}
 		 ] // End of Columns
     }); // End of GRID
@@ -155,9 +151,7 @@ $(document).ready(function () {
 	    $.ajax({
 	         url  : "/admin/deliverycalendarmgt/enableAndDisableDiliveryCalendar.yum",
 	         data      : {
-	           sellerId : dataItem.sellerId,
-	           yyyyMmDd : dataItem.yyyyMmDd,
-	           deliverySeq : dataItem.deliverySeq
+                 deliveryCalendarId : dataItem.deliveryCalendarId
 	         },
 	         success : callbackEnableAndDisable
 	    });  
@@ -189,7 +183,7 @@ $(document).ready(function () {
          var popupwid_dialog = $("#deliveryCalendarPopup").data("kendoWindow");
          popupwid_dialog.setOptions({
                width: 700,
-               height: 600
+               height: 450
              });
          popupwid_dialog.center();
          
@@ -204,61 +198,25 @@ $(document).ready(function () {
 <script id="useYn-template" type="text/x-kendo-template">
     #= (useYn == 'Y') ? '<font color="262626">예</font>':'<font color="dfdfdf">아니오</font>' #
 </script>
-<script id="time-template" type="text/x-kendo-template">
-    # if (isPickup == 'Y') { #
-          <span style="color: E57014;">
-    # } else if (isPickup == 'N') { #
-          <span style="color: 7768E5;">
-    # } else { #
-          <span>
-    # } #
-
-    # if (btwnFromHhmm != '' && btwnFromHhmm != null) { #
-          #= btwnFromHhmm #
-    # } else { #
-    # } #
-    ~
-    # if (btwnToHhmm != '' && btwnToHhmm != null) { #
-          #= btwnToHhmm #
-    # } else { #
-    # } #
-    </span> 
-</script>
-<script id="deliverMethod-template" type="text/x-kendo-template">
-    # if (isPickup == 'Y') { #
-          <span style="color: E57014;">고객님께서 픽업 </span>
-    # } else if (isPickup == 'N') { # 
-          <span style="color: 7768E5;">고객님께 배달 </span>
+<script id="ampm-template" type="text/x-kendo-template">
+    # if (amPm == 'AM') { #
+            <span style="color: E57014;">AM</span>
+    # } else if (amPm == 'PM') { #
+            <span style="color: 7768E5;">PM</span>
+    # } else if (amPm == 'ALL') { #
+            <span style="color: 738182;">상관없음</span>
     # } else { #
     # } #
 </script>
-<script id="addressPostcode-template" type="text/x-kendo-template">
-    # if (isPickup == 'Y') { #
-          #= '<span style="color: E57014;">' + addressPostcode + '</span>' #
-    # } else if (isPickup == 'N') { # 
-          #= '<span style="color: 7768E5;">' + addressPostcode + '</span>' #
-    # } else { #
-          #= addressPostcode #
-    # } #
+<script id="deliveryLimitKm-template" type="text/x-kendo-template">
+    #= deliveryLimitKm + ' Km' #
 </script>
-<script id="suburb-address-template" type="text/x-kendo-template">
-    #= '<font color="dfdfdf">' + addressState + ' / </font>' #
-
-    # if (isPickup == 'Y') { #
-          #= '<span style="color: E57014;">' + addressSuburb + '</span>' #
-    # } else if (isPickup == 'N') { # 
-          #= '<span style="color: 7768E5;">' + addressSuburb + '</span>' #
-    # } else { #
-          #= addressSuburb #
-    # } #
-
+<script id="deliveryBasicFee-template" type="text/x-kendo-template">
+    #= '$ ' + deliveryBasicFee  #
 </script>
-<script id="street-address-template" type="text/x-kendo-template">
-    # if (isPickup == 'Y') { #
-		  #= '<font color="E57014"> ' + addressStreet + '</font>' #
-    # } #
+<script id="deliveryFeePerKm-template" type="text/x-kendo-template">
+    #= '$ ' + deliveryFeePerKm  #
 </script>
-
 </head>
 <body>
 

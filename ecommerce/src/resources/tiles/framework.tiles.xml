@@ -16,22 +16,22 @@
 	<!-- CODE MANAGEMENT -->
 	<definition name="tiles/framework/codemanager/main" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Code Management > Search" />
-		<put-attribute name="title" value="Code Search" />
+		<put-attribute name="title" value="코드 검색" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/code/codeList.jsp" />
 	</definition>
 	<definition name="tiles/framework/codemanager/regist" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Code Management > register" />
-		<put-attribute name="title" value="Code Register" />
+		<put-attribute name="title" value="코드 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/code/codeRegister.jsp" />
 	</definition>
 	<definition name="tiles/framework/codemanager/modify" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Code Management > modify" />
-		<put-attribute name="title" value="Code Modify" />
+		<put-attribute name="title" value="코드 수정" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/code/codeModify.jsp" />
 	</definition>
 	<definition name="tiles/framework/codemanager/detailInfo" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Code Management > Detail" />
-		<put-attribute name="title" value="Code Detail" />
+		<put-attribute name="title" value="코드 상세정보" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/code/codeDetailInfo.jsp" />
 	</definition>
 
@@ -60,22 +60,22 @@
 	<!-- USER MANAGEMENT -->
 	<definition name="tiles/framework/usermanager/main" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > User Management > Search" />
-		<put-attribute name="title" value="User search" />
+		<put-attribute name="title" value="사용자 검색" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/user/userList.jsp" />
 	</definition>
 	<definition name="tiles/framework/usermanager/regist" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > User Management > register" />
-		<put-attribute name="title" value="User Register" />
+		<put-attribute name="title" value="사용자 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/user/userRegister.jsp" />
 	</definition>
 	<definition name="tiles/framework/usermanager/modify" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > User Management > modify" />
-		<put-attribute name="title" value="User Modify" />
+		<put-attribute name="title" value="사용자정보 수정" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/user/userModify.jsp" />
 	</definition>
 	<definition name="tiles/framework/usermanager/detailInfo" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > User Management > DetailInfo" />
-		<put-attribute name="title" value="User DetailInfo" />
+		<put-attribute name="title" value="사용자 상세정보" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/user/userDetailInfo.jsp" />
 	</definition>
 	<definition name="tiles/framework/usermanager/profileImageUpload" extends="layout/panel_100">
@@ -87,22 +87,22 @@
 	<!-- POSTCODE MANAGEMENT -->
 	<definition name="tiles/framework/postcodemanager/main" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Postcode Management > Search" />
-		<put-attribute name="title" value="Postcode search" />
+		<put-attribute name="title" value="우편번호 검색" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/postcode/postcodeList.jsp" />
 	</definition>
 	<definition name="tiles/framework/postcodemanager/regist" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Postcode Management > register" />
-		<put-attribute name="title" value="Postcode Register" />
+		<put-attribute name="title" value="우편번호 등록" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/postcode/postcodeRegister.jsp" />
 	</definition>
 	<definition name="tiles/framework/postcodemanager/modify" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Postcode Management > modify" />
-		<put-attribute name="title" value="Postcode Modify" />
+		<put-attribute name="title" value="우편번호 수정" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/postcode/postcodeModify.jsp" />
 	</definition>
 	<definition name="tiles/framework/postcodemanager/detailInfo" extends="tiles/admin/root">
 		<put-attribute name="navigation" value="Admin > Postcode Management > DetailInfo" />
-		<put-attribute name="title" value="Postcode DetailInfo" />
+		<put-attribute name="title" value="우편번호 상세정보" />
 		<put-attribute name="body" value="/WEB-INF/pages/framework/postcode/postcodeDetailInfo.jsp" />
 	</definition>	
 

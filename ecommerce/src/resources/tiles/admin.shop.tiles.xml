@@ -7,25 +7,25 @@
 
 	<!-- ORDER MANAGEMENT -->
 	<definition name="tiles/admin/shopmaster/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="All shop search" />
+		<put-attribute name="title" value="판매자 Shop 검색" />
 		<put-attribute name="navigation" value="Admin > Shop > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/shops.jsp" />
 	</definition>
 
 	<definition name="tiles/admin/shopmaster/detailInfo" extends="tiles/admin/root">
-		<put-attribute name="title" value="Detail info" />
+		<put-attribute name="title" value="판매자 Shop 상세정보" />
 		<put-attribute name="navigation" value="Admin > Shop > Detail info" />
 		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/detailInfoShopMaster.jsp" />
 	</definition>
 
 	<definition name="tiles/admin/shopmaster/regist" extends="tiles/admin/root">
-		<put-attribute name="title" value="Register Shop" />
+		<put-attribute name="title" value="판매자 Shop 등록" />
 		<put-attribute name="navigation" value="Admin > Shop > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/registerShopMaster.jsp" />
 	</definition>
 
 	<definition name="tiles/admin/shopmaster/modify" extends="tiles/admin/root">
-		<put-attribute name="title" value="Modify Shop" />
+		<put-attribute name="title" value="판매자 Shop 정보 수정" />
 		<put-attribute name="navigation" value="Admin > Shop > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/shop/admin/modifyShopMaster.jsp" />
 	</definition>

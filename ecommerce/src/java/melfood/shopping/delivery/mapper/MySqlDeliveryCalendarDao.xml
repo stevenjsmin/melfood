@@ -10,7 +10,7 @@
 		SELECT  a.delivery_calendar_id                           'deliveryCalendarId',
 				a.seller_id                                      'sellerId',
 				b.user_name 									 'seller.userName',
-				b.userId 										 'seller.userId',
+				b.user_id 										 'seller.userId',
 				a.yyyy_mm_dd                                     'yyyyMmDd',
 				a.am_pm                                          'amPm',
 				a.est_deliverytime_from_hhmm                     'estDeliverytimeFromHhmm',
@@ -20,9 +20,9 @@
 				a.delivery_base_address_suburb                   'deliveryBaseAddressSuburb',
 				a.delivery_base_address_street                   'deliveryBaseAddressStreet',
 				a.delivery_base_address_note                     'deliveryBaseAddressNote',
-				a.delivery_limit_km                              'deliveryFeePerKm',
-				a.delivery_fee_per_km                            'deliveryBasicFee',
-				a.delivery_basic_fee                             'deliveryLimitKm',
+				a.delivery_limit_km                              'deliveryLimitKm',
+				a.delivery_fee_per_km                            'deliveryFeePerKm',
+				a.delivery_basic_fee                             'deliveryBasicFee',
 				a.delivery_base_address_gmap_latitude            'deliveryBaseAddressGmapLatitude',
 				a.delivery_base_address_gmap_longitude           'deliveryBaseAddressGmapLongitude',
 				a.delivery_base_address_gmap_formatted_address   'deliveryBaseAddressGmapFormattedAddress',
@@ -45,7 +45,7 @@
 			<if test="creator != null"> AND UPPER(a.creator) = UPPER(#{creator}) </if>
 			<if test="searchDateFrom != null"> AND str_to_date(#{searchDateFrom}, '%Y-%m-%d') <![CDATA[ <=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
 			<if test="searchDateTo != null"> AND str_to_date(#{searchDateTo}, '%Y-%m-%d') <![CDATA[ >=]]> str_to_date(a.yyyy_mm_dd, '%Y-%m-%d') </if>
-			ORDER BY b.user_name ASC, a.yyyy_mm_dd ASC, a.btwn_from_hhmm ASC
+			ORDER BY a.delivery_calendar_id DESC, a.seller_id ASC, a.yyyy_mm_dd ASC
 		    LIMIT #{pagenationPage}, #{pagenationPageSize}
 	</select>
 
@@ -91,7 +91,7 @@
 								,delivery_base_address_gmap_formatted_address)
 		VALUES (#{sellerId}
 	        ,#{yyyyMmDd}
-	        ,UPPER(#{am_pm})
+	        ,UPPER(#{amPm})
 	        ,TRIM(#{estDeliverytimeFromHhmm})
 	        ,TRIM(#{estDeliverytimeToHhmm})
 	        ,#{deliveryBaseAddressPostcode}
@@ -106,6 +106,30 @@
 	        ,#{deliveryBaseAddressGmapLongitude}
 	        ,#{deliveryBaseAddressGmapFormattedAddress} )
 	</insert>
+	<update id="modifyDeliveryCalendarForNotNull" parameterType="DeliveryCalendar">
+		/* QUERY ID : modifyDeliveryCalendarForNotNull */
+		UPDATE shop_delivery_calendar
+			SET modify_datetime = CURRENT_TIMESTAMP
+				<if test="sellerId != null"> ,seller_id = #{sellerId} </if>
+				<if test="yyyyMmDd != null"> ,yyyy_mm_dd = #{yyyyMmDd} </if>
+				<if test="amPm != null"> ,am_pm = UPPER(TRIM(#{amPm})) </if>
+				<if test="estDeliverytimeFromHhmm != null"> ,est_deliverytime_from_hhmm = #{estDeliverytimeFromHhmm} </if>
+				<if test="estDeliverytimeToHhmm != null"> ,est_deliverytime_to_hhmm = #{estDeliverytimeToHhmm} </if>
+				<if test="deliveryBaseAddressPostcode != null"> ,delivery_base_address_postcode = #{deliveryBaseAddressPostcode} </if>
+				<if test="deliveryBaseAddressState != null"> ,delivery_base_address_state = #{deliveryBaseAddressState} </if>
+				<if test="deliveryBaseAddressSuburb != null"> ,delivery_base_address_suburb = #{deliveryBaseAddressSuburb} </if>
+				<if test="deliveryBaseAddressStreet != null"> ,delivery_base_address_street = #{deliveryBaseAddressStreet} </if>
+				<if test="deliveryBaseAddressNote != null"> ,delivery_base_address_note = #{deliveryBaseAddressNote} </if>
+				<if test="deliveryLimitKm != null"> ,delivery_limit_km = #{deliveryLimitKm} </if>
+				<if test="deliveryFeePerKm != null"> ,delivery_fee_per_km = #{deliveryFeePerKm} </if>
+				<if test="deliveryFeePerKm != null"> ,delivery_basic_fee = #{deliveryFeePerKm} </if>
+				<if test="deliveryBaseAddressGmapLatitude != null"> ,delivery_base_address_gmap_latitude = #{deliveryBaseAddressGmapLatitude} </if>
+				<if test="deliveryBaseAddressGmapLongitude != null"> ,delivery_base_address_gmap_longitude = #{deliveryBaseAddressGmapLongitude} </if>
+				<if test="deliveryBaseAddressGmapFormattedAddress != null"> ,delivery_base_address_gmap_formatted_address = #{deliveryBaseAddressGmapFormattedAddress} </if>
+				<if test="useYn != null"> ,use_yn = UPPER(TRIM(#{useYn})) </if>
+		WHERE delivery_calendar_id = #{deliveryCalendarId}
+	</update>
+
 
 	<delete id="deleteDeliveryCalendar" parameterType="DeliveryCalendar">
 		/* QUERY ID : deleteDeliveryCalendar */

@@ -7,19 +7,19 @@
 
 	<!-- ORDER MANAGEMENT -->
 	<definition name="tiles/admin/ordermgt/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="All order search" />
+		<put-attribute name="title" value="모든 주문 검색" />
 		<put-attribute name="navigation" value="Admin > Order > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/order/orders.jsp" />
 	</definition>
 
 	<definition name="tiles/admin/ordermgt/grouppurchase/main" extends="tiles/admin/root">
-		<put-attribute name="title" value="Group order search" />
+		<put-attribute name="title" value="공동구매 주문 검색" />
 		<put-attribute name="navigation" value="Admin > Group order > Search" />
 		<put-attribute name="body" value="/WEB-INF/pages/order/grouporders.jsp" />
 	</definition>
 
 	<definition name="tiles/admin/ordermgt/orderdetail" extends="tiles/admin/root">
-		<put-attribute name="title" value="Order detail" />
+		<put-attribute name="title" value="주문 상세정보" />
 		<put-attribute name="navigation" value="Admin > Order > detail" />
 		<put-attribute name="body" value="/WEB-INF/pages/order/orderdetail.jsp" />
 	</definition>
