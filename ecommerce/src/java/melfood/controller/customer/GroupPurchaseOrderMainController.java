@@ -187,6 +187,7 @@ public class GroupPurchaseOrderMainController extends BaseController {
     public Map<String, Object> checkDeliverable(HttpServletRequest request) throws Exception {
         SessionUserInfo sessionUser = authService.getSessionUserInfo(request);
         Map<String, Object> model = new HashMap<String, Object>();
+        GMapResult mapResult = null;
 
         GroupPurchase groupPurchase = null;
         String groupPurchaseId = request.getParameter("groupPurchaseId");
@@ -198,7 +199,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
         StringBuffer marketAddress = new StringBuffer();
         StringBuffer cutomerAddress = new StringBuffer();
-        GMapResult mapResult = null;
         String mapResultCode = "";
         String mapResultMessage = "";
         String estimatedDeliveryTime = "";
@@ -217,8 +217,14 @@ public class GroupPurchaseOrderMainController extends BaseController {
             if (StringUtils.isNotBlank(customerUser.getAddressState())) cutomerAddress.append(customerUser.getAddressState() + " ");
             if (StringUtils.isNotBlank(customerUser.getAddressPostcode())) cutomerAddress.append(customerUser.getAddressPostcode());
 
+            int distance = 0;
+            String duration = "0";
+            float deliveryFee = 0.0f;
+            DecimalFormat df = new DecimalFormat("0.00");
+
             if (StringUtils.equals(groupPurchase.getDeliverable(), "Y")) {
                 // 배송가능인 경우
+                int deliveryLimitKm = groupPurchase.getDeliveryLimitKm();
 
                 if (marketAddress == null
                         || StringUtils.isBlank(groupPurchase.getMarketAddressStreet())
@@ -241,34 +247,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
 
                 // 고객의 지역(Suburb)가 배송 가능지역인지 체크한다
                 if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID")) {
-                    // DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                    // Calendar cal = Calendar.getInstance();
-                    // cal.setTime(new Date());
-                    // String deliveryDate = df.format(cal.getTime());
-                    String deliveryDate = groupPurchase.getMarketOpenStartDate();
-                    List<DeliveryCalendar> deliverySchedule = deliveryCalendarService.getDeliveryCalendars(new DeliveryCalendar(groupPurchase.getPurchaseOrganizer(), deliveryDate));
-
-                    boolean deliverable = false;
-                    for (DeliveryCalendar calendar : deliverySchedule) {
-                        if (StringUtils.equalsIgnoreCase(customerUser.getAddressSuburb(), calendar.getAddressSuburb())) {
-                            deliverable = true;
-                            estimatedDeliveryTime = calendar.getBtwnFromHhmm() + " ~ " + calendar.getBtwnToHhmm();
-                            model.put("estimatedDeliveryTime", estimatedDeliveryTime);
-                            break;
-                        }
-                    }
-                    if (deliverable == false) {
-                        resultCode = "NO_DELIVERABLE_SERVICE_AREA";
-                        mapResultMessage = "죄송합니다. 현재 고객님의 지역 '<b>" + customerUser.getAddressSuburb() + " " + customerUser.getAddressPostcode() + "</b>' 에는 배송일정 스케줄이 잡혀있지 않습니다.";
-                    }
-                }
-
-                DecimalFormat df = new DecimalFormat("0.00");
-                float deliveruFee = 0.0f;
-                int distance = 0;
-                String duration = "0";
-                if (!StringUtils.equals(resultCode, "MARKET_ADDR_INVALID") && !StringUtils.equals(resultCode, "CUSTOMER_ADDR_INVALID") && !StringUtils.equals(resultCode, "NO_DELIVERABLE_SERVICE_AREA")) {
-                    // 마켓주소와 고객의 주소에 일단 내용이 존재한다면 지도정보를 조회한다.
                     mapResult = melfoodGoogleMapService.getLookupGmapDistance(marketAddress.toString(), cutomerAddress.toString());
                     mapResultCode = mapResult.getRows()[0].getElements()[0].getStatus();
 
@@ -279,18 +257,25 @@ public class GroupPurchaseOrderMainController extends BaseController {
                         // 모든게 정상이면 거리와, 배달비를 계산한다
                         distance = Math.round(Integer.parseInt(mapResult.getRows()[0].getElements()[0].getDistance().getValue()) / 1000);
                         if (groupPurchase.getDeliveryFeePerKm() != 0 && distance != 0) {
-                            deliveruFee = groupPurchase.getDeliveryBasicFee() + (distance * groupPurchase.getDeliveryFeePerKm());
+                            deliveryFee = groupPurchase.getDeliveryBasicFee() + (distance * groupPurchase.getDeliveryFeePerKm());
                         } else {
-                            deliveruFee = groupPurchase.getDeliveryBasicFee();
+                            deliveryFee = groupPurchase.getDeliveryBasicFee();
                         }
                         duration = mapResult.getRows()[0].getElements()[0].getDuration().getText();
                     }
+
+                    if (distance > deliveryLimitKm) {
+                        resultCode = "NO_DELIVERABLE_SERVICE_AREA";
+                        mapResultMessage = "죄송합니다. 현재 고객님의 지역 '<b>" + customerUser.getAddressSuburb() + " " + customerUser.getAddressPostcode()
+                                + "</b>' 에는 배송가능한 범위의 지역이 아닙니다. 공.구 장소로부터 " + deliveryLimitKm + "Km 까지 배송서비스가 가능합니다.";
+                    }
                 }
+
 
                 model.put("resultCode", resultCode);
                 model.put("mapResultCode", mapResultCode);
                 model.put("mapResultMessage", mapResultMessage);
-                model.put("deliveryFee", df.format(deliveruFee));
+                model.put("deliveryFee", df.format(deliveryFee));
                 model.put("cutomerAddress", cutomerAddress.toString());
                 model.put("distance", Integer.toString(distance));
                 model.put("duration", duration);
@@ -301,7 +286,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
                 model.put("mapResultMessage", "본 공동구매는 배달서비스를 제공하지 않습니다.");
                 model.put("deliveryFee", "0.00");
                 model.put("cutomerAddress", cutomerAddress.toString());
-                model.put("estimatedDeliveryTime", estimatedDeliveryTime);
                 model.put("distance", "0");
                 model.put("duration", "0");
             }
@@ -312,7 +296,6 @@ public class GroupPurchaseOrderMainController extends BaseController {
             model.put("resultCode", "UNKNOWN_ERROR");
             model.put("mapResultCode", "UNKNOWN_ERROR");
             model.put("mapResultMessage", e.getMessage() == null ? "UNKNOWN_ERROR" : e.getMessage());
-            model.put("estimatedDeliveryTime", estimatedDeliveryTime);
 
             model.put("deliveryFee", "0.00");
             model.put("cutomerAddress", cutomerAddress.toString());

@@ -1,8 +1,8 @@
-/** 
+/**
  * 2016 DeliveryCalendar.java
  * Created by steven.min
- *  
- * For use this source code, you must obtain proper permission. 
+ * <p>
+ * For use this source code, you must obtain proper permission.
  * Or enforcement is prohibited by applicable law, you may not modify, decompile, or reverse engineer Software.
  */
 
@@ -16,193 +16,195 @@ import melfood.framework.user.User;
  * TODO: Class description
  *
  * @author steven.min
- *
  */
 public class DeliveryCalendar extends BaseDto {
 
-	private String sellerId;
-	private String yyyyMmDd;
-	private int deliverySeq;
+    private Integer deliveryCalendarId;
+    private String sellerId;
+    private String yyyyMmDd;
+    private String amPm;
+    private String estDeliverytimeFromHhmm;
+    private String estDeliverytimeToHhmm;
+    private String deliveryBaseAddressPostcode;
+    private String deliveryBaseAddressState;
+    private String deliveryBaseAddressSuburb;
+    private String deliveryBaseAddressStreet;
+    private String deliveryBaseAddressNote;
+    private Float deliveryFeePerKm;
+    private Float deliveryBasicFee;
+    private Integer deliveryLimitKm;
+    private String deliveryBaseAddressGmapLatitude;
+    private String deliveryBaseAddressGmapLongitude;
+    private String deliveryBaseAddressGmapFormattedAddress;
 
-	private String addressPostcode;
-	private String addressState;
-	private String addressSuburb;
-	private String addressStreet;
-	private String addressNote;
+    private Postcode postcode;
+    private User seller;
 
-	private String isPickup;
-	private String btwnFromHhmm;
-	private String btwnToHhmm;
-	private String amPm;
+    public DeliveryCalendar() {
+    }
 
-	private String orderStartDt; // 주문 받을 일시
-	private String orderEndDt; // 주문을 더이상 받지 않을 일시
+    public DeliveryCalendar(Integer deliveryCalendarId) {
+        this.deliveryCalendarId = deliveryCalendarId;
+    }
 
-	private Postcode postcode;
-	private User seller;
+    public DeliveryCalendar(String sellerId) {
+        this.sellerId = sellerId;
+    }
 
-	public DeliveryCalendar() {
-	}
+    public DeliveryCalendar(String sellerId, String yyyyMmDd) {
+        this.sellerId = sellerId;
+        this.yyyyMmDd = yyyyMmDd;
+    }
 
-	public DeliveryCalendar(String sellerId) {
-		this.sellerId = sellerId;
-	}
+    public String getSellerId() {
+        return sellerId;
+    }
 
-	public DeliveryCalendar(String sellerId, String yyyyMmDd) {
-		this.sellerId = sellerId;
-		this.yyyyMmDd = yyyyMmDd;
-	}
+    public void setSellerId(String sellerId) {
+        this.sellerId = sellerId;
+    }
 
-	public DeliveryCalendar(String sellerId, String yyyyMmDd, int deliverySeq) {
-		this.sellerId = sellerId;
-		this.yyyyMmDd = yyyyMmDd;
-		this.deliverySeq = deliverySeq;
-	}
+    public Integer getDeliveryCalendarId() {
+        return deliveryCalendarId;
+    }
 
-	public DeliveryCalendar(String sellerId, String yyyyMmDd, String deliverySeq) {
-		this.sellerId = sellerId;
-		this.yyyyMmDd = yyyyMmDd;
-		this.deliverySeq = Integer.parseInt(deliverySeq);
-	}
+    public void setDeliveryCalendarId(Integer deliveryCalendarId) {
+        this.deliveryCalendarId = deliveryCalendarId;
+    }
 
-	public String getSellerId() {
-		return sellerId;
-	}
+    public String getYyyyMmDd() {
+        return yyyyMmDd;
+    }
 
-	public void setSellerId(String sellerId) {
-		this.sellerId = sellerId;
-	}
+    public void setYyyyMmDd(String yyyyMmDd) {
+        this.yyyyMmDd = yyyyMmDd;
+    }
 
-	/**
-	 * 배달가능 년월일을 가저온다.<br>
-	 * 년월일 형식은 YYYY-MM-DD 형식이어야한다.
-	 * 
-	 * @return
-	 */
-	public String getYyyyMmDd() {
-		return yyyyMmDd;
-	}
+    public String getAmPm() {
+        return amPm;
+    }
 
-	/**
-	 * 배달가능 년월일을 설정한다.<br>
-	 * 년월일 형식은 YYYY-MM-DD 형식이어야한다.
-	 * 
-	 * @param yyyyMmDd
-	 */
-	public void setYyyyMmDd(String yyyyMmDd) {
-		this.yyyyMmDd = yyyyMmDd;
-	}
+    public void setAmPm(String amPm) {
+        this.amPm = amPm;
+    }
 
-	public Postcode getPostcode() {
-		return postcode;
-	}
+    public String getEstDeliverytimeFromHhmm() {
+        return estDeliverytimeFromHhmm;
+    }
 
-	public void setPostcode(Postcode postcode) {
-		this.postcode = postcode;
-	}
+    public void setEstDeliverytimeFromHhmm(String estDeliverytimeFromHhmm) {
+        this.estDeliverytimeFromHhmm = estDeliverytimeFromHhmm;
+    }
 
-	public User getSeller() {
-		return seller;
-	}
+    public String getEstDeliverytimeToHhmm() {
+        return estDeliverytimeToHhmm;
+    }
 
-	public void setSeller(User seller) {
-		this.seller = seller;
-	}
+    public void setEstDeliverytimeToHhmm(String estDeliverytimeToHhmm) {
+        this.estDeliverytimeToHhmm = estDeliverytimeToHhmm;
+    }
 
-	public String getIsPickup() {
-		return isPickup;
-	}
+    public String getDeliveryBaseAddressPostcode() {
+        return deliveryBaseAddressPostcode;
+    }
 
-	public void setIsPickup(String isPickup) {
-		this.isPickup = isPickup;
-	}
+    public void setDeliveryBaseAddressPostcode(String deliveryBaseAddressPostcode) {
+        this.deliveryBaseAddressPostcode = deliveryBaseAddressPostcode;
+    }
 
-	public int getDeliverySeq() {
-		return deliverySeq;
-	}
+    public String getDeliveryBaseAddressState() {
+        return deliveryBaseAddressState;
+    }
 
-	public void setDeliverySeq(int deliverySeq) {
-		this.deliverySeq = deliverySeq;
-	}
+    public void setDeliveryBaseAddressState(String deliveryBaseAddressState) {
+        this.deliveryBaseAddressState = deliveryBaseAddressState;
+    }
 
-	public String getAddressPostcode() {
-		return addressPostcode;
-	}
+    public String getDeliveryBaseAddressSuburb() {
+        return deliveryBaseAddressSuburb;
+    }
 
-	public void setAddressPostcode(String addressPostcode) {
-		this.addressPostcode = addressPostcode;
-	}
+    public void setDeliveryBaseAddressSuburb(String deliveryBaseAddressSuburb) {
+        this.deliveryBaseAddressSuburb = deliveryBaseAddressSuburb;
+    }
 
-	public String getAddressState() {
-		return addressState;
-	}
+    public String getDeliveryBaseAddressStreet() {
+        return deliveryBaseAddressStreet;
+    }
 
-	public void setAddressState(String addressState) {
-		this.addressState = addressState;
-	}
+    public void setDeliveryBaseAddressStreet(String deliveryBaseAddressStreet) {
+        this.deliveryBaseAddressStreet = deliveryBaseAddressStreet;
+    }
 
-	public String getAddressSuburb() {
-		return addressSuburb;
-	}
+    public String getDeliveryBaseAddressNote() {
+        return deliveryBaseAddressNote;
+    }
 
-	public void setAddressSuburb(String addressSuburb) {
-		this.addressSuburb = addressSuburb;
-	}
+    public void setDeliveryBaseAddressNote(String deliveryBaseAddressNote) {
+        this.deliveryBaseAddressNote = deliveryBaseAddressNote;
+    }
 
-	public String getAddressStreet() {
-		return addressStreet;
-	}
+    public Float getDeliveryFeePerKm() {
+        return deliveryFeePerKm;
+    }
 
-	public void setAddressStreet(String addressStreet) {
-		this.addressStreet = addressStreet;
-	}
+    public void setDeliveryFeePerKm(Float deliveryFeePerKm) {
+        this.deliveryFeePerKm = deliveryFeePerKm;
+    }
 
-	public String getAddressNote() {
-		return addressNote;
-	}
+    public Float getDeliveryBasicFee() {
+        return deliveryBasicFee;
+    }
 
-	public void setAddressNote(String addressNote) {
-		this.addressNote = addressNote;
-	}
+    public void setDeliveryBasicFee(Float deliveryBasicFee) {
+        this.deliveryBasicFee = deliveryBasicFee;
+    }
 
-	public String getBtwnFromHhmm() {
-		return btwnFromHhmm;
-	}
+    public Integer getDeliveryLimitKm() {
+        return deliveryLimitKm;
+    }
 
-	public void setBtwnFromHhmm(String btwnFromHhmm) {
-		this.btwnFromHhmm = btwnFromHhmm;
-	}
+    public void setDeliveryLimitKm(Integer deliveryLimitKm) {
+        this.deliveryLimitKm = deliveryLimitKm;
+    }
 
-	public String getBtwnToHhmm() {
-		return btwnToHhmm;
-	}
+    public String getDeliveryBaseAddressGmapLatitude() {
+        return deliveryBaseAddressGmapLatitude;
+    }
 
-	public void setBtwnToHhmm(String btwnToHhmm) {
-		this.btwnToHhmm = btwnToHhmm;
-	}
+    public void setDeliveryBaseAddressGmapLatitude(String deliveryBaseAddressGmapLatitude) {
+        this.deliveryBaseAddressGmapLatitude = deliveryBaseAddressGmapLatitude;
+    }
 
-	public void setAmPm(String amPm) {
-		this.amPm = amPm;
-	}
+    public String getDeliveryBaseAddressGmapLongitude() {
+        return deliveryBaseAddressGmapLongitude;
+    }
 
-	public String getAmPm() {
+    public void setDeliveryBaseAddressGmapLongitude(String deliveryBaseAddressGmapLongitude) {
+        this.deliveryBaseAddressGmapLongitude = deliveryBaseAddressGmapLongitude;
+    }
 
-		return amPm;
-	}
+    public String getDeliveryBaseAddressGmapFormattedAddress() {
+        return deliveryBaseAddressGmapFormattedAddress;
+    }
 
-	public String getOrderingStartDt() {
-		return orderStartDt;
-	}
+    public void setDeliveryBaseAddressGmapFormattedAddress(String deliveryBaseAddressGmapFormattedAddress) {
+        this.deliveryBaseAddressGmapFormattedAddress = deliveryBaseAddressGmapFormattedAddress;
+    }
 
-	public void setOrderingStartDt(String orderStartDt) {
-		this.orderStartDt = orderStartDt;
-	}
+    public Postcode getPostcode() {
+        return postcode;
+    }
 
-	public String getOrderingEndDt() {
-		return orderEndDt;
-	}
+    public void setPostcode(Postcode postcode) {
+        this.postcode = postcode;
+    }
 
-	public void setOrderingEndDt(String orderEndDt) {
-		this.orderEndDt = orderEndDt;
-	}
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
 }

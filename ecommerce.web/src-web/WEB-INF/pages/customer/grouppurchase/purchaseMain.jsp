@@ -60,7 +60,6 @@
 
             var cutomerAddress = data.cutomerAddress;
             var deliveryFee = data.deliveryFee;
-            var estimatedDeliveryTime = data.estimatedDeliveryTime;
 
             var distance = data.distance;
             var duration = data.duration;
@@ -69,7 +68,6 @@
             if(resultCode == "OK"){
                 $("#DELIVERY_SERVICE_DETAIL").show();
                 $("#cutomerAddress").html(cutomerAddress);
-                $("#estimatedDeliveryTime").html(estimatedDeliveryTime);
                 $("#distance").html(distance);
 
                 $("#delivery_distance").val(distance);
@@ -787,11 +785,6 @@
                                                 <span id="distance">0</span> Km
                                                 <input type="hidden" name="delivery_distance" id="delivery_distance" value="0" />
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="color: #797979; text-align: right;">배송예정시간</td>
-                                            <td>:</td>
-                                            <td><span id="estimatedDeliveryTime"></span></td>
                                         </tr>
                                         <tr>
                                             <td style="color: #797979; text-align: right;">배송비</td>
