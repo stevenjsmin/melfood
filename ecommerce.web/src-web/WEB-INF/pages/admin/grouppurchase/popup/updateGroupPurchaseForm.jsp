@@ -102,7 +102,12 @@
                     <td class="label">배달비 / Km :</td>
                     <td class="value"><input id="deliveryFeePerKm" name="deliveryFeePerKm" value="${groupPurchase.deliveryFeePerKm}"></input></td>
                 </tr>
-
+                <tr>
+                    <td class="label">배송제한거리(Km)</td>
+                    <td class="value"><input id="deliveryLimitKm" name="deliveryLimitKm" value="${groupPurchase.deliveryLimitKm}"></input></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
                 <tr>
                     <td colspan="4">

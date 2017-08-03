@@ -167,7 +167,7 @@ public class ShopMainController extends BaseController {
 
             if (StringUtils.isNotBlank(shopMaster.getAddressStreet())) shopAddress.append(shopMaster.getAddressStreet() + " ");
             if (StringUtils.isNotBlank(shopMaster.getAddressSuburb())) shopAddress.append(shopMaster.getAddressSuburb() + " ");
-            if (StringUtils.isNotBlank(shopMaster.getAddressState())) shopAddress.append(shopMaster.getAddressSuburb() + " ");
+            if (StringUtils.isNotBlank(shopMaster.getAddressState())) shopAddress.append(shopMaster.getAddressState() + " ");
             if (StringUtils.isNotBlank(shopMaster.getAddressPostcode())) shopAddress.append(shopMaster.getAddressPostcode());
 
             if (StringUtils.isNotBlank(customerUser.getAddressStreet())) cutomerAddress.append(customerUser.getAddressStreet() + " ");

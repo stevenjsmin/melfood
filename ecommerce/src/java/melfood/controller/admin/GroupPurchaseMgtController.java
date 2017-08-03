@@ -314,6 +314,7 @@ public class GroupPurchaseMgtController extends BaseController {
         String deliverable = request.getParameter("deliverable");
         String deliveryFeePerKm = request.getParameter("deliveryFeePerKm");
         String deliveryBasicFee = request.getParameter("deliveryBasicFee");
+        String deliveryLimitKm = request.getParameter("deliveryLimitKm");
         String groupPurchaseNotice = request.getParameter("groupPurchaseNotice");
         String creator = sessionUser.getUser().getUserId();
 
@@ -359,7 +360,6 @@ public class GroupPurchaseMgtController extends BaseController {
             if (StringUtils.isNotBlank(maximumPurchaseAmount)) groupPurchase.setMaximumPurchaseAmount(maximumPurchaseAmount);
             if (StringUtils.isNotBlank(discountMethod)) groupPurchase.setDiscountMethod(discountMethod);
 
-
             try {
                 geoResult = melfoodGoogleMapService.lookupGMap(marketAddressStreet + " " + marketAddressSuburb + " " + marketAddressState + " " + marketAddressPostcode);
                 if (geoResult != null) {
@@ -376,7 +376,6 @@ public class GroupPurchaseMgtController extends BaseController {
                 logger.info("[" + marketAddressStreet + " " + marketAddressSuburb + " " + marketAddressState + " " + marketAddressPostcode + "] 에대한 죄표를 구하는데 실패하였습니다. :" + e.getMessage());
             }
 
-
             if (StringUtils.equalsIgnoreCase(deliverable, "Y")) {
                 groupPurchase.setDeliverable("Y");
                 if (StringUtils.isBlank(deliveryFeePerKm)) {
@@ -389,10 +388,16 @@ public class GroupPurchaseMgtController extends BaseController {
                 } else {
                     groupPurchase.setDeliveryBasicFee(Float.parseFloat(deliveryBasicFee));
                 }
+                if (StringUtils.isBlank(deliveryLimitKm)) {
+                    groupPurchase.setDeliveryLimitKm(0);
+                } else {
+                    groupPurchase.setDeliveryLimitKm(Integer.parseInt(deliveryLimitKm));
+                }
             } else {
                 groupPurchase.setDeliverable("N");
                 groupPurchase.setDeliveryFeePerKm(0.0f);
                 groupPurchase.setDeliveryBasicFee(0.0f);
+                groupPurchase.setDeliveryLimitKm(0);
             }
 
 

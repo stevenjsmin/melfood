@@ -217,7 +217,11 @@
     </script>
 
     <script id="name-template" type="text/x-kendo-template">
-        #=   "<div class='product-photo' style='background-image: url(/resources/image/sample/8.jpg);'></div><div class='product-name'>" + name + "</div>" #
+        # if (productImage.imageFileId != 0) { #
+        #=   "<div class='product-photo' style='background-image: url(/img/?f=" + productImage.imageFileId + ");'></div><div class='product-name'>" + name + "</div>" #
+        # } else { #
+        #=   "<div class='product-photo' style='background-image: url(/resources/image/default_goods4.png);'></div><div class='product-name'>" + name + "</div>" #
+        # } #
     </script>
 
     <script id="order-template" type="text/x-kendo-template">

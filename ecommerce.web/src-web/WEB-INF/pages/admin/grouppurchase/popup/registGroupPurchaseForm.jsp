@@ -113,6 +113,12 @@
                     <td class="label">배달비 / Km :</td>
                     <td class="value"><input id="deliveryFeePerKm" name="deliveryFeePerKm" value=""></input></td>
                 </tr>
+                <tr>
+                    <td class="label">배송제한거리(Km)</td>
+                    <td class="value"><input id="deliveryLimitKm" name="deliveryLimitKm" value=""></input></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
                 <tr>
                     <td class="label">상태 :</td>

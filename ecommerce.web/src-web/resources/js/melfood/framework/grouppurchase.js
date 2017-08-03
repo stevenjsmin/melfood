@@ -58,7 +58,6 @@ $(document).ready(function() {
     });
 
 
-
     $("#minimumPurchaseAmount").kendoNumericTextBox({
         max: 99999,
         min: 0.00,
@@ -98,6 +97,10 @@ $(document).ready(function() {
         min: 0.00,
         step: 1.00,
         format: "c2"
+    });
+
+    $("#deliveryLimitKm").kendoNumericTextBox({
+        format: "0", decimals: 0, min: 0, max: 2000
     });
 
 }); // END of document.ready() ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -295,6 +298,7 @@ function save(){
     var deliverable = $('#deliverable').val();
     var deliveryFeePerKm = $('#deliveryFeePerKm').val();
     var deliveryBasicFee = $('#deliveryBasicFee').val();
+    var deliveryLimitKm = $('#deliveryLimitKm').val();
     var orderStartDt = $('#orderStartDt').val();
     var orderEndDt = $('#orderEndDt').val();
 
@@ -332,6 +336,7 @@ function save(){
                deliverable : deliverable                                ,
                deliveryFeePerKm : deliveryFeePerKm,
                deliveryBasicFee : deliveryBasicFee,
+               deliveryLimitKm : deliveryLimitKm,
                orderStartDt : orderStartDt,
                orderEndDt : orderEndDt,
                stopSelling : stopSelling,
@@ -451,7 +456,7 @@ function openUpdateGroupPurchasePopup(groupPurchaseId){
     var popup_dialog = $("#groupPurchasePopup").data("kendoWindow");
     popup_dialog.setOptions({
         width: 800,
-        height: 830
+        height: 860
     });
     //popup_dialog.center();
 

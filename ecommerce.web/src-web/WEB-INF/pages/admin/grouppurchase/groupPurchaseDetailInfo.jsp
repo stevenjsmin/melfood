@@ -520,7 +520,12 @@
                         $ <fmt:formatNumber type="number" minFractionDigits="2" value="${groupPurchase.deliveryFeePerKm}"/>
                     </td>
                 </tr>
-
+                <tr>
+                    <td class="label">배송제한거리</td>
+                    <td class="value"><span style="color: #EF604C;">${groupPurchase.deliveryLimitKm} Km</span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
                 <tr>
                     <td colspan="4">

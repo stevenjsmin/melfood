@@ -50,6 +50,7 @@
             a.deliverable 'deliverable',
             a.delivery_fee_per_km 'deliveryFeePerKm',
             a.delivery_basic_fee 'deliveryBasicFee',
+            a.delivery_limit_km  'deliveryLimitKm',
             a.group_purchase_notice 'groupPurchaseNotice',
             a.mall_master_checked 'mallMasterChecked',
             a.use_yn 'useYn',
@@ -160,6 +161,7 @@
             ,deliverable
             ,delivery_fee_per_km
             ,delivery_basic_fee
+            ,delivery_limit_km
             ,group_purchase_notice
             ,mall_master_checked
             ,use_yn
@@ -190,6 +192,7 @@
             TRIM(#{deliverable}),
             TRIM(#{deliveryFeePerKm}),
             TRIM(#{deliveryBasicFee}),
+            TRIM(#{deliveryLimitKm}),
             TRIM(#{groupPurchaseNotice}),
             TRIM(#{mallMasterChecked}),
             TRIM(#{useYn}),
@@ -226,6 +229,7 @@
             ,deliverable = TRIM(#{deliverable})
             ,delivery_fee_per_km = TRIM(#{deliveryFeePerKm})
             ,delivery_basic_fee = TRIM(#{deliveryBasicFee})
+            ,delivery_limit_km  =   TRIM(#{deliveryLimitKm})
             ,group_purchase_notice = TRIM(#{groupPurchaseNotice})
             ,mall_master_checked = TRIM(#{mallMasterChecked})
             ,use_yn = TRIM(#{useYn})
@@ -263,6 +267,7 @@
             <if test="deliverable != null">,deliverable = TRIM(#{deliverable}) </if>
             <if test="deliveryFeePerKm != null">,delivery_fee_per_km = TRIM(#{deliveryFeePerKm}) </if>
             <if test="deliveryBasicFee != null">,delivery_basic_fee = TRIM(#{deliveryBasicFee}) </if>
+            <if test="deliveryLimitKm != null">,delivery_limit_km = TRIM(#{deliveryLimitKm}) </if>
             <if test="groupPurchaseNotice != null">,group_purchase_notice = TRIM(#{groupPurchaseNotice}) </if>
             <if test="mallMasterChecked != null">,mall_master_checked = TRIM(#{mallMasterChecked}) </if>
             <if test="useYn != null">,use_yn = TRIM(#{useYn}) </if>
@@ -408,6 +413,7 @@
             a.deliverable 'deliverable',
             a.delivery_fee_per_km 'deliveryFeePerKm',
             a.delivery_basic_fee 'deliveryBasicFee',
+            a.delivery_limit_km  'deliveryLimitKm',
             a.group_purchase_notice 'groupPurchaseNotice',
             a.mall_master_checked 'mallMasterChecked',
             a.use_yn 'useYn',

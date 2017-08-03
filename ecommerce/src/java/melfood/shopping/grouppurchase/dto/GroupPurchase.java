@@ -38,6 +38,7 @@ public class GroupPurchase extends BaseDto {
     private String deliverable;
     private Float deliveryFeePerKm;
     private Float deliveryBasicFee;
+    private Integer deliveryLimitKm;
 
     private String groupPurchaseNotice;
     private String mallMasterChecked;
@@ -359,5 +360,13 @@ public class GroupPurchase extends BaseDto {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getDeliveryLimitKm() {
+        return deliveryLimitKm;
+    }
+
+    public void setDeliveryLimitKm(Integer deliveryLimitKm) {
+        this.deliveryLimitKm = deliveryLimitKm;
     }
 }

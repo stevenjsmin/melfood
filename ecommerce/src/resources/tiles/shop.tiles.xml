@@ -5,6 +5,11 @@
 
 <tiles-definitions>
 
+
+	<definition name="layout/panel_110" extends="root" template="/WEB-INF/pages/_layout/panel_110_popupOrder.jsp">
+		<put-attribute name="body" value="/WEB-INF/pages/common/welcome.jsp" />
+	</definition>
+
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- Layout Define -->
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -12,9 +17,8 @@
 		<put-attribute name="body" value="/WEB-INF/pages/shop/shopMain.jsp" />
 	</definition>
 
-	<definition name="tiles/customer/shop/productOrderPopup" extends="layout/panel_100">
-		<put-attribute name="title" value="상품주문" />
-		<put-attribute name="body" value="/WEB-INF/pages/shop/purchaseOrganizerPopup.jsp" />
+	<definition name="tiles/customer/shop/productOrderPopup" extends="layout/panel_110">
+		<put-attribute name="body" value="/WEB-INF/pages/shop/productOrderPopup.jsp" />
 	</definition>
 
 

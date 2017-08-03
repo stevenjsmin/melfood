@@ -14,8 +14,11 @@
     <tiles:insertAttribute name="commonhtml"/>
 </head>
 <body>
-<span class="popup-subtitle"><tiles:getAsString name="title"/></span>
-<hr class="popup-subtitle"/>
+<table align="right" style="margin-right: 15px; margin-top: 10px;">
+    <tr>
+        <td><a href="javascript:parent.closeOpenProductOrderPopup();" style="font-size: 20px;color: #363636;">X</a></td>
+    </tr>
+</table>
 
 <div class="content" id="contentsDiv">
     <tiles:insertAttribute name="body"/>
